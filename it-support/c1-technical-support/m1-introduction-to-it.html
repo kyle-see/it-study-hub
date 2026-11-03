@@ -1,0 +1,1465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Technical Support Fundamentals — Introduction to IT and Computing, Module 1 (study)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Course 1 — Technical Support · Module 1 — Introduction to IT and Computing</span>
+  <nav><a href="index.html">Course 1</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="#essentials">Essentials</a><a href="m2-hardware.html">M2</a><a href="m3-operating-systems.html">M3</a><a href="m4-networking-flyover.html">M4</a><a href="m5-software.html">M5</a><a href="m6-troubleshooting.html">M6</a><a href="#quiz">Quiz</a><a href="#cards">Flashcards</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="essentials" class=""><h2>The essentials &mdash; hold these before the detail</h2><p class="lede">The module at entry-certification level: what you must be able to do, and the facts the quizzes and drills on this page are testing. Read this first, every time.</p>
+    <div class="learnbox">
+      <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
+        <ul class="lcan"><li>explain what an <span class="ac" data-full="Information Technology" data-desc="using computers, networks and software to get work done - and the job of keeping them working">IT</span> support specialist does, and what tier 1, 2 and 3 mean</li><li>convert between binary and decimal by hand, in both directions</li><li>explain why computers use base two, and what a bit and a byte are</li><li>explain character encoding, and why the same bytes can mean different text</li><li>name the four layers of abstraction in a computer</li></ul></div>
+      <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 8 facts</span>
+        <div class="kv lfacts"><div class="k">IT</div><div>using computers, networks and software to get work done - and keeping them working when they stop. The second half is the job.</div><div class="k">Support tiers</div><div>tier 1 takes first contact and solves what a script can solve; tier 2 does deeper diagnosis; tier 3 is the specialist engineer or the vendor.</div><div class="k"><span class="ac" data-full="Bit" data-desc="one binary digit: a single 1 or 0. The smallest unit of information a computer has.">Bit</span> and byte</div><div>a bit is one binary digit (0 or 1); eight bits make a byte, and a byte holds 256 different values.</div><div class="k">Place values</div><div>from the right: 1, 2, 4, 8, 16, 32, 64, 128. To read binary, add the places where the bit is 1. To write it, subtract the biggest place that fits and keep going.</div><div class="k">Example</div><div>11011011 = 128+64+16+8+2+1 = 219. Nothing else is happening.</div><div class="k">Encoding</div><div>the agreed map from a number to a character. <span class="ac" data-full="American Standard Code for Information Interchange" data-desc="the original 7-bit character table: 128 codes, A is 65, a is 97">ASCII</span> covers 128 characters (A=65, a=97, 0=48); <span class="ac" data-full="Unicode" data-desc="the standard that gives every character in every writing system a number, including emoji and scripts ASCII never covered.">Unicode</span> covers every writing system; <span class="ac" data-full="Unicode Transformation Format, 8-bit" data-desc="the modern encoding: ASCII-compatible, but a character can take one to four bytes">UTF-8</span> is how Unicode is stored (1 byte for ASCII, up to 4 for the rest).</div><div class="k">Abstraction</div><div>hiding detail behind a simpler surface. A computer is hardware, then operating system, then software, then the user.</div><div class="k">Logic gates</div><div>AND is true only if both inputs are; OR if either is; NOT flips; XOR if exactly one is.</div></div></div>
+      <div class="big60 r"><b>The trap:</b> Counting binary places from the left. The 128 place is on the left and the 1 place is on the right, which is why reading right-to-left is the whole trick.</div>
+      <p class="src">Everything below this box explains these lines, in this order, with a drill
+      after each part that tests it. If you can say every line above without looking, the drills are
+      revision. If you cannot, read the section that matches the line and come back &mdash; that is
+      the whole study method. The same objectives for every module, built and not yet built, are on
+      <a href="../../learn/index.html">the learning path</a>.</p>
+    </div></section><section id="start" class=""><h2>What IT is, and what this module is for</h2><p class="lede">The course calls this module Introduction to <span class="ac" data-full="Information Technology" data-desc="using computers, networks and software to get work done - and the job of keeping them working">IT</span> and Computing. It is really two things: what the job is, and what the machine under the job is doing.</p>
+    <p><b>Information technology</b> is using computers, networks and software to get work done — and keeping
+    them working when they stop. That second half is the whole reason the support specialist exists.</p>
+    <div class="big60">
+      <b>The one sentence to own:</b> a computer is a machine that follows instructions exactly and has no idea
+      what they mean. Every fact in this module is a consequence of that: because it only follows instructions,
+      it needs those instructions in a form it can represent (binary), and because it has no idea what they
+      mean, everything that gives them meaning has to be supplied by agreement between people (encoding).
+    </div>
+    <h3>What an IT support specialist actually does</h3>
+    <table>
+      <tr><th>The task</th><th>What it looks like in one day</th></tr>
+      <tr><td><b>Diagnose</b></td><td>A machine will not join the network. Is it the cable, the address, the account, or the switch? Work out which question to ask first.</td></tr>
+      <tr><td><b>Fix, or route</b></td><td>Most tickets are solved in minutes by someone who knows the system. The rest need the right person, quickly, with enough information to act.</td></tr>
+      <tr><td><b>Set up</b></td><td>New starter, new machine, new phone: accounts, software, printers, permissions, and a check that it all works.</td></tr>
+      <tr><td><b>Explain</b></td><td>Telling a worried person what went wrong in words they can use, without making them feel stupid for asking.</td></tr>
+      <tr><td><b>Record</b></td><td>Writing down what happened, so the next person does not start from nothing — and so the pattern is visible when it happens for the fifth time.</td></tr>
+    </table>
+    <p>The <b>support tiers</b> exist so that expensive expertise is not spent on password resets: tier 1 takes
+    first contact and resolves what a script can resolve, tier 2 handles deeper diagnosis, tier 3 is the
+    specialist engineer or the vendor.</p>
+    <h3>Why the rest of this module is binary</h3>
+    <p>Because every later module assumes it. Course 1 Module 2 talks about <span class="ac" data-full="Random Access Memory" data-desc="fast volatile working memory: it holds whatever is running now and is wiped when power goes">RAM</span> capacity and drive sizes.
+    Course 2 Module 2 asks you to convert an octet to binary in your head, twice a minute. CompTIA A+ asks
+    for the same conversion, and for hexadecimal whenever a <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> address or an <span class="ac" data-full="Internet Protocol version 6" data-desc="128-bit addressing written as eight hexadecimal groups, with long runs of zeroes collapsed as a double colon.">IPv6</span> address appears. If the
+    eight place values are not automatic, both courses get slower at exactly the point they get interesting.</p>
+    <p class="src">Source: Course 1's own outline (Module 1: "What is IT?", "What does an IT Support Specialist
+    do?", "Computer Language", "Character Encoding", "<span class="ac" data-full="Binary" data-desc="counting in base 2, where each place is worth twice the one to its right and every digit is 0 or 1. A computer uses it because a transistor has two…">Binary</span>", "How to Count in Binary", "Abstraction",
+    "Computer Architecture Overview"). The prose here is ours.</p>
+    <button class="aud" data-audio="audio/c1m1-what-it-is.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 40s</button></section><section id="history" class=""><h2>From counting boards to stored programs</h2><p class="lede">The course walks this history because each step solves one problem and creates the next.</p>
+    <table>
+      <tr><th>When</th><th>Machine</th><th>The idea it added</th></tr>
+      <tr><td>~2500 BCE</td><td>Abacus</td><td>Store the number in the position of beads, not in your head. The first external memory.</td></tr>
+      <tr><td>1642</td><td>Pascaline</td><td>Mechanise arithmetic: gears carry the tens for you.</td></tr>
+      <tr><td>1837</td><td>Analytical Engine <span class="mono">(Babbage)</span></td><td>A <b>store</b>, a <b>mill</b> and punched-card input: a general-purpose machine whose program is separate from its data. Designed, never finished — but it is the first description of a computer.</td></tr>
+      <tr><td>1843</td><td>Lovelace's notes</td><td>The first published algorithm, and the first argument that such a machine could manipulate symbols, not just numbers.</td></tr>
+      <tr><td>1890</td><td>Hollerith tabulator</td><td>Punched cards for the US census. Fast enough to justify a business; that business became IBM.</td></tr>
+      <tr><td>1945</td><td>ENIAC</td><td>Electronic and general-purpose, around eighteen thousand vacuum tubes. Programmed by rewiring, which is why the next idea mattered.</td></tr>
+      <tr><td>1945</td><td>Von Neumann's draft</td><td><b>Store the program in the same memory as the data.</b> Now a program is data: it can be loaded, copied, and changed without touching a wire.</td></tr>
+      <tr><td>1947</td><td>Transistor</td><td>Replaces the fragile, hot, power-hungry tube with a solid switch. Everything since is a story about making this smaller.</td></tr>
+      <tr><td>1958</td><td>Integrated circuit</td><td>Many transistors on one piece of silicon. The wiring stops being hand-soldered and starts being printed.</td></tr>
+      <tr><td>1971</td><td>Intel 4004</td><td>A whole processor on one chip. Computing stops being a room and becomes a component.</td></tr>
+      <tr><td>1981</td><td>IBM PC</td><td>An open architecture other companies could copy. The reason "PC" means a category and not a brand.</td></tr>
+      <tr><td>1990s→</td><td>The network, then the cloud</td><td>The machine stops being where the work is. Storage and processing move to somebody else's building.</td></tr>
+    </table>
+    <div class="big60 y">
+      <b>Moore's law, stated honestly:</b> in 1965 Gordon Moore observed that the number of components on a
+      chip was doubling roughly every two years, and predicted it would continue. It is an observation and an
+      industry roadmap, not a law of physics — and it has been slowing since the mid-2010s, which is why
+      performance now comes from more cores and specialised chips rather than from clock speed alone.
+    </div>
+    <button class="aud" data-audio="audio/c1m1-binary.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 30s</button></section><section id="history-game" class=""><h2>Drill: put the milestones in order</h2><p class="lede">Ordering a history is a cheap way to remember it — each machine exists because the one before it had a limit.</p><div class="game" id="gHistory"><div class="gtitle"><b>Order the history</b></div><p class="ghint">Click two tiles to swap them, then check. The order is the one in the table above.</p><div id="histHost"></div></div></section><section id="bit" class=""><h2>Why a computer only needs two symbols</h2><p class="lede">The machine is made of switches, so it counts in base 2 — and every other fact about bits follows from that.</p>
+    <h3>A transistor is a switch, and a switch has two states</h3>
+    <p>A <b>transistor</b> is a tiny switch controlled by a third terminal. Apply voltage and it passes current;
+    remove it and it blocks. Two states, easy to build, easy to tell apart even when the voltage wobbles —
+    which is exactly why computers are digital instead of analogue. One state is written <span class="mono">1</span>,
+    the other <span class="mono">0</span>, and one of them is called a <b>bit</b>.</p>
+    <div class="kv">
+      <div class="k"><span class="ac" data-full="Bit" data-desc="one binary digit: a single 1 or 0. The smallest unit of information a computer has.">Bit</span></div><div>One binary digit — a single 1 or 0. The smallest unit of information the machine has.</div>
+      <div class="k"><span class="ac" data-full="Nibble" data-desc="four bits, or half a byte: one hex digit. Useful because every byte splits cleanly into two of them.">Nibble</span></div><div>Four bits. One hexadecimal digit. Useful because every byte splits into exactly two of them.</div>
+      <div class="k"><span class="ac" data-full="Byte" data-desc="eight bits taken as one unit. Eight bits give 2⁸ = 256 possible values, which is enough for one character in ASCII.">Byte</span></div><div>Eight bits taken as one unit. 2<sup>8</sup> = 256 patterns, so a byte holds a value from <b>0 to 255</b>.</div>
+    </div>
+    <h3>The eight place values</h3>
+    <p><span class="ac" data-full="Binary" data-desc="counting in base 2, where each place is worth twice the one to its right and every digit is 0 or 1. A computer uses it because a transistor has two…">Binary</span> is a <b>base 2 numeral system</b>: each place is worth twice the place to its right. In a byte,
+    read right to left:</p>
+    <div class="bitrow">
+      <span class="bitplace">128</span><span class="bitplace">64</span><span class="bitplace">32</span><span class="bitplace">16</span>
+      <span class="bitplace">8</span><span class="bitplace">4</span><span class="bitplace">2</span><span class="bitplace">1</span>
+    </div>
+    <div class="bitrow">
+      <span class="bit on">1</span><span class="bit on">1</span><span class="bit">0</span><span class="bit">1</span>
+      <span class="bit on">1</span><span class="bit">0</span><span class="bit on">1</span><span class="bit on">1</span>
+    </div>
+    <p style="text-align:center;font-size:13px;color:var(--text-mute)">
+      128 + 64 + 16 + 8 + 2 + 1 = <b>219</b>. The same eight switches, read as a number.
+    </p>
+    <div class="big60 r">
+      <b>Why 255 and not 256:</b> there are 256 patterns, but counting starts at zero, so the highest value a
+      byte can hold is 255. Every "the value is too large" bug in networking is this sentence.
+    </div>
+    <h3>Decimal and hexadecimal, because you need both</h3>
+    <table>
+      <tr><th>Base</th><th>Digits</th><th>Place values</th><th>Where you meet it</th></tr>
+      <tr><td><b><span class="ac" data-full="Decimal" data-desc="counting in base 10, the everyday system; each place is a power of ten, which is why humans find it natural and machines do not.">Decimal</span></b> (10)</td><td>0–9</td><td>1, 10, 100, 1000</td><td>Everything a human reads: 255, 192, 168.</td></tr>
+      <tr><td><b>Binary</b> (2)</td><td>0–1</td><td>1, 2, 4, 8, 16, 32, 64, 128</td><td>Masks, prefix lengths, the actual state of the machine.</td></tr>
+      <tr><td><b>Hexadecimal</b> (16)</td><td>0–9, A–F</td><td>1, 16, 256, 4096</td><td><span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> addresses, <span class="ac" data-full="Internet Protocol version 6" data-desc="128-bit addressing written as eight hexadecimal groups, with long runs of zeroes collapsed as a double colon.">IPv6</span>, colour codes, memory addresses. Two digits = one byte.</td></tr>
+    </table>
+    <p>Hex is not there to be clever. Four bits fit exactly into one hex digit, so a byte is always two
+    characters instead of eight — <span class="mono">11001010</span> is <span class="mono">CA</span>. When you
+    meet <span class="mono">00:1A:2B:3C:4D:5E</span> on a MAC address, you are reading twelve hex digits, which
+    is six bytes, which is forty-eight bits.</p>
+    <button class="aud" data-audio="audio/c1m1-counting.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 40s</button></section><section id="octet-game" class=""><h2>Drill: byte ↔ binary</h2><p class="lede">Until this is automatic, nothing downstream is fast. Two minutes here saves ten minutes on every subnet problem in Course 2.</p><div class="game" id="gOctet"><div class="gtitle"><b><span class="ac" data-full="Byte" data-desc="eight bits taken as one unit. Eight bits give 2⁸ = 256 possible values, which is enough for one character in ASCII.">Byte</span> trainer</b></div><p class="ghint">Type the answer and press Enter. It alternates decimal→binary and binary→decimal. Aim for a streak of ten.</p><div id="octetHost"></div></div></section><section id="counting" class=""><h2>Counting in binary, both directions</h2><p class="lede">Two methods, one for each direction. Neither needs a calculator.</p>
+    <h3>Binary → decimal: add the places that hold a 1</h3>
+    <p>Label the eight places, then add the ones that are switched on. That is the whole method.</p>
+    <table>
+      <tr><th>Binary</th><th>Places that are on</th><th>Decimal</th></tr>
+      <tr><td class="mono">00000001</td><td>1</td><td>1</td></tr>
+      <tr><td class="mono">00001010</td><td>8 + 2</td><td>10</td></tr>
+      <tr><td class="mono">01000001</td><td>64 + 1</td><td><b>65</b> — the capital letter A</td></tr>
+      <tr><td class="mono">01101000</td><td>64 + 32 + 8</td><td><b>104</b> — the letter h</td></tr>
+      <tr><td class="mono">11000000</td><td>128 + 64</td><td><b>192</b> — the first octet of 192.168.1.1</td></tr>
+      <tr><td class="mono">11111111</td><td>all eight</td><td><b>255</b> — the largest a byte holds</td></tr>
+    </table>
+    <h3>Decimal → binary: subtract the biggest place that fits</h3>
+    <p>Take 200. The biggest place that fits is 128, leaving 72. Then 64 fits, leaving 8. Then 8 fits, leaving
+    zero. So the ones are at 128, 64 and 8: <span class="mono">11001000</span>.</p>
+    <div class="big60">
+      <b>Check your work the cheap way:</b> if the number is odd, the last bit is <span class="mono">1</span>.
+      If it is 128 or more, the first bit is <span class="mono">1</span>. Half of all mistakes are caught by
+      those two questions alone.
+    </div>
+    <h3>Counting past 255: it is just more places</h3>
+    <p>Every extra bit doubles the range: 8 bits is 0–255, 16 bits is 0–65,535, 32 bits is about 4.3 billion.
+    That last one is why an <span class="ac" data-full="Internet Protocol version 4" data-desc="32-bit addressing: four numbers from 0 to 255, about 4.3 billion addresses in total.">IPv4</span> address was considered inexhaustible in 1981 and is now the reason <span class="ac" data-full="Internet Protocol version 6" data-desc="128-bit addressing written as eight hexadecimal groups, with long runs of zeroes collapsed as a double colon.">IPv6</span>
+    exists — and 2<sup>128</sup> is the kind of number you stop trying to imagine.</p>
+    <div class="big60 y">
+      <b>Storage units are not the same as network units.</b> A megabyte is eight times a mebibit, and
+      <span class="mono">Mb/s</span> (megabits per second) is not <span class="mono">MB/s</span> (megabytes per
+      second). A "100 Mb/s" connection downloads at about 12.5 MB/s. CompTIA A+ asks this, and so does every <span class="ac" data-full="Internet Service Provider" data-desc="the company that sells you the connection to the internet">ISP</span>
+      advert that hopes you will not notice.
+    </div>
+    </section><section id="encoding" class=""><h2>From bits to letters: character encoding</h2><p class="lede">A byte is a number. Something has to agree what the number means, or the letter A and the number 65 are the same object.</p>
+    <h3>ASCII: 128 codes, fixed forever</h3>
+    <p><b><span class="ac" data-full="American Standard Code for Information Interchange" data-desc="the original 7-bit character table: 128 codes, A is 65, a is 97">ASCII</span></b> (American Standard Code for Information Interchange) is a 7-bit table: 128 codes covering
+    the English alphabet, the digits and punctuation, plus a few control codes that used to move a teletype.
+    Seven bits left one bit spare, which is why early systems had "parity" and why the first 128 codes are
+    still identical inside every modern encoding.</p>
+    <table>
+      <tr><th>Character</th><th>Decimal</th><th>Binary</th><th>Worth knowing</th></tr>
+      <tr><td class="mono">A</td><td>65</td><td class="mono">01000001</td><td>The one to memorise</td></tr>
+      <tr><td class="mono">a</td><td>97</td><td class="mono">01100001</td><td>Exactly 32 more than "A" — the difference between upper and lower case is one bit</td></tr>
+      <tr><td class="mono">0</td><td>48</td><td class="mono">00110000</td><td>Digits start here, not at zero: <span class="mono">"0"</span> is not the number 0</td></tr>
+      <tr><td class="mono">(space)</td><td>32</td><td class="mono">00100000</td><td>A character like any other, and a common source of "invisible" bugs</td></tr>
+    </table>
+    <div class="big60 r">
+      <b>The bug this causes in real life:</b> <span class="mono">"0"</span> (48) and <span class="mono">0</span>
+      (zero) are different things, and so are <span class="mono">"1"</span> (49) and <span class="mono">1</span>.
+      Sorting a list of numbers that arrived as text puts 10 before 2, because <span class="mono">"1"</span>
+      sorts before <span class="mono">"2"</span>. That is not a computer being stupid; it is a computer doing
+      exactly what it was told.
+    </div>
+    <h3>Unicode and UTF-8: the same idea, for every language</h3>
+    <p>ASCII's 128 codes cannot hold accented letters, Cyrillic, Arabic, Chinese or an emoji. <b><span class="ac" data-full="Unicode" data-desc="the standard that gives every character in every writing system a number, including emoji and scripts ASCII never covered.">Unicode</span></b>
+    assigns a number — a <b>code point</b>, written like <span class="mono">U+0041</span> — to every character in
+    every writing system. <b><span class="ac" data-full="Unicode Transformation Format, 8-bit" data-desc="the modern encoding: ASCII-compatible, but a character can take one to four bytes">UTF-8</span></b> is how those numbers are stored: one byte for anything ASCII already
+    covered, two to four for everything else.</p>
+    <div class="kv">
+      <div class="k">Code point</div><div>The character's identity: U+0041 is "A", U+00E9 is "é", U+1F600 is 😀.</div>
+      <div class="k">Encoding</div><div>How many bytes that identity takes on disk, and in what order the bits go.</div>
+      <div class="k">Why UTF-8 won</div><div>An ASCII file is already valid UTF-8. Nothing old had to be rewritten, so nothing old had a reason to object.</div>
+    </div>
+    <h3>The same byte, three different jobs</h3>
+    <p>Encoding is not only about text. The same eight bits become a letter in one context, a colour channel in
+    another, and part of an address in a third — the bits do not change, only the agreement about what they mean.</p>
+    <div class="kv">
+      <div class="k">Text</div><div><span class="mono">01000001</span> is "A" under ASCII.</div>
+      <div class="k">Colour</div><div><b><span class="ac" data-full="RGB" data-desc="the red-green-blue model that encodes a colour as three numbers, one per channel. A byte per channel gives 256 × 256 × 256 colours — the same…">RGB</span></b> stores one byte per channel. Red 255, green 0, blue 0 is pure red; all three at 255 is white; all three at 0 is black. 256 × 256 × 256 is about 16.7 million colours.</div>
+      <div class="k">Picture</div><div>A <b>pixel</b> is one dot, and its colour is three of those bytes. A 1920×1080 image is about two million pixels — roughly six megabytes before any compression.</div>
+    </div>
+    <button class="aud" data-audio="audio/c1m1-encoding.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 40s</button></section><section id="encoding-game" class=""><h2>Drill: ASCII pairs</h2><p class="lede">Match the character to its code. These are the ones CompTIA A+ expects you to simply know.</p><div class="game" id="gAscii"><div class="gtitle"><b><span class="ac" data-full="American Standard Code for Information Interchange" data-desc="the original 7-bit character table: 128 codes, A is 65, a is 97">ASCII</span> match</b></div><p class="ghint">Click a character, then its decimal code. Six pairs per round.</p><div id="asciiHost"></div></div></section><section id="gates" class=""><h2>Logic gates: how two states become a decision</h2><p class="lede">Gates are the level where electricity turns into arithmetic. There are only a handful, and each one has a truth table you can read out loud.</p>
+    <p>A <b>logic gate</b> is a circuit built from transistors that performs one logical operation on its inputs.
+    <b>Boolean logic</b> — the algebra of true and false — is what the gate implements. Gates combine into
+    adders, adders combine into arithmetic, and arithmetic combines into everything else.</p>
+    <table>
+      <tr><th>Gate</th><th>Rule</th><th>Truth table (A, B → out)</th><th>What it is used for</th></tr>
+      <tr><td><b>NOT</b></td><td>inverts the input</td><td class="mono">0→1 &nbsp; 1→0</td><td>Negation. One input, one output.</td></tr>
+      <tr><td><b>AND</b></td><td>1 only when every input is 1</td><td class="mono">00→0 01→0 10→0 11→1</td><td>Two switches in series. A permission check: "logged in AND authorised".</td></tr>
+      <tr><td><b>OR</b></td><td>1 when at least one input is 1</td><td class="mono">00→0 01→1 10→1 11→1</td><td>Two switches in parallel. "Wired OR on battery".</td></tr>
+      <tr><td><b>XOR</b></td><td>1 when the inputs differ</td><td class="mono">00→0 01→1 10→1 11→0</td><td>Addition without carrying — and the XOR-with-a-key step in encryption.</td></tr>
+      <tr><td><b>NAND</b></td><td>AND, then inverted</td><td class="mono">00→1 01→1 10→1 11→0</td><td>Anything can be built from NAND alone, which is why chip designers like it.</td></tr>
+    </table>
+    <p>A <b>truth table</b> lists every combination of inputs and the output for each. It is the complete
+    definition of a gate — nothing is left to explain, and nothing can be ambiguous.</p>
+    <div class="big60">
+      <b>Why this matters to you and not just to an electrical engineer:</b> every "and" and "or" in a config
+      file, every firewall rule, every search query with two terms, is this algebra. A firewall rule that says
+      "allow if port 443 <i>and</i> destination is the proxy" is an AND gate written in English, and the
+      security bug is usually that someone wrote OR.
+    </div>
+    </section><section id="architecture" class=""><h2>What is actually in the box</h2><p class="lede">Module 2 takes this apart properly. This is the map you need before the parts make sense.</p>
+    <table>
+      <tr><th>Part</th><th>What it does</th><th>The one-line reason it exists</th></tr>
+      <tr><td><b><span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span></b></td><td>Fetches an instruction, decodes it, executes it, writes the result back — billions of times a second.</td><td>It is the only part that decides anything.</td></tr>
+      <tr><td><b><span class="ac" data-full="Random Access Memory" data-desc="fast volatile working memory: it holds whatever is running now and is wiped when power goes">RAM</span></b></td><td>Holds whatever is running right now: the program, its data, the open document.</td><td>It is fast and close; storage is slow and far. Everything you are doing lives here, which is why it is lost on power-off.</td></tr>
+      <tr><td><b>Storage</b></td><td>Keeps data when the power is off: an <span class="ac" data-full="Solid-State Drive" data-desc="flash storage with no moving parts: faster, quieter, and it dies without warning when a cell wears out">SSD</span>, a hard drive, a <span class="ac" data-full="Universal Serial Bus" data-desc="the standard connector and protocol for peripherals - and the only one most machines still have loads of">USB</span> stick.</td><td>RAM forgets. Something has to remember.</td></tr>
+      <tr><td><b>Motherboard</b></td><td>Carries the buses that connect CPU, memory, storage and expansion.</td><td>Everything has to be able to reach everything else.</td></tr>
+      <tr><td><b>Power supply</b></td><td>Converts wall AC into the DC rails the components need.</td><td>The wall is 120 V alternating; the silicon wants 1–12 V direct.</td></tr>
+    </table>
+    <h3>The stored-program idea, and the bottleneck it created</h3>
+    <p>A <b>stored-program computer</b> keeps its instructions in the same memory as its data. That is what makes
+    software possible: a program is just data that can be loaded from a disk, installed, updated, or spread by
+    email. <b>Von Neumann architecture</b> is the specific layout — one memory, one control unit, instructions
+    and data sharing the same path.</p>
+    <p>The consequence is the <b>von Neumann bottleneck</b>: the processor can work far faster than memory can
+    feed it, so performance depends as much on cache and memory bandwidth as on clock speed. It is also why
+    "just make the CPU faster" stopped working as a strategy, and why every modern CPU is a stack of caches
+    before it is a stack of cores.</p>
+    <div class="big60 y">
+      <b>The abstraction stack, in four words:</b> hardware, operating system, software, user. Each layer
+      offers something simpler than the one beneath it. Module 3 is entirely about the second layer;
+      Module 5 is entirely about the third.
+    </div>
+    </section><section id="abstraction" class=""><h2>Abstraction is the whole trick</h2><p class="lede">The course names this as one concept. It is really the design principle that makes every other layer of a computer possible.</p>
+    <p><b>Abstraction</b> means hiding detail behind a simpler surface, on purpose. You drive a car with a wheel
+    and two pedals; you do not manage fuel mixture. The controls are the abstraction, and they are the same in a
+    car whose engine you have never seen.</p>
+    <h3>The four layers of a computer</h3>
+    <table>
+      <tr><th>Layer</th><th>What it shows you</th><th>What it hides</th></tr>
+      <tr><td><b>Hardware</b></td><td>Components you can touch.</td><td>Electrons, voltages, timing.</td></tr>
+      <tr><td><b>Operating system</b></td><td>Files, windows, a place to click.</td><td>Which memory page is where, which process gets the <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span> next, how a disk stores a block.</td></tr>
+      <tr><td><b>Software</b></td><td>A task: write this, send that, play this.</td><td>Every system call underneath it.</td></tr>
+      <tr><td><b>User</b></td><td>What they wanted to do.</td><td>Everything else.</td></tr>
+    </table>
+    <h3>Why the job depends on it</h3>
+    <p>You are not asked to fix a transistor. You are asked to work out <b>which layer the fault is in</b>, because
+    that decides who can fix it and how long it takes. A webpage that will not load could be: the browser
+    (software), the network cable (hardware), the operating system's network settings (<span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span>), or the user typing
+    the wrong address (user). Four layers, four completely different investigations — and the reason "have you
+    tried another browser" is a real diagnostic step and not a brush-off.</p>
+    <div class="big60">
+      <b>The support version of the abstraction rule:</b> fix at the lowest layer that is actually broken, and
+      change one thing at a time. Reinstalling the operating system to fix a loose cable is what happens when
+      someone skips the layer question.
+    </div>
+    <p>The other half of abstraction is that it <b>leaks</b>. An abstraction is a promise, and when the promise
+    breaks you see underneath it: a "disk full" error in the middle of saving a document, or a printer that
+    "just works" until the driver is the wrong version. Knowing which abstraction just leaked is most of
+    diagnosis.</p>
+    <button class="aud" data-audio="audio/c1m1-abstraction.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="layers-game" class=""><h2>Drill: which layer does this belong to?</h2><p class="lede">One question, asked constantly: is this hardware, the <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span>, the software, or the person?</p><div class="game" id="gLayers"><div class="gtitle"><b>Sort by layer</b></div><p class="ghint">Click an item, then click the layer it belongs to. Wrong answers bounce back and are counted.</p><div id="layerHost"></div></div></section><section id="cards" class=""><h2>Flashcards</h2><p class="lede">The kit's glossary — 32 terms in this module, Coursera and CompTIA A+ together.</p><div class="game" id="gCards"><div class="gtitle"><b>Flashcards — 32 cards</b></div><p class="ghint">One question per card: <b>30</b> ask you to define a term, <b>2</b> ask what an acronym stands for. Every answer explains why, not just what.</p><div id="cardHost"></div></div></section><section id="quiz" class=""><h2>Quiz</h2><p class="lede">The thing to do last, and again in the morning.</p><div class="game" id="gQuiz"><div class="gtitle"><b>Module 1 quiz — 22 questions</b></div><p class="ghint">Every question shows why the answer is right. Misses go into the review queue.</p><div id="quizHost"></div></div></section>
+</main>
+
+<footer>
+      <p><b>Course 1, Module 1 — Introduction to IT and Computing.</b> Part of the Google IT Support Professional Certificate study
+      kit. Every definition and explanation on this page is our own wording; the course supplies the
+      syllabus and the vocabulary, not the prose.</p>
+      <p>Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera or NPower; course titles and trademarks belong to their owners. Study aid only. Nothing here is submitted for grading.</p>
+    </footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+
+/* ---- c1m1 ---- */
+
+/* ---- byte trainer ---- */
+octetTrainer('#octetHost');
+
+/* ---- history order ---- */
+orderGame('#histHost','Put these in chronological order, earliest first.',
+  ['Abacus - storing a number outside your head',
+   'Analytical Engine - a store, a mill, and a program separate from the data',
+   'Hollerith tabulator - punched cards at industrial scale',
+   'ENIAC - electronic, general purpose, programmed by rewiring',
+   'Stored program - instructions live in the same memory as data',
+   'Transistor - the tube replaced by a solid switch',
+   'Integrated circuit - many transistors printed on one piece of silicon',
+   'Microprocessor - a whole CPU on one chip',
+   'IBM PC - an open architecture anyone could copy',
+   'The cloud - the work moves to somebody else\'s building'],'hist');
+
+/* ---- ASCII match ---- */
+matchGame('#asciiHost',[
+  {t:'A',m:'65'},
+  {t:'a',m:'97'},
+  {t:'0 (the character)',m:'48'},
+  {t:'space',m:'32'},
+  {t:'Z',m:'90'},
+  {t:'z',m:'122'}]);
+
+/* ---- layer sorter ---- */
+sortGame('#layerHost',
+  [{id:'hw',name:'Hardware'},{id:'os',name:'Operating system'},
+   {id:'sw',name:'Software'},{id:'us',name:'User'}],
+  [{t:'A stick of RAM',b:'hw'},
+   {t:'The cable came unplugged',b:'hw'},
+   {t:'The CPU is seated in its socket',b:'hw'},
+   {t:'File permissions on a shared folder',b:'os'},
+   {t:'A driver that will not load',b:'os'},
+   {t:'Which process gets the processor next',b:'os'},
+   {t:'The browser rendering a page',b:'sw'},
+   {t:'A spreadsheet formula with a typo',b:'sw'},
+   {t:'Typing the wrong email address',b:'us'},
+   {t:'Clicking "remind me later" for the eleventh time',b:'us'}]);
+
+flashcards('#cardHost', [{"t": "Binary", "d": "counting in base 2, where each place is worth twice the one to its right and every digit is 0 or 1. A computer uses it because a transistor has two easy states: voltage, no voltage.", "mod": "m1", "cue": "define", "q": "Binary"}, {"t": "Base 2 numeral system", "d": "the formal name for binary: the number of distinct digits a place can hold is 2, so each place is a power of two.", "mod": "m1", "cue": "define", "q": "Base 2 numeral system"}, {"t": "Decimal", "d": "counting in base 10, the everyday system; each place is a power of ten, which is why humans find it natural and machines do not.", "mod": "m1", "cue": "define", "q": "Decimal"}, {"t": "Hexadecimal", "d": "base 16, using 0–9 then A–F. One hex digit is exactly four bits, so it writes a byte in two characters instead of eight — which is why MAC addresses, IPv6 and colour codes use it.", "mod": "m1", "cue": "define", "q": "Hexadecimal"}, {"t": "Bit", "d": "one binary digit: a single 1 or 0. The smallest unit of information a computer has.", "mod": "m1", "cue": "define", "q": "Bit"}, {"t": "Byte", "d": "eight bits taken as one unit. Eight bits give 2⁸ = 256 possible values, which is enough for one character in ASCII.", "mod": "m1", "cue": "define", "q": "Byte"}, {"t": "Nibble", "d": "four bits, or half a byte: one hex digit. Useful because every byte splits cleanly into two of them.", "mod": "m1", "cue": "define", "q": "Nibble"}, {"t": "Place value", "d": "what one digit is worth in a given position. In binary the places are 128, 64, 32, 16, 8, 4, 2, 1, which is why counting to 255 only needs eight columns.", "mod": "m1", "cue": "define", "q": "Place value"}, {"t": "Binary prefixes", "d": "KiB, MiB, GiB are powers of two (1024); KB, MB, GB are powers of ten (1000). Drive makers use the second, operating systems have historically shown the first, which is why a \"1 TB\" drive reports about 931 GB.", "mod": "m1", "cue": "define", "q": "Binary prefixes"}, {"t": "Character encoding", "d": "the agreed mapping from a number to a character, so that a byte can mean a letter rather than just a number. Without it, the same byte is either text or arithmetic.", "mod": "m1", "cue": "define", "q": "Character encoding"}, {"t": "ASCII", "d": "A 7-bit table of 128 codes covering English letters, digits and punctuation. A is 65, a is 97, 0 is 48 — worth memorising, because every encoding since has to stay compatible with it.", "mod": "m1", "cue": "expand", "q": "What does ASCII stand for?", "a": "American Standard Code for Information Interchange"}, {"t": "Unicode", "d": "the standard that gives every character in every writing system a number, including emoji and scripts ASCII never covered.", "mod": "m1", "cue": "define", "q": "Unicode"}, {"t": "UTF-8", "d": "The encoding of Unicode that uses one byte for ASCII characters and up to four for everything else. Backwards-compatible with ASCII by design, which is why it won.", "mod": "m1", "cue": "expand", "q": "What does UTF-8 stand for?", "a": "Unicode Transformation Format, 8-bit"}, {"t": "Code point", "d": "the number Unicode assigns to a character, written like U+0041. The code point is the identity; the encoding is how many bytes it takes to store.", "mod": "m1", "cue": "define", "q": "Code point"}, {"t": "RGB", "d": "the red-green-blue model that encodes a colour as three numbers, one per channel. A byte per channel gives 256 × 256 × 256 colours — the same eight-bit byte doing the same job as a character.", "mod": "m1", "cue": "define", "q": "RGB"}, {"t": "Pixel", "d": "one dot of a display; the smallest element a screen can control. Colour is per-pixel, which is why resolution and colour depth multiply into memory use.", "mod": "m1", "cue": "define", "q": "Pixel"}, {"t": "Transistor", "d": "a microscopic switch that either passes current or blocks it, controlled by a third terminal. Two states map to 1 and 0, so enough of them can represent anything.", "mod": "m1", "cue": "define", "q": "Transistor"}, {"t": "Logic gate", "d": "a circuit built from transistors that performs one logical operation on its inputs. Gates are the level at which electricity becomes arithmetic.", "mod": "m1", "cue": "define", "q": "Logic gate"}, {"t": "AND gate", "d": "outputs 1 only when every input is 1. Two switches in series.", "mod": "m1", "cue": "define", "q": "AND gate"}, {"t": "OR gate", "d": "outputs 1 when at least one input is 1. Two switches in parallel.", "mod": "m1", "cue": "define", "q": "OR gate"}, {"t": "NOT gate", "d": "inverts its single input: 1 becomes 0, 0 becomes 1. Inverters are how a chip negates a value without a subtract instruction.", "mod": "m1", "cue": "define", "q": "NOT gate"}, {"t": "XOR gate", "d": "outputs 1 when the inputs differ. It is addition without carrying, and the basis of parity checks and of encryption's XOR-with-a-key step.", "mod": "m1", "cue": "define", "q": "XOR gate"}, {"t": "Truth table", "d": "a table listing every combination of inputs and the output for each. It is the complete definition of a gate: nothing is left to explain.", "mod": "m1", "cue": "define", "q": "Truth table"}, {"t": "Boolean logic", "d": "the algebra of true and false, named after George Boole. Gates implement it in silicon, and it is why a search box can be described as \"AND these words, NOT that one\".", "mod": "m1", "cue": "define", "q": "Boolean logic"}, {"t": "Computer architecture", "d": "how the parts are arranged and connected: processor, working memory, storage, and the buses between them.", "mod": "m1", "cue": "define", "q": "Computer architecture"}, {"t": "Stored-program computer", "d": "a machine that keeps its instructions in the same memory as its data, so a program is just data that can be loaded and changed. Every computer since has been one.", "mod": "m1", "cue": "define", "q": "Stored-program computer"}, {"t": "Von Neumann architecture", "d": "the stored-program layout with one shared memory holding both instructions and data, one control unit stepping through them in order. The shared memory path is also the design's bottleneck.", "mod": "m1", "cue": "define", "q": "Von Neumann architecture"}, {"t": "Analytical Engine", "d": "Charles Babbage's 1830s design for a mechanical computer with a store, a mill and punched-card input. Never finished, but it is the first description of a general-purpose programmable machine.", "mod": "m1", "cue": "define", "q": "Analytical Engine"}, {"t": "IT support specialist", "d": "the person who keeps other people's technology working: diagnosing faults, setting up hardware and software, explaining the fix, and writing down what was done.", "mod": "m1", "cue": "define", "q": "IT support specialist", "x": "IT = Information Technology"}, {"t": "Support tiers", "d": "the escalation ladder: tier 1 takes first contact and fixes what a script can fix, tier 2 handles deeper diagnosis, tier 3 is the specialist or vendor. The tiers exist so that expensive expertise is not spent on password resets.", "mod": "m1", "cue": "define", "q": "Support tiers"}, {"t": "Abstraction", "d": "hiding the detail behind a simpler interface, deliberately. Steering wheels and pedals work the same in every car; you drive without knowing the engine. Every layer of a computer is one of these.", "mod": "m1", "cue": "define", "q": "Abstraction"}, {"t": "The four layers of a computer", "d": "hardware, operating system, software, user. Each one presents something simpler than what is underneath it, which is the whole reason the machine is comprehensible.", "mod": "m1", "cue": "define", "q": "The four layers of a computer"}]);
+
+quiz('#quizHost', [{"k": "c1m1q1", "lo": "LO1", "q": "What is the best one-line description of an IT support specialist's job?", "o": ["writing programs for other people", "keeping other people's technology working, and explaining how", "designing computer hardware", "selling software licences"], "a": 1, "why": "The role is diagnosis, setup, explanation and record-keeping. Writing code is a different job that the same person may also do."}, {"k": "c1m1q2", "lo": "LO1", "q": "Support tiers exist mainly to…", "o": ["give everyone a promotion path", "route work so expensive expertise is not spent on simple fixes", "satisfy a legal requirement", "keep the number of tickets low"], "a": 1, "why": "Tier 1 resolves what a script can resolve, tier 2 diagnoses deeper, tier 3 is the specialist or vendor. The ladder is an efficiency design."}, {"k": "c1m1q3", "lo": "LO1", "q": "Which of these is the four-layer model of a computer, from the bottom up?", "o": ["user, software, OS, hardware", "hardware, OS, software, user", "hardware, software, network, user", "OS, hardware, user, software"], "a": 1, "why": "Hardware underneath, then the operating system, then software, then the user. Each layer presents something simpler than what it hides."}, {"k": "c1m1q4", "lo": "LO2", "q": "Why does a computer use base 2 rather than base 10?", "o": ["because 2 is a prime number", "because the machine is built from switches with two states", "because binary is more compact", "because decimal was invented later"], "a": 1, "why": "A transistor passes or blocks current. Two states are cheap to build and reliable to distinguish; ten voltage levels would be neither."}, {"k": "c1m1q5", "lo": "LO2", "q": "How many different values can one byte hold?", "o": ["8", "128", "255", "256"], "a": 3, "why": "2^8 = 256 patterns. The highest single value is 255, because counting starts at zero - both facts get asked."}, {"k": "c1m1q6", "lo": "LO2", "q": "What is 11001010 in decimal?", "o": ["202", "198", "210", "226"], "a": 0, "why": "128 + 64 + 8 + 2 = 202. The places that are on are 128, 64, 8 and 2."}, {"k": "c1m1q7", "lo": "LO2", "q": "What is 200 in binary?", "o": ["11000100", "11001000", "10101000", "11100000"], "a": 1, "why": "128 leaves 72; 64 leaves 8; 8 leaves 0. Ones at 128, 64, 8."}, {"k": "c1m1q8", "lo": "LO2", "q": "How many bits are in a nibble?", "o": ["2", "4", "8", "16"], "a": 1, "why": "Four bits - exactly one hexadecimal digit, which is why a byte is always two hex characters."}, {"k": "c1m1q9", "lo": "LO2", "q": "A connection runs at 100 Mb/s. Roughly what is that in megabytes per second?", "o": ["100 MB/s", "50 MB/s", "12.5 MB/s", "8 MB/s"], "a": 2, "why": "Eight bits to a byte, so divide by eight: 12.5. The b/B difference is the whole trick."}, {"k": "c1m1q10", "lo": "LO3", "q": "In ASCII, what is the decimal code for the capital letter A?", "o": ["65", "97", "48", "32"], "a": 0, "why": "65. Lowercase a is 97 - exactly 32 more, which is one bit different."}, {"k": "c1m1q11", "lo": "LO3", "q": "Why did UTF-8 replace ASCII as the default?", "o": ["ASCII was too slow", "ASCII could only represent 128 characters, and only in English", "UTF-8 compresses text better than ASCII", "ASCII could not store digits"], "a": 1, "why": "128 codes cannot hold other alphabets or emoji. UTF-8 covers all of Unicode while staying byte-compatible with ASCII."}, {"k": "c1m1q12", "lo": "LO3", "q": "A byte holding 01000001 is best described as…", "o": ["the number 65, always", "the letter A under ASCII - but only because of an agreed encoding", "the colour red", "an IPv4 octet"], "a": 1, "why": "The bits are just a number. Meaning comes from the agreement about how to read them, which is the entire point of encoding."}, {"k": "c1m1q13", "lo": "LO3", "q": "In an RGB image with one byte per channel, how many colours are available per pixel?", "o": ["256", "65,536", "about 16.7 million", "about 4.3 billion"], "a": 2, "why": "256 x 256 x 256 = 16,777,216. The same eight-bit byte, used as a colour channel instead of a character."}, {"k": "c1m1q14", "lo": "LO3", "q": "In hex, what does the byte 11001010 become?", "o": ["C8", "CA", "AC", "2C"], "a": 1, "why": "Split into nibbles: 1100 = C, 1010 = A. Two hex digits per byte, always."}, {"k": "c1m1q15", "lo": "LO4", "q": "What makes a computer 'stored-program'?", "o": ["its programs are stored on a hard drive", "its instructions live in the same memory as its data", "it stores the user's files automatically", "it keeps programs in ROM"], "a": 1, "why": "Von Neumann's idea: one memory holding both instructions and data. That is what makes a program loadable, copyable and changeable."}, {"k": "c1m1q16", "lo": "LO4", "q": "Which part holds the programs and data that are running right now?", "o": ["the hard drive", "RAM", "the BIOS chip", "the power supply"], "a": 1, "why": "RAM is the working set. Storage remembers after power-off but is far too slow to execute from directly."}, {"k": "c1m1q17", "lo": "LO4", "q": "The von Neumann bottleneck describes…", "o": ["the limit on how many transistors fit on a chip", "the processor waiting on memory that cannot feed it fast enough", "the maximum size of a hard drive", "the speed limit of a network cable"], "a": 1, "why": "One shared path for instructions and data, and memory far slower than the CPU. Hence caches - and hence performance is not just clock speed."}, {"k": "c1m1q18", "lo": "LO4", "q": "A user's page will not load. In the four-layer model, which is the FIRST thing worth establishing?", "o": ["whether the web server is down somewhere in the world", "which layer the fault is in", "whether the browser needs reinstalling", "whether the hard drive is full"], "a": 1, "why": "Layer first, then the specific fault. Reinstalling an OS for a loose cable is what happens when the layer question is skipped."}, {"k": "c1m1q19", "lo": "LO4", "q": "Which statement about abstraction is true?", "o": ["it removes detail permanently", "it hides detail behind a simpler interface, and the hidden detail can still break through", "it only applies to software", "it makes systems slower by definition"], "a": 1, "why": "Abstractions leak - a 'disk full' error mid-save is the underneath showing through. Knowing which abstraction leaked is most of diagnosis."}, {"k": "c1m1q20", "lo": "LO5", "q": "Which pair is in the right order, oldest first?", "o": ["transistor, ENIAC, integrated circuit", "ENIAC, transistor, integrated circuit", "integrated circuit, transistor, ENIAC", "ENIAC, integrated circuit, transistor"], "a": 1, "why": "ENIAC 1945 (tubes), transistor 1947, integrated circuit 1958. Each removes a limit the previous one had."}, {"k": "c1m1q21", "lo": "LO5", "q": "Moore's law is best described as…", "o": ["a law of physics about transistors", "an observation about component density that became an industry roadmap, now slowing", "a rule that CPU speed doubles every year", "the maximum number of cores a CPU can have"], "a": 1, "why": "Moore observed a doubling roughly every two years and predicted it would continue. It is a trend and a target, not physics - and it has been slowing since the mid-2010s."}, {"k": "c1m1q22", "lo": "LO5", "q": "Why does 'fix one thing at a time' work better than 'try everything'?", "o": ["it is faster to type", "it keeps a single change attributable, so you learn what actually fixed it", "it annoys the user less", "vendors require it"], "a": 1, "why": "Two changes at once means you cannot tell which one worked - and you may have introduced a second fault that now has a clean alibi."}]);
+
+</script>
+</body>
+</html>

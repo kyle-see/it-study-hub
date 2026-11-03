@@ -1,0 +1,4 @@
+# The site is link-known, not indexed: Kyle shares it with his cohort and does not want it in search
+# results. Every page also carries <meta name="robots" content="noindex, nofollow">.
+User-agent: *
+Disallow: /

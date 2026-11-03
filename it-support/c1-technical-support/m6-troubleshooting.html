@@ -1,0 +1,1347 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Technical Support Fundamentals — Troubleshooting Best Practices and Customer Support, Module 6 (study)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Course 1 — Technical Support · Module 6 — Troubleshooting Best Practices and Customer Support</span>
+  <nav><a href="index.html">Course 1</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="#essentials">Essentials</a><a href="m1-introduction-to-it.html">M1</a><a href="m2-hardware.html">M2</a><a href="m3-operating-systems.html">M3</a><a href="m4-networking-flyover.html">M4</a><a href="m5-software.html">M5</a><a href="#quiz">Quiz</a><a href="#cards">Flashcards</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="essentials" class=""><h2>The essentials &mdash; hold these before the detail</h2><p class="lede">The module at entry-certification level: what you must be able to do, and the facts the quizzes and drills on this page are testing. Read this first, every time.</p>
+    <div class="learnbox">
+      <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
+        <ul class="lcan"><li>run a fault through a repeatable sequence instead of guessing</li><li>ask the questions that narrow a problem in the first two minutes</li><li>write a ticket another technician could act on without asking you anything</li><li>handle an angry or non-technical user without escalating the situation</li><li>document a process so someone else can repeat it</li></ul></div>
+      <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 8 facts</span>
+        <div class="kv lfacts"><div class="k">The order</div><div>gather information, reproduce, isolate, form one hypothesis, test it, fix, verify, document. One change at a time.</div><div class="k">Quickest first</div><div>start with the cheapest check that could eliminate the most. Cable before configuration, configuration before reinstall.</div><div class="k">The five questions</div><div>what were you doing, what did you expect, what happened instead, when did it start, what changed?</div><div class="k">Isolation by substitution</div><div>swap one half of the system - cable, port, account, machine. Whichever half stays broken tells you where the fault lives.</div><div class="k">Good ticket</div><div>symptom, scope (one user or many), steps to reproduce, what was tried, current state, owner.</div><div class="k">Documentation</div><div>error text copied verbatim with timestamps, because a paraphrase cannot be searched and the exact string can.</div><div class="k">Soft skills</div><div>acknowledge the impact, never blame the user, say what you are doing and when you will be back, and never argue about whether the problem is real.</div><div class="k">Escalation</div><div>escalate with evidence - what you ruled out and why - not with &#x27;it&#x27;s still broken&#x27;.</div></div></div>
+      <div class="big60 r"><b>The trap:</b> Changing three things at once. If it works afterwards you no longer know which change fixed it, and you cannot write it down for the next person.</div>
+      <p class="src">Everything below this box explains these lines, in this order, with a drill
+      after each part that tests it. If you can say every line above without looking, the drills are
+      revision. If you cannot, read the section that matches the line and come back &mdash; that is
+      the whole study method. The same objectives for every module, built and not yet built, are on
+      <a href="../../learn/index.html">the learning path</a>.</p>
+    </div></section><section id="start" class=""><h2>The six-step method</h2><p class="lede">The spine of every support conversation, and the answer to the interview question: how do you approach a problem you have never seen?</p>
+    <table>
+      <tr><th>#</th><th>Step</th><th>What it actually means</th></tr>
+      <tr><td>1</td><td><b>Identify the problem</b></td><td>Ask questions, gather information, and reproduce it. You cannot fix what you cannot describe.</td></tr>
+      <tr><td>2</td><td><b>Establish a theory</b></td><td>Form the most likely explanation, starting with the simplest. "The cable is loose" beats "the driver is corrupt" until proven otherwise.</td></tr>
+      <tr><td>3</td><td><b>Test the theory</b></td><td>Change one thing. If the theory was wrong, form the next one — and note what you ruled out.</td></tr>
+      <tr><td>4</td><td><b>Make a plan and do it</b></td><td>Decide what you are going to change, what could go wrong, and how to undo it. Then change it.</td></tr>
+      <tr><td>5</td><td><b>Verify and prevent</b></td><td>Confirm with the user that it is actually fixed, not just that the error stopped. Then remove the cause if you can.</td></tr>
+      <tr><td>6</td><td><b>Document</b></td><td>What it was, what you did, what you learned. The next person — possibly you in six months — starts here.</td></tr>
+    </table>
+    <div class="big60">
+      <b>Only two of the six steps involve touching the machine.</b> The rest are thinking, communicating and
+      writing, which is why this module spends most of its time on questions, soft skills and documentation rather
+      than on tools.
+    </div>
+    <button class="aud" data-audio="audio/c1m6-method.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="ask" class=""><h2>Ask questions, then isolate the problem</h2><p class="lede">Two skills, and they are the whole of diagnosis: get information, then halve the search space.</p>
+    <h3>The four questions that do the most work</h3>
+    <div class="kv">
+      <div class="k">What changed?</div><div>The single highest-yield question. Updates, new software, a moved cable, an expired password, a policy pushed overnight. Most faults have a cause that arrived recently.</div>
+      <div class="k">When did it start?</div><div>An exact time turns logs into evidence. "Since this morning" and "since three weeks ago" are different investigations.</div>
+      <div class="k">Does it happen every time?</div><div>Intermittent problems are a different class: heat, loose connections, exhausted resources, a specific sequence of actions.</div>
+      <div class="k">Who else is affected?</div><div>One user is a machine. Everyone on the floor is a switch, a server, or a policy. Everyone everywhere is an outage.</div>
+    </div>
+    <h3>Isolating the problem</h3>
+    <p><b>Isolation</b> means cutting the search space in half with each test rather than checking things in order. Does the
+    fault follow the user to another machine, or the machine to another user? Does it happen on Wi-Fi but not Ethernet?
+    On a different network? With a different account? Each answer eliminates half of the possibilities.</p>
+    <p>The <b>layers</b> from Course 2 give the same idea a structure: rule out physical, then addressing, then the
+    service — and stop at the first layer that fails, because anything above it is unreliable until it is fixed.</p>
+    <div class="big60 y">
+      <b>Start with the quickest step first.</b> Reboot, reseat the cable, check the power, try another port, ask
+      whether anyone else has the problem. These are cheap, reversible, and they resolve a surprising share of
+      tickets. The expensive diagnostic comes after the free one has failed.
+    </div>
+    <button class="aud" data-audio="audio/c1m6-questions.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 40s</button></section><section id="clues" class=""><h2>Follow the cookie crumbs, and the pitfalls to avoid</h2><p class="lede">One discipline that solves problems, and six habits that create them.</p>
+    <h3>Follow the cookie crumbs</h3>
+    <p>Treat every symptom as evidence and follow it in order. A machine that boots slowly, then drops Wi-Fi, then
+    reports a full disk is probably one story, not three tickets: the disk filled up, the swap file could not grow,
+    and the wireless service logged its failures into a log that could not be written. Chasing the last symptom gives
+    you a wireless ticket. Following the trail backwards gives you the actual cause.</p>
+    <div class="kv">
+      <div class="k">Jumping to a conclusion</div><div>"It is always the printer driver." The last problem you solved is not this problem. It biases every question you ask afterwards.</div>
+      <div class="k">Tunnel vision</div><div>Twenty minutes on one theory without testing it. If two tests have not confirmed it, form another theory.</div>
+      <div class="k">Changing two things at once</div><div>If it starts working, you do not know which change did it — and you cannot undo the wrong one.</div>
+      <div class="k">Ignoring the user</div><div>They said "it started after the update". That was the answer, and it was in the first sentence.</div>
+      <div class="k">Blaming the user</div><div>Even when the user caused it, saying so costs you the information you need next time. Fix the system so the mistake is harder to make.</div>
+      <div class="k">"It works on my machine"</div><div>A statement about the difference between two machines, not a conclusion. Find the difference.</div>
+      <div class="k">Not documenting</div><div>The fix nobody can find again is a fix you will redo. Documentation is step six for a reason.</div>
+    </div>
+    <div class="big60 r">
+      <b>The one that causes real damage:</b> working outside your authority because it is faster. Changing a policy,
+      resetting someone's password for a caller who sounds convincing, disabling antivirus to "test" —
+      each of those is how a support technician becomes the incident.
+    </div>
+    </section><section id="soft" class=""><h2>Soft skills: the anatomy of an interaction</h2><p class="lede">The eight minutes of the course that change how people experience your work, regardless of whether you fixed anything.</p>
+    <table>
+      <tr><th>Stage</th><th>What good looks like</th></tr>
+      <tr><td><b>Open</b></td><td>Greet, give your name, and say what you are going to do. "I am going to ask a few questions and then we will get this sorted" is worth more than silence while you type.</td></tr>
+      <tr><td><b>Listen</b></td><td>Let them finish. Take notes. Repeat the problem back in your own words — it catches misunderstandings before they cost an hour.</td></tr>
+      <tr><td><b>Empathise</b></td><td>Acknowledge the impact, not the fault. "That is frustrating, and it is blocking your work" is true and useful. "You must have done something" is neither.</td></tr>
+      <tr><td><b>Explain</b></td><td>No jargon. "Your computer cannot reach the file server" beats "the <span class="ac" data-full="Server Message Block" data-desc="the Windows file-and-printer sharing protocol on port 445; Samba speaks it on Linux">SMB</span> session is failing authentication". If they ask what a word means, define it without making it a lesson.</td></tr>
+      <tr><td><b>Set expectations</b></td><td>Say what happens next and when. "I will call you within the hour, even if I have nothing new" is the single most trust-building sentence in support.</td></tr>
+      <tr><td><b>Close</b></td><td>Confirm it works from their side, ask whether anything else is wrong, tell them how to reach you, and log it.</td></tr>
+    </table>
+    <h3>Difficult situations</h3>
+    <div class="kv">
+      <div class="k">The angry user</div><div>Let them vent, do not defend, then move to facts: what exactly is happening, and what would fixed look like. Anger is usually about lost time, not about you.</div>
+      <div class="k">You cannot fix it</div><div>Say so early, say what you have ruled out, and say what happens next. A clear "this needs the network team, and I have escalated it with these notes" is a good outcome.</div>
+      <div class="k">You made a mistake</div><div>Say it plainly, say what you are doing about it, and do not make the user manage your embarrassment.</div>
+      <div class="k">The user is wrong</div><div>Correct the information, never the person. "The cable is in the wrong port" and "you plugged it in wrong" describe the same fact and produce different conversations.</div>
+      <div class="k">You do not know</div><div>"I do not know yet, and I will find out by three o'clock" is a professional answer. Inventing one is not.</div>
+    </div>
+    <button class="aud" data-audio="audio/c1m6-soft.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 30s</button></section><section id="docs" class=""><h2>Ticketing and documentation</h2><p class="lede">What turns one person's fix into the team's knowledge, and the reason step six exists.</p>
+    <p>A <b>ticket</b> is the record of a request: who, what, when, what was tried, what fixed it. A
+    <b>ticketing system</b> (ServiceNow, Jira Service Management, Freshdesk, osTicket) holds those records so they can
+    be searched, measured and handed over.</p>
+    <h3>What a ticket needs to be worth reading later</h3>
+    <ol>
+      <li><b>The user's own words</b> for the symptom, plus your plain-language summary of the actual problem.</li>
+      <li><b>When it started</b> and whether it is constant or intermittent.</li>
+      <li><b>What changed</b> immediately before.</li>
+      <li><b>What you tested</b>, and what the result was — including the tests that ruled things out, which is most of the value.</li>
+      <li><b>What you changed</b>, exactly. The setting, not "fixed the config".</li>
+      <li><b>Whether it is verified fixed</b>, and by whom.</li>
+      <li><b>Anything worth preventing</b>: the update that caused it, the policy that will cause it again next month.</li>
+    </ol>
+    <div class="kv">
+      <div class="k"><span class="ac" data-full="Service Level Agreement" data-desc="the promised response and resolution times for each priority level. What &quot;urgent&quot; actually means in an organisation.">SLA</span></div><div>Service Level Agreement — the promised response and resolution times, by priority. It is what "urgent" actually means in a given organisation.</div>
+      <div class="k"><span class="ac" data-full="Priority" data-desc="how soon work is done. Severity contributes, but so does how many people are affected.">Priority</span> vs severity</div><div><span class="ac" data-full="Severity" data-desc="how bad an incident is, in technical and business terms.">Severity</span> is how bad it is. Priority is how soon it gets done, which also depends on how many people are affected. One executive offline can outrank a hundred users on a slow report.</div>
+      <div class="k">Escalation</div><div>Handing a ticket to someone with more authority or access, with the notes that make it actionable. Escalating without notes is just forwarding.</div>
+      <div class="k">Knowledge base</div><div><span class="ac" data-full="Process" data-desc="a running program: its code, its memory, its open files, and its current state.">Process</span> documentation and known fixes, written so a new technician can follow them. The output of documentation that compounds.</div>
+      <div class="k">Process documentation</div><div>How a repeatable job is done, step by step, including the checks and the rollback. It is what makes a task delegable.</div>
+    </div>
+    <div class="big60">
+      <b>Write for the person who takes over at 6pm.</b> They have your ticket and nothing else — no context, no
+      memory of the conversation, and no way to ask you. If they can act on what you wrote, you documented it well.
+    </div>
+    </section><section id="interview" class=""><h2>The interview, and the part of this module that is about you</h2><p class="lede">The last third of Module 6 is job-search material, and it is not filler: it is the same skill as the rest of the module, applied to yourself.</p>
+    <h3>The elevator pitch</h3>
+    <p>Thirty seconds: who you are, what you can do, and what you want next. Not a life story. Here is one
+    that works, written about nobody in particular &mdash; the shape is the lesson, the words are placeholders:</p>
+    <div class="exq">
+      "I'm finishing an <span class="ac" data-full="Information Technology" data-desc="using computers, networks and software to get work done - and the job of keeping them working">IT</span> support certificate and a hands-on analyst program. I build and repair my own
+      Windows and Linux machines, I'm comfortable at a command line, and I'm looking for a help desk role
+      where I can take real tickets."
+    </div>
+    <p><b>Why that shape works:</b> every clause is something the speaker could prove, it says what the person
+    <i>does</i> rather than what they are, and it ends on what they want next &mdash; which gives the interviewer
+    somewhere to go. Write your own and keep only the clauses that would survive a follow-up question; the ones
+    that don't are the ones that cost you the interview.</p>
+    <h3>The technical interview</h3>
+    <table>
+      <tr><th>What they ask</th><th>What they are actually testing</th></tr>
+      <tr><td>"A user says their computer is slow. What do you do?"</td><td>Whether you have a method, or a list of guesses. Walk the six steps out loud.</td></tr>
+      <tr><td>"How would you find a machine's IP address?"</td><td>Whether you have done it. <span class="mono">ipconfig</span>, <span class="mono">ip a</span>, the settings screen — any of them, said with confidence.</td></tr>
+      <tr><td>"A user is angry and it is not your fault."</td><td>Whether you will make it worse. Listen, acknowledge, move to facts.</td></tr>
+      <tr><td>"You do not know the answer."</td><td>Whether you will pretend. "I would check the documentation, then escalate with what I found" is the right answer.</td></tr>
+      <tr><td>"Tell me about a problem you solved."</td><td>Whether you can tell a story with a cause, an action and a result — and whether you documented it.</td></tr>
+    </table>
+    <div class="big60 y">
+      <b>The move that stands out:</b> say what you would <i>verify</i>, not just what you would do. Anyone can
+      recite a fix. Saying "then I would confirm with the user that it actually works, and log what I changed" is the
+      difference between someone who has read about support and someone who has done it.
+    </div>
+    <p class="src">Course 1 Module 6 covers these over twenty-three short videos, plus readings on crafting a resume and
+    building an elevator pitch. The graded items are a customer-service knowledge test and a troubleshooting
+    best-practices challenge, which together are most of what an entry-level help desk interview asks about.</p>
+    </section><section id="method-game" class=""><h2>Drill: the six steps, in order</h2><p class="lede">Getting the order right is the difference between a method and a guess.</p><div class="game" id="gMethod"><div class="gtitle"><b>Order the method</b></div><p class="ghint">Click two tiles to swap them, then check.</p><div id="methodHost"></div></div></section><section id="pitfall-game" class=""><h2>Drill: practice or pitfall</h2><p class="lede">The habits that solve problems, next to the ones that create them.</p><div class="game" id="gPit"><div class="gtitle"><b>Sort the habit</b></div><p class="ghint">Click a statement, then whether it is good practice or a pitfall.</p><div id="pitHost"></div></div></section><section id="cards" class=""><h2>Flashcards</h2><p class="lede">The kit's glossary — 37 terms in this module, Coursera and CompTIA A+ together.</p><div class="game" id="gCards"><div class="gtitle"><b>Flashcards — 37 cards</b></div><p class="ghint">One question per card: <b>37</b> ask you to define a term, <b>0</b> ask what an acronym stands for. Every answer explains why, not just what.</p><div id="cardHost"></div></div></section><section id="quiz" class=""><h2>Quiz</h2><p class="lede">The thing to do last, and again in the morning.</p><div class="game" id="gQuiz"><div class="gtitle"><b>Module 6 quiz — 25 questions</b></div><p class="ghint">Every question shows why the answer is right. Misses go into the review queue.</p><div id="quizHost"></div></div></section>
+</main>
+
+<footer>
+      <p><b>Course 1, Module 6 — Troubleshooting Best Practices and Customer Support.</b> Part of the Google IT Support Professional Certificate study
+      kit. Every definition and explanation on this page is our own wording; the course supplies the
+      syllabus and the vocabulary, not the prose.</p>
+      <p>Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera or NPower; course titles and trademarks belong to their owners. Study aid only. Nothing here is submitted for grading.</p>
+    </footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+
+/* ---- c1m6 ---- */
+
+/* ---- six-step method, in order ---- */
+orderGame('#methodHost','Put the six steps in order.',
+  ['Identify the problem: ask questions, gather information, reproduce it',
+   'Establish a theory of probable cause, starting with the simplest',
+   'Test the theory, changing one thing at a time',
+   'Make a plan, then implement it',
+   'Verify full functionality with the user, and prevent it recurring',
+   'Document what it was, what you did, and what you learned'],'method');
+
+/* ---- practice vs pitfall ---- */
+sortGame('#pitHost',
+  [{id:'g',name:'Good practice'},{id:'b',name:'Pitfall'}],
+  [{t:'Ask what changed before anything else',b:'g'},
+   {t:'Repeat the problem back in your own words',b:'g'},
+   {t:'Try the cheapest, most reversible step first',b:'g'},
+   {t:'Say when you will call back, then call back',b:'g'},
+   {t:'Write down what you ruled out, not just what you fixed',b:'g'},
+   {t:'Assume it is the same fault as last time',b:'b'},
+   {t:'Change two settings at once to save time',b:'b'},
+   {t:'Keep testing one theory after two tests failed to confirm it',b:'b'},
+   {t:'Explain it works on my machine and close the ticket',b:'b'},
+   {t:'Skip the documentation because the fix was obvious',b:'b'},
+   {t:'Disable antivirus to see whether it is the cause',b:'b'}]);
+
+flashcards('#cardHost', [{"t": "Troubleshooting", "d": "finding the cause of a fault by gathering information and testing explanations, rather than guessing and changing things.", "mod": "m6", "cue": "define", "q": "Troubleshooting"}, {"t": "Troubleshooting method", "d": "the six steps: identify the problem, establish a theory, test it, plan and implement, verify and prevent, document.", "mod": "m6", "cue": "define", "q": "Troubleshooting method"}, {"t": "Theory of probable cause", "d": "the most likely explanation for a fault, formed from the evidence and starting with the simplest.", "mod": "m6", "cue": "define", "q": "Theory of probable cause"}, {"t": "Isolating a problem", "d": "narrowing the cause by testing things that each eliminate half of the possibilities.", "mod": "m6", "cue": "define", "q": "Isolating a problem"}, {"t": "Reproduce the problem", "d": "make the fault happen on purpose, so you know when it is fixed and what triggers it.", "mod": "m6", "cue": "define", "q": "Reproduce the problem"}, {"t": "Scope", "d": "how far a fault reaches: one user, one machine, one floor, one site, everyone. The fastest way to halve a problem.", "mod": "m6", "cue": "define", "q": "Scope"}, {"t": "Intermittent fault", "d": "a problem that happens only sometimes. Suggests heat, a loose connection, exhausted resources, or a particular sequence of actions.", "mod": "m6", "cue": "define", "q": "Intermittent fault"}, {"t": "Cookie crumbs", "d": "following symptoms backwards in order, on the assumption that several symptoms are usually one story.", "mod": "m6", "cue": "define", "q": "Cookie crumbs"}, {"t": "Quickest step first", "d": "trying the cheapest, most reversible actions first, because they resolve a surprising share of tickets.", "mod": "m6", "cue": "define", "q": "Quickest step first"}, {"t": "Tunnel vision", "d": "continuing to test one theory long after it has failed to be confirmed.", "mod": "m6", "cue": "define", "q": "Tunnel vision"}, {"t": "Escalation", "d": "handing a ticket to someone with more access or authority, with notes that make it actionable.", "mod": "m6", "cue": "define", "q": "Escalation"}, {"t": "Soft skills", "d": "the communication half of support: listening, empathising, explaining plainly, and setting expectations.", "mod": "m6", "cue": "define", "q": "Soft skills"}, {"t": "Empathy", "d": "acknowledging the impact a problem is having on the person, without accepting blame or judgement.", "mod": "m6", "cue": "define", "q": "Empathy"}, {"t": "Active listening", "d": "letting the person finish, taking notes, and repeating the problem back in your own words to check you understood it.", "mod": "m6", "cue": "define", "q": "Active listening"}, {"t": "Plain language", "d": "explaining in words the user already knows, defining any term you have to use.", "mod": "m6", "cue": "define", "q": "Plain language"}, {"t": "Setting expectations", "d": "saying what happens next and when, including when the news is that you do not know yet.", "mod": "m6", "cue": "define", "q": "Setting expectations"}, {"t": "Ticket", "d": "the record of a request: who, what, when, what was tried, what fixed it.", "mod": "m6", "cue": "define", "q": "Ticket"}, {"t": "Ticketing system", "d": "the software that holds tickets so they can be searched, measured and handed over. ServiceNow, Jira Service Management, Freshdesk.", "mod": "m6", "cue": "define", "q": "Ticketing system"}, {"t": "Service Level Agreement (SLA)", "d": "the promised response and resolution times for each priority level. What \"urgent\" actually means in an organisation.", "mod": "m6", "cue": "define", "q": "SLA", "x": "SLA = Service Level Agreement"}, {"t": "Severity", "d": "how bad an incident is, in technical and business terms.", "mod": "m6", "cue": "define", "q": "Severity"}, {"t": "Priority", "d": "how soon work is done. Severity contributes, but so does how many people are affected.", "mod": "m6", "cue": "define", "q": "Priority"}, {"t": "Knowledge base", "d": "the collection of process documentation and known fixes, written so someone new can follow it.", "mod": "m6", "cue": "define", "q": "Knowledge base"}, {"t": "Process documentation", "d": "a step-by-step description of how a repeatable job is done, including its checks and its rollback.", "mod": "m6", "cue": "define", "q": "Process documentation"}, {"t": "Root cause", "d": "the underlying reason a fault happened, as opposed to the symptom that made it visible.", "mod": "m6", "cue": "define", "q": "Root cause"}, {"t": "Workaround", "d": "a way to keep working despite a fault, without fixing the cause.", "mod": "m6", "cue": "define", "q": "Workaround"}, {"t": "Preventive measure", "d": "the change that stops the same fault recurring, which is the second half of step five.", "mod": "m6", "cue": "define", "q": "Preventive measure"}, {"t": "Verification", "d": "confirming with the user that the thing they were trying to do now works, and that nothing else broke.", "mod": "m6", "cue": "define", "q": "Verification"}, {"t": "Change control", "d": "the process of recording and approving changes before they are made, so an outage has a known suspect.", "mod": "m6", "cue": "define", "q": "Change control"}, {"t": "Social engineering", "d": "getting someone to break a process by sounding authorised. The reason identity verification is applied to the call that sounds most convincing.", "mod": "m6", "cue": "define", "q": "Social engineering"}, {"t": "Least privilege", "d": "giving an account only the access its job needs, which limits what one compromised credential can do.", "mod": "m6", "cue": "define", "q": "Least privilege"}, {"t": "Elevator pitch", "d": "thirty seconds on who you are, what you can do, and what you want next.", "mod": "m6", "cue": "define", "q": "Elevator pitch"}, {"t": "Behavioural interview", "d": "questions about what you actually did in a past situation, answered with a specific story rather than an opinion.", "mod": "m6", "cue": "define", "q": "Behavioural interview"}, {"t": "Technical interview", "d": "the part of an interview that tests method and hands-on knowledge, usually by walking through a scenario.", "mod": "m6", "cue": "define", "q": "Technical interview"}, {"t": "Documentation", "d": "the written record that makes a fix findable and a job delegable. Step six, and the thing that compounds.", "mod": "m6", "cue": "define", "q": "Documentation"}, {"t": "Knowledge transfer", "d": "handing a job or a system to someone else so that they can run it without you.", "mod": "m6", "cue": "define", "q": "Knowledge transfer"}, {"t": "Onboarding", "d": "the process of getting a new user or a new technician productive: accounts, access, equipment, and where the documentation is.", "mod": "m6", "cue": "define", "q": "Onboarding"}, {"t": "Offboarding", "d": "the reverse: revoking access, recovering equipment, and preserving the data that belongs to the organisation.", "mod": "m6", "cue": "define", "q": "Offboarding"}]);
+
+quiz('#quizHost', [{"k": "c1m6q1", "lo": "LO1", "q": "What is the FIRST step of the troubleshooting method?", "o": ["establish a theory", "identify the problem: ask questions, gather information, reproduce it", "document the fix", "escalate"], "a": 1, "why": "You cannot fix what you cannot describe. Most wasted hours in support are spent fixing the wrong problem confidently."}, {"k": "c1m6q2", "lo": "LO1", "q": "Why does the method say to start with the simplest theory?", "o": ["because simple problems are more common", "simple causes are cheap to test and often correct, so ruling them out first is the fastest route", "because users only report simple things", "because complex fixes are forbidden"], "a": 1, "why": "A loose cable takes ten seconds to check. A corrupted driver takes an hour. Order by cost, not by drama."}, {"k": "c1m6q3", "lo": "LO1", "q": "Step five is 'verify full functionality'. What does verifying actually mean?", "o": ["the error message stopped", "the user confirms the thing they were trying to do now works, and nothing else broke", "the machine boots", "you closed the ticket"], "a": 1, "why": "An error can stop because the feature stopped working. Verification is the user's test, not yours."}, {"k": "c1m6q4", "lo": "LO1", "q": "Only two of the six steps involve touching the machine. What are the other four about?", "o": ["waiting", "asking questions, thinking, communicating and documenting", "paperwork for its own sake", "escalating"], "a": 1, "why": "Diagnosis is information work. That is why this module is mostly about questions and soft skills."}, {"k": "c1m6q5", "lo": "LO1", "q": "Why is 'change two things at once' a pitfall?", "o": ["it is slower", "if it starts working you do not know which change fixed it, and you cannot undo the wrong one", "it voids the warranty", "the system will not allow it"], "a": 1, "why": "It destroys the evidence. One change, one test, one conclusion."}, {"k": "c1m6q6", "lo": "LO2", "q": "Which question has the highest yield in almost any support ticket?", "o": ["what is your password", "what changed recently - an update, new software, a moved cable, a policy", "how old is the machine", "who is your manager"], "a": 1, "why": "Most faults have a cause that arrived recently. The answer usually halves the search space immediately."}, {"k": "c1m6q7", "lo": "LO2", "q": "What does isolating a problem mean?", "o": ["unplugging it", "narrowing the cause by testing things that each eliminate half of the possibilities", "working alone", "reinstalling the operating system"], "a": 1, "why": "Does it follow the user to another machine, or the machine to another user? Each answer eliminates half."}, {"k": "c1m6q8", "lo": "LO2", "q": "One user cannot print. Which answer changes the investigation most?", "o": ["they are in a hurry", "nobody else on the floor can print either - so it is the shared printer or the print server, not the user's machine", "they restarted already", "the printer is old"], "a": 1, "why": "Scope is the fastest way to halve the problem: one machine, one floor, or the whole site are three different tickets."}, {"k": "c1m6q9", "lo": "LO2", "q": "A fault happens only sometimes. What class of cause does that suggest?", "o": ["a software licence problem", "something intermittent: heat, a loose connection, exhausted resources, or a specific sequence of actions", "a virus", "a broken monitor"], "a": 1, "why": "Intermittent faults need reproduction conditions, which is why 'when did it last happen and what were you doing' matters."}, {"k": "c1m6q10", "lo": "LO2", "q": "Why start with the quickest step first?", "o": ["it looks efficient", "cheap reversible steps resolve a surprising share of tickets, and cost nothing when they fail", "the user expects it", "it is company policy"], "a": 1, "why": "Reboot, reseat, try another port, ask the person next door. Spend the free options before the expensive ones."}, {"k": "c1m6q11", "lo": "LO3", "q": "A machine boots slowly, then loses Wi-Fi, then reports a full disk. What is the likely reading?", "o": ["three unrelated faults", "one story: the disk filled, swap could not grow, and services failed in sequence", "a virus", "the wireless card is broken"], "a": 1, "why": "Follow the cookie crumbs backwards. Chasing the last symptom treats a consequence as the cause."}, {"k": "c1m6q12", "lo": "LO3", "q": "'It works on my machine' is…", "o": ["proof the user is wrong", "a statement about the difference between two machines - and the difference is the investigation", "a valid reason to close the ticket", "a hardware fault"], "a": 1, "why": "If it works somewhere, the cause is in what differs. Same build? Same network? Same account? Same permissions?"}, {"k": "c1m6q13", "lo": "LO3", "q": "Why is blaming the user a professional mistake, even when they caused it?", "o": ["it is rude", "it costs you the information you need next time, and it does not stop the mistake happening again", "it is against the law", "it wastes time"], "a": 1, "why": "Fix the system so the mistake is harder to make. That is the durable fix; embarrassment is not."}, {"k": "c1m6q14", "lo": "LO3", "q": "A caller who sounds like an executive asks you to reset someone else's password. What do you do?", "o": ["reset it, they sound senior", "follow the identity verification process, every time, and offer to escalate if it is urgent", "ask them to email", "reset it but log it"], "a": 1, "why": "Social engineering works by sounding authorised. The process exists precisely for the call that sounds convincing."}, {"k": "c1m6q15", "lo": "LO4", "q": "A user is angry about a problem you did not cause. What is the right first move?", "o": ["explain that it is not your fault", "let them finish, acknowledge the impact, then move to facts", "transfer them", "tell them to calm down"], "a": 1, "why": "Anger is usually about lost time. Defending yourself makes you part of the problem; acknowledging it makes you part of the solution."}, {"k": "c1m6q16", "lo": "LO4", "q": "Which sentence builds the most trust?", "o": ["I will look into it", "I will call you within the hour, even if I have nothing new", "it should be fine now", "that is a known issue"], "a": 1, "why": "A specific commitment with a follow-up, including when the news is bad. Silence is what people cannot tolerate."}, {"k": "c1m6q17", "lo": "LO4", "q": "How should you explain a technical problem to a non-technical user?", "o": ["using the correct technical terms so they learn", "in plain language about what it means for them, defining any term you must use", "as briefly as possible", "by sending them the log"], "a": 1, "why": "'Your computer cannot reach the file server' is information. 'The SMB session is failing authentication' is a wall."}, {"k": "c1m6q18", "lo": "LO4", "q": "You genuinely do not know the answer. What is the professional response?", "o": ["guess confidently", "say you do not know yet, say what you will do to find out, and when you will come back", "change the subject", "escalate without a word"], "a": 1, "why": "Inventing an answer is the only unrecoverable option. A commitment with a deadline is a good answer."}, {"k": "c1m6q19", "lo": "LO4", "q": "You cannot fix the problem yourself. What makes escalation good?", "o": ["sending it as fast as possible", "handing it over with the notes that make it actionable: what it is, what you ruled out, what you suspect", "apologising a lot", "closing it and letting them reopen"], "a": 1, "why": "Escalating without notes is forwarding. The value you add is the diagnosis you already did."}, {"k": "c1m6q20", "lo": "LO5", "q": "What makes a ticket worth reading a month later?", "o": ["a polite tone", "the symptom in the user's words, when it started, what was tested and ruled out, and exactly what changed", "a screenshot", "the ticket number"], "a": 1, "why": "The ruled-out tests are most of the value: they stop the next person repeating the same hour of work."}, {"k": "c1m6q21", "lo": "LO5", "q": "What is an SLA?", "o": ["a software licence agreement", "the service level agreement: promised response and resolution times, by priority", "a system log analysis", "a security level"], "a": 1, "why": "It is what 'urgent' actually means in a given organisation — which is why the word needs a definition, not an adjective."}, {"k": "c1m6q22", "lo": "LO5", "q": "How do severity and priority differ?", "o": ["they are the same", "severity is how bad it is; priority is how soon it gets done, which also depends on how many people are affected", "priority is set by the user", "severity is set by the vendor"], "a": 1, "why": "One executive offline can outrank a hundred users on a slow report. Both are legitimate; they are different axes."}, {"k": "c1m6q23", "lo": "LO5", "q": "What is the test of good process documentation?", "o": ["it is long", "someone who has never done the job can follow it, including the checks and the rollback", "it is approved by a manager", "it is in the wiki"], "a": 1, "why": "Documentation is a delegation tool. If it cannot be followed cold, the task still lives in one person's head."}, {"k": "c1m6q24", "lo": "LO6", "q": "What is an elevator pitch?", "o": ["a sales technique for products", "thirty seconds on who you are, what you can do, and what you want next - specific and verifiable", "a summary of your resume", "a list of certifications"], "a": 1, "why": "It gives the interviewer something concrete to ask about, which is the only thing a pitch is for."}, {"k": "c1m6q25", "lo": "LO6", "q": "'A user says their computer is slow. What do you do?' What is being tested?", "o": ["whether you know the registry", "whether you have a method rather than a list of guesses", "how fast you type", "whether you have used that brand"], "a": 1, "why": "Walk the six steps out loud. The interviewer wants the shape of your thinking, not a memorised command."}]);
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1455 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>The Bits and Bytes of Computer Networking — The Transport and Application Layers, Module 3 (study)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Course 2 — Bits and Bytes · Module 3 — The Transport and Application Layers</span>
+  <nav><a href="index.html">Course 2</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="#essentials">Essentials</a><a href="m2-network-layer.html">M2</a><a href="#quiz">Quiz</a><a href="#cards">Flashcards</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="essentials" class=""><h2>The essentials &mdash; hold these before the detail</h2><p class="lede">The module at entry-certification level: what you must be able to do, and the facts the quizzes and drills on this page are testing. Read this first, every time.</p>
+    <div class="learnbox">
+      <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
+        <ul class="lcan"><li>name the well-known ports on sight</li><li>explain the <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> three-way handshake and the four-message close</li><li>tell TCP from <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> and pick one for a given workload</li><li>read a socket state and say what the connection is doing</li><li>explain what <span class="ac" data-full="HyperText Transfer Protocol" data-desc="the request/response protocol of the web">HTTP</span>, <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> and mail protocols do, and which ports they use</li><li>trace one request down all four layers, header by header</li></ul></div>
+      <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 10 facts</span>
+        <div class="kv lfacts"><div class="k">Ports to know</div><div>20/21 <span class="ac" data-full="File Transfer Protocol" data-desc="an old application-layer protocol for moving files, port 21">FTP</span>, 22 <span class="ac" data-full="Secure Shell" data-desc="an encrypted remote terminal on port 22">SSH</span>, 23 <span class="ac" data-full="Telnet" data-desc="the original remote-terminal protocol, port 23, entirely unencrypted. Useful as a port-connectivity test; never for logging in.">Telnet</span>, 25 <span class="ac" data-full="Simple Mail Transfer Protocol" data-desc="sends and relays mail on port 25; it moves mail between servers, it does not collect it">SMTP</span>, 53 DNS, 67/68 <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span>, 80 HTTP, 110 <span class="ac" data-full="Post Office Protocol 3" data-desc="collects mail on port 110 and usually deletes it from the server - one device, one mailbox">POP3</span>, 143 <span class="ac" data-full="Internet Message Access Protocol" data-desc="collects mail on port 143 but leaves it on the server and syncs state across devices">IMAP</span>, 443 <span class="ac" data-full="HTTP Secure" data-desc="HTTP wrapped in TLS; port 443">HTTPS</span>, 3389 <span class="ac" data-full="Remote Desktop Protocol" data-desc="Windows&#x27; remote graphical session on port 3389 - you see the other machine&#x27;s desktop">RDP</span>.</div><div class="k"><span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> ranges</div><div>0-1023 well known, 1024-49151 registered, 49152-65535 ephemeral (the source port your machine picks).</div><div class="k"><span class="ac" data-full="Socket" data-desc="one endpoint of a connection, identified by the combination of IP address and port. A TCP connection is a pair of sockets.">Socket</span></div><div><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> address + port + protocol. A connection is a pair of sockets, which is how one server serves thousands of clients on one port.</div><div class="k">TCP handshake</div><div><span class="ac" data-full="SYN" data-desc="the flag that opens a TCP connection and carries the sender&#x27;s starting sequence number.">SYN</span>, SYN/<span class="ac" data-full="ACK" data-desc="the flag that acknowledges received data, or completes the handshake.">ACK</span>, ACK - three messages. Close is <span class="ac" data-full="FIN" data-desc="the TCP flag that says &quot;I have finished sending&quot;. Each direction closes separately, which is why a full shutdown takes two FINs.">FIN</span>, ACK, FIN, ACK - four.</div><div class="k">Sequence numbers</div><div>they count bytes, not packets, which is how a lost segment is retransmitted precisely instead of resending everything.</div><div class="k">UDP</div><div>no connection, no ordering, no retransmission. Cheap and fast: DNS queries, DHCP, voice, video, games.</div><div class="k">HTTP</div><div>request and response. Methods GET/<span class="ac" data-full="Power-On Self-Test" data-desc="the firmware&#x27;s check of CPU, RAM and devices before anything boots">POST</span>/PUT/DELETE. Status codes: 2xx success, 3xx redirect, 4xx your fault, 5xx their fault. HTTPS is HTTP inside <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span>.</div><div class="k">DNS</div><div>resolves a name to an address over UDP 53. Records worth knowing: A, AAAA, <span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span>, MX, NS, TXT.</div><div class="k">Mail</div><div>SMTP sends (25, or 587 for submission), POP3 downloads and usually removes (110), IMAP syncs and leaves it on the server (143).</div><div class="k">Firewalls</div><div>stateless filters each packet by rule; stateful remembers connections and allows the replies. Default deny is the only sane posture.</div></div></div>
+      <div class="big60 r"><b>The trap:</b> Mixing up the handshake and the close. The handshake is three messages, the close is four, and swapping them is the single most common lost mark in this module.</div>
+      <p class="src">Everything below this box explains these lines, in this order, with a drill
+      after each part that tests it. If you can say every line above without looking, the drills are
+      revision. If you cannot, read the section that matches the line and come back &mdash; that is
+      the whole study method. The same objectives for every module, built and not yet built, are on
+      <a href="../../learn/index.html">the learning path</a>.</p>
+    </div></section><section id="start" class=""><h2>What the transport layer is for</h2><p class="lede">The network layer delivers to a machine. The transport layer delivers to a program — and decides how much it cares about reliability.</p>
+    <p>Module 2 ended with a packet that knows which machine it belongs to. That is not enough: a machine runs dozens
+    of programs that all want network traffic, and something has to know which arriving data belongs to which one.</p>
+    <table>
+      <tr><th>Job</th><th>What it means</th></tr>
+      <tr><td><b>Multiplexing</b></td><td>Many programs share one network connection. The transport layer keeps their traffic apart using <b>port numbers</b>.</td></tr>
+      <tr><td><b>Segmentation</b></td><td>Split a large message into pieces small enough to travel, and put them back together in the right order at the other end.</td></tr>
+      <tr><td><b>Reliability</b></td><td>Decide whether lost or out-of-order pieces are detected and resent (<span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>), or ignored (<span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span>).</td></tr>
+      <tr><td><b>Flow control</b></td><td>Stop a fast sender from drowning a slow receiver.</td></tr>
+    </table>
+    <div class="big60">
+      <b>The whole module in one sentence:</b> TCP and UDP are the two ways to do those four jobs, and almost every
+      networking question at this level comes down to which one a given application chose, and why.
+    </div>
+    <p>Above them sits the <b>application layer</b> — <span class="ac" data-full="HyperText Transfer Protocol" data-desc="the request/response protocol of the web">HTTP</span>, <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span>, <span class="ac" data-full="Simple Mail Transfer Protocol" data-desc="sends and relays mail on port 25; it moves mail between servers, it does not collect it">SMTP</span> — which is the part users actually name. The
+    transport layer is the plumbing that makes those protocols possible without each of them reinventing
+    retransmission.</p>
+    </section><section id="ports" class=""><h2>Ports: how one machine runs many conversations</h2><p class="lede">A port is a number that identifies a program, the way an apartment number identifies a door in a building.</p>
+    <p>An <b><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> address</b> gets data to the machine. A <b>port number</b> gets it to the program. Together they form a
+    <b>socket</b>: <span class="mono">192.168.1.10:443</span> is a specific program on a specific machine.</p>
+    <table>
+      <tr><th>Range</th><th>Name</th><th>Used for</th></tr>
+      <tr><td>0 – 1023</td><td><b>Well-known</b></td><td>The famous services. Binding one usually requires administrator rights, precisely so an ordinary program cannot impersonate a server.</td></tr>
+      <tr><td>1024 – 49151</td><td><b>Registered</b></td><td>Software that wants a predictable port: databases, game servers, vendor services.</td></tr>
+      <tr><td>49152 – 65535</td><td><b>Ephemeral</b> (dynamic)</td><td>What your machine picks as the <i>source</i> port for an outgoing connection. Temporary, and reused after the connection closes.</td></tr>
+    </table>
+    <h3>The ports worth knowing by heart</h3>
+    <table>
+      <tr><th>Port</th><th>Protocol</th><th>Note</th></tr>
+      <tr><td>20 / 21</td><td><span class="ac" data-full="File Transfer Protocol" data-desc="an old application-layer protocol for moving files, port 21">FTP</span> (data / control)</td><td>Unencrypted file transfer. <span class="ac" data-full="SSH File Transfer Protocol" data-desc="file transfer inside an SSH session on port 22 - encrypted, unlike plain FTP">SFTP</span> over <span class="ac" data-full="Secure Shell" data-desc="an encrypted remote terminal on port 22">SSH</span> (22) replaced it.</td></tr>
+      <tr><td>22</td><td>SSH / SFTP</td><td>Encrypted remote shell and file transfer.</td></tr>
+      <tr><td>23</td><td><span class="ac" data-full="Telnet" data-desc="the original remote-terminal protocol, port 23, entirely unencrypted. Useful as a port-connectivity test; never for logging in.">Telnet</span></td><td>Plaintext remote shell. Should not be exposed, ever.</td></tr>
+      <tr><td>25</td><td><span class="ac" data-full="Simple Mail Transfer Protocol" data-desc="sends and relays mail on port 25; it moves mail between servers, it does not collect it">SMTP</span></td><td>Mail <i>between</i> servers.</td></tr>
+      <tr><td>53</td><td><span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span></td><td><span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> for lookups, <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> for large answers and zone transfers.</td></tr>
+      <tr><td>67 / 68</td><td><span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> (server / client)</td><td>Handing out addresses.</td></tr>
+      <tr><td>80</td><td><span class="ac" data-full="HyperText Transfer Protocol" data-desc="the request/response protocol of the web">HTTP</span></td><td>Unencrypted web. Usually redirects to 443.</td></tr>
+      <tr><td>110 / 995</td><td><span class="ac" data-full="Post Office Protocol 3" data-desc="collects mail on port 110 and usually deletes it from the server - one device, one mailbox">POP3</span> / POP3S</td><td>Downloads mail and typically deletes it from the server.</td></tr>
+      <tr><td>143 / 993</td><td><span class="ac" data-full="Internet Message Access Protocol" data-desc="collects mail on port 143 but leaves it on the server and syncs state across devices">IMAP</span> / IMAPS</td><td>Keeps mail on the server and syncs state across devices.</td></tr>
+      <tr><td>161</td><td><span class="ac" data-full="Simple Network Management Protocol" data-desc="how network devices are polled and how they send traps - 161 for queries, 162 for traps">SNMP</span></td><td>Monitoring and managing network devices.</td></tr>
+      <tr><td>389 / 636</td><td><span class="ac" data-full="Lightweight Directory Access Protocol" data-desc="querying a directory of users, groups and computers; port 389, or 636 over TLS">LDAP</span> / LDAPS</td><td>Directory lookups — Active Directory's protocol.</td></tr>
+      <tr><td>443</td><td><span class="ac" data-full="HTTP Secure" data-desc="HTTP wrapped in TLS; port 443">HTTPS</span></td><td>HTTP inside <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span>.</td></tr>
+      <tr><td>445</td><td><span class="ac" data-full="Server Message Block" data-desc="the Windows file-and-printer sharing protocol on port 445; Samba speaks it on Linux">SMB</span></td><td>Windows file and printer sharing.</td></tr>
+      <tr><td>3389</td><td><span class="ac" data-full="Remote Desktop Protocol" data-desc="Windows&#x27; remote graphical session on port 3389 - you see the other machine&#x27;s desktop">RDP</span></td><td>Windows remote desktop.</td></tr>
+    </table>
+    <div class="big60 y">
+      <b>Why the pairing matters:</b> a connection is identified by four values — source address, source port,
+      destination address, destination port. That is how your browser can open six connections to the same web server
+      at once: same destination, six different source ports.
+    </div>
+    <button class="aud" data-audio="audio/c2m3-ports.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="port-game" class=""><h2>Drill: ports, as fast as you can</h2><p class="lede">These are memorisation, not understanding. Ninety seconds, and then they are yours.</p><div class="game" id="gPort"><div class="gtitle"><b><span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> blitz</b></div><p class="ghint">Name the port, or the service. Wrong answers cost you time, not points.</p><div id="portHost"></div></div></section><section id="tcp" class=""><h2>TCP: the three-way handshake and numbered bytes</h2><p class="lede"><span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>'s guarantee is built from sequence numbers, acknowledgements and a conversation that starts with three messages.</p>
+    <h3>The header fields that matter</h3>
+    <table>
+      <tr><th>Field</th><th>What it does</th></tr>
+      <tr><td><b>Source / destination port</b></td><td>Which program on each end.</td></tr>
+      <tr><td><b>Sequence number</b></td><td>Which byte of the stream this segment starts at. This is what makes reassembly and retransmission possible.</td></tr>
+      <tr><td><b>Acknowledgement number</b></td><td>The next byte the sender expects — so "I have everything up to here".</td></tr>
+      <tr><td><b>Flags</b></td><td><span class="ac" data-full="SYN" data-desc="the flag that opens a TCP connection and carries the sender&#x27;s starting sequence number.">SYN</span> (start), <span class="ac" data-full="ACK" data-desc="the flag that acknowledges received data, or completes the handshake.">ACK</span> (acknowledging), <span class="ac" data-full="FIN" data-desc="the TCP flag that says &quot;I have finished sending&quot;. Each direction closes separately, which is why a full shutdown takes two FINs.">FIN</span> (finished), <span class="ac" data-full="Reset" data-desc="the flag that aborts a connection: this conversation does not exist, stop talking. Port scans and rejecting firewalls produce them.">RST</span> (reset — abort), PSH, URG.</td></tr>
+      <tr><td><b>Window size</b></td><td>How much data the receiver can still accept. This is <b>flow control</b>: a slow receiver shrinks the window and the sender slows down.</td></tr>
+      <tr><td><b>Checksum</b></td><td>Detects corruption in transit.</td></tr>
+    </table>
+    <h3>The handshake</h3>
+    <div class="kv">
+      <div class="k">1. SYN</div><div><span class="ac" data-full="Client" data-desc="the device or process asking for data or a service; the other end is the server.">Client</span>: "I would like to talk, and my numbering starts at X."</div>
+      <div class="k">2. SYN-ACK</div><div><span class="ac" data-full="Server" data-desc="a machine or process providing a service to clients, and answering on a predictable port.">Server</span>: "I heard you, I have X+1. My numbering starts at Y."</div>
+      <div class="k">3. ACK</div><div>Client: "I have Y+1. We are open."</div>
+    </div>
+    <p><b>Three messages, because three is the minimum that proves both directions work.</b> After SYN the client
+    knows it can send; after SYN-ACK it knows the server can send and can hear; the final ACK proves the client heard
+    the server. Two messages would leave one direction unproven.</p>
+    <h3>Closing, and why it takes four messages</h3>
+    <p>TCP is full duplex, so each direction closes separately: <b>FIN</b> from one side, <b>ACK</b>, then <b>FIN</b>
+    from the other and a final <b>ACK</b>. The side that closes first then waits in <b>TIME_WAIT</b> — typically two
+    minutes, twice the maximum time a packet can survive on the network — so that a delayed duplicate cannot be
+    mistaken for the start of a new connection.</p>
+    <div class="big60 r">
+      <b>RST</b> is the abort: "this connection does not exist, stop talking". A port scan produces RSTs, a
+      firewall that rejects rather than drops produces RSTs, and a service crash often leaves clients receiving them.
+      A reset is information, not a fault in itself.
+    </div>
+    <button class="aud" data-audio="audio/c2m3-handshake.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 30s</button></section><section id="states" class=""><h2>TCP socket states, and what they tell you</h2><p class="lede">Every connection is a state machine, and the state is readable evidence when something will not connect — or will not let go.</p>
+    <table>
+      <tr><th>State</th><th>Meaning</th><th>When you see it and it is a problem</th></tr>
+      <tr><td><b>LISTEN</b></td><td>A server is waiting for connections on that port.</td><td>Absent when it should be present: the service is not running, or is bound to a different address.</td></tr>
+      <tr><td><b><span class="ac" data-full="SYN" data-desc="the flag that opens a TCP connection and carries the sender&#x27;s starting sequence number.">SYN</span>_SENT</b></td><td>You sent SYN, no answer yet.</td><td>Stuck here means the packets are being dropped — firewall, wrong address, or nothing listening.</td></tr>
+      <tr><td><b>SYN_RECEIVED</b></td><td><span class="ac" data-full="Server" data-desc="a machine or process providing a service to clients, and answering on a predictable port.">Server</span> replied to a SYN, waiting for the final <span class="ac" data-full="ACK" data-desc="the flag that acknowledges received data, or completes the handshake.">ACK</span>.</td><td>A flood of these is a SYN flood: half-open connections exhausting the backlog.</td></tr>
+      <tr><td><b>ESTABLISHED</b></td><td>The conversation is open.</td><td>Established but no data moving points at the application, not the network.</td></tr>
+      <tr><td><b><span class="ac" data-full="FIN" data-desc="the TCP flag that says &quot;I have finished sending&quot;. Each direction closes separately, which is why a full shutdown takes two FINs.">FIN</span>_WAIT / <span class="ac" data-full="CLOSE" data-desc="a TCP state meaning the connection has been shut down and the socket is being torn down after the final acknowledgements.">CLOSE</span>_WAIT</b></td><td>One side has closed and the other has not finished.</td><td>Thousands of CLOSE_WAIT means the application is not closing its sockets — an application bug, and eventually an exhausted port table.</td></tr>
+      <tr><td><b>TIME_WAIT</b></td><td>Closed, holding the port briefly so late packets cannot be confused with a new connection.</td><td>Normal. A very large number means many short connections, which is a design question, not a fault.</td></tr>
+    </table>
+    <p>On this machine you read them with <span class="mono">ss -tan</span> (or <span class="mono">netstat -ano</span>
+    on Windows). The habit worth building: <b>check the state before you change anything.</b> "Nothing is listening
+    on 443" and "443 is established but the page never loads" are two completely different tickets.</p>
+    <button class="aud" data-audio="audio/c2m3-states.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="udp" class=""><h2>UDP: send it and forget it</h2><p class="lede">No handshake, no acknowledgements, no ordering. Sometimes that is exactly right.</p>
+    <p><b><span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span></b> wraps application data in a datagram with a source port, a destination port, a length and a checksum.
+    That is the whole header — eight bytes, against <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>'s twenty or more. It does not connect, does not
+    acknowledge, does not retransmit and does not reorder.</p>
+    <div class="kv">
+      <div class="k">Why it exists</div><div>A retransmitted packet that arrives 300 ms late is worse than useless in a voice call: you cannot un-play the silence. Better to lose it and carry on.</div>
+      <div class="k">Who does the work</div><div>The application, if it cares. <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> retries a query that gets no answer. <span class="ac" data-full="QUIC" data-desc="a transport protocol built on UDP that provides reliability and encryption in userspace. The foundation of HTTP/3.">QUIC</span> (<span class="ac" data-full="HyperText Transfer Protocol" data-desc="the request/response protocol of the web">HTTP</span>/3) rebuilds reliability on top of UDP, in userspace, where it can be improved without changing every operating system.</div>
+      <div class="k">Broadcast and multicast</div><div>Only UDP can do them — <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> discovery is a broadcast, which is why DHCP is UDP.</div>
+      <div class="k">The catch</div><div>No congestion control by default, so a badly written UDP application can starve everything else on the link.</div>
+    </div>
+    <table>
+      <tr><th></th><th>TCP</th><th>UDP</th></tr>
+      <tr><td>Connection</td><td>Three-way handshake</td><td>None</td></tr>
+      <tr><td>Delivery</td><td>Ordered, acknowledged, retransmitted</td><td>Best effort</td></tr>
+      <tr><td>Speed</td><td>Slower to start, faster on a clean link thanks to windowing</td><td>No setup cost at all</td></tr>
+      <tr><td>Header</td><td>20+ bytes</td><td>8 bytes</td></tr>
+      <tr><td>Used by</td><td>HTTP/1.1 and 2, <span class="ac" data-full="Secure Shell" data-desc="an encrypted remote terminal on port 22">SSH</span>, <span class="ac" data-full="Simple Mail Transfer Protocol" data-desc="sends and relays mail on port 25; it moves mail between servers, it does not collect it">SMTP</span>, <span class="ac" data-full="Internet Message Access Protocol" data-desc="collects mail on port 143 but leaves it on the server and syncs state across devices">IMAP</span>, <span class="ac" data-full="Server Message Block" data-desc="the Windows file-and-printer sharing protocol on port 445; Samba speaks it on Linux">SMB</span>, <span class="ac" data-full="File Transfer Protocol" data-desc="an old application-layer protocol for moving files, port 21">FTP</span></td><td>DNS, DHCP, <span class="ac" data-full="Simple Network Management Protocol" data-desc="how network devices are polled and how they send traps - 161 for queries, 162 for traps">SNMP</span>, <span class="ac" data-full="Network Time Protocol" data-desc="keeps clocks in sync across a network">NTP</span>, VoIP, games, streaming, HTTP/3</td></tr>
+    </table>
+    <div class="big60">
+      <b>The exam version:</b> TCP when every byte must arrive; UDP when late data is worthless or when one message
+      goes to many receivers. If a question asks why a protocol chose UDP, the answer is almost always "because a
+      late packet is worse than a lost one" or "because it has to broadcast".
+    </div>
+    <button class="aud" data-audio="audio/c2m3-tcpudp.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="compare-game" class=""><h2>Drill: TCP or UDP</h2><p class="lede">Twelve statements, two buckets. This is the question that appears in every exam and every interview.</p><div class="game" id="gTcpUdp"><div class="gtitle"><b>Sort the protocol</b></div><p class="ghint">Click a statement, then the protocol it describes.</p><div id="tuHost"></div></div></section><section id="firewall" class=""><h2>Firewalls, in the transport layer's terms</h2><p class="lede">A firewall is a rule about which sockets may exist. Everything else is detail.</p>
+    <p>A <b>firewall</b> inspects packets and decides whether to let them through. At this layer the decision is
+    usually about five things: source address, destination address, protocol, port, and connection state.</p>
+    <table>
+      <tr><th></th><th>Stateless</th><th>Stateful</th></tr>
+      <tr><td><b>Decides by</b></td><td>Each packet on its own, against a fixed list of rules.</td><td>The packet <i>and</i> the connection it belongs to.</td></tr>
+      <tr><td><b>Allows replies?</b></td><td>Only if you wrote a rule for them too — the classic mistake is allowing outbound 80 and then wondering why nothing comes back.</td><td>Yes: once a connection is established, return traffic is recognised and permitted automatically.</td></tr>
+      <tr><td><b>Sees</b></td><td>Addresses, ports, flags.</td><td>All of that plus the <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> state — <span class="ac" data-full="SYN" data-desc="the flag that opens a TCP connection and carries the sender&#x27;s starting sequence number.">SYN</span>, ESTABLISHED, related.</td></tr>
+    </table>
+    <div class="kv">
+      <div class="k">Rule order</div><div>Most firewalls evaluate top to bottom and stop at the first match. One permissive rule above a restrictive one makes the restrictive one invisible.</div>
+      <div class="k">Default deny</div><div>The only defensible default: block everything, then open what a service actually needs. The opposite means you are trusting everything you forgot to block.</div>
+      <div class="k">Ingress vs egress</div><div>Incoming is what everyone thinks of. Outgoing matters too: it is how malware phones home and how data leaves.</div>
+      <div class="k"><span class="ac" data-full="Demilitarized Zone" data-desc="a segment for internet-facing servers, isolated so a compromised one is not a foothold inside">DMZ</span></div><div>A segment for services that must be reachable from outside, kept separate so that compromising one does not put it next to everything else.</div>
+    </div>
+    <div class="big60 y">
+      <b>The support question that decides everything:</b> "which port, from where, to what?" A ticket that says
+      "open the firewall for the app" is not actionable. A ticket that says "allow TCP 8080 from the 10.20.0.0/24
+      subnet to 10.20.5.14" is a rule somebody can implement and later remove.
+    </div>
+    </section><section id="app" class=""><h2>The application layer: the protocols users actually name</h2><p class="lede"><span class="ac" data-full="HyperText Transfer Protocol" data-desc="the request/response protocol of the web">HTTP</span>, <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> and mail. Above the transport layer, and the layer where most of the tickets people describe as the internet being broken actually live.</p>
+    <h3>HTTP and HTTPS</h3>
+    <p><b>HTTP</b> is a request and a response: a method, a path, headers, and optionally a body.</p>
+    <div class="kv">
+      <div class="k">GET</div><div>Fetch something. Should have no side effects.</div>
+      <div class="k"><span class="ac" data-full="Power-On Self-Test" data-desc="the firmware&#x27;s check of CPU, RAM and devices before anything boots">POST</span></div><div>Send data that changes something — a form, an upload, a login.</div>
+      <div class="k">PUT / PATCH / DELETE</div><div>Replace, partially update, remove. The verbs of an <span class="ac" data-full="Application Programming Interface" data-desc="the defined way one program asks another for something, without knowing how it does the work">API</span>.</div>
+      <div class="k">HEAD</div><div>Headers only: is it there, and how big is it.</div>
+    </div>
+    <table>
+      <tr><th>Status</th><th>Means</th><th>Who is at fault</th></tr>
+      <tr><td><b>200</b></td><td>OK</td><td>Nobody.</td></tr>
+      <tr><td><b>301 / 302</b></td><td>Moved permanently / temporarily</td><td>Nobody: follow the redirect.</td></tr>
+      <tr><td><b>400</b></td><td>Bad request</td><td>The client sent something malformed.</td></tr>
+      <tr><td><b>401 / 403</b></td><td>Not authenticated / not authorised</td><td>401 means "who are you", 403 means "I know who you are and no".</td></tr>
+      <tr><td><b>404</b></td><td>Not found</td><td>The path does not exist — a client or content problem.</td></tr>
+      <tr><td><b>500</b></td><td><span class="ac" data-full="Server" data-desc="a machine or process providing a service to clients, and answering on a predictable port.">Server</span> error</td><td>The server. This is the one to escalate.</td></tr>
+      <tr><td><b>502 / 504</b></td><td>Bad gateway / gateway timeout</td><td>Something between you and the application — a proxy or load balancer that cannot reach what is behind it.</td></tr>
+    </table>
+    <p><b><span class="ac" data-full="HTTP Secure" data-desc="HTTP wrapped in TLS; port 443">HTTPS</span></b> is the same protocol inside <b><span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span></b>: the connection is encrypted, and the server proves its
+    identity with a certificate signed by an authority your machine already trusts. <span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> 443.</p>
+    <h3>DNS, briefly</h3>
+    <p><b>DNS</b> turns names into addresses. A lookup walks a hierarchy — root, then the top-level domain, then the
+    authoritative server for that domain — with caching at every step to keep the load sane. It runs on port 53, <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span>
+    for normal queries and <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> for answers too large for a datagram.</p>
+    <h3>Mail</h3>
+    <table>
+      <tr><th>Protocol</th><th>Port</th><th>Job</th></tr>
+      <tr><td><b><span class="ac" data-full="Simple Mail Transfer Protocol" data-desc="sends and relays mail on port 25; it moves mail between servers, it does not collect it">SMTP</span></b></td><td>25 (587 for submission)</td><td>Sending, and relaying between servers.</td></tr>
+      <tr><td><b><span class="ac" data-full="Post Office Protocol 3" data-desc="collects mail on port 110 and usually deletes it from the server - one device, one mailbox">POP3</span></b></td><td>110 (995 secure)</td><td>Download and typically delete. One device.</td></tr>
+      <tr><td><b><span class="ac" data-full="Internet Message Access Protocol" data-desc="collects mail on port 143 but leaves it on the server and syncs state across devices">IMAP</span></b></td><td>143 (993 secure)</td><td>Keep on the server and sync state. Many devices.</td></tr>
+    </table>
+    <p>The distinction that matters in support: <b>"my mail is not sending" is SMTP; "my mail is not arriving in my
+    inbox" is IMAP or POP3.</b> They are different servers, often different companies, and always different tickets.</p>
+    </section><section id="encapsulation" class=""><h2>One packet, four layers, end to end</h2><p class="lede">The recap that makes the whole course one object instead of six chapters.</p>
+    <p>You type <span class="mono">https://example.com</span> and press Enter. Here is what actually happens, layer by
+    layer, with the module that taught each row.</p>
+    <table>
+      <tr><th>Layer</th><th>What it adds</th><th>In this example</th></tr>
+      <tr><td><b>Application</b></td><td>The request itself</td><td><span class="mono">GET / HTTP/1.1</span> plus headers — Module 3</td></tr>
+      <tr><td><b>Transport</b></td><td>Ports, sequence numbers, reliability</td><td>Source port 51234 → destination 443, <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>, <span class="ac" data-full="SYN" data-desc="the flag that opens a TCP connection and carries the sender&#x27;s starting sequence number.">SYN</span> first — Module 3</td></tr>
+      <tr><td><b>Network</b></td><td>Addresses and routing</td><td>Your <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> → the server's IP, <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span> decrementing at each hop — Module 2</td></tr>
+      <tr><td><b>Link</b></td><td>Frames and physical addressing</td><td><span class="ac" data-full="Ethernet" data-desc="the dominant wired LAN standard: it defines the frame layout and the rules for sharing the wire.">Ethernet</span> frame to your router's <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span>, then the next hop's, and so on — Module 1</td></tr>
+    </table>
+    <p>Each layer wraps the one above it — <b>encapsulation</b> — and the receiver unwraps in reverse. Nothing above
+    the link layer knows what medium the data crossed; nothing below the application layer knows what the bytes mean.</p>
+    <div class="big60">
+      <b>This table is a diagnostic tool.</b> Ask which layer the symptom is in, and half the possibilities disappear
+      at once: a name that will not resolve is <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> (application), a connection refused is transport, a machine that
+      cannot be reached at all is network, and a cable that is not lit is link.
+    </div>
+    </section><section id="handshake-game" class=""><h2>Drill: the handshake and the ports</h2><p class="lede">Two drills: put the handshake in order, then match each service to its port.</p><div class="game" id="gHand"><div class="gtitle"><b>Order the handshake</b></div><p class="ghint">Click two tiles to swap them, then check.</p><div id="shakeHost"></div></div><div style="height:18px"></div><div class="game" id="gPortm"><div class="gtitle"><b>Service match</b></div><p class="ghint">Click a service, then its port.</p><div id="portmHost"></div></div></section><section id="appgame" class=""><h2>Drill: which port range, which protocol</h2><p class="lede">The three port ranges, and the four protocols people confuse. Sorting them is the fastest way to fix them in memory.</p><div class="game" id="gRange"><div class="gtitle"><b>Sort the port</b></div><p class="ghint">Click a port number, then the range it belongs to.</p><div id="rangeHost"></div></div></section><section id="cards" class=""><h2>Flashcards</h2><p class="lede">The kit's glossary — 96 terms in this module, Coursera and CompTIA A+ together.</p><div class="game" id="gCards"><div class="gtitle"><b>Flashcards — 96 cards</b></div><p class="ghint">One question per card: <b>79</b> ask you to define a term, <b>17</b> ask what an acronym stands for. Every answer explains why, not just what.</p><div id="cardHost"></div></div></section><section id="quiz" class=""><h2>Quiz</h2><p class="lede">The thing to do last, and again in the morning.</p><div class="game" id="gQuiz"><div class="gtitle"><b>Module 3 quiz — 24 questions</b></div><p class="ghint">Every question shows why the answer is right. Misses go into the review queue.</p><div id="quizHost"></div></div></section>
+</main>
+
+<footer>
+      <p><b>Course 2, Module 3 — The Transport and Application Layers.</b> Part of the Google IT Support Professional Certificate study
+      kit. Every definition and explanation on this page is our own wording; the course supplies the
+      syllabus and the vocabulary, not the prose.</p>
+      <p>Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera or NPower; course titles and trademarks belong to their owners. Study aid only. Nothing here is submitted for grading.</p>
+    </footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+
+/* ---- c2m3 ---- */
+
+/* ---- port blitz: memorisation, so make it a race ---- */
+blitz('#portHost',[
+  {q:'Which port does HTTPS use?',o:['443','80','8080','22'],a:'443'},
+  {q:'Which port does HTTP use?',o:['80','443','21','25'],a:'80'},
+  {q:'Which port does SSH use?',o:['22','23','443','3389'],a:'22'},
+  {q:'Which port does Telnet use?',o:['23','22','25','161'],a:'23'},
+  {q:'Which port does DNS use?',o:['53','67','123','389'],a:'53'},
+  {q:'Which port does SMTP use?',o:['25','110','143','443'],a:'25'},
+  {q:'Which port does POP3 use?',o:['110','143','25','993'],a:'110'},
+  {q:'Which port does IMAP use?',o:['143','110','25','995'],a:'143'},
+  {q:'Which port does RDP use?',o:['3389','22','5900','445'],a:'3389'},
+  {q:'Which port does SMB use?',o:['445','139','389','636'],a:'445'},
+  {q:'Which port does LDAP use?',o:['389','636','445','161'],a:'389'},
+  {q:'Which port does SNMP use?',o:['161','162','123','53'],a:'161'},
+  {q:'Which port does DHCP server listen on?',o:['67','68','53','123'],a:'67'},
+  {q:'Which service runs on port 993?',o:['IMAPS','POP3S','HTTPS','LDAPS'],a:'IMAPS'},
+  {q:'Which service runs on port 636?',o:['LDAPS','LDAP','SMB','RDP'],a:'LDAPS'},
+  {q:'Which service runs on port 21?',o:['FTP control','FTP data','SFTP','TFTP'],a:'FTP control'}
+],90,'Port numbers, from memory. Sixteen questions, ninety seconds - do it twice.');
+
+/* ---- TCP vs UDP ---- */
+sortGame('#tuHost',
+  [{id:'t',name:'TCP'},{id:'u',name:'UDP'}],
+  [{t:'Starts with a three-way handshake',b:'t'},
+   {t:'Numbers every byte and acknowledges it',b:'t'},
+   {t:'Retransmits what was lost',b:'t'},
+   {t:'Delivers in order',b:'t'},
+   {t:'Has a window size for flow control',b:'t'},
+   {t:'Used by HTTP/1.1, SSH, SMTP and SMB',b:'t'},
+   {t:'Eight-byte header and no setup',b:'u'},
+   {t:'A late packet is useless, so nothing is resent',b:'u'},
+   {t:'The only way to broadcast or multicast',b:'u'},
+   {t:'Used by DNS, DHCP, SNMP and NTP',b:'u'},
+   {t:'Used by voice calls, games and live video',b:'u'},
+   {t:'HTTP/3 and QUIC are built on it',b:'u'}]);
+
+/* ---- handshake order ---- */
+orderGame('#shakeHost','Put the TCP handshake and close in order.',
+  ['Client sends SYN with its starting sequence number',
+   'Server replies SYN-ACK: it has your number, and offers its own',
+   'Client sends ACK: both directions are proven, the connection is open',
+   'Data flows both ways, acknowledged as it goes',
+   'Client sends FIN to close its half',
+   'Server ACKs, then sends its own FIN, and the client ACKs',
+   'The closing side waits in TIME_WAIT so late packets cannot be confused with a new connection'],'hs');
+
+/* ---- service to port ---- */
+matchGame('#portmHost',[
+  {t:'SSH',m:'22'},
+  {t:'DNS',m:'53'},
+  {t:'HTTPS',m:'443'},
+  {t:'SMTP',m:'25'},
+  {t:'IMAP',m:'143'},
+  {t:'RDP',m:'3389'},
+  {t:'SMB',m:'445'},
+  {t:'SNMP',m:'161'}]);
+
+/* ---- port ranges ---- */
+sortGame('#rangeHost',
+  [{id:'w',name:'Well-known (0-1023)'},
+   {id:'r',name:'Registered (1024-49151)'},
+   {id:'e',name:'Ephemeral (49152-65535)'}],
+  [{t:'22 - SSH',b:'w'},
+   {t:'53 - DNS',b:'w'},
+   {t:'443 - HTTPS',b:'w'},
+   {t:'161 - SNMP',b:'w'},
+   {t:'3389 - RDP',b:'r'},
+   {t:'3306 - MySQL',b:'r'},
+   {t:'5432 - PostgreSQL',b:'r'},
+   {t:'51234 - your browser talking to a web server',b:'e'},
+   {t:'The source port of an outgoing connection',b:'e'},
+   {t:'Chosen at random, reused after the connection closes',b:'e'}]);
+
+flashcards('#cardHost', [{"t": "ACK flag", "d": "TCP control bit meaning \"the acknowledgement number in this segment is meaningful, look at it\". Nearly every segment after the handshake has it set.", "mod": "m3", "cue": "define", "q": "ACK flag"}, {"t": "Acknowledgement number", "d": "the sequence number of the next byte the sender expects to receive, which is how TCP confirms what has arrived without listing it.", "mod": "m3", "cue": "define", "q": "Acknowledgement number"}, {"t": "Application layer", "d": "layer 5 in this course's model: where protocols that users actually recognise live — HTTP, DNS, SMTP, SSH.", "mod": "m3", "cue": "define", "q": "Application layer"}, {"t": "Application layer payload", "d": "the user data itself, everything above the transport header. The lower layers never look inside it.", "mod": "m3", "cue": "define", "q": "Application layer payload"}, {"t": "CLOSE", "d": "a TCP state meaning the connection has been shut down and the socket is being torn down after the final acknowledgements.", "mod": "m3", "cue": "define", "q": "CLOSE"}, {"t": "CLOSE_WAIT", "d": "a TCP state where the remote end has sent FIN and been acknowledged, but the local application has not yet closed its own side. A pile of these means a program is not closing its sockets.", "mod": "m3", "cue": "define", "q": "CLOSE_WAIT"}, {"t": "Connection-oriented protocol", "d": "a protocol that establishes a relationship before data flows and tracks the state of that relationship, so it can promise ordered, confirmed delivery. TCP is the example.", "mod": "m3", "cue": "define", "q": "Connection-oriented protocol"}, {"t": "Connectionless protocol", "d": "a protocol that fires each message independently with no setup and no memory of earlier ones. UDP is the example: fast, cheap, and happy to lose a packet.", "mod": "m3", "cue": "define", "q": "Connectionless protocol"}, {"t": "Data offset field", "d": "the TCP header field saying how long the header is, which matters because options can extend it.", "mod": "m3", "cue": "define", "q": "Data offset field"}, {"t": "Demultiplexing", "d": "the receiving side sorting incoming segments to the correct process by port number, the reverse of multiplexing.", "mod": "m3", "cue": "define", "q": "Demultiplexing"}, {"t": "Duration field", "d": "used in Neighbor Discovery for IPv6 to say how long an entry stays valid, i.e. a lifetime on the information.", "mod": "m3", "cue": "define", "q": "Duration field"}, {"t": "Error recovery", "d": "noticing that something was lost or damaged and putting it right. In TCP it means retransmission; in UDP it is left to the application or ignored.", "mod": "m3", "cue": "define", "q": "Error recovery"}, {"t": "ESTABLISHED", "d": "the normal state of a working TCP connection: both sides have completed the handshake and data may flow.", "mod": "m3", "cue": "define", "q": "ESTABLISHED"}, {"t": "FIN", "d": "the TCP flag that says \"I have finished sending\". Each direction closes separately, which is why a full shutdown takes two FINs.", "mod": "m3", "cue": "define", "q": "FIN"}, {"t": "FIN_WAIT", "d": "a TCP state on the side that has sent FIN and is waiting for the other end to finish. There are two variants, before and after the peer's FIN arrives.", "mod": "m3", "cue": "define", "q": "FIN_WAIT"}, {"t": "Firewall", "d": "a device or program that permits or blocks traffic according to rules about addresses, ports and connection state.", "mod": "m3", "cue": "define", "q": "Firewall"}, {"t": "FTP", "d": "The old standard for moving files, using port 21 for control and a second connection for the data. Plain FTP sends credentials in clear text, so it has been replaced by SFTP and FTPS.", "mod": "m3", "cue": "expand", "q": "What does FTP stand for?", "a": "File Transfer Protocol"}, {"t": "Handshake", "d": "the exchange that sets up a TCP connection: SYN, SYN-ACK, ACK. Three messages to agree that both ends are present and which sequence numbers to start from.", "mod": "m3", "cue": "define", "q": "Handshake"}, {"t": "Listen", "d": "a TCP state where a process is waiting on a port for incoming connection requests.", "mod": "m3", "cue": "define", "q": "Listen"}, {"t": "Loopback address", "d": "an address that points back at the local machine: 127.0.0.1 in IPv4, ::1 in IPv6. Reaching it proves the stack works without involving any cable.", "mod": "m3", "cue": "define", "q": "Loopback address"}, {"t": "Multiplexing", "d": "many applications sharing one network connection, told apart by port number, so a browser, a mail client and a game can all use one IP address at once.", "mod": "m3", "cue": "define", "q": "Multiplexing"}, {"t": "Payload", "d": "the part of a segment that carries data, as opposed to the header that carries bookkeeping.", "mod": "m3", "cue": "define", "q": "Payload"}, {"t": "Port", "d": "the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.", "mod": "m3", "cue": "define", "q": "Port"}, {"t": "PSH flag", "d": "TCP control bit asking the receiver to hand the data up to the application immediately rather than buffering it until the buffer fills.", "mod": "m3", "cue": "define", "q": "PSH flag"}, {"t": "RST flag", "d": "TCP's abrupt reset: \"stop, this connection is over, do not reply\". Used when the state is wrong, when a port is closed, or by a firewall that wants to kill a session.", "mod": "m3", "cue": "define", "q": "RST flag"}, {"t": "Sequence number", "d": "the position of this segment's first byte in the stream of bytes being sent. It is what lets TCP reorder and detect gaps, since the network does not preserve order.", "mod": "m3", "cue": "define", "q": "Sequence number"}, {"t": "Socket", "d": "one endpoint of a connection, identified by the combination of IP address and port. A TCP connection is a pair of sockets.", "mod": "m3", "cue": "define", "q": "Socket"}, {"t": "SYN flag", "d": "the \"synchronise\" bit that opens a TCP connection and proposes an initial sequence number.", "mod": "m3", "cue": "define", "q": "SYN flag"}, {"t": "SYN_RECEIVED", "d": "a TCP state on the server between receiving SYN and completing the handshake.", "mod": "m3", "cue": "define", "q": "SYN_RECEIVED"}, {"t": "SYN_SENT", "d": "a TCP state on the client after sending SYN and before the reply arrives. Lots of these in a list mean outbound connections that are not being answered.", "mod": "m3", "cue": "define", "q": "SYN_SENT"}, {"t": "TCP checksum", "d": "a checksum over the TCP header and payload, so the receiver can see that the segment arrived intact before acknowledging it.", "mod": "m3", "cue": "define", "q": "TCP checksum", "x": "TCP = Transmission Control Protocol"}, {"t": "TCP segment", "d": "the unit TCP produces: its header plus a slice of the application's data stream.", "mod": "m3", "cue": "define", "q": "TCP segment", "x": "TCP = Transmission Control Protocol"}, {"t": "TCP window", "d": "how much data the receiver is willing to accept before needing an acknowledgement. It is flow control: a small window means \"slow down\", whether because the receiver is busy or the link is congested.", "mod": "m3", "cue": "define", "q": "TCP window", "x": "TCP = Transmission Control Protocol"}, {"t": "TCP", "d": "the connection-oriented transport protocol: numbers every byte, acknowledges what arrives, retransmits what does not, and delivers in order. Everything that must not lose data uses it.", "mod": "m3", "cue": "expand", "q": "What does TCP stand for?", "a": "Transmission Control Protocol"}, {"t": "Urgent pointer field", "d": "a TCP header field that marks where urgent data ends. Rarely used, and obsolete in practice because the URG mechanism was never widely implemented.", "mod": "m3", "cue": "define", "q": "Urgent pointer field"}, {"t": "URG flag", "d": "TCP control bit saying the urgent pointer field is meaningful. See the field above.", "mod": "m3", "cue": "define", "q": "URG flag"}, {"t": "UDP", "d": "the connectionless transport protocol: no handshake, no acknowledgements, no ordering, tiny header. Chosen when speed or timing beats reliability — DNS queries, voice, video, games.", "mod": "m3", "cue": "expand", "q": "What does UDP stand for?", "a": "User Datagram Protocol"}, {"t": "Segmentation", "d": "splitting a message into pieces small enough to travel, then reassembling them in order at the other end.", "mod": "m3", "cue": "define", "q": "Segmentation"}, {"t": "Flow control", "d": "stopping a fast sender from overwhelming a slow receiver, done with the TCP window size.", "mod": "m3", "cue": "define", "q": "Flow control"}, {"t": "Well-known port", "d": "a port from 0 to 1023, assigned to a famous service. Binding one usually requires administrator rights.", "mod": "m3", "cue": "define", "q": "Well-known port"}, {"t": "Registered port", "d": "a port from 1024 to 49151, used by software that wants a predictable number: databases, game servers, vendor services.", "mod": "m3", "cue": "define", "q": "Registered port"}, {"t": "Destination port", "d": "the port on the receiving machine, which determines the service being asked for.", "mod": "m3", "cue": "define", "q": "Destination port"}, {"t": "Three-way handshake", "d": "SYN, SYN-ACK, ACK. The minimum exchange that proves both directions work and agrees the starting sequence numbers.", "mod": "m3", "cue": "define", "q": "Three-way handshake"}, {"t": "SYN", "d": "the flag that opens a TCP connection and carries the sender's starting sequence number.", "mod": "m3", "cue": "define", "q": "SYN"}, {"t": "SYN-ACK", "d": "the server's reply, acknowledging the client's number and offering its own.", "mod": "m3", "cue": "define", "q": "SYN-ACK"}, {"t": "ACK", "d": "the flag that acknowledges received data, or completes the handshake.", "mod": "m3", "cue": "define", "q": "ACK"}, {"t": "Reset (RST)", "d": "the flag that aborts a connection: this conversation does not exist, stop talking. Port scans and rejecting firewalls produce them.", "mod": "m3", "cue": "define", "q": "Reset (RST)"}, {"t": "TCP window size", "d": "how much data the receiver can still accept. Shrinking it slows the sender without dropping anything.", "mod": "m3", "cue": "define", "q": "TCP window size", "x": "TCP = Transmission Control Protocol"}, {"t": "Retransmission", "d": "resending a segment that was not acknowledged, after a timeout.", "mod": "m3", "cue": "define", "q": "Retransmission"}, {"t": "Socket state", "d": "where a TCP connection is in its lifecycle: LISTEN, SYN_SENT, SYN_RECEIVED, ESTABLISHED, FIN_WAIT, CLOSE_WAIT, TIME_WAIT, CLOSED.", "mod": "m3", "cue": "define", "q": "Socket state"}, {"t": "TIME_WAIT", "d": "the two-minute hold after closing so a delayed duplicate packet cannot be mistaken for a new connection.", "mod": "m3", "cue": "define", "q": "TIME_WAIT"}, {"t": "SYN flood", "d": "an attack that opens many half-completed connections to exhaust a server's backlog of pending connections.", "mod": "m3", "cue": "define", "q": "SYN flood"}, {"t": "Connectionless", "d": "sending a datagram with no prior agreement and no guarantee of arrival. UDP's model.", "mod": "m3", "cue": "define", "q": "Connectionless"}, {"t": "Connection-oriented", "d": "agreeing a conversation before exchanging data, and tracking its state. TCP's model.", "mod": "m3", "cue": "define", "q": "Connection-oriented"}, {"t": "Datagram", "d": "one self-contained UDP message: source port, destination port, length and checksum.", "mod": "m3", "cue": "define", "q": "Datagram"}, {"t": "QUIC", "d": "a transport protocol built on UDP that provides reliability and encryption in userspace. The foundation of HTTP/3.", "mod": "m3", "cue": "define", "q": "QUIC"}, {"t": "Stateless firewall", "d": "a firewall that judges each packet on its own, so replies need their own rules.", "mod": "m3", "cue": "define", "q": "Stateless firewall"}, {"t": "ACL", "d": "the ordered list of rules a firewall or router evaluates, stopping at the first match.", "mod": "m3", "cue": "expand", "q": "What does ACL stand for?", "a": "Access Control List"}, {"t": "Default deny", "d": "blocking everything and opening only what a service actually needs. The only defensible firewall default.", "mod": "m3", "cue": "define", "q": "Default deny"}, {"t": "Ingress / egress", "d": "traffic coming in, and traffic going out. Both need rules; egress is how malware phones home.", "mod": "m3", "cue": "define", "q": "Ingress / egress"}, {"t": "DMZ", "d": "a separate network segment for services that must be reachable from outside, kept away from everything else.", "mod": "m3", "cue": "expand", "q": "What does DMZ stand for?", "a": "Demilitarized Zone"}, {"t": "HTTP", "d": "the request-and-response protocol of the web: a method, a path, headers and an optional body.", "mod": "m3", "cue": "expand", "q": "What does HTTP stand for?", "a": "HyperText Transfer Protocol"}, {"t": "HTTP method", "d": "the verb of a request: GET to fetch, POST to send and change, PUT and PATCH to update, DELETE to remove, HEAD for headers only.", "mod": "m3", "cue": "define", "q": "HTTP method", "x": "HTTP = HyperText Transfer Protocol"}, {"t": "Status code", "d": "the three-digit result of an HTTP request: 200 OK, 301 redirect, 401 unauthenticated, 403 forbidden, 404 missing, 500 server error, 502 bad gateway.", "mod": "m3", "cue": "define", "q": "Status code"}, {"t": "HTTPS", "d": "HTTP carried inside TLS on port 443, so the content is encrypted and the server proves its identity with a certificate.", "mod": "m3", "cue": "expand", "q": "What does HTTPS stand for?", "a": "HTTP Secure"}, {"t": "TLS", "d": "the encryption layer that makes HTTPS and secure mail possible, and proves the server's identity with a certificate.", "mod": "m3", "cue": "expand", "q": "What does TLS stand for?", "a": "Transport Layer Security"}, {"t": "DNS", "d": "the hierarchical, cached directory that turns names into IP addresses. Port 53.", "mod": "m3", "cue": "expand", "q": "What does DNS stand for?", "a": "Domain Name System"}, {"t": "SMTP", "d": "the protocol for sending mail and relaying it between servers. Port 25, submission on 587.", "mod": "m3", "cue": "expand", "q": "What does SMTP stand for?", "a": "Simple Mail Transfer Protocol"}, {"t": "POP3", "d": "a mail retrieval protocol that downloads messages and usually deletes them from the server. Port 110, secure 995.", "mod": "m3", "cue": "expand", "q": "What does POP3 stand for?", "a": "Post Office Protocol 3"}, {"t": "IMAP", "d": "a mail retrieval protocol that keeps messages on the server and syncs state across devices. Port 143, secure 993.", "mod": "m3", "cue": "expand", "q": "What does IMAP stand for?", "a": "Internet Message Access Protocol"}, {"t": "Encapsulation", "d": "each layer wrapping the data of the layer above it with its own header, with the receiver unwrapping in reverse.", "mod": "m3", "cue": "define", "q": "Encapsulation"}, {"t": "Port scan", "d": "probing a range of ports to learn which services a machine is running. Produces RSTs or silence depending on the firewall.", "mod": "m3", "cue": "define", "q": "Port scan"}, {"t": "SMB", "d": "the Windows file and printer sharing protocol, on port 445.", "mod": "m3", "cue": "expand", "q": "What does SMB stand for?", "a": "Server Message Block"}, {"t": "RDP", "d": "Windows' remote desktop on port 3389.", "mod": "m3", "cue": "expand", "q": "What does RDP stand for?", "a": "Remote Desktop Protocol"}, {"t": "LDAP", "d": "the directory lookup protocol behind Active Directory, on port 389, secure on 636.", "mod": "m3", "cue": "expand", "q": "What does LDAP stand for?", "a": "Lightweight Directory Access Protocol"}, {"t": "SNMP", "d": "the protocol for monitoring and managing network devices, on port 161.", "mod": "m3", "cue": "expand", "q": "What does SNMP stand for?", "a": "Simple Network Management Protocol"}, {"t": "Common ports", "d": "the numbers worth memorising: 20/21 FTP, 22 SSH, 23 Telnet, 25 SMTP, 53 DNS, 67/68 DHCP, 80 HTTP, 110 POP3, 143 IMAP, 161 SNMP, 389 LDAP, 443 HTTPS, 445 SMB, 3389 RDP.", "mod": "m3", "cue": "define", "q": "Common ports", "src": "aplus"}, {"t": "Well-known ports", "d": "0 to 1023, reserved for standard services and normally only bindable by privileged processes.", "mod": "m3", "cue": "define", "q": "Well-known ports", "src": "aplus"}, {"t": "Ephemeral port", "d": "a high, temporary port a client picks for its side of a connection, typically somewhere above 49152.", "mod": "m3", "cue": "define", "q": "Ephemeral port", "src": "aplus"}, {"t": "Maximum transmission unit", "d": "the largest payload a link will carry in one frame. Exceed it and the packet must be fragmented or dropped.", "mod": "m3", "cue": "define", "q": "Maximum transmission unit", "src": "aplus"}, {"t": "TCP maximum segment size", "d": "the largest chunk of data TCP will put in one segment, chosen so the resulting packet fits the path's MTU.", "mod": "m3", "cue": "define", "q": "TCP maximum segment size", "x": "TCP = Transmission Control Protocol", "src": "aplus"}, {"t": "Latency", "d": "how long a packet takes to arrive. High latency makes a link feel slow even when its bandwidth is generous.", "mod": "m3", "cue": "define", "q": "Latency", "src": "aplus"}, {"t": "Jitter", "d": "variation in latency from packet to packet. Voice and video care about jitter more than about raw speed.", "mod": "m3", "cue": "define", "q": "Jitter", "src": "aplus"}, {"t": "Packet loss", "d": "packets that never arrive. TCP hides it by retransmitting; UDP applications stutter or drop out.", "mod": "m3", "cue": "define", "q": "Packet loss", "src": "aplus"}, {"t": "Bandwidth", "d": "the capacity of a link, its theoretical maximum rate. Not the same as how fast anything actually goes.", "mod": "m3", "cue": "define", "q": "Bandwidth", "src": "aplus"}, {"t": "Throughput", "d": "the rate actually achieved, always below bandwidth once overhead, contention and protocol chatter are paid for.", "mod": "m3", "cue": "define", "q": "Throughput", "src": "aplus"}, {"t": "Quality of Service", "d": "marking and prioritising traffic so voice and video get served before bulk downloads when a link is busy.", "mod": "m3", "cue": "define", "q": "Quality of Service", "src": "aplus"}, {"t": "Stateful firewall", "d": "a firewall that remembers active connections and lets returning traffic through automatically, instead of needing an inbound rule for every reply.", "mod": "m3", "cue": "define", "q": "Stateful firewall", "src": "aplus"}, {"t": "Intrusion detection system", "d": "a sensor that watches traffic and alerts on suspicious patterns. It reports; it does not block.", "mod": "m3", "cue": "define", "q": "Intrusion detection system", "src": "aplus"}, {"t": "Intrusion prevention system", "d": "the same detection placed inline so it can actually drop the traffic. Faster to act, and riskier when it is wrong.", "mod": "m3", "cue": "define", "q": "Intrusion prevention system", "src": "aplus"}, {"t": "Demilitarized zone", "d": "a separate network segment for internet-facing servers, isolated from the internal network so a compromised web server is not a foothold inside.", "mod": "m3", "cue": "define", "q": "Demilitarized zone", "src": "aplus"}, {"t": "Telnet", "d": "the original remote-terminal protocol, port 23, entirely unencrypted. Useful as a port-connectivity test; never for logging in.", "mod": "m3", "cue": "define", "q": "Telnet", "src": "aplus"}, {"t": "Secure Shell", "d": "encrypted remote shell on port 22, the standard way to administer a Linux box, and also a tunnel for other traffic.", "mod": "m3", "cue": "define", "q": "Secure Shell", "src": "aplus"}, {"t": "Remote Desktop Protocol", "d": "Microsoft's graphical remote-control protocol on port 3389; convenient, and a favourite target, so never expose it to the internet.", "mod": "m3", "cue": "define", "q": "Remote Desktop Protocol", "src": "aplus"}, {"t": "SFTP", "d": "file transfer over an SSH session; encrypted, and the sensible replacement for FTP.", "mod": "m3", "cue": "expand", "q": "What does SFTP stand for?", "a": "SSH File Transfer Protocol", "src": "aplus"}, {"t": "Unified threat management", "d": "one appliance combining firewall, antivirus, content filtering and intrusion detection. Convenient for a small site, one thing to fail.", "mod": "m3", "cue": "define", "q": "Unified threat management", "src": "aplus"}]);
+
+quiz('#quizHost', [{"k": "c2m3q1", "lo": "LO1", "q": "What does the transport layer add that the network layer does not?", "o": ["physical addressing", "delivery to a specific program on the machine, plus segmentation and optional reliability", "routing between networks", "name resolution"], "a": 1, "why": "The network layer gets data to the right machine. Ports and the TCP/UDP choice are what get it to the right program."}, {"k": "c2m3q2", "lo": "LO1", "q": "What is multiplexing at this layer?", "o": ["compressing data", "many programs sharing one network connection, kept apart by port numbers", "encrypting traffic", "routing between subnets"], "a": 1, "why": "One machine, one network card, dozens of conversations. Ports are how they stay separate."}, {"k": "c2m3q3", "lo": "LO1", "q": "A socket is…", "o": ["a cable connector", "an IP address plus a port number", "a type of firewall", "a DNS record"], "a": 1, "why": "192.168.1.10:443 is a specific program on a specific machine. Four values identify a connection: both addresses and both ports."}, {"k": "c2m3q4", "lo": "LO2", "q": "What are ports 0-1023 called?", "o": ["ephemeral", "registered", "well-known", "private"], "a": 2, "why": "Binding one usually needs administrator rights, so an ordinary program cannot impersonate a server."}, {"k": "c2m3q5", "lo": "LO2", "q": "Which range does your machine pick a source port from for an outgoing connection?", "o": ["0-1023", "1024-49151", "49152-65535", "any of them"], "a": 2, "why": "Ephemeral, or dynamic. That is why your browser can open six connections to one server: same destination port, six different sources."}, {"k": "c2m3q6", "lo": "LO2", "q": "Which protocol and port pair is correct?", "o": ["IMAP is 143, POP3 is 110", "IMAP is 110, POP3 is 143", "both are 25", "both are 443"], "a": 0, "why": "IMAP keeps mail on the server and syncs; POP3 downloads and usually deletes. Secure versions are 993 and 995."}, {"k": "c2m3q7", "lo": "LO2", "q": "A user says their mail will not send, but new mail is arriving. Which protocol is failing?", "o": ["IMAP", "SMTP", "DNS", "HTTPS"], "a": 1, "why": "Sending is SMTP. Receiving is IMAP or POP3. Two different servers, often two different companies."}, {"k": "c2m3q8", "lo": "LO2", "q": "Which port does DNS use?", "o": ["53", "67", "123", "389"], "a": 0, "why": "53, UDP for lookups and TCP for answers too large for a datagram or for zone transfers."}, {"k": "c2m3q9", "lo": "LO3", "q": "Why does TCP take three messages to open a connection?", "o": ["for security", "three is the minimum that proves both directions work and agrees the starting sequence numbers", "to slow down attackers", "because there are three layers"], "a": 1, "why": "SYN proves the client can send; SYN-ACK proves the server can hear and send; the final ACK proves the client heard. Two would leave one direction unproven."}, {"k": "c2m3q10", "lo": "LO3", "q": "What does the sequence number in a TCP segment identify?", "o": ["the packet's position in the whole internet", "which byte of the stream this segment starts at", "the connection's priority", "the port"], "a": 1, "why": "Numbering bytes is what makes reassembly in order and retransmission of gaps possible."}, {"k": "c2m3q11", "lo": "LO3", "q": "What does the TCP window size do?", "o": ["sets the maximum packet size", "tells the sender how much data the receiver can still accept, which is flow control", "encrypts the payload", "selects the route"], "a": 1, "why": "A slow receiver shrinks the window and the sender slows down, instead of dropping data it cannot process."}, {"k": "c2m3q12", "lo": "LO3", "q": "A TCP RST means…", "o": ["the connection closed politely", "the connection is being aborted: this conversation does not exist, stop talking", "the packet was corrupted", "the port is open"], "a": 1, "why": "Port scans, rejecting firewalls and crashed services all produce RSTs. It is information, not automatically a fault."}, {"k": "c2m3q13", "lo": "LO4", "q": "You check a server and nothing is in LISTEN state on port 443. What does that mean?", "o": ["the firewall is blocking it", "no service is waiting for connections on that port", "the certificate expired", "DNS is broken"], "a": 1, "why": "Nothing is listening. Either the service is not running, or it is bound to a different address or port."}, {"k": "c2m3q14", "lo": "LO4", "q": "Thousands of connections sit in CLOSE_WAIT. What does that suggest?", "o": ["the network is congested", "the application is not closing its sockets - an application bug that will exhaust the port table", "the firewall is stateful", "TCP is misconfigured"], "a": 1, "why": "CLOSE_WAIT means the other side closed and this side never finished. That is the application's job, not the network's."}, {"k": "c2m3q15", "lo": "LO4", "q": "Why does a closed connection sit in TIME_WAIT for a couple of minutes?", "o": ["to log it", "so a delayed duplicate packet cannot be mistaken for the start of a new connection", "to free the port slowly", "to let the firewall catch up"], "a": 1, "why": "The wait is twice the maximum time a packet can survive on the network. It is a correctness measure, not a delay."}, {"k": "c2m3q16", "lo": "LO5", "q": "Why does a voice call use UDP?", "o": ["it is easier to program", "a retransmitted packet that arrives late is useless - better to lose it and carry on", "it is encrypted", "TCP does not work on the internet"], "a": 1, "why": "You cannot un-play the silence. Reliability at the transport layer would make the call worse, not better."}, {"k": "c2m3q17", "lo": "LO5", "q": "Why must DHCP use UDP?", "o": ["it is faster", "it needs broadcast, and only UDP can broadcast", "it is encrypted", "it has no port number"], "a": 1, "why": "A client with no address yet has nothing to send a unicast packet from. Broadcast discovery is the only way to start."}, {"k": "c2m3q18", "lo": "LO5", "q": "What does QUIC (HTTP/3) do that is unusual?", "o": ["it replaces IP", "it rebuilds reliability on top of UDP, in userspace, where it can be improved without changing every operating system", "it removes encryption", "it only works on local networks"], "a": 1, "why": "The trade: lose kernel-level efficiency, gain the ability to iterate. It is why HTTP/3 exists at all."}, {"k": "c2m3q19", "lo": "LO6", "q": "How does a stateful firewall differ from a stateless one?", "o": ["it is faster", "it tracks connections, so return traffic for an allowed outbound connection is permitted automatically", "it only blocks UDP", "it needs no rules"], "a": 1, "why": "Stateless firewalls need a rule for the reply as well - the classic 'allowed outbound, nothing comes back' mistake."}, {"k": "c2m3q20", "lo": "LO6", "q": "Which is the defensible firewall default?", "o": ["allow everything, block what you notice", "default deny: block everything, then open what a service actually needs", "allow only port 80", "no rules at all"], "a": 1, "why": "The other way round means you are trusting everything you forgot to block."}, {"k": "c2m3q21", "lo": "LO6", "q": "A page returns 403. Whose problem is it?", "o": ["the network", "the client is authenticated but not permitted - an authorisation decision on the server", "DNS", "the cable"], "a": 1, "why": "401 is 'who are you'. 403 is 'I know who you are and no'. 500 is the one that belongs to the server's bug."}, {"k": "c2m3q22", "lo": "LO6", "q": "A page returns 502. What does that tell you?", "o": ["the page does not exist", "something between you and the application - a proxy or load balancer - cannot reach what is behind it", "your password is wrong", "your DNS is wrong"], "a": 1, "why": "Bad gateway. Very often the application itself is down while the front end is up, which is why it escalates rather than self-heals."}, {"k": "c2m3q23", "lo": "LO6", "q": "A user can reach a site by IP but not by name. Which layer is failing?", "o": ["link", "network", "transport", "application - name resolution (DNS)"], "a": 3, "why": "The path works; only the translation does not. That one test separates DNS from everything else."}, {"k": "c2m3q24", "lo": "LO6", "q": "What is encapsulation?", "o": ["encrypting each layer", "each layer wrapping the one above it, and the receiver unwrapping in reverse", "compressing headers", "splitting packets"], "a": 1, "why": "Nothing above the link layer knows what medium carried the data; nothing below the application layer knows what the bytes mean."}]);
+
+</script>
+</body>
+</html>

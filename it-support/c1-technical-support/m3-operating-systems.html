@@ -1,0 +1,1439 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Technical Support Fundamentals — Installing and Using Operating Systems, Module 3 (study)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Course 1 — Technical Support · Module 3 — Installing and Using Operating Systems</span>
+  <nav><a href="index.html">Course 1</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="#essentials">Essentials</a><a href="m1-introduction-to-it.html">M1</a><a href="m2-hardware.html">M2</a><a href="m4-networking-flyover.html">M4</a><a href="m5-software.html">M5</a><a href="m6-troubleshooting.html">M6</a><a href="#quiz">Quiz</a><a href="#cards">Flashcards</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="essentials" class=""><h2>The essentials &mdash; hold these before the detail</h2><p class="lede">The module at entry-certification level: what you must be able to do, and the facts the quizzes and drills on this page are testing. Read this first, every time.</p>
+    <div class="learnbox">
+      <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
+        <ul class="lcan"><li>explain kernel versus user space, and why the split exists</li><li>describe what a filesystem does and name the common ones per operating system</li><li>explain process and memory management, including virtual memory</li><li>read a boot sequence and say what has failed at each stage</li><li>choose between Windows, Linux, macOS and ChromeOS for a given need</li><li>explain what a virtual machine is, and when to use one</li></ul></div>
+      <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 8 facts</span>
+        <div class="kv lfacts"><div class="k">Kernel</div><div>the privileged core that talks to hardware, schedules processes and enforces permissions. Everything else, including your apps, is user space.</div><div class="k">Filesystem</div><div>organises a disk into files and directories. <span class="ac" data-full="New Technology File System" data-desc="Windows&#x27; filesystem: permissions, journaling, encryption">NTFS</span> on Windows, <span class="ac" data-full="Fourth Extended Filesystem" data-desc="the default Linux filesystem for most distributions">ext4</span> on Linux, <span class="ac" data-full="Apple File System" data-desc="the default macOS filesystem: snapshots, encryption, copy-on-write">APFS</span> on macOS, <span class="ac" data-full="Extensible File Allocation Table" data-desc="FAT32&#x27;s replacement for large removable drives, readable by everything">exFAT</span>/<span class="ac" data-full="File Allocation Table 32" data-desc="the universal, ancient filesystem with a 4 GB per-file limit">FAT32</span> for removable media.</div><div class="k"><span class="ac" data-full="Process" data-desc="a running program: its code, its memory, its open files, and its current state.">Process</span></div><div>a running program with its own memory and an ID. The scheduler decides which process runs on which core, and for how long.</div><div class="k">Virtual memory</div><div>each process gets its own address space, and pages move to disk when <span class="ac" data-full="Random Access Memory" data-desc="fast volatile working memory: it holds whatever is running now and is wiped when power goes">RAM</span> runs out. Constant paging is the &#x27;why is it so slow&#x27; slowdown.</div><div class="k">Boot chain</div><div>firmware (<span class="ac" data-full="Unified Extensible Firmware Interface" data-desc="the modern replacement for BIOS: faster boot, drives over 2 TB, Secure Boot">UEFI</span>) finds the bootloader, the bootloader starts the kernel, the kernel starts init/systemd, then you log in. Knowing the order tells you which log to read.</div><div class="k">Logs</div><div>Event Viewer on Windows; /var/log and journalctl on Linux. The first place to look, before changing anything.</div><div class="k">Virtual machine</div><div>a whole operating system running on virtual hardware. Cheap isolation and snapshots are why test machines are disposable.</div><div class="k">Mobile <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span></div><div>iOS and Android. Apps are sandboxed, updates come through a store, and permissions are granted per app rather than per user.</div></div></div>
+      <div class="big60 r"><b>The trap:</b> Treating &#x27;out of memory&#x27; and &#x27;disk full&#x27; as the same fault. They produce similar symptoms - an app crashes - and completely different fixes.</div>
+      <p class="src">Everything below this box explains these lines, in this order, with a drill
+      after each part that tests it. If you can say every line above without looking, the drills are
+      revision. If you cannot, read the section that matches the line and come back &mdash; that is
+      the whole study method. The same objectives for every module, built and not yet built, are on
+      <a href="../../learn/index.html">the learning path</a>.</p>
+    </div></section><section id="start" class=""><h2>What an operating system actually does</h2><p class="lede">Five jobs. If you can name them, every other section of this module has somewhere to sit.</p>
+    <table>
+      <tr><th>Job</th><th>What it decides</th><th>Why an application must not do it itself</th></tr>
+      <tr><td><b><span class="ac" data-full="Process" data-desc="a running program: its code, its memory, its open files, and its current state.">Process</span> management</b></td><td>Which program runs, for how long, and on which core.</td><td>Two programs both deciding they own the <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span> is a crashed machine.</td></tr>
+      <tr><td><b>Memory management</b></td><td>Which process gets which memory, and what happens when there is not enough.</td><td>One program writing into another's memory is how crashes and exploits happen.</td></tr>
+      <tr><td><b><span class="ac" data-full="File" data-desc="a named block of data. Its name, location and permissions are metadata the filesystem stores beside it.">File</span> management</b></td><td>How data becomes files and folders in a filesystem.</td><td>Every program inventing its own storage layout would be chaos.</td></tr>
+      <tr><td><b>I/O management</b></td><td>Talking to devices through drivers, and handling interrupts.</td><td>Applications would each need to know how every printer, disk and keyboard works.</td></tr>
+      <tr><td><b>The interface</b></td><td>What you see and type: <span class="ac" data-full="Graphical User Interface" data-desc="windows, icons and pointers rather than typed commands">GUI</span>, shell, and settings.</td><td>Not a correctness issue — a usability one, and the reason the rest exists.</td></tr>
+    </table>
+    <div class="big60">
+      <b>The definition to hold:</b> the operating system is the layer that manages the computer's resources and lets
+      a human and their programs use them, without any of them having to know how the hardware works. It is the
+      second of the four layers from Module 1 — the one standing between hardware and software.
+    </div>
+    <p>This is also why troubleshooting starts with "which layer?". An application that closes when you click Print
+    is not necessarily a broken application: it could be the driver, the spooler, the filesystem it cannot write to,
+    or the printer. The operating system is where those layers meet, which is why so many tickets end up here.</p>
+    <button class="aud" data-audio="audio/c1m3-what.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 30s</button></section><section id="kernel" class=""><h2>Kernel space and user space</h2><p class="lede">The single most important division in an operating system, and the reason a bad application does not take the machine with it.</p>
+    <table>
+      <tr><th></th><th>Kernel space</th><th>User space</th></tr>
+      <tr><td><b>What runs there</b></td><td>The kernel: scheduler, memory manager, filesystem drivers, device drivers</td><td>Every application, the desktop, the shell, your browser</td></tr>
+      <tr><td><b>Access</b></td><td>Full: it can touch any memory and any device</td><td>Restricted: it can only touch its own memory</td></tr>
+      <tr><td><b>If it goes wrong</b></td><td>Kernel panic, blue screen, the whole machine stops</td><td>The application closes, and nothing else notices</td></tr>
+    </table>
+    <p>An application cannot open a file by itself. It asks the kernel, through a <b>system call</b> — open, read,
+    write, exit. The <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span> switches into kernel mode, does the work, and switches back. That boundary is why malware
+    tries so hard to get into the kernel, and why a driver bug is more dangerous than an application bug.</p>
+    <h3>Ways to talk to the machine</h3>
+    <div class="kv">
+      <div class="k"><span class="ac" data-full="Graphical User Interface" data-desc="windows, icons and pointers rather than typed commands">GUI</span></div><div>Graphical user interface — windows, icons, pointer. Discoverable, and slow to do anything twice.</div>
+      <div class="k"><span class="ac" data-full="Command-Line Interface" data-desc="a prompt where you type commands instead of clicking">CLI</span></div><div>Command-line interface — a prompt where you type. Not harder, just less forgiving of not knowing the command.</div>
+      <div class="k"><span class="ac" data-full="Shell" data-desc="the program that reads a typed command and asks the kernel to carry it out. bash, zsh, PowerShell, cmd.">Shell</span></div><div>The program that reads what you typed and asks the kernel to do it. <span class="mono">bash</span> is the common Linux shell; PowerShell and <span class="mono">cmd</span> on Windows; <span class="mono">zsh</span> by default on macOS.</div>
+    </div>
+    <div class="big60 y">
+      <b>Why support work ends up in the shell:</b> a shell command is repeatable, scriptable, and gives you the
+      actual error. "It says no" from a dialog box has no information in it; <span class="mono">Permission denied
+      (os error 13)</span> tells you exactly what to fix.
+    </div>
+    <button class="aud" data-audio="audio/c1m3-kernel.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 30s</button></section><section id="space-game" class=""><h2>Drill: kernel or user space</h2><p class="lede">The distinction is one question with two answers, and it explains most of what 'the machine crashed' means.</p><div class="game" id="gSpace"><div class="gtitle"><b>Sort by privilege</b></div><p class="ghint">Click an item, then the side of the boundary it lives on.</p><div id="spaceHost"></div></div></section><section id="processes" class=""><h2>Processes: taking turns, convincingly</h2><p class="lede">One <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span> can appear to run fifty programs at once. The trick is a queue and a very short turn.</p>
+    <p>A <b>process</b> is a running program: its code, its memory, its open files, and its state. The kernel's
+    <b>scheduler</b> gives each one a <b>time slice</b> — a few milliseconds — then saves its state and switches to
+    the next. Switching is fast enough that the result looks simultaneous. On a multi-core machine several really
+    do run at once, but the illusion still does most of the work.</p>
+    <table>
+      <tr><th>State</th><th>Meaning</th></tr>
+      <tr><td><b>Running</b></td><td>Has the CPU right now.</td></tr>
+      <tr><td><b>Ready</b></td><td>Wants the CPU, waiting its turn in the queue.</td></tr>
+      <tr><td><b>Waiting / blocked</b></td><td>Waiting for something else: a disk read, a network reply, a key press. Consumes no CPU while it waits.</td></tr>
+      <tr><td><b>Terminated</b></td><td>Finished, or killed. Its memory is released.</td></tr>
+    </table>
+    <h3>What this explains in real life</h3>
+    <div class="kv">
+      <div class="k">"Not responding"</div><div>The window is in the waiting state and its message queue is not being drained — often because it is blocked on something that will never arrive.</div>
+      <div class="k">100% CPU</div><div>One process is never blocking. Find it before you reinstall anything: Task Manager, Activity Monitor, or <span class="mono">top</span>.</div>
+      <div class="k"><span class="ac" data-full="Priority" data-desc="how soon work is done. Severity contributes, but so does how many people are affected.">Priority</span></div><div>The scheduler can be told that one process matters more. That is what "high priority" means, and why setting everything to high achieves nothing.</div>
+      <div class="k">Zombie process</div><div>Finished, but its parent has not collected the exit status. Harmless, and a sign of a buggy parent.</div>
+    </div>
+    </section><section id="memory" class=""><h2>Memory management and virtual memory</h2><p class="lede">Every process believes it has the memory to itself. It does not, and that lie is the feature.</p>
+    <p>Each process gets its own <b>virtual address space</b>. The hardware and the kernel translate those virtual
+    addresses into real physical ones, page by page. Three things fall out of that:</p>
+    <ul>
+      <li><b>Isolation.</b> A process cannot read another process's memory, because its addresses simply do not map there.</li>
+      <li><b>No address collisions.</b> Two programs can both use the address 0x1000 happily.</li>
+      <li><b>Virtual memory.</b> Pages not being used can be moved out to disk and brought back on demand, so a program can be given more memory than is physically installed.</li>
+    </ul>
+    <h3>Pages, swapping, and thrashing</h3>
+    <p>Memory is divided into <b>pages</b>, typically 4 KB, and moved in those units. When physical <span class="ac" data-full="Random Access Memory" data-desc="fast volatile working memory: it holds whatever is running now and is wiped when power goes">RAM</span> is full, the
+    kernel writes the least recently used pages to a swap file or partition and frees them. When they are needed
+    again, it reads them back — from a disk that is thousands of times slower than RAM.</p>
+    <div class="big60 r">
+      <b>Thrashing</b> is what happens when there is not enough RAM for the working set: the machine spends nearly
+      all its time swapping pages in and out and almost none doing work. The symptom is a machine that is "slow" but
+      has low <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span> usage and constant disk activity. The fix is more RAM, or fewer things open — not a faster CPU.
+    </div>
+    <p>Modern systems also <b>compress</b> memory instead of swapping it, which is faster than disk and slower than
+    doing nothing. And they will <b>kill</b> a process to stay alive — the Linux OOM killer, or macOS refusing to
+    launch an application. That is not instability; it is the memory manager making a choice.</p>
+    <button class="aud" data-audio="audio/c1m3-virtual.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 30s</button></section><section id="files" class=""><h2>Files, folders and filesystems</h2><p class="lede">A filesystem is the operating system's promise about how data is found, named and protected.</p>
+    <p>A <b>file</b> is a named block of data; a <b>folder</b> (directory) is a container of names. The
+    <b>filesystem</b> is the structure that maps names to blocks on the device — and it decides what metadata exists,
+    what permissions mean, and how big a file can be.</p>
+    <h3>Blocks, not streams</h3>
+    <p>Data is written in fixed-size <b>blocks</b> (commonly 4 KB). A 1-byte file still consumes a whole block, which
+    is why a folder of a million tiny files wastes space. <b>Block storage</b> — addressing data as numbered blocks
+    rather than as one long stream — is what makes random access possible: the drive can jump to block 47,000 without
+    reading the 46,999 before it.</p>
+    <h3>The filesystems you will actually meet</h3>
+    <table>
+      <tr><th>Filesystem</th><th>Where</th><th>Know this about it</th></tr>
+      <tr><td><b><span class="ac" data-full="New Technology File System" data-desc="Windows&#x27; filesystem: permissions, journaling, encryption">NTFS</span></b></td><td>Windows</td><td>Permissions (ACLs), journaling, encryption, compression, quotas. The one Windows system files live on.</td></tr>
+      <tr><td><b><span class="ac" data-full="File Allocation Table 32" data-desc="the universal, ancient filesystem with a 4 GB per-file limit">FAT32</span></b></td><td>Anything, ancient</td><td>Read by everything, and limited: 4 GB maximum file size, 2 TB volume. The reason a big video will not fit on an old <span class="ac" data-full="Universal Serial Bus" data-desc="the standard connector and protocol for peripherals - and the only one most machines still have loads of">USB</span> stick.</td></tr>
+      <tr><td><b><span class="ac" data-full="Extensible File Allocation Table" data-desc="FAT32&#x27;s replacement for large removable drives, readable by everything">exFAT</span></b></td><td>Large removable drives</td><td>FAT32 without the size limits, readable by Windows, macOS and Linux. The right answer for a big shared USB drive.</td></tr>
+      <tr><td><b><span class="ac" data-full="Fourth Extended Filesystem" data-desc="the default Linux filesystem for most distributions">ext4</span></b></td><td>Most Linux</td><td>Journaling, permissions, reliable, and the default on Ubuntu for years.</td></tr>
+      <tr><td><b><span class="ac" data-full="XFS" data-desc="a Linux filesystem that scales well with very large files and many parallel writes; common on servers.">XFS</span></b></td><td>Linux servers</td><td>Scales well with very large files and many parallel writes.</td></tr>
+      <tr><td><b><span class="ac" data-full="Apple File System" data-desc="the default macOS filesystem: snapshots, encryption, copy-on-write">APFS</span></b></td><td>macOS</td><td>Copy-on-write, snapshots, native encryption. Replaced HFS+.</td></tr>
+      <tr><td><b><span class="ac" data-full="Resilient File System" data-desc="Windows Server&#x27;s filesystem: integrity streams and resilience to corruption. Not a general desktop filesystem.">ReFS</span></b></td><td>Windows <span class="ac" data-full="Server" data-desc="a machine that holds content and serves it to clients, running continuously.">Server</span></td><td>Integrity streams and resilience; not a general desktop filesystem.</td></tr>
+    </table>
+    <h3>Extensions, and the trap they set</h3>
+    <p>The <b>file extension</b> — <span class="mono">.docx</span>, <span class="mono">.jpg</span>,
+    <span class="mono">.exe</span> — is a hint about what the contents are and which program should open them. It is
+    <b>not</b> a guarantee: rename a text file to <span class="mono">.jpg</span> and it is still a text file that no
+    image viewer can open. Windows hides known extensions by default, which is how <span class="mono">invoice.pdf.exe</span>
+    gets clicked. Turning extension display on is a five-second security improvement.</p>
+    </section><section id="fs-game" class=""><h2>Drill: which filesystem</h2><p class="lede">Four families, one fact each. This is a <span class="ac" data-full="Core" data-desc="an independent execution unit inside a processor. Four cores can run four instruction streams at once.">Core</span> 2 objective and a real-world decision.</p><div class="game" id="gFS"><div class="gtitle"><b>Filesystem match</b></div><p class="ghint">Click a filesystem, then the fact that belongs to it.</p><div id="fsHost"></div></div></section><section id="io" class=""><h2>I/O management and drivers</h2><p class="lede">The kernel handles every device, and the driver is the part that knows how.</p>
+    <p>Everything outside the <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span> and <span class="ac" data-full="Random Access Memory" data-desc="fast volatile working memory: it holds whatever is running now and is wiped when power goes">RAM</span> is <b>I/O</b>: disk, keyboard, display, network card, printer, <span class="ac" data-full="Universal Serial Bus" data-desc="the standard connector and protocol for peripherals - and the only one most machines still have loads of">USB</span>. The
+    kernel's I/O manager provides one consistent way for programs to talk to all of them, and hides the fact that a
+    printer and a network card have nothing in common.</p>
+    <div class="kv">
+      <div class="k"><span class="ac" data-full="Driver" data-desc="the software that knows one device&#x27;s commands. The kernel routes through it; a bad driver is the usual cause of &quot;the hardware is fine but the OS…">Driver</span></div><div>A small piece of software that knows one device's commands. The kernel routes through it. A wrong or corrupt driver is the most common cause of "the hardware is fine but the <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span> cannot see it".</div>
+      <div class="k">Interrupt</div><div>How a device gets attention: it signals the CPU, which stops what it is doing and handles it. Without interrupts the CPU would have to keep asking every device whether anything happened.</div>
+      <div class="k"><span class="ac" data-full="Buffer" data-desc="a holding area so a fast device and a slow one can work together. A print spooler is a visible buffer.">Buffer</span></div><div>A holding area so a fast device and a slow one can work together — a print spooler is a buffer you can see.</div>
+      <div class="k">Plug and play</div><div>The OS detects a device, identifies it, and loads a driver. Convenient, and the reason an old printer can install itself and a new one cannot.</div>
+    </div>
+    <div class="big60">
+      <b>The support rule this establishes:</b> when a device misbehaves, the sequence is device → cable → port →
+      driver → operating system update. Most "broken hardware" is a driver or a cable, and both are cheaper to test
+      than a replacement.
+    </div>
+    </section><section id="boot" class=""><h2>The boot process, in six steps</h2><p class="lede">The most useful diagnostic sequence in this module: each step fails in a recognisable way.</p>
+    <table>
+      <tr><th>#</th><th>Step</th><th>If it fails here, you see</th></tr>
+      <tr><td>1</td><td><b>Power on</b> — the <span class="ac" data-full="Power Supply Unit" data-desc="converts wall AC into the DC rails the components need; its wattage is a ceiling, not a consumption">PSU</span> delivers DC, the board's power-good signal releases the <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span></td><td>Nothing at all: no fans, no lights. Suspect power first.</td></tr>
+      <tr><td>2</td><td><b><span class="ac" data-full="Firmware" data-desc="software stored on the motherboard that runs before any operating system exists.">Firmware</span></b> — <span class="ac" data-full="Basic Input/Output System" data-desc="firmware that starts the machine, runs the power-on self-test and hands control to the bootloader">BIOS</span> or <span class="ac" data-full="Unified Extensible Firmware Interface" data-desc="the modern replacement for BIOS: faster boot, drives over 2 TB, Secure Boot">UEFI</span> initialises hardware and runs the <b><span class="ac" data-full="Power-On Self-Test" data-desc="the firmware&#x27;s check of CPU, RAM and devices before anything boots">POST</span></b></td><td>Fans spin, no display, beep codes or a POST code. Suspect <span class="ac" data-full="Random Access Memory" data-desc="fast volatile working memory: it holds whatever is running now and is wiped when power goes">RAM</span>, CPU seating, or the graphics card.</td></tr>
+      <tr><td>3</td><td><b>Boot device chosen</b> — firmware reads the boot order and finds a device</td><td>"No bootable device" or an empty firmware screen. Suspect the drive, the cable, or the boot order.</td></tr>
+      <tr><td>4</td><td><b>Bootloader runs</b> — Windows Boot Manager, GRUB, or macOS's boot.efi</td><td>A GRUB prompt, a Windows recovery screen, or "operating system not found". The drive is fine; the bootloader is not.</td></tr>
+      <tr><td>5</td><td><b>Kernel loads</b> and initialises memory, drivers and the filesystem</td><td>A kernel panic, a blue screen very early, or a spinner that never finishes. Suspect a driver or corruption.</td></tr>
+      <tr><td>6</td><td><b>User space starts</b> — the first process starts services, then the login screen</td><td>The <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span> is running but the desktop never appears, or you get a login loop. Suspect a service, a profile, or a full disk.</td></tr>
+    </table>
+    <div class="big60 y">
+      <b>Safe mode</b> and its Linux equivalents exist to break the loop between steps 5 and 6: boot with a minimal
+      set of drivers and services, and if it works, the fault is in something you just excluded. That is a diagnosis,
+      not a fix — but it is half the work.
+    </div>
+    <p><b>Dual boot</b> is just two bootloaders (or one that lists two kernels) and two partitions. It fails in
+    predictable ways: the boot manager lists an OS that is gone, or the firmware's Secure Boot refuses a bootloader
+    it does not have a key for.</p>
+    <button class="aud" data-audio="audio/c1m3-boot.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="boot-game" class=""><h2>Drill: the boot order</h2><p class="lede">Six steps, in order, because the failure at each one looks different.</p><div class="game" id="gBoot"><div class="gtitle"><b>Order the boot</b></div><p class="ghint">Click two tiles to swap them, then check.</p><div id="bootHost"></div></div></section><section id="logs" class=""><h2>Logs: the machine already wrote down what happened</h2><p class="lede">Every operating system keeps a record. Knowing where it is turns 'it broke' into 'this line, at this time'.</p>
+    <table>
+      <tr><th>System</th><th>Where the logs are</th><th>What to look for</th></tr>
+      <tr><td><b>Windows</b></td><td>Event Viewer → Windows Logs (System, Application, Security)</td><td>Red error entries at the time of the fault. The Event ID is the thing to search.</td></tr>
+      <tr><td><b>Linux</b></td><td><span class="mono">/var/log/</span> — syslog, auth.log, and <span class="mono">journalctl</span> for the systemd journal</td><td>Repeated warnings, "out of memory", failed authentication. <span class="mono">journalctl -b -1</span> reads the previous boot, which is exactly what you want after a crash.</td></tr>
+      <tr><td><b>macOS</b></td><td>Console.app, or <span class="mono">log show --last 1h</span></td><td>Crash reports in Console → Crash Reports, and the unified log for everything else.</td></tr>
+      <tr><td><b><span class="ac" data-full="Firmware" data-desc="software stored on the motherboard that runs before any operating system exists.">Firmware</span></b></td><td>The board's own event log, in the firmware setup</td><td>Hardware errors, thermal events, and the fact that the machine restarted unexpectedly.</td></tr>
+    </table>
+    <p>A log entry has four useful parts: <b>when</b>, <b>what</b>, <b>which component</b>, and <b>severity</b>. The
+    timestamp is what turns a log into evidence — matching the moment the user says it broke to the entries around
+    it is the whole technique.</p>
+    <div class="big60">
+      <b>Reading a log is a skill, not a chore.</b> Filter by time first, then by severity, then search the error ID
+      or message. A thousand lines of information is not noise if you only need the eleven from 14:32.
+    </div>
+    </section><section id="install" class=""><h2>Installing an operating system</h2><p class="lede">The course's Qwiklabs put you in front of Windows and Linux and make you do it. The order of operations is the same everywhere.</p>
+    <table>
+      <tr><th>Step</th><th>What you actually do</th></tr>
+      <tr><td>1. Check compatibility</td><td><span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span>, <span class="ac" data-full="Random Access Memory" data-desc="fast volatile working memory: it holds whatever is running now and is wiped when power goes">RAM</span>, disk space, and — on Windows 11 — <span class="ac" data-full="Trusted Platform Module" data-desc="a chip that stores keys and measurements so the machine can prove what it booted">TPM</span> 2.0 and Secure Boot. Reading this first saves an hour.</td></tr>
+      <tr><td>2. Get the image</td><td>An <span class="mono">.iso</span> from the vendor. Never from a random mirror: a modified installer is a well-known attack.</td></tr>
+      <tr><td>3. Make bootable media</td><td>Write the ISO to a <span class="ac" data-full="Universal Serial Bus" data-desc="the standard connector and protocol for peripherals - and the only one most machines still have loads of">USB</span> stick with Rufus or balenaEtcher. This <b>erases the stick</b>.</td></tr>
+      <tr><td>4. Boot from it</td><td><span class="ac" data-full="Firmware" data-desc="software stored on the motherboard that runs before any operating system exists.">Firmware</span> boot menu (often F12, F11 or Esc at power-on) or change the boot order.</td></tr>
+      <tr><td>5. Partition and format</td><td>Choose <span class="ac" data-full="GUID Partition Table" data-desc="the modern partition table, paired with UEFI; many partitions, no 2 TB ceiling">GPT</span> (<span class="ac" data-full="Unified Extensible Firmware Interface" data-desc="the modern replacement for BIOS: faster boot, drives over 2 TB, Secure Boot">UEFI</span>) over <span class="ac" data-full="Master Boot Record" data-desc="the old partition table: four primary partitions, and nothing above 2 TB">MBR</span> unless the machine is genuinely old. Decide the partition layout — and know that this step is where data is destroyed.</td></tr>
+      <tr><td>6. Install, then update</td><td>The installer copies files, then reboots into the <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span>. Then you install drivers and run updates, which is not optional.</td></tr>
+    </table>
+    <h3>Doing it on Linux, concretely</h3>
+    <p>The course walks through Ubuntu on a Qwiklabs machine. The shell commands you are asked to use are worth
+    knowing by hand: <span class="mono">ls</span> to list, <span class="mono">pwd</span> to see where you are,
+    <span class="mono">mkdir</span> to make a folder, <span class="mono">cd</span> to move, <span class="mono">touch</span>
+    to create an empty file, and <span class="mono">echo $SHELL</span> to confirm you are in <span class="mono">bash</span>.</p>
+    <div class="big60 r">
+      <b>Install is destructive by design.</b> Before you touch partitions, the question is not "do I have a backup"
+      but "have I tested that the backup restores". A backup you have never restored is a belief, not a backup.
+    </div>
+    </section><section id="choose" class=""><h2>Choosing an operating system, and running more than one</h2><p class="lede">The course spends a whole video on this because the answer is never 'the best one'.</p>
+    <table>
+      <tr><th>OS</th><th>Strength</th><th>Cost</th></tr>
+      <tr><td><b>Windows</b></td><td>Everything business runs, the widest driver and software support, the games.</td><td>Licence cost, and the largest malware target.</td></tr>
+      <tr><td><b>macOS</b></td><td>Unix underneath, tight hardware integration, long battery life, good for creative work.</td><td>Apple hardware only, expensive, limited upgradeability.</td></tr>
+      <tr><td><b>Linux</b></td><td>Free, open, runs on anything, the default for servers and the cloud.</td><td>You maintain it. Some commercial software and some hardware do not arrive.</td></tr>
+      <tr><td><b>Chrome <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span></b></td><td>Fast to boot, hard to break, managed centrally, cheap hardware.</td><td>Web-first: a Linux container and Android apps are the escape hatch, not the point.</td></tr>
+    </table>
+    <h3>Mobile operating systems, in one line each</h3>
+    <div class="kv">
+      <div class="k">Android</div><div>Linux kernel, open source base, vendor skins on top, and the reason update timing varies by manufacturer.</div>
+      <div class="k">iOS / iPadOS</div><div>Darwin/XNU, closed ecosystem, updates delivered directly and for years.</div>
+    </div>
+    <h3>Virtual machines: the escape from choosing</h3>
+    <p>A <b>virtual machine</b> is a whole computer emulated in software, running on shared hardware. A
+    <b>hypervisor</b> runs the VMs: type 1 sits directly on the hardware (Hyper-V, ESXi, <span class="ac" data-full="Keyboard, Video, Mouse" data-desc="a switch that lets one keyboard, monitor and mouse drive several machines">KVM</span>), type 2 runs as an
+    application (VirtualBox, VMware Workstation).</p>
+    <p>This is the single most useful tool in this module. A <span class="ac" data-full="Virtual Machine" data-desc="a whole computer emulated in software, sharing the host&#x27;s CPU and memory">VM</span> lets you install an operating system, break it, and
+    throw it away in ten minutes — which is exactly what the labs are for, without risking the machine you are
+    sitting at. <b>Snapshots</b> make it better still: save the state, do the dangerous thing, roll back.</p>
+    </section><section id="remote" class=""><h2>Remote access: doing it without walking over</h2><p class="lede">Support at scale is remote. These are the four tools, and what each one actually gives you.</p>
+    <table>
+      <tr><th>Tool</th><th>Port</th><th>What you get</th></tr>
+      <tr><td><b><span class="ac" data-full="Secure Shell" data-desc="an encrypted remote terminal on port 22">SSH</span></b></td><td>22</td><td>An encrypted terminal on another machine. The standard for Linux and network devices. <span class="mono">OpenSSH</span> is the implementation you will meet; <span class="ac" data-full="PuTTY" data-desc="the long-standing Windows client for SSH and other terminal protocols.">PuTTY</span> is the Windows client the course names.</td></tr>
+      <tr><td><b><span class="ac" data-full="Remote Desktop Protocol" data-desc="Windows&#x27; remote graphical session on port 3389 - you see the other machine&#x27;s desktop">RDP</span></b></td><td>3389</td><td>Windows' remote <i>desktop</i>: you see the other machine's screen. <span class="mono">mstsc.exe</span> is the built-in client.</td></tr>
+      <tr><td><b><span class="ac" data-full="Virtual Network Computing" data-desc="cross-platform remote desktop on port 5900. Convenient, and unencrypted by default.">VNC</span></b></td><td>5900</td><td>Cross-platform remote desktop. Convenient, and not encrypted by default — tunnel it.</td></tr>
+      <tr><td><b><span class="ac" data-full="Virtual Private Network" data-desc="an encrypted tunnel across an untrusted network">VPN</span></b></td><td>varies</td><td>Not a remote-control tool: it puts your machine <i>inside</i> a private network over the internet, so the other tools can reach things that are not public.</td></tr>
+    </table>
+    <div class="big60">
+      <b>The difference that matters in a ticket:</b> SSH gives you a shell and almost no bandwidth; RDP gives you a
+      desktop and a lot of bandwidth. Over a bad link, the shell works and the desktop is unusable. Choosing the
+      cheaper tool is a support skill.
+    </div>
+    <p><b>Security note, because it is the exam's favourite:</b> exposing RDP or VNC directly to the internet is how
+    machines get ransomwared. Remote access belongs behind a VPN, or through a gateway that authenticates first and
+    brokers the connection.</p>
+    </section><section id="shell-game" class=""><h2>Drill: Linux commands</h2><p class="lede">The commands the labs ask you to use, and what each one does. No syntax trivia — just the vocabulary.</p><div class="game" id="gShell"><div class="gtitle"><b>Command match</b></div><p class="ghint">Click a command, then what it does. Six pairs per round.</p><div id="cmdHost"></div></div></section><section id="cards" class=""><h2>Flashcards</h2><p class="lede">The kit's glossary — 62 terms in this module, Coursera and CompTIA A+ together.</p><div class="game" id="gCards"><div class="gtitle"><b>Flashcards — 62 cards</b></div><p class="ghint">One question per card: <b>50</b> ask you to define a term, <b>12</b> ask what an acronym stands for. Every answer explains why, not just what.</p><div id="cardHost"></div></div></section><section id="quiz" class=""><h2>Quiz</h2><p class="lede">The thing to do last, and again in the morning.</p><div class="game" id="gQuiz"><div class="gtitle"><b>Module 3 quiz — 23 questions</b></div><p class="ghint">Every question shows why the answer is right. Misses go into the review queue.</p><div id="quizHost"></div></div></section>
+</main>
+
+<footer>
+      <p><b>Course 1, Module 3 — Installing and Using Operating Systems.</b> Part of the Google IT Support Professional Certificate study
+      kit. Every definition and explanation on this page is our own wording; the course supplies the
+      syllabus and the vocabulary, not the prose.</p>
+      <p>Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera or NPower; course titles and trademarks belong to their owners. Study aid only. Nothing here is submitted for grading.</p>
+    </footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+
+/* ---- c1m3 ---- */
+
+/* ---- filesystem match ---- */
+matchGame('#fsHost',[
+  {t:'NTFS',m:'Windows: permissions, journaling, encryption'},
+  {t:'FAT32',m:'Read by everything, 4 GB maximum file size'},
+  {t:'exFAT',m:'FAT32 without the size limits - big removable drives'},
+  {t:'ext4',m:'The default Linux filesystem on Ubuntu for years'},
+  {t:'APFS',m:'macOS: copy-on-write and snapshots'},
+  {t:'XFS',m:'Linux servers with very large files'}]);
+
+/* ---- boot order ---- */
+orderGame('#bootHost','Put the six boot steps in order.',
+  ['Power on - the PSU delivers DC and the board releases the CPU',
+   'Firmware runs and the POST checks CPU, memory and devices',
+   'The firmware picks a boot device from the boot order',
+   'The bootloader loads the kernel',
+   'The kernel initialises memory, drivers and the filesystem',
+   'User space starts, services start, the login screen appears'],'boot');
+
+/* ---- linux commands ---- */
+matchGame('#cmdHost',[
+  {t:'ls',m:'List the contents of the current directory'},
+  {t:'pwd',m:'Print the working directory - where you are'},
+  {t:'cd',m:'Change directory'},
+  {t:'mkdir',m:'Create a directory'},
+  {t:'touch',m:'Create an empty file'},
+  {t:'echo $SHELL',m:'Show which shell you are running'}]);
+
+/* ---- kernel vs user space ---- */
+sortGame('#spaceHost',
+  [{id:'k',name:'Kernel space'},{id:'u',name:'User space'}],
+  [{t:'The scheduler',b:'k'},
+   {t:'A device driver',b:'k'},
+   {t:'A kernel panic stops the machine',b:'k'},
+   {t:'Your browser',b:'u'},
+   {t:'The desktop shell',b:'u'},
+   {t:'A crash only closes this program',b:'u'}]);
+
+flashcards('#cardHost', [{"t": "Process management", "d": "the operating system deciding which program runs, for how long, and on which core.", "mod": "m3", "cue": "define", "q": "Process management"}, {"t": "Process", "d": "a running program: its code, its memory, its open files, and its current state.", "mod": "m3", "cue": "define", "q": "Process"}, {"t": "Scheduler", "d": "the part of the kernel that chooses which ready process gets the CPU next.", "mod": "m3", "cue": "define", "q": "Scheduler"}, {"t": "Time slice", "d": "the short interval a process is allowed to run before the scheduler may switch. Milliseconds, which is why the switching is invisible.", "mod": "m3", "cue": "define", "q": "Time slice"}, {"t": "Multitasking", "d": "running many processes by switching between them fast enough to look simultaneous. On several cores some really do run at once.", "mod": "m3", "cue": "define", "q": "Multitasking"}, {"t": "Preemptive multitasking", "d": "the OS takes the CPU back at the end of a time slice rather than waiting for the program to give it up. One badly written program cannot freeze the machine.", "mod": "m3", "cue": "define", "q": "Preemptive multitasking"}, {"t": "Process state", "d": "running (has the CPU), ready (waiting its turn), waiting or blocked (waiting on I/O), or terminated.", "mod": "m3", "cue": "define", "q": "Process state"}, {"t": "Memory management", "d": "the kernel handing out memory to processes, keeping them apart, and reclaiming it when they exit.", "mod": "m3", "cue": "define", "q": "Memory management"}, {"t": "Virtual memory", "d": "the illusion that each process has a large private address space, with pages moved to disk when physical memory runs out.", "mod": "m3", "cue": "define", "q": "Virtual memory"}, {"t": "Page", "d": "the fixed-size unit memory is divided into and moved in, typically 4 KB.", "mod": "m3", "cue": "define", "q": "Page"}, {"t": "Swap", "d": "the disk area the kernel writes unused pages to when RAM is full, and reads them back from. A file on Windows, a partition on Linux.", "mod": "m3", "cue": "define", "q": "Swap"}, {"t": "Thrashing", "d": "the state where the machine spends nearly all its time swapping pages and almost none doing work. It looks like \"slow\" with low CPU usage.", "mod": "m3", "cue": "define", "q": "Thrashing"}, {"t": "Out of memory killer", "d": "the Linux mechanism that kills a process to keep the system alive when memory is exhausted.", "mod": "m3", "cue": "define", "q": "Out of memory killer"}, {"t": "Kernel space", "d": "the privileged mode the kernel runs in, with full access to memory and devices.", "mod": "m3", "cue": "define", "q": "Kernel space"}, {"t": "User space", "d": "where applications, the desktop and the shell run, with restricted access. A crash here closes one program instead of the machine.", "mod": "m3", "cue": "define", "q": "User space"}, {"t": "System call", "d": "how a user-space program asks the kernel to do something real: open a file, read, write, exit.", "mod": "m3", "cue": "define", "q": "System call"}, {"t": "Shell", "d": "the program that reads a typed command and asks the kernel to carry it out. bash, zsh, PowerShell, cmd.", "mod": "m3", "cue": "define", "q": "Shell"}, {"t": "GUI", "d": "windows, icons and a pointer, as opposed to typed commands.", "mod": "m3", "cue": "expand", "q": "What does GUI stand for?", "a": "Graphical User Interface"}, {"t": "CLI", "d": "a prompt where commands are typed. Repeatable and scriptable, and it gives you the actual error message.", "mod": "m3", "cue": "expand", "q": "What does CLI stand for?", "a": "Command-Line Interface"}, {"t": "File", "d": "a named block of data. Its name, location and permissions are metadata the filesystem stores beside it.", "mod": "m3", "cue": "define", "q": "File"}, {"t": "File extension", "d": "the suffix that hints at a file's contents and which program should open it. A hint, never a guarantee.", "mod": "m3", "cue": "define", "q": "File extension"}, {"t": "Filesystem", "d": "the structure mapping names to blocks on a device: it decides metadata, permissions, and size limits.", "mod": "m3", "cue": "define", "q": "Filesystem"}, {"t": "Block storage", "d": "addressing data as numbered fixed-size blocks rather than a continuous stream, which is what makes random access possible.", "mod": "m3", "cue": "define", "q": "Block storage"}, {"t": "Data block", "d": "one fixed-size unit of storage, commonly 4 KB. A one-byte file still consumes a whole block.", "mod": "m3", "cue": "define", "q": "Data block"}, {"t": "Journaling", "d": "a filesystem keeping a log of intended changes so that an interrupted write can be completed or rolled back instead of corrupting the volume.", "mod": "m3", "cue": "define", "q": "Journaling"}, {"t": "NTFS", "d": "Windows' filesystem: permissions, journaling, encryption, compression, quotas.", "mod": "m3", "cue": "expand", "q": "What does NTFS stand for?", "a": "New Technology File System"}, {"t": "FAT32", "d": "the universally readable, ancient filesystem with a 4 GB per-file limit and a 2 TB volume limit.", "mod": "m3", "cue": "expand", "q": "What does FAT32 stand for?", "a": "File Allocation Table 32"}, {"t": "Extended File Allocation Table (exFAT)", "d": "FAT32 without the size limits, readable and writable by Windows, macOS and Linux. The right choice for a large shared USB drive.", "mod": "m3", "cue": "define", "q": "exFAT", "x": "exFAT = Extensible File Allocation Table"}, {"t": "ext4", "d": "the default Linux filesystem on Ubuntu for years: journaling, permissions, dependable.", "mod": "m3", "cue": "expand", "q": "What does ext4 stand for?", "a": "Fourth Extended Filesystem"}, {"t": "XFS", "d": "a Linux filesystem that scales well with very large files and many parallel writes; common on servers.", "mod": "m3", "cue": "define", "q": "XFS"}, {"t": "APFS", "d": "macOS' filesystem: copy-on-write, snapshots, native encryption.", "mod": "m3", "cue": "expand", "q": "What does APFS stand for?", "a": "Apple File System"}, {"t": "Resilient File System (ReFS)", "d": "Windows Server's filesystem: integrity streams and resilience to corruption. Not a general desktop filesystem.", "mod": "m3", "cue": "define", "q": "ReFS", "x": "ReFS = Resilient File System"}, {"t": "Input/output management", "d": "the kernel's handling of every device, through a consistent interface, so applications do not need to know what is on the other end.", "mod": "m3", "cue": "define", "q": "Input/output management"}, {"t": "Driver", "d": "the software that knows one device's commands. The kernel routes through it; a bad driver is the usual cause of \"the hardware is fine but the OS cannot see it\".", "mod": "m3", "cue": "define", "q": "Driver"}, {"t": "Interrupt", "d": "a signal from a device that makes the CPU stop and handle it, rather than being polled constantly.", "mod": "m3", "cue": "define", "q": "Interrupt"}, {"t": "Buffer", "d": "a holding area so a fast device and a slow one can work together. A print spooler is a visible buffer.", "mod": "m3", "cue": "define", "q": "Buffer"}, {"t": "Plug and play", "d": "the OS detecting a device, identifying it, and loading a driver automatically.", "mod": "m3", "cue": "define", "q": "Plug and play"}, {"t": "Boot process", "d": "power on, firmware and POST, boot device selection, bootloader, kernel, user space. Each step fails in a recognisable way.", "mod": "m3", "cue": "define", "q": "Boot process"}, {"t": "Firmware", "d": "software stored on the motherboard that runs before any operating system exists.", "mod": "m3", "cue": "define", "q": "Firmware"}, {"t": "Bootloader", "d": "the small program that loads the kernel: Windows Boot Manager, GRUB on Linux, boot.efi on a Mac.", "mod": "m3", "cue": "define", "q": "Bootloader"}, {"t": "Kernel panic", "d": "the kernel hitting an unrecoverable error. The whole machine stops, because nothing below the kernel is left to catch it.", "mod": "m3", "cue": "define", "q": "Kernel panic"}, {"t": "Safe mode", "d": "booting with a minimal set of drivers and services, so that if it works you know the fault is in what you excluded.", "mod": "m3", "cue": "define", "q": "Safe mode"}, {"t": "Dual boot", "d": "two operating systems on one machine, chosen at boot by a bootloader or the firmware.", "mod": "m3", "cue": "define", "q": "Dual boot"}, {"t": "Log", "d": "the record of system events a machine keeps. It answers when, what, which component, and how severe.", "mod": "m3", "cue": "define", "q": "Log"}, {"t": "Event Viewer", "d": "Windows' log viewer: System, Application and Security logs, filtered by time, with an Event ID to search.", "mod": "m3", "cue": "define", "q": "Event Viewer"}, {"t": "journalctl", "d": "the command that reads the systemd journal on Linux. `-b -1` reads the previous boot, which is what you want after a crash.", "mod": "m3", "cue": "define", "q": "journalctl"}, {"t": "Bootable media", "d": "a USB stick or disc written with an installer image so the machine can start from it.", "mod": "m3", "cue": "define", "q": "Bootable media"}, {"t": "ISO image", "d": "a single file holding an exact copy of a disc's contents, used to make installation media.", "mod": "m3", "cue": "define", "q": "ISO image"}, {"t": "Partition", "d": "a defined region of a storage device that a filesystem is created inside.", "mod": "m3", "cue": "define", "q": "Partition"}, {"t": "MBR", "d": "the old partition table: four primary partitions and nothing above 2 TB.", "mod": "m3", "cue": "expand", "q": "What does MBR stand for?", "a": "Master Boot Record"}, {"t": "GPT", "d": "the modern partition table, paired with UEFI: many partitions, no 2 TB ceiling.", "mod": "m3", "cue": "expand", "q": "What does GPT stand for?", "a": "GUID Partition Table"}, {"t": "Hypervisor", "d": "the software that runs virtual machines. Type 1 runs on the hardware (Hyper-V, ESXi, KVM); type 2 runs as an application (VirtualBox, VMware Workstation).", "mod": "m3", "cue": "define", "q": "Hypervisor"}, {"t": "Virtual machine", "d": "a complete computer emulated in software, sharing the host's CPU and memory.", "mod": "m3", "cue": "define", "q": "Virtual machine"}, {"t": "Snapshot", "d": "a saved state of a virtual machine you can roll back to. The reason a VM is the safe place to break things.", "mod": "m3", "cue": "define", "q": "Snapshot"}, {"t": "TPM", "d": "the chip that stores keys and boot measurements. Windows 11 requires version 2.0.", "mod": "m3", "cue": "expand", "q": "What does TPM stand for?", "a": "Trusted Platform Module"}, {"t": "Secure Boot", "d": "a UEFI feature that refuses to run a bootloader that is not signed with a trusted key.", "mod": "m3", "cue": "define", "q": "Secure Boot"}, {"t": "RDP", "d": "Windows' remote desktop on port 3389. `mstsc.exe` is the client.", "mod": "m3", "cue": "expand", "q": "What does RDP stand for?", "a": "Remote Desktop Protocol"}, {"t": "SSH", "d": "an encrypted remote terminal on port 22. The standard way into a Linux server or network device.", "mod": "m3", "cue": "expand", "q": "What does SSH stand for?", "a": "Secure Shell"}, {"t": "Virtual Network Computing (VNC)", "d": "cross-platform remote desktop on port 5900. Convenient, and unencrypted by default.", "mod": "m3", "cue": "define", "q": "VNC", "x": "VNC = Virtual Network Computing"}, {"t": "VPN", "d": "an encrypted tunnel that puts your machine inside a private network over the internet.", "mod": "m3", "cue": "expand", "q": "What does VPN stand for?", "a": "Virtual Private Network"}, {"t": "PuTTY", "d": "the long-standing Windows client for SSH and other terminal protocols.", "mod": "m3", "cue": "define", "q": "PuTTY"}, {"t": "Chrome OS", "d": "a browser-first operating system with a Linux container and Android app support as its escape hatches. Fast to boot and easy to manage centrally.", "mod": "m3", "cue": "define", "q": "Chrome OS", "x": "OS = Operating System"}]);
+
+quiz('#quizHost', [{"k": "c1m3q1", "lo": "LO1", "q": "Which of these is NOT one of the operating system's jobs?", "o": ["scheduling processes", "managing memory", "executing application instructions itself", "providing a file structure"], "a": 2, "why": "The CPU executes the application's instructions. The OS decides when it runs and what it may touch, but it is not the executor."}, {"k": "c1m3q2", "lo": "LO1", "q": "Why do applications not talk to hardware directly?", "o": ["it would be slower", "every application would need its own driver for every device, and one bug could corrupt another's memory", "hardware only understands one language", "it is illegal"], "a": 1, "why": "The OS provides one interface and enforces isolation. That is the value of the layer."}, {"k": "c1m3q3", "lo": "LO2", "q": "What is the essential difference between kernel space and user space?", "o": ["kernel space is faster", "kernel space has full access to memory and devices; user space is restricted", "user space has no files", "kernel space is only for drivers"], "a": 1, "why": "Privilege, not speed. The boundary is why a crashing application does not take the machine with it."}, {"k": "c1m3q4", "lo": "LO2", "q": "A program asks the operating system to open a file. That request is called…", "o": ["an interrupt", "a system call", "a driver", "a process"], "a": 1, "why": "The CPU switches into kernel mode, the kernel does the work, and control returns. Interrupts are hardware asking for attention."}, {"k": "c1m3q5", "lo": "LO2", "q": "bash, zsh and PowerShell are all…", "o": ["file systems", "shells", "window managers", "virtual machines"], "a": 1, "why": "A shell reads what you typed and asks the kernel to do it. The GUI is the other face on the same kernel."}, {"k": "c1m3q6", "lo": "LO3", "q": "A process that is 'waiting' is…", "o": ["using the CPU constantly", "blocked on something else and using no CPU", "about to be terminated", "in kernel space"], "a": 1, "why": "It is waiting for a disk read, a network reply or input. That is why one frozen application does not stop the machine."}, {"k": "c1m3q7", "lo": "LO3", "q": "What is a time slice?", "o": ["the CPU's cache size", "the short interval a process gets the CPU before the scheduler may switch", "the disk block size", "the boot timeout"], "a": 1, "why": "Milliseconds per turn, saved and restored between processes. That is how one CPU appears to run everything at once."}, {"k": "c1m3q8", "lo": "LO3", "q": "Virtual memory lets a process…", "o": ["use another process's memory", "address more memory than is physically installed, with pages moved to disk", "run without an operating system", "ignore the CPU"], "a": 1, "why": "Pages that are not being used go to swap and come back on demand. It is slower than RAM, which is why thrashing is a problem."}, {"k": "c1m3q9", "lo": "LO3", "q": "A machine is very slow, CPU usage is low, and the disk is constantly busy. Most likely cause?", "o": ["a failing CPU", "thrashing because there is not enough RAM", "a slow GPU", "a corrupted bootloader"], "a": 1, "why": "It is swapping instead of working. The fix is more memory or fewer processes, not a faster processor."}, {"k": "c1m3q10", "lo": "LO4", "q": "You need a single 8 GB video on a USB stick that works on Windows, macOS and Linux. Which filesystem?", "o": ["FAT32", "exFAT", "NTFS", "ext4"], "a": 1, "why": "FAT32 refuses anything over 4 GB. NTFS is not reliably writable on macOS. exFAT is the one that is readable and writable everywhere without limits."}, {"k": "c1m3q11", "lo": "LO4", "q": "What is the practical problem with FAT32?", "o": ["it cannot store more than 100 files", "4 GB maximum file size, 2 TB volume", "it has no folders", "it is not readable by macOS"], "a": 1, "why": "The file-size limit is the one that bites: a 5 GB video will not copy, and the error rarely says why."}, {"k": "c1m3q12", "lo": "LO4", "q": "A file's extension is…", "o": ["a guarantee of its contents", "a hint about which program should open it", "stored inside the file", "required by the filesystem"], "a": 1, "why": "Rename a text file to .jpg and it stays a text file. Windows hides known extensions, which is how double-extension malware gets clicked."}, {"k": "c1m3q13", "lo": "LO4", "q": "Why does a folder of a million one-byte files waste space?", "o": ["filesystems charge per file by size", "each file consumes at least one block, typically 4 KB", "folders duplicate data", "NTFS compresses badly"], "a": 1, "why": "Allocation is in blocks. A 1-byte file occupies a whole block, so a million tiny files can consume gigabytes."}, {"k": "c1m3q14", "lo": "LO5", "q": "A device is detected but does not work. Where is the fault most likely?", "o": ["the motherboard", "the driver", "the CPU", "the filesystem"], "a": 1, "why": "Device, cable, port, driver, OS update - in that order. The driver is the piece that translates between them."}, {"k": "c1m3q15", "lo": "LO5", "q": "Fans spin, lights come on, but there is no display and no beep. What has most likely failed?", "o": ["the operating system", "the POST - memory seating, CPU, or the graphics card", "the hard drive", "the user's password"], "a": 1, "why": "Step 2 of the boot process. Nothing has reached the disk or the OS yet, so neither can be the cause."}, {"k": "c1m3q16", "lo": "LO5", "q": "'No bootable device' most likely means…", "o": ["the operating system has a virus", "the firmware cannot find or read a boot device", "the CPU is overheating", "the RAM is full"], "a": 1, "why": "Step 3. Check the drive connection and the boot order before suspecting the OS."}, {"k": "c1m3q17", "lo": "LO5", "q": "You need the system log from the boot that crashed, after the machine reboots. On Linux that is…", "o": ["/var/log/messages only", "journalctl -b -1", "dmesg --last", "auth.log"], "a": 1, "why": "The -b -1 flag reads the previous boot's journal. That is exactly the evidence you need after an unclean crash."}, {"k": "c1m3q18", "lo": "LO5", "q": "On Windows, where would you look for the error that caused a crash?", "o": ["Task Manager", "Event Viewer, Windows Logs", "Device Manager only", "the Recycle Bin"], "a": 1, "why": "System and Application logs, filtered to the time of the fault. The Event ID is then the thing to search."}, {"k": "c1m3q19", "lo": "LO6", "q": "What is the FIRST thing to check before installing an operating system?", "o": ["whether the wallpaper is nice", "hardware compatibility: CPU, RAM, disk, and TPM/Secure Boot for Windows 11", "the user's password", "the printer driver"], "a": 1, "why": "Reading the requirements first is the difference between a 40-minute install and an hour of discovering the CPU is unsupported."}, {"k": "c1m3q20", "lo": "LO6", "q": "Making a bootable USB stick with Rufus will…", "o": ["copy the ISO alongside your files", "erase the stick", "only work on Windows", "require a licence"], "a": 1, "why": "The whole device is rewritten. Everything on that stick is gone - the most common 'I lost my files installing an OS' story."}, {"k": "c1m3q21", "lo": "LO6", "q": "A type 1 hypervisor runs…", "o": ["as an application inside an OS", "directly on the hardware", "only on macOS", "only in the cloud"], "a": 1, "why": "Bare metal: Hyper-V, ESXi, KVM. Type 2 (VirtualBox, VMware Workstation) is an application on top of an OS."}, {"k": "c1m3q22", "lo": "LO6", "q": "Which remote tool gives you a terminal rather than a desktop, on port 22?", "o": ["RDP", "SSH", "VNC", "NTP"], "a": 1, "why": "SSH. Almost no bandwidth, works over a bad link, and the standard way into a Linux server or network device."}, {"k": "c1m3q23", "lo": "LO6", "q": "Why is exposing RDP directly to the internet dangerous?", "o": ["it is slow", "it is a common route for ransomware to get in", "it uses too much bandwidth", "it breaks DNS"], "a": 1, "why": "Internet-facing RDP is scanned constantly and brute-forced. It belongs behind a VPN or an authenticating gateway."}]);
+
+</script>
+</body>
+</html>

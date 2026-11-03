@@ -1,0 +1,1695 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>The learning path — Google IT Support + CompTIA A+</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+<style>
+/* ---- resources/learn/index.html: the learning path ---- */
+.ljump{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0 0}
+.ljump a{font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.03em;
+  text-decoration:none;color:var(--accent);border:1px solid var(--rule);border-radius:99px;
+  padding:6px 12px;background:var(--surface-2)}
+.ljump a:hover{background:var(--tint-accent)}
+.ljump a b{color:var(--text);font-weight:600}
+.lcard{border:1px solid var(--rule);border-radius:12px;background:var(--surface);
+  padding:16px 18px 14px;margin:14px 0}
+.lcard.soon{background:var(--surface-2);border-style:dashed}
+.lhead{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.lnum{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.05em;color:var(--accent);
+  border:1px solid var(--rule);border-radius:6px;padding:2px 6px;background:var(--surface-3)}
+.lhead h3{margin:0;font-size:16.5px;font-weight:600;text-transform:none;letter-spacing:0;
+  font-family:var(--display);color:var(--text)}
+.lmeta{margin-left:auto;display:flex;gap:6px;flex-wrap:wrap}
+.lwhy{color:var(--text-dim);font-size:13px;margin:9px 0 0}
+.lwhy b{color:var(--text-mute);font-family:var(--mono);font-size:9.5px;letter-spacing:.07em;
+  text-transform:uppercase;font-weight:600;margin-right:7px}
+details.lmore{margin-top:12px;border-top:1px solid var(--rule);padding-top:9px}
+details.lmore summary{cursor:pointer;font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);list-style:none}
+details.lmore summary::-webkit-details-marker{display:none}
+details.lmore summary::before{content:"\25b8 ";display:inline-block;transition:transform .12s}
+details.lmore[open] summary::before{content:"\25be "}
+details.lmore .kv{margin-top:12px}
+details.lmore .big60{margin-top:14px;font-size:13px}
+.lgo{margin-top:13px;font-size:12.5px;color:var(--text-mute)}
+.lgo a{font-weight:600}
+.lblank{display:block;margin-top:14px;font-size:12px;color:var(--text-mute);font-style:italic}
+.lstat{margin:14px 0 0;font-size:12.5px;color:var(--text-mute)}
+.lstat b{color:var(--text)}
+.loop{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0 0}
+.loop .step{border:1px solid var(--rule);border-radius:11px;padding:13px 15px;background:var(--surface-2)}
+.loop .step .n{font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.08em;
+  text-transform:uppercase;color:var(--accent)}
+.loop .step h4{margin:6px 0 4px;font-size:14px}
+.loop .step p{margin:0;font-size:12.5px;color:var(--text-dim);line-height:1.55}
+.agrid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0 0}
+.acard{border:1px solid var(--rule);border-radius:12px;padding:14px 16px;background:var(--surface-2)}
+.acard>h4{margin:0 0 10px;font-size:13px;font-family:var(--mono);letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent)}
+.adom{padding:9px 0;border-top:1px solid var(--rule)}
+.adom:first-of-type{border-top:none}
+.ahead{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.adn{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.05em;
+  color:var(--accent);border:1px solid var(--rule);border-radius:5px;padding:1px 5px}
+.ahead b{font-size:13px;font-weight:600;color:var(--text)}
+.aw{margin-left:auto;font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+.amods{margin-top:5px;font-family:var(--mono);font-size:11px;color:var(--text-dim);line-height:1.9}
+.amods a{font-weight:600}
+.amods span{color:var(--text-mute)}
+@media(max-width:760px){.agrid{grid-template-columns:1fr}}
+@media(max-width:640px){.lmeta{margin-left:0}.lcard{padding:14px}}
+</style><style>
+.cardgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin-top:18px}
+.scard{
+  position:relative;display:block;background:var(--surface);border:1px solid var(--rule);
+  border-radius:12px;padding:0 0 18px;text-decoration:none;color:inherit;overflow:hidden;
+  transition:border-color .18s,transform .18s,box-shadow .18s;border-bottom:1px solid var(--rule);
+}
+.scard:hover{border-color:var(--rule-2);box-shadow:var(--shadow);transform:translateY(-1px)}
+.scard .bar{height:3px}
+.scard h4{
+  margin:17px 19px 9px;font-family:var(--display);font-size:16px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.01em;line-height:1.3;
+}
+.scard p{margin:0 19px;font-size:12.5px;color:var(--text-mute);line-height:1.62}
+.scard .meta{display:flex;gap:6px;flex-wrap:wrap;margin:0 19px 10px}
+.mchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.04em;
+  border-radius:99px;padding:3px 9px;background:var(--surface-3);color:var(--text-mute);
+  border:1px solid var(--rule);text-transform:uppercase;
+}
+.mchip.live{background:var(--tint-good);color:var(--good-bright);border-color:var(--moss)}
+.mchip.aplus{background:var(--surface-2);color:var(--text-dim);border-color:var(--rule-2)}
+.mchip.due{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.mchip.part{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+
+/* ---- course cards on the certificate front door ---- */
+.coursegrid{display:grid;grid-template-columns:1fr;gap:12px;margin-top:18px}
+.ccard{
+  display:block;background:var(--surface);border:1px solid var(--rule);border-radius:12px;
+  padding:15px 18px 18px;text-decoration:none;color:inherit;
+  transition:border-color .18s,box-shadow .18s;
+}
+a.ccard:hover{border-color:var(--rule-2);box-shadow:var(--shadow)}
+.ccard h4 a{color:inherit;text-decoration:none}
+.ccard h4 a:hover{color:var(--accent-bright)}
+.ccard.soon{opacity:.62}
+.ccard .top{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:7px}
+.ccard .cnum{
+  font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--accent);border:1px solid var(--rule-2);border-radius:4px;padding:2px 7px;flex:none;
+}
+.ccard h4{
+  margin:0;font-family:var(--display);font-size:16.5px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;line-height:1.25;
+}
+.ccard .sub{font-size:12.5px;color:var(--text-mute);margin:0 0 11px;line-height:1.6}
+.ccard .mods{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.ccard .mods span,.ccard .mods a{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.03em;
+  border:1px solid var(--rule);border-radius:6px;padding:4px 8px;color:var(--text-mute);
+  text-decoration:none;background:var(--surface-2);
+}
+.ccard .mods a{color:var(--accent);border-color:var(--rule-2);background:var(--tint-accent)}
+.ccard .mods a:hover{color:var(--accent-bright);border-color:var(--accent)}
+.ccard .mods a.old{color:var(--text-dim);border-color:var(--rule);background:var(--surface)}
+.ccard .go{
+  display:block;margin-top:13px;font-family:var(--mono);font-size:10px;font-weight:600;
+  letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
+}
+a.ccard:hover .go{color:var(--accent-bright)}
+.ccard.soon .go{color:var(--text-mute)}
+
+.trackgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:16px}
+.tcard{
+  background:var(--surface);border:1px solid var(--rule);border-radius:12px;padding:16px 18px;
+}
+.tcard h4{margin:0 0 6px;font-family:var(--display);font-size:15px;font-weight:600;color:var(--text-strong)}
+.tcard p{margin:0 0 8px;font-size:12.5px;color:var(--text-mute);line-height:1.6}
+.tcard ul{margin:6px 0 0;padding-left:18px;font-size:12.5px;color:var(--text)}
+.tcard li{margin:3px 0}
+.tcard .tag{display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.05em;
+  text-transform:uppercase;border-radius:99px;padding:2px 8px;margin-bottom:9px;
+  background:var(--tint-accent);color:var(--accent-bright);border:1px solid var(--rule-2)}
+.tcard .tag.n{background:var(--surface-3);color:var(--text-mute);border-color:var(--rule)}
+.scard .go{
+  display:block;margin:12px 19px 0;font-family:var(--mono);font-size:10px;
+  font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);
+}
+.scard:hover .go{color:var(--accent-bright)}
+.scard.soon,.scard.soon:hover{opacity:.5;transform:none;box-shadow:none;border-color:var(--rule)}
+.scard.soon .go{color:var(--text-mute)}
+.todo{list-style:none;padding:0;margin:14px 0}
+.todo li{
+  display:flex;gap:12px;align-items:baseline;padding:10px 0;
+  border-bottom:1px solid var(--rule);font-size:13px;
+}
+.todo li:last-child{border-bottom:none}
+.todo .st{
+  font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;border-radius:99px;padding:2px 8px;flex:none;min-width:64px;text-align:center;
+  border:1px solid var(--rule);
+}
+.todo .st.done{background:var(--tint-good);color:var(--good-bright);border-color:var(--moss)}
+.todo .st.next{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.todo .st.todo{background:var(--surface-3);color:var(--text-mute)}
+.todo .st.block{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rust)}
+.todo .tx{color:var(--text);line-height:1.55}
+.todo .tx small{display:block;color:var(--text-mute);font-size:11.5px;margin-top:2px}
+
+/* ---- the course's own syllabus (local build only) ---- */
+.syl{margin:14px 0 0;font-size:12.5px}
+.syl .row{display:grid;grid-template-columns:132px 1fr;gap:12px;padding:9px 0;border-bottom:1px solid var(--rule)}
+.syl .row:last-child{border-bottom:none}
+.syl .k{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--accent);padding-top:3px}
+.syl .v{color:var(--text-dim);line-height:1.6}
+.syl .v b{color:var(--text)}
+@media(max-width:620px){.syl .row{grid-template-columns:1fr;gap:3px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">The learning path — Google IT Support + CompTIA A+</span>
+  <nav><a href="../index.html">Hub</a><a href="../search.html" title="Search every page, section and definition">⌕ search</a><a href="#path">Courses</a><a href="#how">How to study</a><a href="#built">What's built</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="start" class=""><h2>The learning path</h2><p class="lede">The whole certificate, module by module, at the level the exams actually test. Read the objectives, take the facts, then go and prove it on the drills.</p>
+        <div class="big60">
+          <b>What this page is.</b> A map, not a textbook. Every one of the 35 modules states why it
+          exists, what you must be able to <i>do</i> afterwards, and the facts that are the actual
+          exam content. Where a teaching page exists, the card links straight into it. Where one does
+          not, the card is still the entry-level summary you need &mdash; honestly labelled, never a
+          promise.
+        </div>
+        <p><b>Can't find a thing?</b> <a href="../search.html">Search</a> reaches every module page, this
+        map, and the glossary &mdash; and jumps to the section, not the top of the page.</p>
+        <p><b>8 of 35 modules have a teaching page</b>; all 35 are mapped here. The essentials on
+        every module page and the facts on this page come from one source, so they cannot disagree.
+        Estimated study time for the whole certificate's essentials: about
+        <b>23 hours</b> &mdash; before drills, which are where the time really goes. At forty-five
+        minutes a night that is roughly seven weeks for one pass over everything, and the point is to
+        pass over it three times, not once.</p>
+        <div class="ljump"><a href="#c1">C1 &middot; Technical Support <b>6/6</b></a><a href="#c2">C2 &middot; Bits and Bytes <b>2/6</b></a><a href="#c3">C3 &middot; Operating Systems and You <b>0/6</b></a><a href="#c4">C4 &middot; System Administration <b>0/6</b></a><a href="#c5">C5 &middot; IT Security <b>0/7</b></a><a href="#c6">C6 &middot; Job Search with AI <b>0/4</b></a></div></section><section id="how" class=""><h2>How to study this</h2><p class="lede">Four steps per module, in this order. Skipping step two is why a quiz can feel familiar and still go badly.</p>
+        <div class="loop">
+          <div class="step"><div class="n">Step 1</div><h4>Learn</h4>
+            <p>Open the module. Read <b>The essentials</b> at the top &mdash; the objectives and the
+            facts. Then read only the sections that explain the lines you could not say back.</p></div>
+          <div class="step"><div class="n">Step 2</div><h4>Say it back</h4>
+            <p>Flashcards, out loud, in your own words. If the words are not yours you have
+            recognised the answer, not learned it &mdash; and the exam will ask it differently.</p></div>
+          <div class="step"><div class="n">Step 3</div><h4>Drill</h4>
+            <p>The games sit immediately after the section they test, on purpose. Play until the
+            drill stops being hard, then play the one you were worst at.</p></div>
+          <div class="step"><div class="n">Step 4</div><h4>Prove</h4>
+            <p>The quiz at the end of the page, then again the next morning. Everything you miss is
+            remembered in the review queue, across every module.</p></div>
+        </div>
+        <div class="big60 y"><b>The one rule:</b> the drills are not the learning. They are the
+        proof. If a game is frustrating, the fix is to go back up to the section it came from, not to
+        keep guessing &mdash; guessing teaches you the wrong answer with confidence.</div></section><section id="c1" class=""><h2>Course 1 &mdash; Technical Support Fundamentals</h2><p class="lede">19 hours &middot; 6 modules &middot; 6 built &middot; A+ Core 1 · 3.0 Hardware · 1.0 Mobile Devices · Core 2 · 1.0 Operating Systems</p><p>The floor of the whole certificate: what IT is, what an IT support specialist does, binary and character encoding, the hardware inside a computer, installing an operating system, what the internet is, and how software is built and managed.</p><article class="lcard" id="c1m1">
+  <div class="lhead"><span class="lnum">M1</span><h3>Introduction to IT and Computing</h3><div class="lmeta"><span class="mchip live">taught &middot; 40 min</span><span class="mchip aplus">A+ Core 1 · 3.0 (vocabulary)</span></div></div>
+  <p class="lwhy"><b>why</b>The floor under everything else: what the job is, and why a computer can only work in two symbols.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain what an IT support specialist does, and what tier 1, 2 and 3 mean</li><li>convert between binary and decimal by hand, in both directions</li><li>explain why computers use base two, and what a bit and a byte are</li><li>explain character encoding, and why the same bytes can mean different text</li><li>name the four layers of abstraction in a computer</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">IT</div><div>using computers, networks and software to get work done - and keeping them working when they stop. The second half is the job.</div><div class="k">Support tiers</div><div>tier 1 takes first contact and solves what a script can solve; tier 2 does deeper diagnosis; tier 3 is the specialist engineer or the vendor.</div><div class="k">Bit and byte</div><div>a bit is one binary digit (0 or 1); eight bits make a byte, and a byte holds 256 different values.</div><div class="k">Place values</div><div>from the right: 1, 2, 4, 8, 16, 32, 64, 128. To read binary, add the places where the bit is 1. To write it, subtract the biggest place that fits and keep going.</div><div class="k">Example</div><div>11011011 = 128+64+16+8+2+1 = 219. Nothing else is happening.</div><div class="k">Encoding</div><div>the agreed map from a number to a character. ASCII covers 128 characters (A=65, a=97, 0=48); Unicode covers every writing system; UTF-8 is how Unicode is stored (1 byte for ASCII, up to 4 for the rest).</div><div class="k">Abstraction</div><div>hiding detail behind a simpler surface. A computer is hardware, then operating system, then software, then the user.</div><div class="k">Logic gates</div><div>AND is true only if both inputs are; OR if either is; NOT flips; XOR if exactly one is.</div></div>
+    <div class="big60 r"><b>The trap:</b> Counting binary places from the left. The 128 place is on the left and the 1 place is on the right, which is why reading right-to-left is the whole trick.</div>
+  </details>
+  <div class="lgo"><a href="../it-support/c1-technical-support/m1-introduction-to-it.html">Lesson, drills and quiz &rarr;</a></div>
+</article><article class="lcard" id="c1m2">
+  <div class="lhead"><span class="lnum">M2</span><h3>Computer Components and Hardware</h3><div class="lmeta"><span class="mchip live">taught &middot; 50 min</span><span class="mchip aplus">A+ Core 1 · 3.0 Hardware · 1.0 Mobile Devices</span></div></div>
+  <p class="lwhy"><b>why</b>The physical machine: what the parts do, how they connect, and what to check when one fails.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>name what the CPU, RAM, storage, PSU and motherboard each do</li><li>tell RAM from storage from cache, and say what each is for</li><li>look at a connector or port and say what plugs into it</li><li>describe the order of an actual build, and why the order matters</li><li>explain what BIOS/UEFI does, and when the CMOS battery is the fault</li><li>choose between SATA and NVMe storage and explain the speed gap</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 10 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">CPU</div><div>executes instructions. Cores are independent execution units; clock speed in GHz is cycles per second; cache (L1/L2/L3) is the fastest memory and sits on or next to the die.</div><div class="k">RAM</div><div>volatile working memory. It holds what is running right now and loses everything at power-off. Not enough RAM means the machine swaps to disk.</div><div class="k">Storage</div><div>persistent. A hard disk spins platters (cheap per gigabyte); an SSD is flash with no moving parts (far faster, more expensive per gigabyte).</div><div class="k">Interfaces</div><div>SATA tops out far below NVMe, which uses PCIe lanes directly. Same drive size, very different speed.</div><div class="k">Motherboard</div><div>carries the CPU socket, RAM slots, expansion slots and the chipset. The chipset decides which ports and lanes exist at all.</div><div class="k">PSU</div><div>converts AC wall power to the DC the parts need. Wattage must cover the load; 80 PLUS ratings describe efficiency, not capacity.</div><div class="k">Firmware</div><div>BIOS/UEFI runs before any operating system, finds a bootable device and hands over. UEFI replaced BIOS; Secure Boot is a UEFI feature.</div><div class="k">Ports</div><div>USB-A/USB-C (versions differ in speed, not shape), HDMI and DisplayPort for video and audio, RJ45 for Ethernet, 3.5 mm for audio.</div><div class="k">Build order</div><div>CPU, thermal paste, cooler, RAM, then the board into the case, then PSU, storage, GPU, cables, POST, then the operating system.</div><div class="k">Mobile</div><div>the same components soldered and shrunk. Batteries are lithium-ion and wear with heat and charge cycles; repairs are limited by adhesive and part pairing.</div></div>
+    <div class="big60 r"><b>The trap:</b> Calling storage &#x27;memory&#x27;. Memory is RAM: it is volatile and it is gone at power-off. If it survives a reboot, it is storage.</div>
+  </details>
+  <div class="lgo"><a href="../it-support/c1-technical-support/m2-hardware.html">Lesson, drills and quiz &rarr;</a></div>
+</article><article class="lcard" id="c1m3">
+  <div class="lhead"><span class="lnum">M3</span><h3>Installing and Using Operating Systems</h3><div class="lmeta"><span class="mchip live">taught &middot; 45 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems</span></div></div>
+  <p class="lwhy"><b>why</b>The layer between the machine and everything you run: files, processes, memory, users, and how it starts.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain kernel versus user space, and why the split exists</li><li>describe what a filesystem does and name the common ones per operating system</li><li>explain process and memory management, including virtual memory</li><li>read a boot sequence and say what has failed at each stage</li><li>choose between Windows, Linux, macOS and ChromeOS for a given need</li><li>explain what a virtual machine is, and when to use one</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Kernel</div><div>the privileged core that talks to hardware, schedules processes and enforces permissions. Everything else, including your apps, is user space.</div><div class="k">Filesystem</div><div>organises a disk into files and directories. NTFS on Windows, ext4 on Linux, APFS on macOS, exFAT/FAT32 for removable media.</div><div class="k">Process</div><div>a running program with its own memory and an ID. The scheduler decides which process runs on which core, and for how long.</div><div class="k">Virtual memory</div><div>each process gets its own address space, and pages move to disk when RAM runs out. Constant paging is the &#x27;why is it so slow&#x27; slowdown.</div><div class="k">Boot chain</div><div>firmware (UEFI) finds the bootloader, the bootloader starts the kernel, the kernel starts init/systemd, then you log in. Knowing the order tells you which log to read.</div><div class="k">Logs</div><div>Event Viewer on Windows; /var/log and journalctl on Linux. The first place to look, before changing anything.</div><div class="k">Virtual machine</div><div>a whole operating system running on virtual hardware. Cheap isolation and snapshots are why test machines are disposable.</div><div class="k">Mobile OS</div><div>iOS and Android. Apps are sandboxed, updates come through a store, and permissions are granted per app rather than per user.</div></div>
+    <div class="big60 r"><b>The trap:</b> Treating &#x27;out of memory&#x27; and &#x27;disk full&#x27; as the same fault. They produce similar symptoms - an app crashes - and completely different fixes.</div>
+  </details>
+  <div class="lgo"><a href="../it-support/c1-technical-support/m3-operating-systems.html">Lesson, drills and quiz &rarr;</a></div>
+</article><article class="lcard" id="c1m4">
+  <div class="lhead"><span class="lnum">M4</span><h3>Networking</h3><div class="lmeta"><span class="mchip live">taught &middot; 25 min</span><span class="mchip aplus">A+ Core 1 · 2.0 Networking</span></div></div>
+  <p class="lwhy"><b>why</b>A map of networking, not the course: enough to name the pieces and know which Course 2 module teaches each one properly.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>say what a network is and what the internet is, in one sentence each</li><li>name the layers and what each one handles</li><li>tell a client from a server, and a LAN from a WAN</li><li>explain what an IP address, DNS and a router do at the level a user asks about</li><li>explain why the internet has the limits and privacy problems it has</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Network</div><div>two or more devices that can exchange data. The internet is the network of networks that all speak TCP/IP.</div><div class="k">Five layers</div><div>physical (bits on the wire), data link (frames on one network), network (packets between networks), transport (segments between programs), application (what the user asked for).</div><div class="k">The three names users say</div><div>IP address identifies a host; DNS turns a name into an IP address; the router forwards traffic between networks.</div><div class="k">Client and server</div><div>the client asks, the server answers. LAN is one site, WAN spans sites, and the internet is the biggest WAN there is.</div><div class="k">Packet switching</div><div>data is split into packets that take whatever path is free and are reassembled at the destination.</div><div class="k">The web is not the internet</div><div>the web is one application running on it, over HTTP and HTTPS on ports 80 and 443.</div><div class="k">IoT</div><div>ordinary devices with network chips. They multiply the attack surface and are rarely patched, which is why they get their own network.</div></div>
+    <div class="big60 r"><b>The trap:</b> Using &#x27;internet&#x27; and &#x27;web&#x27; as synonyms. The web is a service that runs on the internet, the same way email does.</div>
+  </details>
+  <div class="lgo"><a href="../it-support/c1-technical-support/m4-networking-flyover.html">Lesson, drills and quiz &rarr;</a></div>
+</article><article class="lcard" id="c1m5">
+  <div class="lhead"><span class="lnum">M5</span><h3>Interacting with Software</h3><div class="lmeta"><span class="mchip live">taught &middot; 35 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</span></div></div>
+  <p class="lwhy"><b>why</b>What software is, how it is built, and how you install, update and remove it without breaking the machine.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>tell compiled from interpreted software and name common languages</li><li>explain what an installer actually does</li><li>install, update and remove software on Windows and on Linux</li><li>explain what a script is and when a task should be automated</li><li>read a version number and explain why patching matters</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Software</div><div>instructions plus data. Compiled languages (C, C++, Go) become a machine-code binary; interpreted ones (Python, JavaScript) are run by an interpreter.</div><div class="k">Installer</div><div>delivers the files, registers the app with the OS, writes its configuration, and creates shortcuts and uninstall entries.</div><div class="k">Windows</div><div>MSI or EXE installers; winget and Chocolatey for command-line installs; Settings or Programs and Features to remove.</div><div class="k">Linux</div><div>package managers install from signed repositories and resolve dependencies: apt on Debian/Ubuntu, dnf on Fedora/RHEL. Never mix managers for one package.</div><div class="k">Why update</div><div>most attacks use a vulnerability that already has a patch. Patching is the highest-value routine task in the job.</div><div class="k">Scripting</div><div>a text file of commands run in order (PowerShell .ps1, Bash .sh). Automate anything you would otherwise do twice.</div><div class="k">Licensing</div><div>per seat, per device, subscription, or open source. The licence decides how many machines may run it, which is an audit question, not a moral one.</div></div>
+    <div class="big60 r"><b>The trap:</b> Assuming a reinstall fixes a fault. Reinstalling over the same leftover configuration reproduces the same problem - remove the app&#x27;s data too, or you learn nothing.</div>
+  </details>
+  <div class="lgo"><a href="../it-support/c1-technical-support/m5-software.html">Lesson, drills and quiz &rarr;</a></div>
+</article><article class="lcard" id="c1m6">
+  <div class="lhead"><span class="lnum">M6</span><h3>Troubleshooting Best Practices and Customer Support</h3><div class="lmeta"><span class="mchip live">taught &middot; 35 min</span><span class="mchip aplus">A+ Core 1 · 5.0 Troubleshooting · Core 2 · 4.0 Operational Procedures</span></div></div>
+  <p class="lwhy"><b>why</b>The part of the job that is not hardware: finding the fault in a repeatable order, and talking to the person who has it.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>run a fault through a repeatable sequence instead of guessing</li><li>ask the questions that narrow a problem in the first two minutes</li><li>write a ticket another technician could act on without asking you anything</li><li>handle an angry or non-technical user without escalating the situation</li><li>document a process so someone else can repeat it</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">The order</div><div>gather information, reproduce, isolate, form one hypothesis, test it, fix, verify, document. One change at a time.</div><div class="k">Quickest first</div><div>start with the cheapest check that could eliminate the most. Cable before configuration, configuration before reinstall.</div><div class="k">The five questions</div><div>what were you doing, what did you expect, what happened instead, when did it start, what changed?</div><div class="k">Isolation by substitution</div><div>swap one half of the system - cable, port, account, machine. Whichever half stays broken tells you where the fault lives.</div><div class="k">Good ticket</div><div>symptom, scope (one user or many), steps to reproduce, what was tried, current state, owner.</div><div class="k">Documentation</div><div>error text copied verbatim with timestamps, because a paraphrase cannot be searched and the exact string can.</div><div class="k">Soft skills</div><div>acknowledge the impact, never blame the user, say what you are doing and when you will be back, and never argue about whether the problem is real.</div><div class="k">Escalation</div><div>escalate with evidence - what you ruled out and why - not with &#x27;it&#x27;s still broken&#x27;.</div></div>
+    <div class="big60 r"><b>The trap:</b> Changing three things at once. If it works afterwards you no longer know which change fixed it, and you cannot write it down for the next person.</div>
+  </details>
+  <div class="lgo"><a href="../it-support/c1-technical-support/m6-troubleshooting.html">Lesson, drills and quiz &rarr;</a></div>
+</article></section><section id="c2" class=""><h2>Course 2 &mdash; The Bits and Bytes of Computer Networking</h2><p class="lede">22 hours &middot; 6 modules &middot; 2 built &middot; A+ Core 1 · 2.0 Networking · 5.0 Troubleshooting · Core 2 · 2.0 Security</p><p>The full networking course: the five-layer model, IP addressing and subnetting, transport and application layers, DNS and DHCP, how networks connect to the internet, and the troubleshooting tools that prove where a problem is.</p><article class="lcard soon" id="c2m1">
+  <div class="lhead"><span class="lnum">M1</span><h3>Introduction to Networking</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 1 · 2.1–2.2 · 3.1</span></div></div>
+  <p class="lwhy"><b>why</b>How data physically moves: the five-layer model, the cables, and the frames that carry the packets.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>name the five layers and say what each one is responsible for</li><li>explain encapsulation and name the data unit at each layer</li><li>describe how a hub and a switch move data differently</li><li>explain what a MAC address is and how a switch learns where to send frames</li><li>tell the TCP/IP model from the OSI model</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Five layers</div><div>physical, data link, network, transport, application. Each one solves a problem the layer below cannot.</div><div class="k">Encapsulation</div><div>each layer wraps what it was given and adds its own header: data, then a TCP segment, then an IP packet, then an Ethernet frame, then bits. The receiver strips them in reverse.</div><div class="k">Media</div><div>twisted pair with RJ45 (about 100 m), fibre for distance and speed, coax. The distance limit is why you need switches and repeaters.</div><div class="k">Hub vs switch</div><div>a hub repeats everything to every port, so everyone shares one collision domain. A switch forwards only to the port the destination MAC is on.</div><div class="k">MAC address</div><div>48 bits, written as six hex pairs; the first three bytes identify the manufacturer. It is local to one network.</div><div class="k">Ethernet frame</div><div>destination MAC, source MAC, type, payload, and a frame check sequence for corruption.</div><div class="k">OSI versus TCP/IP</div><div>OSI has seven layers (it splits application into application, presentation and session); TCP/IP has five. Learn the five, recognise the seven.</div></div>
+    <div class="big60 r"><b>The trap:</b> Thinking a MAC address travels end to end. The frame&#x27;s MAC header is thrown away and rebuilt at every hop; only the IP packet survives the journey.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard" id="c2m2">
+  <div class="lhead"><span class="lnum">M2</span><h3>The Network Layer</h3><div class="lmeta"><span class="mchip live">taught &middot; 60 min</span><span class="mchip aplus">A+ Core 1 · 2.6</span></div></div>
+  <p class="lwhy"><b>why</b>IP addresses and routing: how a packet crosses networks it has never seen before.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>read and validate an IPv4 address, and convert octets to binary</li><li>classify an address at a glance: class, private or public, loopback, APIPA</li><li>explain network ID and host ID, and read a subnet mask or CIDR prefix</li><li>subnet a network and answer: network address, broadcast, host range, host count</li><li>explain ARP and why it sits between layer 2 and layer 3</li><li>explain how a router chooses the next hop</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 9 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">IPv4</div><div>32 bits, written as four decimal octets. Any octet above 255 makes the address invalid, which is the fastest validity check there is.</div><div class="k">Classes</div><div>Leading bits decide everything: A 0xxx (1-126), B 10xx (128-191), C 110x (192-223), D 1110 (224-239, multicast), E 1111 (240-255, research/experimental). The class ends at 127, 191, 223, 239, 255. Historic, still examined, still how you read a first octet at a glance.</div><div class="k">Special ranges</div><div>private: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. Loopback: 127.0.0.0/8. APIPA: 169.254.0.0/16, which means DHCP failed.</div><div class="k">Mask and CIDR</div><div>the prefix length is how many leading bits are the network. /24 = 255.255.255.0. Host count is 2^(32-prefix) - 2.</div><div class="k">Why minus two</div><div>the all-zeros host value is the network address and the all-ones value is the broadcast, so neither can be given to a machine.</div><div class="k">Gateway</div><div>a host sends directly to anything on its own subnet; everything else goes to the default gateway, which is the router.</div><div class="k">ARP</div><div>broadcasts &#x27;who has this IP&#x27;, the owner replies with its MAC, and the answer is cached. ARP never crosses a router - that is why it is a layer-2.5 mechanic.</div><div class="k">Routing</div><div>a router keeps a table of destination network to next hop; the most specific match wins; anything unmatched takes the default route.</div><div class="k">Header fields</div><div>version, header length, TTL (decremented at every hop), protocol (1 ICMP, 6 TCP, 17 UDP), source and destination address, checksum.</div></div>
+    <div class="big60 r"><b>The trap:</b> /24 does not mean 256 usable hosts. It means 254, because the network and broadcast addresses are not assignable - and that one subtraction is the most commonly lost mark in the whole course.</div>
+  </details>
+  <div class="lgo"><a href="../it-support/c2-bits-and-bytes/m2-network-layer.html">Lesson, drills and quiz &rarr;</a></div>
+</article><article class="lcard" id="c2m3">
+  <div class="lhead"><span class="lnum">M3</span><h3>The Transport and Application Layers</h3><div class="lmeta"><span class="mchip live">taught &middot; 55 min</span><span class="mchip aplus">A+ Core 1 · 2.2 · Core 2 · 2.0</span></div></div>
+  <p class="lwhy"><b>why</b>Ports, TCP and UDP: how one machine runs many conversations at once, and how reliable delivery is built on an unreliable network.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>name the well-known ports on sight</li><li>explain the TCP three-way handshake and the four-message close</li><li>tell TCP from UDP and pick one for a given workload</li><li>read a socket state and say what the connection is doing</li><li>explain what HTTP, DNS and mail protocols do, and which ports they use</li><li>trace one request down all four layers, header by header</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 10 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Ports to know</div><div>20/21 FTP, 22 SSH, 23 Telnet, 25 SMTP, 53 DNS, 67/68 DHCP, 80 HTTP, 110 POP3, 143 IMAP, 443 HTTPS, 3389 RDP.</div><div class="k">Port ranges</div><div>0-1023 well known, 1024-49151 registered, 49152-65535 ephemeral (the source port your machine picks).</div><div class="k">Socket</div><div>IP address + port + protocol. A connection is a pair of sockets, which is how one server serves thousands of clients on one port.</div><div class="k">TCP handshake</div><div>SYN, SYN/ACK, ACK - three messages. Close is FIN, ACK, FIN, ACK - four.</div><div class="k">Sequence numbers</div><div>they count bytes, not packets, which is how a lost segment is retransmitted precisely instead of resending everything.</div><div class="k">UDP</div><div>no connection, no ordering, no retransmission. Cheap and fast: DNS queries, DHCP, voice, video, games.</div><div class="k">HTTP</div><div>request and response. Methods GET/POST/PUT/DELETE. Status codes: 2xx success, 3xx redirect, 4xx your fault, 5xx their fault. HTTPS is HTTP inside TLS.</div><div class="k">DNS</div><div>resolves a name to an address over UDP 53. Records worth knowing: A, AAAA, CNAME, MX, NS, TXT.</div><div class="k">Mail</div><div>SMTP sends (25, or 587 for submission), POP3 downloads and usually removes (110), IMAP syncs and leaves it on the server (143).</div><div class="k">Firewalls</div><div>stateless filters each packet by rule; stateful remembers connections and allows the replies. Default deny is the only sane posture.</div></div>
+    <div class="big60 r"><b>The trap:</b> Mixing up the handshake and the close. The handshake is three messages, the close is four, and swapping them is the single most common lost mark in this module.</div>
+  </details>
+  <div class="lgo"><a href="../it-support/c2-bits-and-bytes/m3-transport-application.html">Lesson, drills and quiz &rarr;</a></div>
+</article><article class="lcard soon" id="c2m4">
+  <div class="lhead"><span class="lnum">M4</span><h3>Networking Services</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 1 · 2.0</span></div></div>
+  <p class="lwhy"><b>why</b>The services that make a network usable: automatic addressing, name resolution, address translation and remote access.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain DHCP and walk the four-message DORA exchange</li><li>explain how a name becomes an address, and what each DNS record type is for</li><li>explain NAT and why almost every office uses it</li><li>tell a VPN from a proxy, and say what each one protects</li><li>describe the cloud service models and what the customer still owns</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 9 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">DHCP</div><div>hands out address, mask, gateway and DNS servers automatically. DORA: Discover, Offer, Request, Acknowledge. Addresses are leased, not given.</div><div class="k">DNS resolution</div><div>root server, then the top-level domain, then the domain&#x27;s own authoritative server; the resolver caches the answer for its TTL.</div><div class="k">DNS records</div><div>A (IPv4), AAAA (IPv6), CNAME (alias), MX (mail), NS (nameserver), PTR (reverse lookup), TXT (verification and mail policy).</div><div class="k">NAT</div><div>rewrites private source addresses to one public address and keeps the mapping in a table. That is how one public IP serves a whole office - and why it hides internal addresses.</div><div class="k">NAT is not a firewall</div><div>it changes addresses, it does not inspect content. Port forwarding is a NAT rule, not a security control.</div><div class="k">VPN</div><div>an encrypted tunnel between a client and a network, so the traffic behaves as if the client were on site. It protects the path, nothing on either end.</div><div class="k">Proxy</div><div>an intermediary for one application&#x27;s traffic. It can cache, filter and log; it does not encrypt by itself.</div><div class="k">Cloud models</div><div>IaaS gives you virtual machines, PaaS a runtime, SaaS the finished application. You keep the data in all three.</div><div class="k">NTP</div><div>keeps clocks in sync. Kerberos and TLS both fail or warn when clocks drift, which is why time is an infrastructure service.</div></div>
+    <div class="big60 r"><b>The trap:</b> Treating NAT as a firewall, or a VPN as a security product. Both change the path; neither inspects anything.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c2m5">
+  <div class="lhead"><span class="lnum">M5</span><h3>Connecting to the Internet</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 1 · 2.0</span></div></div>
+  <p class="lwhy"><b>why</b>How the last mile works: the link types, the wireless standards, and what actually limits speed.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>name the access technologies and their trade-offs</li><li>explain what a modem does and where it sits in the path</li><li>read a Wi-Fi standard and say which band and speed it uses</li><li>explain channels, interference, and why 5 GHz is faster but shorter</li><li>explain what a demarcation point is</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Access types</div><div>dial-up (56 kbps, ties up the phone line), DSL (over phone copper, slower with distance), cable (over coax, shared with the neighbourhood), fibre (fastest, longest reach), cellular, satellite.</div><div class="k">Modem vs router</div><div>the modem converts the provider&#x27;s signal; the router moves traffic between networks. One box often does both, which is why people confuse the words.</div><div class="k">Wi-Fi standards</div><div>802.11n is Wi-Fi 4, ac is Wi-Fi 5, ax is Wi-Fi 6. Each generation raises efficiency and throughput, not just peak speed.</div><div class="k">Bands</div><div>2.4 GHz travels further and through walls better, but has three non-overlapping channels (1, 6, 11) and more interference. 5 GHz has more channels, more speed, shorter range.</div><div class="k">Wireless security</div><div>WPA2 is the minimum, WPA3 is current, WEP and WPA are broken. Enterprise mode uses 802.1X with a RADIUS server.</div><div class="k">Demarcation point</div><div>where the provider&#x27;s responsibility ends and the customer&#x27;s begins. Everything past it is your problem.</div><div class="k">WAN link</div><div>the connection between sites. Its speed and latency set the ceiling for everything users do across it.</div></div>
+    <div class="big60 r"><b>The trap:</b> Buying a faster plan for a slow connection that is actually a weak Wi-Fi signal. Test the wireless before you blame the provider.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c2m6">
+  <div class="lhead"><span class="lnum">M6</span><h3>Troubleshooting and the Future of Networking</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 1 · 5.0 · 4.0</span></div></div>
+  <p class="lwhy"><b>why</b>The command-line toolkit for proving where a network fails, plus IPv6 and what comes next.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>use ping, traceroute, nslookup, ipconfig and netstat to localise a fault</li><li>read an IPv6 address and explain why it exists</li><li>explain what dual-stack means</li><li>describe the IoT and cloud trends and the problems they create</li><li>given a symptom, choose the next command</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 9 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">ping</div><div>ICMP echo request and reply: is the host reachable, and how long is the round trip. Many firewalls drop it, so no reply is not proof of a dead host.</div><div class="k">traceroute / tracert</div><div>shows every hop, so you can see where latency jumps or the path stops.</div><div class="k">nslookup / dig</div><div>asks DNS directly. It separates &#x27;the name does not resolve&#x27; from &#x27;the host is down&#x27;.</div><div class="k">ipconfig / ip</div><div>your address, mask, gateway and DNS servers, and whether DHCP gave them. `ipconfig /release` then `/renew` is the first DHCP fix.</div><div class="k">netstat / ss</div><div>which ports are listening and which connections exist - the difference between &#x27;the service is down&#x27; and &#x27;the firewall blocks it&#x27;.</div><div class="k">IPv6</div><div>128 bits, eight groups of four hex digits, `::` collapses one run of zeros. Autoconfigured, and large enough that NAT stops being necessary.</div><div class="k">Dual stack</div><div>running IPv4 and IPv6 at the same time, which is how the transition is actually happening.</div><div class="k">IoT</div><div>cheap network devices with weak defaults and no patch cycle. Segment them onto their own network.</div><div class="k">The order</div><div>link light and cable, then local address, then gateway, then DNS, then a remote IP, then the application.</div></div>
+    <div class="big60 r"><b>The trap:</b> Reading a failed ping as a dead host. Plenty of hosts and firewalls drop ICMP and answer everything else perfectly.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article></section><section id="c3" class=""><h2>Course 3 &mdash; Operating Systems and You: Becoming a Power User</h2><p class="lede">28 hours &middot; 6 modules &middot; 0 built &middot; A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</p><p>Windows and Linux as an administrator: the GUI, the shell, users and permissions, packages, filesystems, disk management and process control.</p><article class="lcard soon" id="c3m1">
+  <div class="lhead"><span class="lnum">M1</span><h3>Navigating the System</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</span></div></div>
+  <p class="lwhy"><b>why</b>The command line: faster than clicking, scriptable, and the only way to work on a server with no desktop.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>navigate a filesystem and manage files from PowerShell or Bash</li><li>use wildcards, pipes and redirection</li><li>find, read and filter text output</li><li>tell an absolute path from a relative path</li><li>do the same task on Windows and on Linux</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Paths</div><div>absolute starts at the root (C:\ or /); relative starts where you are. `.` is here, `..` is the parent.</div><div class="k">Navigation</div><div>cd, pwd/Get-Location, ls/dir, mkdir, cp/copy, mv/move, rm/del. The verbs differ, the jobs do not.</div><div class="k">Everything is a file</div><div>on Linux, devices live in /dev and configuration in /etc. That is why one set of tools can read almost anything.</div><div class="k">Pipes</div><div>send one command&#x27;s output into the next: `ps aux | grep ssh`. Redirection writes it to a file: &gt; overwrite, &gt;&gt; append, 2&gt; errors.</div><div class="k">Permissions</div><div>`ls -l` shows rwx for owner, group and other. Windows uses ACLs with inherited rights instead.</div><div class="k">Environment variables</div><div>machine-wide settings, and PATH is how the shell finds a command at all.</div><div class="k">Self-help</div><div>man, --help and Get-Help are the reference you are expected to use rather than memorise.</div></div>
+    <div class="big60 r"><b>The trap:</b> Running rm without reading the path. There is no recycle bin and no undo on the command line.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c3m2">
+  <div class="lhead"><span class="lnum">M2</span><h3>Users and Permissions</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</span></div></div>
+  <p class="lwhy"><b>why</b>Who can do what: the whole of account administration, and half of security.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>create, modify and delete local users and groups on Windows and Linux</li><li>read a Linux permission string and change it with chmod and chown</li><li>explain least privilege and apply it to a real request</li><li>explain sudo and UAC, and why an admin should not live as root</li><li>set a password policy that is actually usable</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Permission string</div><div>-rwxr-xr-- is type, then owner, group, other. r=4, w=2, x=1, so 755 means rwxr-xr-x.</div><div class="k">Changing them</div><div>chmod takes symbolic (u+x) or numeric (755); chown changes the owner; chgrp changes the group.</div><div class="k">Root and sudo</div><div>root (uid 0) can do anything. sudo runs one command with root rights and logs it, which is why it exists instead of logging in as root.</div><div class="k">Windows</div><div>local users and groups (lusrmgr.msc) or `net user`; UAC elevates a single action rather than granting a permanent admin session.</div><div class="k">Groups are the unit</div><div>grant rights to a group and put people in it. Per-person permissions become unauditable within a month.</div><div class="k">Least privilege</div><div>the minimum access needed for the job, for the shortest time. Every extra right is a future incident.</div><div class="k">Account lifecycle</div><div>create on day one, change rights when the role changes, disable the same day someone leaves, and settle the mailbox and files before deleting anything.</div><div class="k">Password policy</div><div>length beats complexity, plus lockout thresholds and MFA. Forced 90-day rotation is no longer recommended by anyone serious.</div></div>
+    <div class="big60 r"><b>The trap:</b> chmod 777 to make something work. It works by deleting the control you were supposed to keep.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c3m3">
+  <div class="lhead"><span class="lnum">M3</span><h3>Package and Software Management</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</span></div></div>
+  <p class="lwhy"><b>why</b>Keeping software installed, current and reproducible: the routine that prevents most incidents.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>install, update, remove and query packages on Debian and Red Hat families</li><li>explain what a repository is and why it beats a downloaded file</li><li>explain dependency resolution, and what a broken dependency looks like</li><li>read a version number and reason about an upgrade</li><li>say what is different about Windows package management</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Debian family</div><div>apt update refreshes the index, apt upgrade installs updates, apt install/remove/search manage packages. dpkg -i installs a local .deb without resolving dependencies.</div><div class="k">Red Hat family</div><div>dnf install/remove/update/search, rpm -qa to list what is installed. Older systems use yum.</div><div class="k">Repository</div><div>a signed index of packages the manager trusts. You get dependency resolution and signature checking; `curl | bash` gives you neither.</div><div class="k">Dependency</div><div>a package another package needs. The manager resolves the graph; a conflict means two packages demand incompatible versions.</div><div class="k">Versions</div><div>major.minor.patch: major breaks compatibility, minor adds features, patch fixes. Upgrading across a major version is a planned change.</div><div class="k">Windows</div><div>winget, Chocolatey and the Store; MSI for scripted installs with msiexec.</div><div class="k">Rollback</div><div>snapshots and version pinning exist so an upgrade can be undone. Upgrade deliberately, not the night before a demo.</div></div>
+    <div class="big60 r"><b>The trap:</b> Mixing package managers on one machine - apt plus a hand-installed .deb plus a source build of the same tool - produces a version nothing can update.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c3m4">
+  <div class="lhead"><span class="lnum">M4</span><h3>Filesystems</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</span></div></div>
+  <p class="lwhy"><b>why</b>Disks, partitions and the layer that organises them into files, including what to do when one fills up.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>tell a disk from a partition from a filesystem from a mount point</li><li>name the common filesystems and where each is used</li><li>partition and format a disk on Windows and Linux</li><li>explain journaling and inodes</li><li>diagnose a full disk and find what is using the space</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">The stack</div><div>disk, then partition table, then partitions, then a filesystem on each, then a mount point that attaches it to the tree.</div><div class="k">Partition tables</div><div>MBR: four primary partitions and a 2 TB limit. GPT: 128 partitions, huge disks, and what UEFI expects.</div><div class="k">Filesystems</div><div>NTFS (Windows, journaling, permissions), ext4 (Linux default), XFS (large files), APFS (macOS), exFAT and FAT32 (removable and cross-platform, no permissions).</div><div class="k">Journaling</div><div>records pending changes so a crash can be recovered without scanning the whole disk.</div><div class="k">Inodes</div><div>hold a file&#x27;s metadata. A filesystem can run out of inodes while still showing free space, and then no new file can be created.</div><div class="k">Mounting</div><div>/etc/fstab makes a mount permanent on Linux; Windows uses a drive letter or a folder path.</div><div class="k">Finding the space</div><div>df -h shows usage by filesystem, du -sh * shows what is using it, lsblk and fdisk -l show the disks.</div><div class="k">Reserved space</div><div>ext4 keeps 5 percent for root, so a disk can read as full while root can still write.</div></div>
+    <div class="big60 r"><b>The trap:</b> Formatting destroys the filesystem, not just the files. Confirm which disk you are on before you format anything, because there is no undo.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c3m5">
+  <div class="lhead"><span class="lnum">M5</span><h3>Process Management</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</span></div></div>
+  <p class="lwhy"><b>why</b>What is actually running, what it is using, and how to stop it without taking the machine down.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>list, inspect and stop processes on Windows and Linux</li><li>read CPU and memory usage and name the process responsible</li><li>explain what a service or daemon is, and start, stop and enable one</li><li>explain what happens when a machine runs out of memory</li><li>schedule a task to run unattended</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Process</div><div>a running instance of a program with a process ID. A thread is an execution path inside it.</div><div class="k">Seeing them</div><div>ps aux, top/htop on Linux; Task Manager and tasklist on Windows.</div><div class="k">Stopping one</div><div>kill sends SIGTERM (ask nicely), kill -9 sends SIGKILL (no cleanup). Windows: taskkill /PID. Always try the polite one first.</div><div class="k">Services and daemons</div><div>run with nobody logged in. systemctl start/stop/enable/status on Linux; services.msc or sc on Windows.</div><div class="k">Start versus enable</div><div>start runs it now, enable runs it at boot. Confusing them is why a service dies at the next reboot.</div><div class="k">Out of memory</div><div>Linux kills a process; Windows pages to disk until everything crawls. Both look like &#x27;the machine froze&#x27;.</div><div class="k">Scheduling</div><div>Task Scheduler on Windows; cron on Linux with five fields (minute, hour, day, month, weekday); systemd timers as the modern alternative.</div><div class="k">Startup programs</div><div>a separate list from services, and the usual cause of a slow login.</div></div>
+    <div class="big60 r"><b>The trap:</b> Reaching for kill -9 first. It skips cleanup, can leave locks and half-written files, and hides whether the process would have stopped on its own.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c3m6">
+  <div class="lhead"><span class="lnum">M6</span><h3>Operating Systems in Practice</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</span></div></div>
+  <p class="lwhy"><b>why</b>Using the operating system on a machine you are not sitting at: remote access, imaging, and the diagnostics that matter.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>connect to a machine remotely over SSH and RDP</li><li>take and restore a disk image</li><li>use the built-in diagnostic and monitoring tools</li><li>explain what a virtual machine and a snapshot buy you</li><li>decide when reinstalling beats repairing</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">SSH</div><div>encrypted remote shell on port 22. Key-based authentication beats passwords; scp copies files over the same channel.</div><div class="k">RDP</div><div>Windows Remote Desktop on 3389. It gives you the desktop, needs a route to the host, and needs the right edition of Windows.</div><div class="k">Imaging</div><div>a byte-for-byte copy of a disk or partition, restorable to new hardware. Used for deployment and as a rollback point before a risky change.</div><div class="k">Virtualisation</div><div>a hypervisor runs whole machines as files. Snapshots are fast rollback, not backup - they live on the same disk.</div><div class="k">Windows diagnostics</div><div>Event Viewer, Reliability Monitor, Resource Monitor, sfc /scannow, chkdsk, dism.</div><div class="k">Linux diagnostics</div><div>journalctl, dmesg, smartctl for disk health, top and free for load.</div><div class="k">When to reinstall</div><div>when the fault is systemic, reproduces on a clean profile, and rebuilding is cheaper than tracing - after the data is backed up.</div></div>
+    <div class="big60 r"><b>The trap:</b> Calling a snapshot a backup. Delete the disk and the snapshot goes with it.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article></section><section id="c4" class=""><h2>Course 4 &mdash; System Administration and IT Infrastructure Services</h2><p class="lede">24 hours &middot; 6 modules &middot; 0 built &middot; A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</p><p>From one machine to a fleet: servers, directory services, cloud infrastructure, centralised management, backup and disaster recovery.</p><article class="lcard soon" id="c4m1">
+  <div class="lhead"><span class="lnum">M1</span><h3>What is System Administration?</h3><div class="lmeta"><span class="mchip">facts only &middot; 35 min</span><span class="mchip aplus">A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</span></div></div>
+  <p class="lwhy"><b>why</b>The role: keeping a fleet of machines, accounts and services running predictably, and documented well enough that someone else could.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>describe what a sysadmin owns that a support technician does not</li><li>explain documentation, change management and configuration management</li><li>name the common server roles</li><li>plan a small infrastructure on paper</li><li>explain uptime, SLAs and the real cost of downtime</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Scope</div><div>servers, accounts, backups, patching, monitoring, and the documentation that lets another person do all of it.</div><div class="k">Server roles</div><div>file, print, web, mail, database, DNS, DHCP, directory, application.</div><div class="k">Change management</div><div>record what will change, why, how to roll back, and when - before it happens, not after.</div><div class="k">Configuration management</div><div>Ansible, Puppet and Chef keep machines in a declared state instead of hand-edited one at a time.</div><div class="k">Monitoring</div><div>watch what users notice (availability, response time) and what they do not (disk, memory, certificate expiry).</div><div class="k">Backup rule</div><div>three copies, on two media, one off-site - and only a restore proves it.</div><div class="k">Uptime</div><div>99.9 percent still allows about 43 minutes of downtime a month. The number is a promise, so it needs a definition of &#x27;down&#x27;.</div></div>
+    <div class="big60 r"><b>The trap:</b> A change nobody wrote down is a change nobody can undo. The rollback plan is part of the change, not an optional extra.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c4m2">
+  <div class="lhead"><span class="lnum">M2</span><h3>Network and Infrastructure Services</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</span></div></div>
+  <p class="lwhy"><b>why</b>The shared services an organisation cannot run without: names, addresses, time, printing and file sharing.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain DNS zones and the record types that matter</li><li>explain DHCP at the scale of a whole network: scopes, exclusions, reservations</li><li>explain NTP and why clock drift breaks authentication</li><li>describe file and print service roles</li><li>explain what a load balancer does</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">DNS zones</div><div>a zone is the part of the namespace one server is authoritative for. Forward lookup is name to address; reverse lookup is address to name (PTR).</div><div class="k">Records</div><div>A, AAAA, CNAME, MX, NS, TXT, PTR, SOA. Learn what each one is for, because every DNS question is one of these.</div><div class="k">DHCP at scale</div><div>a scope is the pool for one subnet; exclusions are addresses never handed out; reservations bind an address to a MAC; options supply gateway, DNS and lease time.</div><div class="k">Two DHCP servers</div><div>on one subnet they must be split or authorised, or they hand out conflicting addresses and the network behaves randomly.</div><div class="k">NTP</div><div>UDP 123. Kerberos rejects tickets when clocks differ by more than a few minutes, so time is an authentication dependency.</div><div class="k">File sharing</div><div>SMB on Windows (445), NFS on Linux (2049). Share permissions and filesystem permissions both apply, and the most restrictive wins.</div><div class="k">Print services</div><div>a print server queues jobs and holds the drivers; a direct-IP printer has no queue, so one bad job blocks the device.</div><div class="k">Load balancer</div><div>spreads requests across servers and health-checks them; a reverse proxy does similar work at the application layer.</div></div>
+    <div class="big60 r"><b>The trap:</b> Assuming share permissions are the whole story. NTFS permissions apply on top, and the effective right is whichever is more restrictive.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c4m3">
+  <div class="lhead"><span class="lnum">M3</span><h3>Software and Platform Services</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</span></div></div>
+  <p class="lwhy"><b>why</b>The applications an organisation runs: mail, web, chat, databases, and the platforms under them.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain how an email is sent, delivered and filtered</li><li>explain what a web server and a database service do</li><li>describe the collaboration platforms and the admin duties they create</li><li>tell a platform service from a hosted application</li><li>say what to monitor on each service</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 6 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Mail path</div><div>client submits on 587, the relay looks up the domain&#x27;s MX record, the destination server accepts it, and the user collects it over IMAP or POP3.</div><div class="k">SPF, DKIM, DMARC</div><div>SPF lists the servers allowed to send for the domain, DKIM signs the message, DMARC says what to do when either fails. Without all three, anyone can spoof the domain.</div><div class="k">Web server</div><div>serves HTTP and HTTPS, terminates TLS, and usually fronts an application server. Its logs are the first place to look.</div><div class="k">Database</div><div>stores structured data; the admin owns backups, accounts, indexes and capacity. A database backup is only real once it has been restored.</div><div class="k">Collaboration</div><div>chat, wiki and conferencing are usually SaaS, so the admin duty is identity, retention and access rather than servers.</div><div class="k">What to monitor</div><div>mail queue length, web response time and certificate expiry, database connections and disk - each service fails in its own shape.</div></div>
+    <div class="big60 r"><b>The trap:</b> Publishing SPF and believing the domain is protected. SPF without DKIM and DMARC still lets someone else send as you.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c4m4">
+  <div class="lhead"><span class="lnum">M4</span><h3>Directory Services</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</span></div></div>
+  <p class="lwhy"><b>why</b>One identity for every system: the directory that holds users, groups, computers and the policy applied to them.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain what a directory service stores and why it exists</li><li>describe Active Directory&#x27;s structure: forest, tree, domain, OU, domain controller</li><li>explain LDAP and where it is used outside Windows</li><li>explain Group Policy and give a real problem it solves</li><li>explain single sign-on and federation at a basic level</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Directory</div><div>a hierarchical database of identities and objects, built for fast reads. Active Directory is Microsoft&#x27;s; LDAP is the open protocol many implement.</div><div class="k">AD structure</div><div>forest, then tree, then domain, then organisational unit. A domain controller authenticates users and replicates the directory.</div><div class="k">OUs</div><div>exist to delegate administration and to apply Group Policy. Using them as an org chart makes policy unpredictable.</div><div class="k">LDAP</div><div>port 389, LDAPS 636. An entry is named by its distinguished name: CN=User,OU=Staff,DC=corp,DC=local.</div><div class="k">Group Policy</div><div>settings pushed to users and computers at boot and logon. gpupdate /force applies now; gpresult /r shows what actually applied.</div><div class="k">Authentication vs authorisation</div><div>the directory proves who you are; group membership decides what you may do.</div><div class="k">SSO and federation</div><div>one identity provider signs you into many applications via SAML or OIDC. The application trusts the provider instead of holding a password.</div><div class="k">Replication</div><div>many domain controllers, one directory - so changes replicate, and FSMO roles settle who is authoritative for what.</div></div>
+    <div class="big60 r"><b>The trap:</b> Designing OUs to mirror the org chart. OUs change which policy applies; a structure that follows people rather than administration makes policy impossible to predict.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c4m5">
+  <div class="lhead"><span class="lnum">M5</span><h3>Data Recovery and Backup</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</span></div></div>
+  <p class="lwhy"><b>why</b>Getting data back after it is gone, and being honest about what is actually recoverable.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>distinguish backup, archive and replication</li><li>choose a backup type and schedule for a given need</li><li>explain the 3-2-1 rule and why an untested backup is not a backup</li><li>explain RAID levels, and why RAID is not backup</li><li>say what to do first when data is lost</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Three different things</div><div>a backup is a copy you can restore from; an archive is long-term retention; replication is a live copy that copies deletions and corruption too.</div><div class="k">Types</div><div>full copies everything; incremental copies changes since the last backup of any kind; differential copies changes since the last full.</div><div class="k">Restore arithmetic</div><div>full plus every incremental in order, or full plus the latest differential. That is why incrementals are small and slow to restore.</div><div class="k">3-2-1</div><div>three copies, two different media, one off-site. Add one offline or immutable copy and you are defended against ransomware.</div><div class="k">RAID</div><div>0 stripes with no redundancy, 1 mirrors, 5 stripes with one parity disk, 6 with two, 10 mirrors then stripes.</div><div class="k">RAID is not backup</div><div>it keeps the array running when a disk dies. It does not keep yesterday&#x27;s version of a file, and it copies deletions.</div><div class="k">First moves</div><div>stop writing to the device, work from an image, and confirm a backup exists before touching anything.</div><div class="k">Deleted files</div><div>recoverable until the blocks are overwritten - and TRIM on an SSD can make that immediate.</div></div>
+    <div class="big60 r"><b>The trap:</b> Believing RAID is a backup. It survives a dead disk; it does not survive a delete, a corrupt file or ransomware.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c4m6">
+  <div class="lhead"><span class="lnum">M6</span><h3>Final Project</h3><div class="lmeta"><span class="mchip">facts only &middot; 30 min</span><span class="mchip aplus">A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</span></div></div>
+  <p class="lwhy"><b>why</b>The capstone: plan and document a small infrastructure end to end, as a document rather than a build.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>write an infrastructure plan covering roles, services, accounts and backups</li><li>produce documentation another administrator could follow</li><li>justify each component by the requirement it serves</li><li>name the single points of failure and what covers each</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 4 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">The deliverable</div><div>a design document: scope, requirements, services, accounts, backup, monitoring, rollback.</div><div class="k">Justify everything</div><div>every service names the requirement it serves. An unjustified component is a future mystery for whoever inherits it.</div><div class="k">Failure points</div><div>name each single point of failure and the control that covers it - redundancy, backup, or an accepted risk stated out loud.</div><div class="k">Restore procedure</div><div>write the restore steps, not just the backup schedule. A schedule is a promise; the procedure is the evidence.</div></div>
+    <div class="big60 r"><b>The trap:</b> Designing for the happy path. The marks are in what happens when a service dies at two in the morning.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article></section><section id="c5" class=""><h2>Course 5 &mdash; IT Security: Defense against the digital dark arts</h2><p class="lede">23 hours &middot; 7 modules &middot; 0 built &middot; A+ Core 2 · 2.0 Security</p><p>Threats and attacks, cryptography, the three A's, hardening a network, defence in depth, and building a security culture.</p><article class="lcard soon" id="c5m1">
+  <div class="lhead"><span class="lnum">M1</span><h3>Understanding Security Threats</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 2 · 2.0 Security</span></div></div>
+  <p class="lwhy"><b>why</b>What actually attacks a system, so that every defence later in the course has a target.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>name the malware families and what each one does</li><li>recognise social engineering and phishing patterns</li><li>explain sniffing, spoofing, denial of service and on-path attacks</li><li>tell a vulnerability from an exploit from a threat from a risk</li><li>explain defence in depth as the answer to all of the above</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Malware families</div><div>virus attaches to a file, worm spreads by itself, trojan looks legitimate, ransomware encrypts for payment, spyware and keyloggers steal, rootkit hides, botnet is a fleet of compromised hosts.</div><div class="k">Social engineering</div><div>phishing, spear phishing (targeted), whaling (executives), vishing (voice), smishing (SMS), pretexting, baiting, tailgating.</div><div class="k">Network attacks</div><div>sniffing captures traffic, spoofing fakes the source, on-path sits between the ends, DoS and DDoS exhaust a resource, DNS poisoning and ARP spoofing redirect it.</div><div class="k">The four words</div><div>vulnerability is the weakness, exploit is the technique, threat is who or what might, risk is likelihood times impact.</div><div class="k">Why patching first</div><div>the largest single class of vulnerability is a known, fixed bug that was never applied.</div><div class="k">Defence in depth</div><div>assume each layer will fail and put another behind it.</div><div class="k">Breach indicators</div><div>unexpected outbound traffic, new admin accounts, disabled logging, logins at strange hours from strange places.</div></div>
+    <div class="big60 r"><b>The trap:</b> &#x27;Nobody would target us&#x27; is the threat model of every organisation that gets hit. Most attacks are automated and opportunistic.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c5m2">
+  <div class="lhead"><span class="lnum">M2</span><h3>Pelcgbybtl (Cryptology)</h3><div class="lmeta"><span class="mchip">facts only &middot; 50 min</span><span class="mchip aplus">A+ Core 2 · 2.0 Security</span></div></div>
+  <p class="lwhy"><b>why</b>The maths under every secure connection: confidentiality, integrity and authenticity, and what each one actually guarantees.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>tell symmetric from asymmetric encryption, and say when each is used</li><li>explain hashing and why it is not encryption</li><li>explain a digital signature and exactly what it proves</li><li>explain how TLS combines all three to secure a connection</li><li>explain what a certificate authority is, and what a certificate binds</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Symmetric</div><div>one shared key, fast, used for bulk data (AES). The unsolved part is getting the key to the other side safely.</div><div class="k">Asymmetric</div><div>a key pair: the public key encrypts and verifies, the private key decrypts and signs. Slow, so it carries the key, not the data.</div><div class="k">Hashing</div><div>one-way and fixed length; same input, same output (SHA-256). Used for integrity and password storage. Not encryption, because it cannot be reversed.</div><div class="k">Digital signature</div><div>hash the message, sign the hash with the private key. Anyone with the public key can verify who sent it and that it was not changed.</div><div class="k">TLS</div><div>verify the server&#x27;s certificate, agree a symmetric session key using asymmetric crypto, then encrypt everything with the fast key.</div><div class="k">Certificate</div><div>a public key plus an identity plus a validity period, signed by a CA the client trusts. Expiry, wrong name and unknown CA are the three failures you will actually see.</div><div class="k">Password storage</div><div>a salted hash (bcrypt, Argon2). Never reversible encryption, never plain text.</div><div class="k">PKI</div><div>root CA signs an intermediate, the intermediate signs the leaf certificate. The chain is the trust.</div></div>
+    <div class="big60 r"><b>The trap:</b> Confusing encoding, encryption and hashing. Base64 hides nothing, encryption reverses with the key, hashing never reverses.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c5m3">
+  <div class="lhead"><span class="lnum">M3</span><h3>The 3 A&#x27;s of Cybersecurity: Authentication, Authorization, Accounting</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 2 · 2.0 Security</span></div></div>
+  <p class="lwhy"><b>why</b>Authentication, authorisation and accounting: proving who someone is, deciding what they may do, and recording what they did.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>tell authentication from authorisation from accounting</li><li>explain the authentication factors and what MFA actually requires</li><li>compare password, certificate and biometric authentication</li><li>explain single sign-on and the security trade it makes</li><li>say what an audit log must contain to be worth keeping</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">The three A&#x27;s</div><div>authentication is who you are, authorisation is what you may do, accounting is what you did.</div><div class="k">Factors</div><div>something you know (password), something you have (token, phone), something you are (biometric).</div><div class="k">MFA</div><div>two different factor types. A password plus a second password is still one factor, no matter how it is labelled.</div><div class="k">Phishing-resistant</div><div>certificate and FIDO2/token authentication resist phishing because the secret never goes to the site.</div><div class="k">Kerberos</div><div>ticket-based authentication in Windows domains; a ticket-granting ticket proves identity to each service. Clock skew breaks it.</div><div class="k">SSO</div><div>one login for many applications. It removes password sprawl and concentrates risk: compromise the one credential and you reach everything it was trusted for.</div><div class="k">Authorisation models</div><div>role-based (RBAC) and attribute-based (ABAC), with least privilege applied on top of either.</div><div class="k">Audit trail</div><div>who, what, when, from where, and the result - on a clock you trust, in a log that cannot be quietly edited.</div></div>
+    <div class="big60 r"><b>The trap:</b> Calling two passwords MFA. If both factors are &#x27;something you know&#x27;, it is still one factor.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c5m4">
+  <div class="lhead"><span class="lnum">M4</span><h3>Securing Your Networks</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 2 · 2.0 Security</span></div></div>
+  <p class="lwhy"><b>why</b>The controls between a network and an attacker: wireless security, firewalls, segmentation and monitoring.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain WPA2 and WPA3, and why WEP is unusable</li><li>place a firewall, a proxy and an IDS/IPS in a network and say what each does</li><li>explain segmentation and a DMZ</li><li>explain what a VPN protects and what it does not</li><li>harden a wireless network</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 9 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Wireless security</div><div>WEP is broken, WPA is deprecated, WPA2 (AES) is the minimum, WPA3 adds forward secrecy and a better handshake.</div><div class="k">Enterprise Wi-Fi</div><div>802.1X with a RADIUS server, so every user has their own credential instead of one shared passphrase.</div><div class="k">Firewall</div><div>filters by rule: address, port, protocol. Stateful tracks connections and allows the replies. Default deny is the posture.</div><div class="k">DMZ</div><div>a segment for services that must be reachable from outside, kept away from the internal network.</div><div class="k">Segmentation</div><div>VLANs and separate networks limit how far an attacker can move. Guest Wi-Fi and IoT on their own segment is the standard example.</div><div class="k">Proxy</div><div>an intermediary for application traffic that can cache, filter and log. It is not encryption.</div><div class="k">VPN</div><div>an encrypted tunnel. It protects traffic in transit and nothing on either endpoint.</div><div class="k">IDS and IPS</div><div>detect and alert versus detect and block. Both need tuning or they become noise everyone ignores.</div><div class="k">Hardening checklist</div><div>change defaults, disable WPS and unused services, patch firmware, strong passphrase, enable logging, separate management network.</div></div>
+    <div class="big60 r"><b>The trap:</b> Hiding the SSID or filtering MAC addresses and calling it security. Both are trivially bypassed and both are still offered as features.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c5m5">
+  <div class="lhead"><span class="lnum">M5</span><h3>Defense in Depth</h3><div class="lmeta"><span class="mchip">facts only &middot; 45 min</span><span class="mchip aplus">A+ Core 2 · 2.0 Security</span></div></div>
+  <p class="lwhy"><b>why</b>Layered controls, because any single control eventually fails - plus the operational habits that make the layers real.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain defence in depth and name the layers</li><li>explain least privilege, separation of duties and fail-safe defaults</li><li>describe patching, backup and incident response as controls</li><li>explain what a security policy and a disaster recovery plan are for</li><li>walk a suspected incident from detection to closure</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 8 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">The layers</div><div>physical, network, host, application, data, identity, and the human layer of training and policy.</div><div class="k">Three principles</div><div>least privilege, separation of duties (nobody both creates and approves), and fail-safe defaults (deny unless allowed).</div><div class="k">Host controls</div><div>patching, antivirus/EDR, application allow-listing, full-disk encryption.</div><div class="k">Backups are a control</div><div>ransomware&#x27;s business model assumes you have no offline copy.</div><div class="k">Incident response</div><div>prepare, identify, contain, eradicate, recover, lessons learned. Containment before forensics is a deliberate trade.</div><div class="k">Chain of custody</div><div>if the evidence may reach HR or a court, record who handled what and when.</div><div class="k">Policy, procedure, guideline</div><div>policy says what and why, procedure says how, guideline is a recommendation.</div><div class="k">BC vs DR</div><div>business continuity keeps operating during the event; disaster recovery restores afterwards.</div></div>
+    <div class="big60 r"><b>The trap:</b> Buying the tool and calling it a control. An EDR nobody watches, or a backup nobody restores, is a cost with no defence.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c5m6">
+  <div class="lhead"><span class="lnum">M6</span><h3>Creating a Company Culture for Security</h3><div class="lmeta"><span class="mchip">facts only &middot; 35 min</span><span class="mchip aplus">A+ Core 2 · 2.0 Security</span></div></div>
+  <p class="lwhy"><b>why</b>Security is mostly human behaviour and organisational process - this is the module about making it stick.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain why security culture beats security tools</li><li>design a basic security awareness programme</li><li>say what belongs in a security policy and an incident plan</li><li>explain privacy obligations and data handling rules</li><li>choose metrics that measure whether a control works</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 7 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Culture</div><div>people report things, follow process, and ask before they click. Training plus a no-blame reporting path is how you get there.</div><div class="k">Awareness programme</div><div>onboarding training, phishing simulations, short refreshers, and a one-click report button.</div><div class="k">Policy set</div><div>acceptable use, password, access control, incident response, backup, remote work, data classification.</div><div class="k">Data classification</div><div>public, internal, confidential, restricted - and then say who may store, share and destroy each class.</div><div class="k">Privacy</div><div>collect the minimum, say why, keep it only as long as needed, and know the breach notification obligation.</div><div class="k">Metrics that mean something</div><div>phishing report rate, patch compliance, time to detect, time to restore. Not &#x27;number of alerts&#x27;.</div><div class="k">Third parties</div><div>a vendor with access is part of your attack surface, so vendor risk review is a control.</div></div>
+    <div class="big60 r"><b>The trap:</b> A policy nobody has read is not a control. Publishing is the start; training, enforcement and review are the control.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c5m7">
+  <div class="lhead"><span class="lnum">M7</span><h3>Streamline Workflows with AI</h3><div class="lmeta"><span class="mchip">facts only &middot; 25 min</span><span class="mchip aplus">A+ Core 2 · 2.0 Security</span></div></div>
+  <p class="lwhy"><b>why</b>Using AI tools on the job without handing them data you were not allowed to hand over.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>describe where AI tools genuinely fit in an IT workflow</li><li>say what data must never go into a hosted model</li><li>write a prompt that produces a usable result</li><li>verify an AI answer before acting on it</li><li>explain the risk of automation without review</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 6 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Good uses</div><div>summarising documentation, drafting a ticket reply, explaining an unfamiliar error, generating a checklist, writing a script you will read before running.</div><div class="k">Never</div><div>customer data, credentials, personal data, or employer-confidential material into a hosted model without written approval.</div><div class="k">Prompt quality</div><div>state the role, the task, the constraints, the output format, and give an example.</div><div class="k">Verify</div><div>an AI answer is a confident draft from something that cannot know it is wrong. Test the command before it runs anywhere that matters.</div><div class="k">Human gate</div><div>anything destructive or external-facing gets a person&#x27;s approval, every time.</div><div class="k">Record it</div><div>if AI produced part of a decision, that is part of the audit trail.</div></div>
+    <div class="big60 r"><b>The trap:</b> Pasting an error message that contains a customer name, an internal hostname and a token. Redact before you paste.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article></section><section id="c6" class=""><h2>Course 6 &mdash; Accelerate Your Job Search with AI</h2><p class="lede">6 hours &middot; 4 modules &middot; 0 built &middot; optional &middot; A+ —</p><p>The optional course Coursera bundles with the certificate: transferable skills, a job search plan, applications and interview practice, each with AI assistance.</p><article class="lcard soon" id="c6m1">
+  <div class="lhead"><span class="lnum">M1</span><h3>Uncover Your Transferable Skills with AI</h3><div class="lmeta"><span class="mchip">facts only &middot; 25 min</span></div></div>
+  <p class="lwhy"><b>why</b>Turning what you have already done into language an employer recognises.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>extract transferable skills from past work</li><li>match your evidence to a job ad&#x27;s own vocabulary</li><li>write evidence rather than adjectives</li><li>use AI to generate options and reject the inflated ones</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 4 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Transferable</div><div>a capability, not a trait. &#x27;Ran a twelve-ticket-a-day queue&#x27; beats &#x27;good with people&#x27;.</div><div class="k">Evidence rule</div><div>every claim must survive a follow-up question, and every number comes from your own record.</div><div class="k">Mirror the ad</div><div>use the employer&#x27;s vocabulary for the skills you genuinely have, and do not claim the ones you do not.</div><div class="k">AI&#x27;s role</div><div>useful for generating phrasings and spotting gaps; never a source of facts about you.</div></div>
+    <div class="big60 r"><b>The trap:</b> Letting a model write achievements you cannot defend in the interview.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c6m2">
+  <div class="lhead"><span class="lnum">M2</span><h3>Plan Your Job Search with AI</h3><div class="lmeta"><span class="mchip">facts only &middot; 20 min</span></div></div>
+  <p class="lwhy"><b>why</b>A search with a target beats a search with a hope.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>define target roles and the terms employers use for them</li><li>build a weekly search routine you can sustain</li><li>track every application in one place</li><li>research an employer before applying</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 4 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Target first</div><div>role titles, seniority, sector, location or remote, salary band. Everything else follows from those five.</div><div class="k">One tracker</div><div>date, employer, role, source, stage, next action - in a single place.</div><div class="k">Research</div><div>what the company does, its stack, recent news, and who the hiring manager is.</div><div class="k">Cadence</div><div>volume without tailoring converts badly, so pick a weekly rhythm you can keep.</div></div>
+    <div class="big60 r"><b>The trap:</b> Applying to everything. A hundred untailored applications is one application repeated a hundred times.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c6m3">
+  <div class="lhead"><span class="lnum">M3</span><h3>Manage Your Job Applications with AI</h3><div class="lmeta"><span class="mchip">facts only &middot; 20 min</span></div></div>
+  <p class="lwhy"><b>why</b>Keeping the paperwork straight so nothing is missed and nothing is overstated.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>tailor a resume to an ad without fabricating</li><li>write a cover letter that gives a specific reason</li><li>prepare a document to survive an applicant tracking system</li><li>keep a reusable materials library</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 4 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">Tailoring</div><div>reordering and re-emphasising real experience. It is not inventing, and it is not keyword stuffing.</div><div class="k">ATS</div><div>plain structure, standard headings, keywords that are genuinely true of you, no tables or graphics in the text layer.</div><div class="k">Cover letter</div><div>one paragraph on why this employer, one on the evidence, one on the ask.</div><div class="k">Library</div><div>a master resume, a bank of bullets, and three project stories you can tell at length.</div></div>
+    <div class="big60 r"><b>The trap:</b> Stuffing keywords the interview then has to defend.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article><article class="lcard soon" id="c6m4">
+  <div class="lhead"><span class="lnum">M4</span><h3>Prepare and Practice for Interviews with AI</h3><div class="lmeta"><span class="mchip">facts only &middot; 20 min</span></div></div>
+  <p class="lwhy"><b>why</b>Rehearsing, out loud, the answers that decide the offer.</p>
+  <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>answer &#x27;tell me about yourself&#x27; in ninety seconds</li><li>use STAR for behavioural questions</li><li>explain a technical topic to a non-technical person</li><li>prepare questions to ask, and practise out loud with feedback</li></ul></div>
+  <details class="lmore"><summary>Know this &mdash; 5 facts &middot; say each one, then open</summary>
+    <div class="kv lfacts"><div class="k">STAR</div><div>Situation, Task, Action, Result - and the result is quantified.</div><div class="k">The intro</div><div>who you are, what you have done, why this role, why now. Ninety seconds, no life story.</div><div class="k">Technical answers</div><div>define it, give an example, say what you would check. Interviewers test reasoning more than recall.</div><div class="k">Three questions</div><div>about the team, the work, and the next step. Always have them.</div><div class="k">Out loud</div><div>silent rehearsal never surfaces the sentences that fall apart.</div></div>
+    <div class="big60 r"><b>The trap:</b> Memorising a script. It breaks at the first follow-up question, which is the one that matters.</div>
+  </details>
+  <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
+</article></section><section id="aplus" class=""><h2>The A+ index &mdash; one domain, which modules teach it</h2><p class="lede">A+ is a second syllabus, and it is filed inside the Google courses rather than given its own site. So here it is the other way round: pick the domain, read the modules. Percentages are CompTIA's own domain weights.</p><div class="agrid">
+      <div class="acard"><h4>CompTIA A+ Core 1 <span class="aw">220-1201</span></h4><div class="adom"><div class="ahead"><span class="adn">Core 1 1.0</span><b>Mobile Devices</b><span class="aw">13%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m2-hardware.html" title="Computer Components and Hardware">C1 M2</a></div></div><div class="adom"><div class="ahead"><span class="adn">Core 1 2.0</span><b>Networking</b><span class="aw">23%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m4-networking-flyover.html" title="Networking">C1 M4</a> &middot; <span title="Introduction to Networking &mdash; not built yet">C2 M1</span> &middot; <a href="../it-support/c2-bits-and-bytes/m2-network-layer.html" title="The Network Layer">C2 M2</a> &middot; <a href="../it-support/c2-bits-and-bytes/m3-transport-application.html" title="The Transport and Application Layers">C2 M3</a> &middot; <span title="Networking Services &mdash; not built yet">C2 M4</span> &middot; <span title="Connecting to the Internet &mdash; not built yet">C2 M5</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 1 3.0</span><b>Hardware</b><span class="aw">25%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m1-introduction-to-it.html" title="Introduction to IT and Computing">C1 M1</a> &middot; <a href="../it-support/c1-technical-support/m2-hardware.html" title="Computer Components and Hardware">C1 M2</a> &middot; <span title="Introduction to Networking &mdash; not built yet">C2 M1</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 1 4.0</span><b>Virtualization and Cloud Computing</b><span class="aw">11%</span></div><div class="amods"><span title="Troubleshooting and the Future of Networking &mdash; not built yet">C2 M6</span> &middot; <span title="What is System Administration? &mdash; not built yet">C4 M1*</span> &middot; <span title="Network and Infrastructure Services &mdash; not built yet">C4 M2*</span> &middot; <span title="Software and Platform Services &mdash; not built yet">C4 M3*</span> &middot; <span title="Directory Services &mdash; not built yet">C4 M4*</span> &middot; <span title="Data Recovery and Backup &mdash; not built yet">C4 M5*</span> &middot; <span title="Final Project &mdash; not built yet">C4 M6*</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 1 5.0</span><b>Hardware and Network Troubleshooting</b><span class="aw">28%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m6-troubleshooting.html" title="Troubleshooting Best Practices and Customer Support">C1 M6</a> &middot; <span title="Troubleshooting and the Future of Networking &mdash; not built yet">C2 M6</span></div></div></div>
+      <div class="acard"><h4>CompTIA A+ Core 2 <span class="aw">220-1202</span></h4><div class="adom"><div class="ahead"><span class="adn">Core 2 1.0</span><b>Operating Systems</b><span class="aw">28%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m3-operating-systems.html" title="Installing and Using Operating Systems">C1 M3</a> &middot; <a href="../it-support/c1-technical-support/m5-software.html" title="Interacting with Software">C1 M5</a> &middot; <span title="Navigating the System &mdash; not built yet">C3 M1*</span> &middot; <span title="Users and Permissions &mdash; not built yet">C3 M2*</span> &middot; <span title="Package and Software Management &mdash; not built yet">C3 M3*</span> &middot; <span title="Filesystems &mdash; not built yet">C3 M4*</span> &middot; <span title="Process Management &mdash; not built yet">C3 M5*</span> &middot; <span title="Operating Systems in Practice &mdash; not built yet">C3 M6*</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 2 2.0</span><b>Security</b><span class="aw">28%</span></div><div class="amods"><a href="../it-support/c2-bits-and-bytes/m3-transport-application.html" title="The Transport and Application Layers">C2 M3</a> &middot; <span title="Understanding Security Threats &mdash; not built yet">C5 M1*</span> &middot; <span title="Pelcgbybtl (Cryptology) &mdash; not built yet">C5 M2*</span> &middot; <span title="The 3 A&#x27;s of Cybersecurity: Authentication, Authorization, Accounting &mdash; not built yet">C5 M3*</span> &middot; <span title="Securing Your Networks &mdash; not built yet">C5 M4*</span> &middot; <span title="Defense in Depth &mdash; not built yet">C5 M5*</span> &middot; <span title="Creating a Company Culture for Security &mdash; not built yet">C5 M6*</span> &middot; <span title="Streamline Workflows with AI &mdash; not built yet">C5 M7*</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 2 3.0</span><b>Software Troubleshooting</b><span class="aw">23%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m5-software.html" title="Interacting with Software">C1 M5</a> &middot; <span title="Navigating the System &mdash; not built yet">C3 M1*</span> &middot; <span title="Users and Permissions &mdash; not built yet">C3 M2*</span> &middot; <span title="Package and Software Management &mdash; not built yet">C3 M3*</span> &middot; <span title="Filesystems &mdash; not built yet">C3 M4*</span> &middot; <span title="Process Management &mdash; not built yet">C3 M5*</span> &middot; <span title="Operating Systems in Practice &mdash; not built yet">C3 M6*</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 2 4.0</span><b>Operational Procedures</b><span class="aw">21%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m6-troubleshooting.html" title="Troubleshooting Best Practices and Customer Support">C1 M6</a> &middot; <span title="What is System Administration? &mdash; not built yet">C4 M1*</span> &middot; <span title="Network and Infrastructure Services &mdash; not built yet">C4 M2*</span> &middot; <span title="Software and Platform Services &mdash; not built yet">C4 M3*</span> &middot; <span title="Directory Services &mdash; not built yet">C4 M4*</span> &middot; <span title="Data Recovery and Backup &mdash; not built yet">C4 M5*</span> &middot; <span title="Final Project &mdash; not built yet">C4 M6*</span></div></div></div>
+    </div><p class="src">Tags come from <span class="mono">courses.py</span>; domain names and weights from CompTIA's 220-1201 and 220-1202 objectives (v4.0). <b>*</b> means the whole course covers that domain rather than that one module. Modules in plain grey have no teaching page yet.</p></section><section id="built" class=""><h2>What's built, and what's next</h2><p class="lede">The order the pages are being written in, so the gap is visible rather than remembered.</p><div class="lstat"><b>8 taught &middot; 35 mapped &middot; 27 to write.</b></div>
+        <p>Next in sequence: <b>Course 2, Module 1 &mdash; Introduction to Networking</b> &mdash; then the rest of Course 2, then onwards through the certificate. Each page is written against the same spec, gated by the
+        same checks, and adds its own drills and quiz.</p>
+        <p class="src">The map is data in <span class="mono">generator/curriculum.py</span>; the
+        built state is read from disk by <span class="mono">generator/courses.py</span>. Neither can
+        claim a page that is not there.</p></section>
+</main>
+
+<footer>
+      <p><b>The learning path</b> &mdash; the certificate as a study plan, not a syllabus. Every
+      definition and explanation is our own wording.</p>
+      <p>Offline, one file, no fonts fetched, no trackers, no analytics. Study aid only.</p>
+    </footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+</script>
+</body>
+</html>
