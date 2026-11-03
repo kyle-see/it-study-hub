@@ -1,0 +1,1514 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>The Bits and Bytes of Computer Networking — Introduction to Networking, Module 1 (study)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Course 2 — Bits and Bytes · Module 1 — Introduction to Networking</span>
+  <nav><a href="index.html">Course 2</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="#essentials">Essentials</a><a href="m2-network-layer.html">M2</a><a href="m3-transport-application.html">M3</a><a href="#quiz">Quiz</a><a href="#cards">Flashcards</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="essentials" class=""><h2>The essentials &mdash; hold these before the detail</h2><p class="lede">The module at entry-certification level: what you must be able to do, and the facts the quizzes and drills on this page are testing. Read this first, every time.</p>
+    <div class="learnbox">
+      <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
+        <ul class="lcan"><li>name the five layers and say what each one is responsible for</li><li>explain encapsulation and name the data unit at each layer</li><li>describe how a hub and a switch move data differently</li><li>explain what a <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> address is and how a switch learns where to send frames</li><li>tell the <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>/<span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> model from the <span class="ac" data-full="Open Systems Interconnection" data-desc="the seven-layer reference model; the TCP/IP five layers map onto it">OSI</span> model</li></ul></div>
+      <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 7 facts</span>
+        <div class="kv lfacts"><div class="k">Five layers</div><div>physical, data link, network, transport, application. Each one solves a problem the layer below cannot.</div><div class="k">Encapsulation</div><div>each layer wraps what it was given and adds its own header: data, then a TCP segment, then an IP packet, then an <span class="ac" data-full="Ethernet" data-desc="the dominant wired LAN standard: it defines the frame layout and the rules for sharing the wire.">Ethernet</span> frame, then bits. The receiver strips them in reverse.</div><div class="k">Media</div><div>twisted pair with <span class="ac" data-full="Registered jack 45" data-desc="the 8P8C plug on twisted-pair Ethernet - the everyday name, not the official one">RJ45</span> (about 100 m), fibre for distance and speed, coax. The distance limit is why you need switches and repeaters.</div><div class="k"><span class="ac" data-full="Hub" data-desc="a box that repeats every incoming signal out of every other port. No addressing, no memory, one collision domain — obsolete but excellent for…">Hub</span> vs switch</div><div>a hub repeats everything to every port, so everyone shares one collision domain. A switch forwards only to the port the destination MAC is on.</div><div class="k">MAC address</div><div>48 bits, written as six hex pairs; the first three bytes identify the manufacturer. It is local to one network.</div><div class="k">Ethernet frame</div><div>destination MAC, source MAC, type, payload, and a frame check sequence for corruption.</div><div class="k">OSI versus TCP/IP</div><div>OSI has seven layers (it splits application into application, presentation and session); TCP/IP has five. Learn the five, recognise the seven.</div></div></div>
+      <div class="big60 r"><b>The trap:</b> Thinking a MAC address travels end to end. The frame&#x27;s MAC header is thrown away and rebuilt at every hop; only the IP packet survives the journey.</div>
+      <p class="src">Everything below this box explains these lines, in this order, with a drill
+      after each part that tests it. If you can say every line above without looking, the drills are
+      revision. If you cannot, read the section that matches the line and come back &mdash; that is
+      the whole study method. The same objectives for every module, built and not yet built, are on
+      <a href="../../learn/index.html">the learning path</a>.</p>
+    </div></section><section id="what" class=""><h2>What this module is really about</h2><p class="lede">Not “learn the diagram”. It is: <b>every network problem sits in one layer</b>, and once you can name the layer you can name the fix.</p>
+    <p>You have a working computer talking to another computer somewhere else. That took five separate jobs,
+    invented by five different groups of people, and the model is simply the list of those jobs in the order
+    they happen. Nothing more. Once you can walk a packet down the stack and back up again, every question in
+    this module answers itself.</p>
+    <div class="big60">
+      <b>The sentence the rest of Course 2 is built on:</b> <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> addresses are <b>end-to-end</b> and survive
+      the whole trip. <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> addresses are <b>hop-to-hop</b> and are rewritten at every router. Ports are
+      <b>process-to-process</b> on the two end machines.
+    </div>
+    <table>
+      <tr><th>Layer</th><th>Its one job</th><th>Data unit (PDU)</th><th>Address it adds</th><th>Its device</th></tr>
+      <tr><td>5 · Application</td><td>Make the data the user asked for</td><td>Data</td><td>—</td><td>apps on end devices</td></tr>
+      <tr><td>4 · Transport</td><td>Deliver to the right <i>program</i>; reliable or fast</td><td>Segment</td><td>Ports</td><td><span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span> on end devices</td></tr>
+      <tr><td>3 · Network</td><td>Get it to the right <i>network</i>, across many hops</td><td>Packet</td><td>IP (32-bit)</td><td><span class="ac" data-full="Router" data-desc="a device that forwards packets from one network to another, choosing a next hop from its routing table.">Router</span></td></tr>
+      <tr><td>2 · Data link</td><td>Get it across <i>this one link</i>, intact</td><td>Frame</td><td>MAC (48-bit)</td><td>Switch, <span class="ac" data-full="Network Interface Card" data-desc="the hardware that puts frames on the wire">NIC</span>, AP</td></tr>
+      <tr><td>1 · Physical</td><td>Turn the bits into signals and move them</td><td>Bits</td><td>—</td><td>Cable, connector, hub</td></tr>
+    </table>
+    <button class="aud" data-audio="audio/m1-five-layers.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · the five layers</button>
+    <h3>Why bother with a model at all</h3>
+    <p>Two reasons, and both are job reasons:</p>
+    <div class="kv">
+      <div class="k">A shared vocabulary</div><div>A vendor's datasheet, a textbook, and the person at the <span class="ac" data-full="Internet Service Provider" data-desc="the company that sells you the connection to the internet">ISP</span>
+        all describe the same journey with the same five words. “Layer one problem” is a complete sentence
+        between technicians.</div>
+      <div class="k">A fault-isolating trick</div><div>One job per layer means you can rule out a whole layer
+        at a time instead of guessing. <i>Link light on?</i> — that one question discards the bottom layer
+        and everything above it instantly.</div>
+    </div>
+    <button class="aud" data-audio="audio/m1-why-layers.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · why a model exists</button>
+    <p class="src">Source: Module 1 learning objectives of Google <span class="ac" data-full="Information Technology" data-desc="using computers, networks and software to get work done - and the job of keeping them working">IT</span> Support Professional Certificate —
+    Course 2: Bits and Bytes of Computer Networking, plus this kit's own glossary.</p>
+    </section><section id="layers" class=""><h2>The job of each layer</h2><p class="lede">Names are not enough — the exam asks <i>what does this layer do</i>. Match each job to its layer.</p>
+    <p>Read the jobs first, then do the matching from memory. If you can place all five you can answer
+    almost every “which layer” question this course asks, because the questions are really asking you to
+    notice <b>what got added to the data</b> at that step.</p>
+    <div class="game" id="gJobs"><div class="gtitle"><b>Match the job to the layer</b></div><p class="ghint">Click a job, then click the layer it belongs to.</p><div id="jobHost"></div></div>
+    <h3>The tell for each layer</h3>
+    <table>
+      <tr><th>If the question mentions…</th><th>the layer is…</th></tr>
+      <tr><td>an app, <span class="ac" data-full="HyperText Transfer Protocol" data-desc="the request/response protocol of the web">HTTP</span>/<span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> behaviour, “the page didn't load”</td><td>Application</td></tr>
+      <tr><td><b>ports</b>, <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> versus <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span>, reliability, retransmission, flow</td><td>Transport</td></tr>
+      <tr><td><b><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> addresses</b>, routing, subnets, <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span>, “unreachable”</td><td>Network</td></tr>
+      <tr><td><b><span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> addresses</b>, frames, switches, <span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span>, collisions, the <span class="ac" data-full="Frame Check Sequence" data-desc="the CRC-based corruption check on a frame">FCS</span></td><td>Data link</td></tr>
+      <tr><td>cables, connectors, signals, link lights, distance, interference, radio</td><td>Physical</td></tr>
+    </table>
+    </section><section id="encapsulation" class=""><h2>Encapsulation — who wraps what, and what survives a hop</h2><p class="lede">Sending wraps top → bottom. Receiving unwraps bottom → top. The data itself never changes.</p>
+    <p>Each layer takes whatever the layer above handed it, puts <b>its own header in front</b>, and passes
+    the result down. The header is how that layer talks to its copy on the other machine — the two transport
+    layers are conversing about ports, the two network layers about addresses, and nothing in between
+    understands any of it.</p>
+    <div class="game" id="gWrap"><div class="gtitle"><b>Build the wrap</b></div><p class="ghint">Add the next layer's step. Then use <b>Decapsulate</b> to walk it back off.</p><div id="wrapHost"></div><p><button class="btn" id="unwrapBtn">↶ Decapsulate one layer</button></p></div>
+    <div class="big60">
+      <b>Guaranteed quiz question.</b> At a router hop, the data-link header is <b>stripped and rebuilt</b>
+      for the next local network. The network header is <b>never touched</b> — it is end-to-end. That is why
+      a traceroute shows you every router along the path while the destination <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> stays fixed the whole way.
+    </div>
+    <button class="aud" data-audio="audio/m1-encapsulation.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · encapsulation</button><button class="aud" data-audio="audio/m1-hop.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · what changes at a hop</button>
+    <h3>The words that get swapped on people</h3>
+    <div class="kv">
+      <div class="k">Encapsulation</div><div>Adding headers on the way <b>down</b> the sender's stack.</div>
+      <div class="k">Decapsulation</div><div>Stripping headers on the way <b>up</b> the receiver's stack.</div>
+      <div class="k">Segmentation</div><div>A transport-layer job: cutting a large message into segments that
+        fit. Not the same as wrapping, and the exam keeps offering it as a distractor.</div>
+      <div class="k">Encrypted</div><div>Nothing to do with layers. Wrapping is not hiding — <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span> does the
+        hiding, and it does it <i>inside</i> the payload.</div>
+    </div>
+    </section><section id="models" class=""><h2>Five layers or seven — TCP/IP against OSI</h2><p class="lede">This course teaches the <b>five-layer</b> model. The <span class="ac" data-full="Open Systems Interconnection" data-desc="the seven-layer reference model; the TCP/IP five layers map onto it">OSI</span> model has seven and splits the top one three ways.</p>
+    <p>You will meet both. They are not rivals; OSI is the older, more detailed map and <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>/<span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> is the one
+    that describes what actually runs. The only difference in content is that OSI breaks the application
+    layer into three, so the bottom four are the same idea with different numbers. <b>Learn five, recognise
+    seven</b>, and never answer “seven” when the question says “the TCP/IP model”.</p>
+    <table>
+      <tr><th>TCP/IP (5)</th><th>OSI (7)</th><th>Note</th></tr>
+      <tr><td>Application</td><td>Application · Presentation · Session</td>
+          <td>OSI separates <i>data format</i> (presentation) and <i>conversation setup</i> (session). In
+          practice all three live in the app and its libraries.</td></tr>
+      <tr><td>Transport</td><td>Transport</td><td>Same.</td></tr>
+      <tr><td>Network</td><td>Network</td><td>Same.</td></tr>
+      <tr><td>Data link</td><td>Data link</td><td>Same.</td></tr>
+      <tr><td>Physical</td><td>Physical</td><td>Same.</td></tr>
+    </table>
+    <div class="game" id="gOrder"><div class="gtitle"><b>Name the stack, top to bottom</b></div><p class="ghint">Top of the stack is closest to the application — its data is created first. Bottom is closest to the wire — it goes out last.</p><div id="orderHost"></div></div>
+    <button class="aud" data-audio="audio/m1-seven-vs-five.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · five or seven</button>
+    <p class="src">OSI is the ISO reference model; the five-layer model taught in this course is the
+    TCP/IP-inspired teaching model. Both appear in A+ objectives, so the number itself is a fact worth
+    memorising.</p>
+    </section><section id="physical" class=""><h2>The physical layer — signals, media, and what actually breaks</h2><p class="lede">The only layer you can stub a toe on. It converts bits into signals and moves them across a medium.</p>
+    <p>Electrical pulses on copper, light pulses in fibre, radio waves in the air. Same zeros and ones,
+    different carrier. It covers the signal, the hardware that makes the signal (<span class="ac" data-full="Network Interface Card" data-desc="the hardware that puts frames on the wire">NIC</span> electronics, modems,
+    hubs, radios) and the medium that carries it.</p>
+    <div class="big60">
+      <b>Three media, four things to know about each:</b> how fast, how far, what kills it, and what the
+      connector is called. That is the whole physical-layer syllabus.
+    </div>
+    <table>
+      <tr><th>Medium</th><th>Signal</th><th>Reach</th><th>Weakness</th><th>Connectors</th></tr>
+      <tr><td><b>Twisted pair copper</b> (Cat5e / Cat6)</td><td>Voltage difference = 0 or 1</td>
+          <td>about <b>100 m</b> per run</td><td>EMI from power wiring; bad crimps; bends</td>
+          <td><span class="ac" data-full="Registered jack 45" data-desc="the 8P8C plug on twisted-pair Ethernet - the everyday name, not the official one">RJ45</span>, 8 wires</td></tr>
+      <tr><td><b>Fibre optic</b></td><td>Light on / off through glass</td>
+          <td>kilometres</td><td>Bend radius, dirty end-faces, splices gone wrong</td>
+          <td>LC / SC</td></tr>
+      <tr><td><b>Radio</b> (Wi-Fi, cellular, Bluetooth)</td><td>RF waves</td>
+          <td>set by power, obstacles, interference</td><td>Overlapping channels, too many clients, walls</td>
+          <td>antennas</td></tr>
+    </table>
+    <button class="aud" data-audio="audio/m1-physical.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · the three media</button>
+    <h3>Physical hardware, and the trap hiding in it</h3>
+    <table>
+      <tr><th>Hardware</th><th>Its physical-layer job</th><th>What to say about it</th></tr>
+      <tr><td>NIC</td><td>turns bits ↔ signals</td>
+          <td>It <b>straddles L1 and L2</b>: the signal side is physical, the framing and <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> side is data
+          link. That is why “NIC” shows up in both halves of this module.</td></tr>
+      <tr><td><span class="ac" data-full="Hub" data-desc="a box that repeats every incoming signal out of every other port. No addressing, no memory, one collision domain — obsolete but excellent for…">Hub</span></td><td>re-energises the signal and repeats it out of <b>every</b> port</td>
+          <td>The only real physical-layer “network device”, and legacy — one shared collision domain, so
+          half-duplex and noisy</td></tr>
+      <tr><td>Repeater</td><td>regenerates a degraded signal to extend a run</td>
+          <td>A hub is a multi-port repeater; both are mostly obsolete</td></tr>
+      <tr><td>Modem / ONT</td><td>translates between your signal and the <span class="ac" data-full="Internet Service Provider" data-desc="the company that sells you the connection to the internet">ISP</span>'s line (cable, <span class="ac" data-full="Digital Subscriber Line" data-desc="broadband over ordinary phone copper">DSL</span>, fibre)</td>
+          <td>The “modem” half of a home router is the box's physical layer</td></tr>
+      <tr><td><span class="ac" data-full="Cables" data-desc="the physical medium that carries signals between devices: twisted copper pairs, coaxial copper, or glass fibre.">Cables</span>, transceivers, patch panels</td><td>carry the signal</td>
+          <td>RJ45, LC/SC, SFP — the quiet majority of real L1 tickets</td></tr>
+      <tr><td>Access point's radio</td><td>emits and receives the RF signal</td>
+          <td>signal side L1, framing side L2</td></tr>
+    </table>
+    <p><b>Exam trap:</b> a router, a switch and a gateway are all hardware you can hold, but none of them
+    are <i>physical-layer devices</i>. Their work is at L3 (<span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span>) and L2 (MAC). “It's a box” is not a layer —
+    <b>the layer is the job</b>. A home “router” is five small roles stacked in one case: an L1 modem, an L2
+    switch, an L3 router, <span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span>, and an L1/L2 Wi-Fi radio.</p>
+    <h3>What actually breaks (helpdesk truth)</h3>
+    <p>Layer one is where a surprising share of tickets live, and it is nearly always one of these five:</p>
+    <table>
+      <tr><th>Fault</th><th>What you see</th></tr>
+      <tr><td>Bad crimp or a bent pin in the RJ45</td><td>no link light on one port, one machine only</td></tr>
+      <tr><td>Cable run over about 100 m</td><td>link comes up, then drops under load or at distance</td></tr>
+      <tr><td>Cable run alongside power wiring</td><td>intermittent errors, slow transfers (EMI)</td></tr>
+      <tr><td>Fibre bent past its radius, or a dirty end-face</td><td>worked fine, then degraded and died</td></tr>
+      <tr><td>Access point crowded / channel overlap</td><td>wireless slow, wired perfectly fine</td></tr>
+    </table>
+    <div class="game" id="gFault"><div class="gtitle"><b>Is this a physical-layer fault?</b></div><p class="ghint">Five tickets. Sort each one into <b>Physical</b> or <b>Not physical</b> — the interesting answers are the ones that aren't.</p><div id="faultHost"></div></div>
+    </section><section id="datalink" class=""><h2>The data link layer — the local hop</h2><p class="lede">Four jobs: frame it, address it with <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span>, check it for damage, control access to the medium. Its device is the switch.</p>
+    <p>A packet has an <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> address that says where the destination is in the whole internet. This layer does
+    not care about that. It answers a smaller, dumber, more useful question: <b>how do I get this frame onto
+    the wire and to the device on the other end of this link?</b></p>
+    <h3>The MAC address — a NIC's identity</h3>
+    <p style="font-family:var(--mono);font-size:15px">
+      <b>A4:83:E7</b> first 24 bits — <span class="ac" data-full="Organizationally Unique Identifier" data-desc="the first 24 bits of a MAC - the vendor&#x27;s ID">OUI</span> (which vendor made the <span class="ac" data-full="Network Interface Card" data-desc="the hardware that puts frames on the wire">NIC</span>, assigned by the IEEE)
+      &nbsp;|&nbsp; <b>1F:2B:9C</b> last 24 bits — the device number
+    </p>
+    <table>
+      <tr><th>Fact</th><th>Detail</th></tr>
+      <tr><td>48 bits = 12 hex digits, six pairs</td><td>burned in by the manufacturer; <b>getmac</b> lists
+          yours on Windows, <b>ipconfig /all</b> shows it as “Physical Address”</td></tr>
+      <tr><td>First half is the OUI</td><td>the IEEE hands these out to manufacturers; the rest is theirs to
+          allocate</td></tr>
+      <tr><td>MACs are hop-to-hop</td><td>a frame's MAC never crosses a router's output link unchanged</td></tr>
+      <tr><td>FF:FF:FF:FF:FF:FF</td><td>the broadcast address — “everyone on this segment”, which is exactly
+          what <span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span> and <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> rely on</td></tr>
+      <tr><td>MACs can be spoofed</td><td>it is a setting, not a seal — relevant to wireless filtering and to
+          privacy on public Wi-Fi</td></tr>
+    </table>
+    <h3>Anatomy of an Ethernet frame</h3>
+    <table>
+      <tr><th>Field</th><th>What it carries</th><th>Who reads it</th></tr>
+      <tr><td>Destination MAC</td><td>who must receive this on <b>this</b> link</td><td>the switch, then the NIC</td></tr>
+      <tr><td>Source MAC</td><td>who sent it</td><td>the switch — this is how it <b>learns</b></td></tr>
+      <tr><td>Type</td><td>what kind of payload is inside (IPv4, ARP, …)</td><td>the receiving NIC, to know what to hand up</td></tr>
+      <tr><td><span class="ac" data-full="Payload" data-desc="the part of a segment that carries data, as opposed to the header that carries bookkeeping.">Payload</span></td><td>the IP packet — the part that survives the whole trip</td><td>the network layer</td></tr>
+      <tr><td><span class="ac" data-full="Frame Check Sequence" data-desc="the CRC-based corruption check on a frame">FCS</span></td><td>a <span class="ac" data-full="Cyclical Redundancy Check" data-desc="the error-detecting maths behind a frame&#x27;s FCS">CRC</span> check over the frame</td><td>the receiving NIC — <b>bad ⇒ drop, silently</b></td></tr>
+    </table>
+    <div class="game" id="gFrame"><div class="gtitle"><b>Match the frame field to its job</b></div><p class="ghint">Six fields. The FCS one is the exam favourite.</p><div id="frameHost"></div></div>
+    <h3>The two ideas that make this layer click</h3>
+    <div class="kv">
+      <div class="k">Why a switch beats a hub</div><div>A <b>hub</b> repeats every frame out of every other
+        port: one shared collision domain, everyone waits their turn, everyone hears everyone. A
+        <b>switch</b> forwards a frame only out of the port the destination MAC was learned on, so each port
+        is its own collision domain. That is the entire performance difference, and it is also a privacy
+        difference.</div>
+      <div class="k">How a switch learns</div><div>It reads the <b>source</b> MAC of every frame and records
+        “that MAC lives on this port”. Unknown destination MAC → <b>flood</b> out every port except the one it
+        arrived on, then remember the answer. The table ages out, or a moved machine would be unreachable
+        forever. <b>mac-address-table</b> (Cisco) or the vendor's equivalent is where you look.</div>
+      <div class="k">Wi-Fi is data link too</div><div>802.11 is <span class="ac" data-full="Ethernet" data-desc="the dominant wired LAN standard: it defines the frame layout and the rules for sharing the wire.">Ethernet</span>'s wireless cousin: same jobs — frame,
+        address, check, medium access — but it can't hear while it talks, so it uses
+        <b>CSMA/CA</b> (collision <i>avoidance</i>, listen before you send) instead of Ethernet's collision
+        <i>detection</i>. SSIDs and associations are also this layer.</div>
+    </div>
+    <p>ARP is the bridge between this layer and the network layer — “I know the IP, what's the MAC?” — and it
+    gets its own full treatment in <a href="m2-network-layer.html">Module 2</a>. What matters here is only
+    this: <b>the IP address names the destination, the MAC address names the courier for this hop.</b></p>
+    <button class="aud" data-audio="audio/m1-datalink.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · the data link layer</button>
+    </section><section id="devices" class=""><h2>Which device is it?</h2><p class="lede">Learn the layer each device works at and identification becomes almost automatic: hubs touch signals, switches touch MACs, routers touch IPs.</p>
+    <table>
+      <tr><th>Device</th><th>Layer</th><th>Job</th><th>How you'll spot it</th></tr>
+      <tr><td><span class="ac" data-full="Network Interface Card" data-desc="the hardware that puts frames on the wire">NIC</span></td><td>L1 / L2</td><td>the machine's network interface — makes bits and frames</td>
+          <td><span class="ac" data-full="Registered jack 45" data-desc="the 8P8C plug on twisted-pair Ethernet - the everyday name, not the official one">RJ45</span> or Wi-Fi port plus a link <span class="ac" data-full="Light-Emitting Diode" data-desc="a semiconductor that emits light - backlights, indicators, and OLED pixels">LED</span>; <b>getmac</b></td></tr>
+      <tr><td><span class="ac" data-full="Hub" data-desc="a box that repeats every incoming signal out of every other port. No addressing, no memory, one collision domain — obsolete but excellent for…">Hub</span></td><td>L1</td><td>repeats whatever arrives on one port out of all the others</td>
+          <td>legacy; one collision domain; rarely seen any more</td></tr>
+      <tr><td>Switch</td><td>L2</td><td>forwards each frame only to the port its destination <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> is on</td>
+          <td>the box with 24 RJ45 ports that the desk cables run into</td></tr>
+      <tr><td>Access point</td><td>L1 / L2</td><td>the wireless end of the data link — RF ↔ wire</td>
+          <td>an <span class="ac" data-full="Service Set Identifier" data-desc="the Wi-Fi network name devices see and join">SSID</span> in the air; often inside the home router</td></tr>
+      <tr><td>Modem / ONT</td><td>L1</td><td>translates the <span class="ac" data-full="Internet Service Provider" data-desc="the company that sells you the connection to the internet">ISP</span> line's signal ↔ network signal</td>
+          <td>where the provider's line terminates</td></tr>
+      <tr><td><span class="ac" data-full="Router" data-desc="a device that forwards packets from one network to another, choosing a next hop from its routing table.">Router</span></td><td>L3</td><td>joins <b>different</b> networks and forwards on <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span></td>
+          <td>few ports (<span class="ac" data-full="Wide Area Network" data-desc="a network spanning sites, rather than one building">WAN</span> + <span class="ac" data-full="Local Area Network" data-desc="one local network - office, floor, home">LAN</span>); at home it also does <span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span> and <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span></td></tr>
+      <tr><td>Default gateway</td><td>L3 role</td><td>the first hop for anything off your subnet</td>
+          <td><b>ipconfig</b> “Default Gateway”; not a box, a role</td></tr>
+      <tr><td><span class="ac" data-full="Firewall" data-desc="a device or program that permits or blocks traffic according to rules about addresses, ports and connection state.">Firewall</span></td><td>L3 and up</td><td>inspects traffic against rules, blocks what shouldn't pass</td>
+          <td>often a role the router or a server already plays</td></tr>
+    </table>
+    <div class="game" id="gDev"><div class="gtitle"><b>Which layer does this live at?</b></div><p class="ghint">Signals, MACs, or IPs. Anything that straddles two layers goes where its <b>deciding</b> work happens.</p><div id="devHost"></div></div>
+    <button class="aud" data-audio="audio/m1-devices.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · identifying devices</button>
+    <p class="src">“Gateway”, “firewall” and “controller” are <b>roles</b>, not boxes — a single device can
+    fill several, and helpdesk answers that name a role instead of a product are the ones that survive
+    follow-up questions.</p>
+    </section><section id="map" class=""><h2>The one-page map</h2><p class="lede">Screenshot this table. It is the module, and it is also the troubleshooting tool.</p>
+    <table>
+      <tr><th>Layer</th><th>PDU</th><th>Header added</th><th>Key device</th><th>If it's broken you see…</th></tr>
+      <tr><td>5 · Application</td><td>data</td><td>protocol-specific</td><td>end-device apps</td>
+          <td>app errors, no content, wrong page — and the network looks perfectly fine</td></tr>
+      <tr><td>4 · Transport</td><td>segment</td><td>ports (<span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> / <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span>)</td><td><span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span> on end devices</td>
+          <td>one app is slow while others are fine, dropped connections, retries</td></tr>
+      <tr><td>3 · Network</td><td>packet</td><td><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> addresses</td><td>router</td>
+          <td>network unreachable, wrong subnet, routing loop, <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span> exceeded</td></tr>
+      <tr><td>2 · Data link</td><td>frame</td><td><span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> + <span class="ac" data-full="Frame Check Sequence" data-desc="the CRC-based corruption check on a frame">FCS</span></td><td>switch, <span class="ac" data-full="Network Interface Card" data-desc="the hardware that puts frames on the wire">NIC</span>, AP</td>
+          <td>one segment fails, link flaps, collisions, <span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span> trouble</td></tr>
+      <tr><td>1 · Physical</td><td>bits</td><td>signals</td><td>cable, connector, hub</td>
+          <td>no link light, intermittent drops, distance and interference problems</td></tr>
+    </table>
+    <div class="big60">
+      <b>The exam sentence, verbatim:</b> IP addresses never change across the trip. MAC addresses change at
+      every hop. Ports are end-to-end. If you remember nothing else from this module, remember that.
+    </div>
+    <h3>Troubleshooting upward, the way the course wants it</h3>
+    <p>The helpdesk method this course teaches starts at the <b>physical</b> layer and climbs, because the
+    bottom layer is the cheapest to check and everything above it depends on it: is it plugged in → is the
+    link light on → do I have an address → can I reach my gateway → can I reach the internet by IP → can I
+    reach it by name → does the application work. Each “yes” discards a layer; the first “no” is your
+    suspect. (CompTIA prefers starting from the user's symptom and working down, then back up. Both are
+    defensible; say which you're using and you're right either way.)</p>
+    </section><section id="traps" class=""><h2>Exam traps in this module</h2><p class="lede">Every one of these is a distractor that has been written by someone who has marked your paper.</p>
+    <div class="kv">
+      <div class="k">“A switch regenerates the signal, so it's physical layer”</div>
+        <div>No. Regenerating a signal is physical, but a switch's <b>deciding</b> work reads <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> addresses —
+        it is a data-link device. Judge a device by the address it reads.</div>
+      <div class="k">“The <span class="ac" data-full="Frame Check Sequence" data-desc="the CRC-based corruption check on a frame">FCS</span> retransmits the damaged frame”</div>
+        <div>Nothing retransmits at L2. <span class="ac" data-full="Ethernet" data-desc="the dominant wired LAN standard: it defines the frame layout and the rules for sharing the wire.">Ethernet</span> switches <b>drop</b> a frame whose check fails. Recovery is
+        <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>'s job, several layers up — which is exactly why “Ethernet is unreliable, TCP makes it useful” is a
+        fair sentence.</div>
+      <div class="k">“An <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> address belongs to the computer”</div>
+        <div>It belongs to the <b>network</b> the machine is currently attached to. Same laptop, different
+        building, different address. The MAC is the one that travels with the hardware.</div>
+      <div class="k">“A hub is a cheap switch”</div>
+        <div>Different layer's worth of intelligence: a hub has none — it repeats bits out of every port, so
+        everyone shares one collision domain and one bandwidth pool.</div>
+      <div class="k">“The <span class="ac" data-full="Open Systems Interconnection" data-desc="the seven-layer reference model; the TCP/IP five layers map onto it">OSI</span> model has five layers” / “TCP/IP has seven”</div>
+        <div>OSI seven, TCP/IP five as taught here. The three OSI layers that vanish are presentation and
+        session, folded into application.</div>
+      <div class="k">“The router changes the destination IP as the packet crosses it”</div>
+        <div>It rewrites the <b>MAC</b> header for the next hop and decrements <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span>. Destination IP stays put —
+        except under <span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span>, which is a deliberate, separate translation, not ordinary forwarding.</div>
+      <div class="k">“Wi-Fi is a different model”</div>
+        <div>Same layer, different mechanism. 802.11 is data link, with collision <b>avoidance</b> instead of
+        detection because a radio can't listen and talk at once.</div>
+    </div>
+    <button class="aud" data-audio="audio/m1-traps.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · the four big traps</button>
+    </section><section id="cards" class=""><h2>Flashcards</h2><p class="lede">The kit's glossary — 75 terms in this module, Coursera and CompTIA A+ together.</p><div class="game" id="gCards"><div class="gtitle"><b>Flashcards — 75 cards</b></div><p class="ghint">One question per card: <b>70</b> ask you to define a term, <b>5</b> ask what an acronym stands for. Every answer explains why, not just what.</p><div id="cardHost"></div></div></section><section id="quiz" class=""><h2>Quiz</h2><p class="lede">The thing to do last, and again in the morning.</p><div class="game" id="gQuiz"><div class="gtitle"><b>Module 1 quiz — 20 questions</b></div><p class="ghint">Every question shows why the answer is right. Misses go into the review queue.</p><div id="quizHost"></div></div></section>
+</main>
+
+<footer>
+      <p><b>Course 2, Module 1 — Introduction to Networking.</b> Part of the Google IT Support Professional Certificate study
+      kit. Every definition and explanation on this page is our own wording; the course supplies the
+      syllabus and the vocabulary, not the prose.</p>
+      <p>Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera or NPower; course titles and trademarks belong to their owners. Study aid only. Nothing here is submitted for grading.</p>
+    </footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+
+/* ---- c2m1 ---- */
+
+/* ---- job to layer ---- */
+matchGame('#jobHost',[
+  {t:'Application',m:'Makes the data the user asked for, in the application\'s own protocol'},
+  {t:'Transport',m:'Adds port numbers and chooses reliable TCP or fast UDP'},
+  {t:'Network',m:'Adds IP addresses so routers can forward the packet between networks'},
+  {t:'Data link',m:'Frames the packet and addresses it with MACs for one hop'},
+  {t:'Physical',m:'Turns the bits into light, voltage or radio and moves them'}]);
+
+/* ---- encapsulation order ---- */
+orderGame('#wrapHost','A browser sends a request. Put the sender\'s steps in order, top of the stack down to the wire.',
+  ['The application creates the request data',
+   'The transport layer adds source and destination port numbers, making a segment',
+   'The network layer adds source and destination IP addresses, making a packet',
+   'The data link layer adds MAC addresses and an FCS, making a frame',
+   'The physical layer turns the frame into signals and sends it'],'wrap');
+
+/* ---- name the stack ---- */
+orderGame('#orderHost','Name the five layers of the TCP/IP model, top to bottom.',
+  ['Application','Transport','Network','Data link','Physical'],'layer');
+
+/* ---- is it a physical fault? ---- */
+sortGame('#faultHost',
+  [{id:'phy',name:'Physical layer'},{id:'not',name:'Somewhere else'}],
+  [{t:'No link light, bent pin in the RJ45',b:'phy'},
+   {t:'Link drops out past 110 m of cable',b:'phy'},
+   {t:'Slow transfers on a cable run beside fluorescent lights',b:'phy'},
+   {t:'Fibre worked, then degraded after the rack was moved',b:'phy'},
+   {t:'Wireless slow because every AP is on channel 6',b:'phy'},
+   {t:'Gets an IP address but cannot reach the gateway',b:'not'},
+   {t:'DNS resolves slowly, browsing is fine by IP',b:'not'},
+   {t:'One application hangs while the rest of the PC is fine',b:'not'},
+   {t:'Site unreachable, ipconfig shows 169.254.x.x',b:'not'},
+   {t:'Connection resets whenever a specific service is used',b:'not'}]);
+
+/* ---- frame fields ---- */
+matchGame('#frameHost',[
+  {t:'Destination MAC',m:'Who must receive this frame on this link'},
+  {t:'Source MAC',m:'Who sent it — how a switch learns which port a MAC is on'},
+  {t:'Type',m:'What kind of payload is inside, so the NIC knows what to hand up'},
+  {t:'Payload',m:'The IP packet — the part that survives the whole trip'},
+  {t:'FCS',m:'CRC integrity check; on failure the frame is dropped, not resent'},
+  {t:'Preamble',m:'Lets the receiver sync to the incoming bits before the frame proper'}]);
+
+/* ---- device to layer ---- */
+sortGame('#devHost',
+  [{id:'l1',name:'Physical — signals'},{id:'l2',name:'Data link — MACs'},{id:'l3',name:'Network — IPs'}],
+  [{t:'Hub',b:'l1'},{t:'Repeater',b:'l1'},{t:'Modem / ONT',b:'l1'},{t:'Cable and connector',b:'l1'},
+   {t:'Switch',b:'l2'},{t:'Wireless access point',b:'l2'},{t:'NIC',b:'l2'},{t:'MAC address table',b:'l2'},
+   {t:'Router',b:'l3'},{t:'Default gateway',b:'l3'},{t:'NAT',b:'l3'},{t:'Routing table',b:'l3'}]);
+
+flashcards('#cardHost', [{"t": "Broadcast", "d": "one transmission that every device on the local network receives; there is no way for a host to opt out, which is why broadcast domains are kept small.", "mod": "m1", "cue": "define", "q": "Broadcast"}, {"t": "Broadcast address", "d": "the special address in a network meaning \"all hosts here\"; on Ethernet it is the frame address FF:FF:FF:FF:FF:FF, and on IPv4 it is the last address in the block.", "mod": "m1", "cue": "define", "q": "Broadcast address"}, {"t": "Cable categories", "d": "the industry groupings of network cabling by how it is built and shielded, so reading \"Cat 6\" on a jacket predicts its speed and length limits.", "mod": "m1", "cue": "define", "q": "Cable categories"}, {"t": "Cables", "d": "the physical medium that carries signals between devices: twisted copper pairs, coaxial copper, or glass fibre.", "mod": "m1", "cue": "define", "q": "Cables"}, {"t": "Client", "d": "the device or process asking for data or a service; the other end is the server.", "mod": "m1", "cue": "define", "q": "Client"}, {"t": "Collision domain", "d": "the portion of a network where two devices transmitting at the same moment would interfere. A hub is one large collision domain; a switch gives each port its own.", "mod": "m1", "cue": "define", "q": "Collision domain"}, {"t": "Computer networking", "d": "connecting machines so they can exchange data, which in practice means agreeing on a stack of protocols and a common addressing scheme.", "mod": "m1", "cue": "define", "q": "Computer networking"}, {"t": "Copper cable categories", "d": "the twisted-pair families (Cat 5e, Cat 6, Cat 6a, Cat 8) rated by bandwidth; extra speed comes from tighter twists, better insulation and more shielding.", "mod": "m1", "cue": "define", "q": "Copper cable categories"}, {"t": "Crosstalk", "d": "signal bleeding from one wire pair into a neighbouring pair; the reason pairs are twisted in the first place, and the reason tighter twists cost more.", "mod": "m1", "cue": "define", "q": "Crosstalk"}, {"t": "CRC", "d": "a checksum calculated over a frame and sent with it, so the receiver can tell whether bits arrived corrupted. It detects damage; it never repairs it.", "mod": "m1", "cue": "expand", "q": "What does CRC stand for?", "a": "Cyclical Redundancy Check"}, {"t": "Datalink layer", "d": "layer 2: turns a raw physical link into a reliable single hop between two directly connected devices, using MAC addresses and frames.", "mod": "m1", "cue": "define", "q": "Datalink layer"}, {"t": "Data packet", "d": "a layer 3 unit — the payload plus an IP header carrying source and destination IP addresses.", "mod": "m1", "cue": "define", "q": "Data packet"}, {"t": "Data payload section", "d": "whatever the frame or packet is actually carrying, i.e. everything after the headers.", "mod": "m1", "cue": "define", "q": "Data payload section"}, {"t": "Error detection", "d": "noticing that bits changed in transit. CRC, checksums and parity all do this; deciding whether to resend is the job of a higher layer.", "mod": "m1", "cue": "define", "q": "Error detection"}, {"t": "Ethernet", "d": "the dominant wired LAN standard: it defines the frame layout and the rules for sharing the wire.", "mod": "m1", "cue": "define", "q": "Ethernet"}, {"t": "Ethernet frame", "d": "the layer 2 envelope on an Ethernet link: preamble, destination and source addresses, type, payload and a checksum.", "mod": "m1", "cue": "define", "q": "Ethernet frame"}, {"t": "EtherType field", "d": "the frame field announcing which layer 3 protocol is inside (IPv4, IPv6, ARP) so the receiver knows who to hand it to.", "mod": "m1", "cue": "define", "q": "EtherType field"}, {"t": "Fiber cable", "d": "a glass or plastic strand that carries light rather than electricity; immune to electrical interference and capable of very long runs.", "mod": "m1", "cue": "define", "q": "Fiber cable"}, {"t": "Five layer model", "d": "the course's working model: physical, data link, network, transport, application. Fewer layers than OSI, and the ones you actually touch.", "mod": "m1", "cue": "define", "q": "Five layer model"}, {"t": "Frame check sequence", "d": "the trailing field of a frame holding the CRC; the receiver's evidence that nothing was mangled on the way.", "mod": "m1", "cue": "define", "q": "Frame check sequence"}, {"t": "Frame control field", "d": "a Wi-Fi header field describing the frame's type and status flags. Ethernet has no equivalent; 802.11 needs one because the medium is shared radio.", "mod": "m1", "cue": "define", "q": "Frame control field"}, {"t": "Host file", "d": "a plain text file on the machine mapping names to IP addresses, consulted before DNS. Useful for overrides, and a classic place for malware to redirect a bank's name.", "mod": "m1", "cue": "define", "q": "Host file"}, {"t": "Hub", "d": "a box that repeats every incoming signal out of every other port. No addressing, no memory, one collision domain — obsolete but excellent for explaining why switches exist.", "mod": "m1", "cue": "define", "q": "Hub"}, {"t": "Internetwork", "d": "two or more networks joined by routers, so hosts on one can reach hosts on another.", "mod": "m1", "cue": "define", "q": "Internetwork"}, {"t": "Link-local unicast address", "d": "an address that is only meaningful on one link: 169.254.x.x in IPv4, fe80::/10 in IPv6. Self-assigned, and a signal that DHCP did not answer.", "mod": "m1", "cue": "define", "q": "Link-local unicast address"}, {"t": "LAN", "d": "devices in one place sharing a broadcast domain, typically a switch and everything plugged into it.", "mod": "m1", "cue": "expand", "q": "What does LAN stand for?", "a": "Local Area Network"}, {"t": "MAC(Media Access Control) address", "d": "the 48-bit hardware address burned into a network card, used to deliver frames across one link and meaningless beyond it.", "mod": "m1", "cue": "define", "q": "MAC(Media Access Control) address", "x": "MAC = Media Access Control"}, {"t": "Multicast", "d": "one sender addressing a group of interested receivers: not everyone, not just one.", "mod": "m1", "cue": "define", "q": "Multicast"}, {"t": "Multicast frame", "d": "an Ethernet frame addressed to a group rather than a single station, flagged by the low bit of the first address octet being set.", "mod": "m1", "cue": "define", "q": "Multicast frame"}, {"t": "Network layer", "d": "layer 3: moves packets between networks using IP addresses, and decides only the next hop, never the whole path.", "mod": "m1", "cue": "define", "q": "Network layer"}, {"t": "Network port", "d": "the logical number identifying which service on a host should receive the data — 80 for HTTP, 443 for HTTPS, 22 for SSH.", "mod": "m1", "cue": "define", "q": "Network port"}, {"t": "Network switch", "d": "a device that learns which MAC address lives on which port and forwards a frame out only the port that needs it.", "mod": "m1", "cue": "define", "q": "Network switch"}, {"t": "Node", "d": "any device with an address on the network: a computer, a printer, a switch, a phone.", "mod": "m1", "cue": "define", "q": "Node"}, {"t": "NTP servers", "d": "Network Time Protocol servers that hand out the current time so machines agree on what \"now\" is. Logs, certificates and troubleshooting all quietly depend on it.", "mod": "m1", "cue": "define", "q": "NTP servers", "x": "NTP = Network Time Protocol"}, {"t": "OUI", "d": "the first 24 bits of a MAC address, assigned to a manufacturer, which is why the first half of a MAC identifies the vendor.", "mod": "m1", "cue": "expand", "q": "What does OUI stand for?", "a": "Organizationally Unique Identifier"}, {"t": "OSI model", "d": "the seven-layer reference model, physical through application. Theory to learn for exams; the five-layer model is what you use to troubleshoot.", "mod": "m1", "cue": "define", "q": "OSI model", "x": "OSI = Open Systems Interconnection"}, {"t": "Patch panel", "d": "a rack of sockets where permanent building cable terminates, so a desk is connected to a switch port with a short, replaceable jumper instead of a cable run through the walls.", "mod": "m1", "cue": "define", "q": "Patch panel"}, {"t": "Payload length field", "d": "the frame field stating how many bytes of data follow the header.", "mod": "m1", "cue": "define", "q": "Payload length field"}, {"t": "Physical layer", "d": "layer 1: the real medium — voltages, light pulses, pin assignments, radio waves.", "mod": "m1", "cue": "define", "q": "Physical layer"}, {"t": "Preamble", "d": "the opening bits of an Ethernet frame that let the receiving card lock onto the signal's timing before the payload starts.", "mod": "m1", "cue": "define", "q": "Preamble"}, {"t": "Presentation layer", "d": "OSI layer 6: translating, encrypting and compressing data so an application can consume it. Folding into the application layer in the five-layer model loses nothing practical.", "mod": "m1", "cue": "define", "q": "Presentation layer"}, {"t": "Receiving address", "d": "the destination MAC address in a frame: who this frame is for.", "mod": "m1", "cue": "define", "q": "Receiving address"}, {"t": "Sequence control field", "d": "a Wi-Fi header field used to number and de-duplicate frames, because radio delivers things out of order more readily than wire does.", "mod": "m1", "cue": "define", "q": "Sequence control field"}, {"t": "Server", "d": "a machine or process providing a service to clients, and answering on a predictable port.", "mod": "m1", "cue": "define", "q": "Server"}, {"t": "Session layer", "d": "OSI layer 5: opening, maintaining and closing a conversation between two applications.", "mod": "m1", "cue": "define", "q": "Session layer"}, {"t": "Source MAC address", "d": "the sender's hardware address, so the receiver knows where to send a reply.", "mod": "m1", "cue": "define", "q": "Source MAC address", "x": "MAC = Media Access Control"}, {"t": "Source port", "d": "the reply address on the sender's side; source and destination port together identify one conversation among many on the same host.", "mod": "m1", "cue": "define", "q": "Source port"}, {"t": "SFD", "d": "the byte that ends the preamble and marks the exact point where the frame proper begins.", "mod": "m1", "cue": "expand", "q": "What does SFD stand for?", "a": "Start Frame Delimiter"}, {"t": "Transmitter address", "d": "the sending station's address in a Wi-Fi frame. Wi-Fi carries several address fields because frames may be relayed by an access point.", "mod": "m1", "cue": "define", "q": "Transmitter address"}, {"t": "Transport layer", "d": "layer 4: gets data to the right process rather than merely the right machine, splitting it into segments, numbering them, and deciding whether delivery must be guaranteed.", "mod": "m1", "cue": "define", "q": "Transport layer"}, {"t": "Twisted pair cable", "d": "copper pairs twisted around each other so their interference cancels out; the standard office cabling, cheap and good enough for most runs.", "mod": "m1", "cue": "define", "q": "Twisted pair cable"}, {"t": "Unicast transmission", "d": "one sender, one intended receiver.", "mod": "m1", "cue": "define", "q": "Unicast transmission"}, {"t": "RJ45", "d": "the eight-pin modular connector on twisted-pair Ethernet; \"RJ45\" is the everyday name, though technically it is an 8P8C plug.", "mod": "m1", "cue": "expand", "q": "What does RJ45 stand for?", "a": "Registered jack 45", "src": "aplus"}, {"t": "Unshielded twisted pair", "d": "the ordinary four-pair network cable with no foil or braid around the pairs; cheap, flexible, and susceptible to interference over long runs.", "mod": "m1", "cue": "define", "q": "Unshielded twisted pair", "src": "aplus"}, {"t": "Shielded twisted pair", "d": "twisted pair with a foil wrap or braid to block interference; needed where machines, motors or long parallel runs would otherwise corrupt the signal.", "mod": "m1", "cue": "define", "q": "Shielded twisted pair", "src": "aplus"}, {"t": "Coaxial cable", "d": "one centre conductor inside a braided shield, as used for cable TV and older Ethernet; still the medium for a cable modem drop.", "mod": "m1", "cue": "define", "q": "Coaxial cable", "src": "aplus"}, {"t": "Plenum-rated cable", "d": "cable with jacket material that burns cleanly and gives off little toxic smoke, required inside air-handling spaces so a fire does not gas the building.", "mod": "m1", "cue": "define", "q": "Plenum-rated cable", "src": "aplus"}, {"t": "Riser cable", "d": "cable rated for vertical runs between floors, which has fire requirements different from those of horizontal runs.", "mod": "m1", "cue": "define", "q": "Riser cable", "src": "aplus"}, {"t": "T568A and T568B", "d": "the two standard colour-code orders for terminating twisted pair into an RJ45. Both work; what matters is that both ends of a cable use the same one.", "mod": "m1", "cue": "define", "q": "T568A and T568B", "src": "aplus"}, {"t": "Straight-through cable", "d": "a patch lead wired the same at both ends, for connecting a device to a switch. The default cable in any office.", "mod": "m1", "cue": "define", "q": "Straight-through cable", "src": "aplus"}, {"t": "Crossover cable", "d": "a lead with transmit and receive pairs swapped so two like devices can talk directly; largely obsolete since auto-MDIX, but still on the exam.", "mod": "m1", "cue": "define", "q": "Crossover cable", "src": "aplus"}, {"t": "Punchdown tool", "d": "the tool that forces a wire into an insulation-displacement block at a patch panel, cutting the jacket and making the contact in one motion.", "mod": "m1", "cue": "define", "q": "Punchdown tool", "src": "aplus"}, {"t": "Crimper", "d": "the tool that presses an RJ45 plug onto a cable and seats the contacts; a bad crimp is the most common cause of a cable that \"sometimes works\".", "mod": "m1", "cue": "define", "q": "Crimper", "src": "aplus"}, {"t": "Cable tester", "d": "a pair of units that check continuity, pinout and pair order end to end; the first thing to reach for when one desk cannot reach the network.", "mod": "m1", "cue": "define", "q": "Cable tester", "src": "aplus"}, {"t": "Toner probe", "d": "a tone generator plus an inductive wand for finding which cable in a bundle is the one you care about, without unplugging anything.", "mod": "m1", "cue": "define", "q": "Toner probe", "src": "aplus"}, {"t": "Loopback plug", "d": "a plug that feeds transmit back into receive, so you can prove a port or NIC is functional without involving any other equipment.", "mod": "m1", "cue": "define", "q": "Loopback plug", "src": "aplus"}, {"t": "Power over Ethernet", "d": "carrying DC power on the same twisted pairs as data, so a camera or access point needs one cable and no local power outlet.", "mod": "m1", "cue": "define", "q": "Power over Ethernet", "src": "aplus"}, {"t": "PoE injector", "d": "a midspan device that adds power to an Ethernet run when the switch cannot supply it.", "mod": "m1", "cue": "define", "q": "PoE injector", "x": "PoE = Power over Ethernet", "src": "aplus"}, {"t": "Network Interface Card", "d": "the adapter that puts frames on the wire and holds the MAC address; nowadays built into the motherboard, once a card you installed.", "mod": "m1", "cue": "define", "q": "Network Interface Card", "src": "aplus"}, {"t": "Managed switch", "d": "a switch you can configure: VLANs, port security, link aggregation, monitoring. More capability and more ways to misconfigure it.", "mod": "m1", "cue": "define", "q": "Managed switch", "src": "aplus"}, {"t": "Unmanaged switch", "d": "a switch with no configuration at all — plug it in and it forwards. Right for a desk, wrong for anything needing separation or visibility.", "mod": "m1", "cue": "define", "q": "Unmanaged switch", "src": "aplus"}, {"t": "Transceiver module", "d": "a hot-swappable optical or copper module (SFP, SFP+) that plugs into a switch port and defines the medium and distance.", "mod": "m1", "cue": "define", "q": "Transceiver module", "src": "aplus"}, {"t": "Network tap", "d": "a passive device that copies all traffic on a link out to a monitoring port, so analysis sees everything without altering it.", "mod": "m1", "cue": "define", "q": "Network tap", "src": "aplus"}, {"t": "Main distribution frame", "d": "the room where the building's cabling converges and the provider's circuits arrive; the physical centre of a structured cabling system.", "mod": "m1", "cue": "define", "q": "Main distribution frame", "src": "aplus"}, {"t": "Intermediate distribution frame", "d": "a satellite wiring closet on another floor, uplinked to the main frame, so horizontal runs stay within cable length limits.", "mod": "m1", "cue": "define", "q": "Intermediate distribution frame", "src": "aplus"}]);
+
+quiz('#quizHost', [{"k": "m1q1", "lo": "LO1", "q": "Why do we use a layered model at all?", "o": ["It is required of all vendors by standard", "It gives everyone the same words, and it isolates a fault to one job at a time", "It makes networks physically faster", "It replaces the OSI model entirely"], "a": 1, "why": "A shared vocabulary plus a troubleshooting method: one job per layer, one place to look."}, {"k": "m1q2", "lo": "LO3", "q": "The five layers, in order from top to bottom:", "o": ["Application, Transport, Network, Data link, Physical", "Physical, Data link, Network, Transport, Application", "Application, Network, Transport, Physical, Data link", "Transport, Application, Network, Data link, Physical"], "a": 0, "why": "Top = closest to the app, where data is created. Bottom = closest to the wire, where signals leave."}, {"k": "m1q3", "lo": "LO1", "q": "Data moving DOWN the sender's stack, gaining a header at each step, is called…", "o": ["Decapsulation", "Encapsulation", "Routing", "Broadcasting"], "a": 1, "why": "Wrapping on the way down is encapsulation; the receiver's unwrapping on the way up is decapsulation."}, {"k": "m1q4", "lo": "LO3", "q": "What is the PDU at the network layer?", "o": ["Segment", "Packet", "Frame", "Bits"], "a": 1, "why": "data → segment → packet → frame → bits, top to bottom. The network layer makes the packet."}, {"k": "m1q5", "lo": "LO3", "q": "Which header field does the transport layer add?", "o": ["IP addresses", "MAC addresses", "Source and destination port numbers", "The frame check sequence"], "a": 2, "why": "Ports are transport. IP is network, MAC and FCS are data link."}, {"k": "m1q6", "lo": "LO2", "q": "At each router hop along a path, what happens to the headers?", "o": ["The IP header is rewritten and the MAC header is left alone", "The MAC header is stripped and rebuilt; the IP header is left alone", "Both are rewritten", "Neither changes until the destination"], "a": 1, "why": "MAC is hop-to-hop, IP is end-to-end. This is the single most-tested idea in the module."}, {"k": "m1q7", "lo": "LO4", "q": "Which of these is a physical-layer job?", "o": ["Adding IP addresses", "Choosing TCP over UDP", "Converting bits into electrical, optical or radio signals", "Maintaining the MAC address table"], "a": 2, "why": "Bits into signals is the whole of the physical layer."}, {"k": "m1q8", "lo": "LO4", "q": "The practical limit for a single twisted-pair copper segment is about…", "o": ["10 m", "100 m", "1 km", "10 km"], "a": 1, "why": "Roughly 100 m for Cat5e/Cat6. Beyond that you go to fibre, or add a switch or repeater."}, {"k": "m1q9", "lo": "LO4", "q": "Which medium carries light pulses and ignores electrical interference?", "o": ["Twisted pair", "Coaxial cable", "Fibre optic", "Wireless"], "a": 2, "why": "Fibre is light on/off through glass: kilometres of reach, no EMI, but mind the bend radius."}, {"k": "m1q10", "lo": "LO4", "q": "A cable run next to fluorescent lighting fixtures causes intermittent errors. Which layer?", "o": ["Physical", "Data link", "Network", "Application"], "a": 0, "why": "Electromagnetic interference corrupts the signal itself — that is a physical-layer fault, even though the symptoms show up higher."}, {"k": "m1q11", "lo": "LO5", "q": "A MAC address is…", "o": ["A 32-bit address assigned by the router", "A 48-bit address, twelve hex digits: vendor OUI then device number", "The port number an application uses", "The name of a wireless network"], "a": 1, "why": "48 bits in six pairs. First 24 bits are the OUI, which identifies the manufacturer."}, {"k": "m1q12", "lo": "LO5", "q": "On the local network, a frame is delivered to its destination using…", "o": ["The destination IP address", "The destination MAC address", "The destination port", "The TTL"], "a": 1, "why": "The link only speaks MAC. IP says where in the internet; MAC says who on this hop."}, {"k": "m1q13", "lo": "LO2", "q": "How does a switch decide which port to forward a frame out of?", "o": ["It reads the IP address and routes", "It consults its MAC address table, flooding only when the MAC is unknown", "It asks the router first", "It uses the destination port number"], "a": 1, "why": "It learns MAC-to-port from the source MAC of arriving frames, forwards on destination MAC, and floods unknown ones."}, {"k": "m1q14", "lo": "LO2", "q": "Why does a switch outperform a hub?", "o": ["It regenerates the signal, so the signal is stronger", "Each of its ports is its own collision domain, so traffic does not compete for one shared medium", "It encrypts the traffic", "It assigns IP addresses"], "a": 1, "why": "A hub is one shared collision domain and half-duplex; a switch gives a dedicated path per destination MAC."}, {"k": "m1q15", "lo": "LO2", "q": "Which device forwards frames based on MAC addresses?", "o": ["Router", "Hub", "Switch", "Modem"], "a": 2, "why": "Switch equals data link. Routers forward on IP, hubs repeat signals, modems translate the line."}, {"k": "m1q16", "lo": "LO2", "q": "Which device connects two different networks and forwards on IP addresses?", "o": ["Switch", "Router", "Hub", "Access point"], "a": 1, "why": "The router is the L3 boundary — it must have at least one interface on each network it joins."}, {"k": "m1q17", "lo": "LO5", "q": "The corruption check built into a frame does what when it fails?", "o": ["Asks the sender to retransmit", "Drops the frame silently", "Corrects the damaged bits", "Logs a message to the administrator"], "a": 1, "why": "The FCS is a CRC check; Ethernet drops bad frames. Recovery is TCP's job, up at the transport layer."}, {"k": "m1q18", "lo": "LO1", "q": "How does the OSI model differ from the five-layer model taught in this course?", "o": ["OSI has seven layers, splitting the application layer into application, presentation and session", "OSI has no physical layer", "OSI puts transport above application", "There is no difference, only the names"], "a": 0, "why": "OSI is seven, TCP/IP-as-taught is five, and the bottom four layers line up one to one."}, {"k": "m1q19", "lo": "LO3", "q": "A home 'router' box is best described as…", "o": ["a single physical-layer device", "several roles in one case: modem, switch, router, NAT and a Wi-Fi radio", "a data link device only", "a replacement for a ISP's network"], "a": 1, "why": "One plastic box, five jobs across four layers. Naming them is how you troubleshoot it."}, {"k": "m1q20", "lo": "LO5", "q": "Your laptop moves to a different building and its MAC stays the same but its IP changes. Why?", "o": ["Because the new network assigned a different MAC", "Because a MAC identifies the NIC and an IP identifies which network you are attached to", "Because the router rewrote the MAC", "Because ARP expired"], "a": 1, "why": "MAC is burned into the hardware and travels with it; IP belongs to the network, so it changes when the network does."}]);
+
+</script>
+</body>
+</html>
