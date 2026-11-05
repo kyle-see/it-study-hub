@@ -1,0 +1,1885 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Subnet calculator — IPv4 addressing worked step by step</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+<style>
+.scform{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:12px;padding:16px 18px}
+.scfield{display:flex;flex-direction:column;gap:5px}
+.scfield label{font-family:var(--mono);font-size:11px;color:var(--text-mute);letter-spacing:.04em}
+.scfield input{background:var(--bg);color:var(--text);border:1px solid var(--rule-2);border-radius:8px;
+  font-family:var(--mono);font-size:17px;padding:9px 12px;min-width:190px}
+.scfield input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.scfield input.no{border-color:var(--rust);background:var(--tint-bad)}
+#scPrefix{min-width:74px}
+.scpresets{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 2px}
+.scpresets button{font-family:var(--mono);font-size:12px;padding:6px 11px}
+.scstep{border:1px solid var(--rule);border-radius:11px;background:var(--surface);
+  padding:12px 16px 14px;margin:11px 0}
+.scstep h3{margin:0 0 8px;font-family:var(--display);font-size:15px;font-weight:600;color:var(--text-strong)}
+.scstep h3 .n{display:inline-block;min-width:20px;color:var(--accent);font-family:var(--mono);font-size:13px}
+.scans{font-family:var(--mono);font-size:21px;color:var(--accent-bright);letter-spacing:.01em;margin:4px 0}
+.scrow{display:flex;gap:4px;align-items:center;flex-wrap:wrap;margin:7px 0}
+.scrow .lbl{font-family:var(--mono);font-size:10.5px;color:var(--text-mute);width:52px;flex:none}
+.bit{width:23px;padding:5px 0;font-size:14px}
+.bit.h{border-style:dashed;color:var(--text-mute);background:transparent}
+.bitplace{width:23px;font-size:9px}
+.bsplit{width:2px;align-self:stretch;min-height:26px;background:var(--amber-400);border-radius:2px;
+  margin:0 3px;flex:none}
+.sclive{display:grid;grid-template-columns:repeat(auto-fit,minmax(232px,1fr));gap:10px;margin:14px 0}
+.sccard{border:1px solid var(--rule);border-radius:10px;background:var(--surface-2);padding:11px 14px}
+.sccard .k{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--text-mute)}
+.sccard .v{font-family:var(--mono);font-size:19px;color:var(--accent-bright);margin-top:3px}
+.sccard .s{font-size:12px;color:var(--text-mute);margin-top:4px;line-height:1.5}
+.scflags{display:flex;gap:7px;flex-wrap:wrap;margin:10px 0 2px}
+.scflag{font-family:var(--mono);font-size:11px;padding:5px 10px;border-radius:999px;
+  border:1px solid var(--rule-2);color:var(--text-dim);background:var(--tint-accent)}
+.scflag.good{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.scflag.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.scnote{font-size:12.5px;color:var(--text-mute);margin:9px 0 0;max-width:84ch;line-height:1.6}
+/* The verified-results cards explain themselves on hover. Focusable too, because a hover-only
+   explanation is not an explanation for someone tabbing through the page. */
+.sccard[data-tip]{cursor:help;transition:border-color .12s}
+.sccard[data-tip]:hover,.sccard[data-tip]:focus{border-color:var(--amber-400);outline:none}
+.sccard[data-tip] .k::after{content:' ?';color:var(--accent);opacity:.75;font-size:11px}
+#scTip{position:fixed;z-index:70;display:none;max-width:38ch;background:var(--surface-3);
+  border:1px solid var(--rule-2);border-radius:10px;padding:10px 13px;font-size:12.5px;
+  line-height:1.65;color:var(--text);box-shadow:var(--shadow);pointer-events:none}
+#scTip.on{display:block}
+#scTip b{color:var(--text-strong)}
+#scTip i{color:var(--text-dim)}
+.scblock{margin:11px 0 2px}
+.scblock td.what{color:var(--text-mute);font-size:12.5px}
+.scqbits{color:var(--accent-bright);font-weight:700}
+.scwork{font-family:var(--mono);font-size:13px;line-height:1.9;overflow-x:auto;margin:6px 0 2px;
+  background:var(--code-bg);border:1px solid var(--rule);border-radius:9px;padding:11px 14px}
+.scwork .lbl{display:inline-block;width:46px;color:var(--text-mute)}
+.scwork .res{color:var(--accent-bright)}
+.schide .ans{color:transparent;background:var(--surface-3);border-radius:5px;
+  transition:color .12s,background .12s}
+.schide .bit,.schide .scwork{filter:blur(5px)}
+.scbtns{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0 2px}
+.scerr{color:var(--bad-bright);font-family:var(--mono);font-size:13px;margin-top:8px}
+ol.methodsteps{padding-left:22px;margin:12px 0}
+ol.methodsteps li{margin:9px 0;max-width:88ch}
+@media (max-width:640px){.bit{width:16px;font-size:11px;padding:4px 0}.bitplace{width:16px;font-size:8px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Subnet calculator — IPv4 addressing, worked</span>
+  <nav><a href="../../index.html">Certificate</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="index.html">Course 2</a><a href="m2-network-layer.html">M2 — Network layer</a><a href="#why">Why</a><a href="#method">Method</a><a href="#reference">Reference</a><a href="#traps">Traps</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="what" class=""><h2>The subnet calculator</h2><p class="lede">Type an address and a prefix; get the same working the class worksheet does, plus the arithmetic behind it. Nothing here is looked up from a table — every row is computed from the two numbers you typed, the moment you type them.</p>
+            <div class="big60">
+              <b>What it gives you:</b> the <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> and the mask in binary with the network/host split drawn
+              in, the bitwise AND written out bit by bit, the network and broadcast addresses, the first
+              and last usable host, the counts, whether the address you typed is itself assignable,
+              what kind of address space it is, the three neighbouring subnets, and a
+              <b>same-subnet?</b> test against a second address.
+            </div>
+            <div class="scform">
+              <div class="scfield"><label for="scIp">IP ADDRESS</label>
+                <input id="scIp" autocomplete="off" spellcheck="false" placeholder="112.15.167.104"></div>
+              <div class="scfield"><label for="scPrefix">PREFIX (/n)</label>
+                <input id="scPrefix" autocomplete="off" inputmode="numeric" placeholder="22"></div>
+              <div class="scfield"><label>&nbsp;</label>
+                <span class="src" style="max-width:34ch">Or type the mask instead —
+                <span class="mono">255.255.252.0</span> is <span class="mono">/22</span>, but this
+                box wants the prefix length.</span></div>
+            </div>
+            <div class="scpresets"><button class="ghost" onclick="document.getElementById('scIp').value='112.15.167.104';document.getElementById('scPrefix').value=22;scRender()">112.15.167.104 /22</button><button class="ghost" onclick="document.getElementById('scIp').value='172.20.14.9';document.getElementById('scPrefix').value=12;scRender()">172.20.14.9 /12</button><button class="ghost" onclick="document.getElementById('scIp').value='192.168.1.100';document.getElementById('scPrefix').value=24;scRender()">192.168.1.100 /24</button><button class="ghost" onclick="document.getElementById('scIp').value='10.44.7.5';document.getElementById('scPrefix').value=27;scRender()">10.44.7.5 /27</button><button class="ghost" onclick="document.getElementById('scIp').value='100.64.32.7';document.getElementById('scPrefix').value=10;scRender()">100.64.32.7 /10</button><button class="ghost" onclick="document.getElementById('scIp').value='192.0.2.130';document.getElementById('scPrefix').value=28;scRender()">192.0.2.130 /28</button></div>
+            <div class="scbtns">
+              <button class="secondary" id="scDrillBtn">Give me one to work out</button>
+              <button class="secondary" id="scReveal" style="display:none">Reveal the answer</button>
+              <button class="ghost" id="scCopyBtn">Copy the working</button>
+              <button class="ghost" id="scReset">Back to the class example</button>
+            </div>
+            <div class="src" id="scCopyMsg"></div>
+            <div class="src">New to this, or is a number below unexplained? The section after the
+            working — <b>Why a network address exists at all</b> — explains the concept the steps
+            assume, and step 9 draws why a block can only begin on a multiple of its own size.</div>
+            <div class="big60 y" id="scDrillQ" style="display:none"></div>
+            </section><section id="working"><div id="scOut"></div></section><section id="why" class=""><h2>Why a network address exists at all</h2><p class="lede">Step 5 prints a number that is on no device. It is not a formality — it is the value the whole system is built on, and this page used to assume you already had it.</p>
+            <p><b>An address is two numbers packed into one, and the mask is the ruler that says where
+            the cut is.</b> Take <span class="mono">112.15.167.104/22</span>: the first 22 bits say
+            <i>which network</i>, the last 10 say <i>which host on it</i>. Zero the host bits and what is
+            left is the network address, <span class="mono">112.15.164.0</span>. Read those host bits as a
+            number — 3 &times; 256 + 104 = <b>872</b> — and you have the host's position inside the block.
+            Same 32 bits, two ways of quoting them.</p>
+            <p>The analogy that holds: <span class="mono">112.15.167.104</span> is a <b>house number</b>,
+            and <span class="mono">112.15.164.0/22</span> is the <b>street name</b> — a street with 1,024
+            lots on it. No device is ever given the street's name, and no routing table can list the 1,022
+            houses, so both halves of the fact are needed and only one of them fits in a route.</p>
+            <h3>Why it has to exist</h3>
+            <ul>
+              <li><b>Routing tables speak only this language.</b> A route that reads
+              <span class="mono">112.15.164.0/22</span> <i>out this interface</i> is one line covering a
+              thousand addresses. There is no line format that lists a thousand addresses.</li>
+              <li><b>Every host asks the question constantly.</b> Before it sends anything it ANDs the
+              destination with its own mask: same network means <span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span> for it on the local wire; different
+              means hand it to the default gateway. That decision is made from the network address,
+              never from another host's address.</li>
+              <li><b>Everything else is named this way too.</b> A <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> scope, a firewall rule, an access
+              list, a subnet plan — each is a network address plus a mask, and an individual host address
+              only ever appears inside one.</li>
+            </ul>
+            <h3>Why it is never a device's address</h3>
+            <p>All-zero host bits is <i>how an address says "the subnet itself"</i>. Give a machine
+            <span class="mono">112.15.164.0</span> and "the network" and "a host on the network"
+            become the same bits, so the AND could no longer tell you which one you meant. All-ones has
+            the same problem in the other direction: <span class="mono">112.15.167.255</span> means
+            <i>every host here</i>, which no single device can be. That is where
+            <span class="mono">2<sup>n</sup> &minus; 2</span> comes from — with /31 and /32 as the two
+            documented exceptions further down this page.</p>
+            <h3>Why it feels strange at home: the third octet moves</h3>
+            <p>An ordinary <span class="ac" data-full="Local Area Network" data-desc="one local network - office, floor, home">LAN</span> is all <span class="mono">/24</span>, so the network address is always
+            <span class="mono">x.x.x.0</span> and the gateway always <span class="mono">x.x.x.1</span> —
+            the pattern never varies and there is nothing to notice. Widen the mask past an octet boundary
+            and the third octet stops being fixed. A <span class="mono">/22</span> is four values wide
+            there, and a block can only start on a multiple of its own size:</p>
+            <div class='tbl-wrap'><table><thead><tr><th>Network</th><th>Covers (inclusive)</th><th>Octet 3</th><th>What it is</th></tr></thead><tbody><tr><td class='mono'>112.15.160.0/22</td><td class='mono'>112.15.160.0 &ndash; 112.15.163.255</td><td class='mono'>160&ndash;163</td><td>the block before it</td></tr><tr><td class='mono'>112.15.164.0/22</td><td class='mono'>112.15.164.0 &ndash; 112.15.167.255</td><td class='mono'>164&ndash;167</td><td><b>the class example lives here</b> &mdash; 167.104 sits inside it</td></tr><tr><td class='mono'>112.15.168.0/22</td><td class='mono'>112.15.168.0 &ndash; 112.15.171.255</td><td class='mono'>168&ndash;171</td><td>the block after it</td></tr></tbody></table></div>
+            <p>That is the whole reason for <b>164</b> and not <b>167</b>: 167 is a host <i>inside</i> the
+            block that began at 164. It is also why <span class="mono">112.15.161.0/22</span> does not
+            exist — 161 falls inside the block that began at 160, and a four-wide block cannot start
+            there.</p>
+            <p class="src">Calculator step 9 draws this for whatever address is typed, marking which
+            octet values are network starts and which are hosts.</p>
+            </section><section id="method" class=""><h2>How to do it by hand, in the order that works</h2><p class="lede">The calculator is for checking. The exam is for doing it, so the steps are written out here in the order that does not need a second thought.</p>
+            <ol class="methodsteps">
+              <li><b>Turn the prefix into the mask.</b> <span class="mono">/22</span> is 22 ones then zeros:
+              <span class="mono">11111111 11111111 11111100 00000000</span> =
+              <span class="mono">255.255.252.0</span>. Count in ones, not in octets.</li>
+              <li><b>Find the interesting octet</b> — the first one that is not <span class="mono">255</span>.
+              Here it is the third, where the mask reads <span class="mono">252</span>.</li>
+              <li><b>Block size = 256 &minus; that mask value.</b> 256 &minus; 252 = <b>4</b>. Networks
+              start on multiples of 4 in that octet: <span class="mono">.0 .4 .8 &hellip; .164 .168</span>.</li>
+              <li><b>Walk down to the network.</b> The address is <span class="mono">112.15.167.104</span>;
+              the largest multiple of 4 that is not above 167 is <b>164</b>, so the network is
+              <span class="mono">112.15.164.0</span>. (The bitwise AND is the same step done mechanically.)</li>
+              <li><b>The next network starts one block later:</b> <span class="mono">112.15.168.0</span>,
+              so <b>this</b> subnet's broadcast is one before it — <span class="mono">112.15.167.255</span>.</li>
+              <li><b>Hosts:</b> host bits = 32 &minus; 22 = 10, so 2<sup>10</sup> = 1,024 addresses and
+              1,022 usable. Usable is always the first and last address of the block removed &mdash; the
+              network and the broadcast are never assigned to a device. <b>/31 and /32 are the two
+              exceptions</b> to the minus two.</li>
+            </ol>
+            <div class="big60 y">Every number above is the one the calculator prints for
+            <span class="mono">112.15.167.104/22</span> — the address that was on the board in class on
+            2026-11-05.</div></section><section id="same" class=""><h2>The one question that decides everything</h2><p class="lede">Subnetting is not trivia; it answers a single routing question about every packet a host sends.</p>
+            <p>A host applies its own mask to its own address and to the destination. <b>Same network
+            number</b> means the destination is on the local wire: ARP for it, send the frame, no router
+            involved. <b>Different network number</b> means the host gives the packet to its default
+            gateway and hopes there is a route on the other side.</p>
+            <p>So a machine with the wrong mask is not "half working" — it can usually reach its own
+            gateway and nothing else, or reach nothing off-subnet at all, while looking perfectly
+            configured. Two hosts, correct addresses, mismatched masks, and no route: that is the whole
+            shape of a very large share of real tickets.</p>
+            <p class="src">Use the calculator's step 10 to test any pair. It is the same test a router
+            does, done by hand.</p></section><section id="reference" class=""><h2>Prefix reference</h2><p class="lede">The rows worth being able to reach for. Computed, not typed — including the two where the usual host formula gives the wrong answer.</p><div class="tbl-wrap"><table>
+<thead><tr><th>Prefix</th><th>Mask</th><th>Addresses</th><th>Usable</th><th>Where you meet it</th></tr></thead>
+<tbody><tr><td class='mono'>/8</td><td class='mono'>255.0.0.0</td><td class='mono'>16,777,216</td><td class='mono'>16,777,214</td><td>The old Class A scale; `10/8` is the largest private space there is.</td></tr><tr><td class='mono'>/12</td><td class='mono'>255.240.0.0</td><td class='mono'>1,048,576</td><td class='mono'>1,048,574</td><td>Not a class boundary — `172.16.0.0/12` is 16 Class-B-sized blocks, 16 to 31.</td></tr><tr><td class='mono'>/16</td><td class='mono'>255.255.0.0</td><td class='mono'>65,536</td><td class='mono'>65,534</td><td>Class B default, and the size of one private `192.168/16`-style supernet.</td></tr><tr><td class='mono'>/17</td><td class='mono'>255.255.128.0</td><td class='mono'>32,768</td><td class='mono'>32,766</td><td>The first subdivision of a /16: two halves, 32 766 hosts each.</td></tr><tr><td class='mono'>/20</td><td class='mono'>255.255.240.0</td><td class='mono'>4,096</td><td class='mono'>4,094</td><td>Common <span class="ac" data-full="Internet Service Provider" data-desc="the company that sells you the connection to the internet">ISP</span> allocation for a small site; 16 contiguous /24s.</td></tr><tr><td class='mono'>/22</td><td class='mono'>255.255.252.0</td><td class='mono'>1,024</td><td class='mono'>1,022</td><td>Today's class example. 4 contiguous /24s, 1 022 usable.</td></tr><tr><td class='mono'>/23</td><td class='mono'>255.255.254.0</td><td class='mono'>512</td><td class='mono'>510</td><td>Two /24s glued together; the smallest supernet you see in the wild.</td></tr><tr><td class='mono'>/24</td><td class='mono'>255.255.255.0</td><td class='mono'>256</td><td class='mono'>254</td><td>Class C default, and the size of an ordinary home or office LAN.</td></tr><tr><td class='mono'>/25</td><td class='mono'>255.255.255.128</td><td class='mono'>128</td><td class='mono'>126</td><td>Half a /24. Host bits 7, so 126 usable.</td></tr><tr><td class='mono'>/26</td><td class='mono'>255.255.255.192</td><td class='mono'>64</td><td class='mono'>62</td><td>The usual way to carve a /24 into departments.</td></tr><tr><td class='mono'>/27</td><td class='mono'>255.255.255.224</td><td class='mono'>32</td><td class='mono'>30</td><td>Small team subnet — 30 usable, and a favourite exam number.</td></tr><tr><td class='mono'>/28</td><td class='mono'>255.255.255.240</td><td class='mono'>16</td><td class='mono'>14</td><td>14 usable; often a voice or management <span class="ac" data-full="Virtual LAN" data-desc="a logical network carved out of a switch, independent of cabling">VLAN</span>.</td></tr><tr><td class='mono'>/29</td><td class='mono'>255.255.255.248</td><td class='mono'>8</td><td class='mono'>6</td><td>6 usable.</td></tr><tr><td class='mono'>/30</td><td class='mono'>255.255.255.252</td><td class='mono'>4</td><td class='mono'>2</td><td>2 usable — the classic point-to-point link size on Cisco gear.</td></tr><tr><td class='mono'>/31</td><td class='mono'>255.255.255.254</td><td class='mono'>2</td><td class='mono'>2</td><td>2 usable under <span class="ac" data-full="Request for Comments" data-desc="the documents that define internet standards">RFC</span> 3021, no network and no broadcast. Inter-router links only.</td></tr><tr><td class='mono'>/32</td><td class='mono'>255.255.255.255</td><td class='mono'>1</td><td class='mono'>1</td><td>One address. A host route, or the loopback of a router.</td></tr></tbody></table></div>
+<p class="src">Every row is computed from the prefix — including the two rows where the usual
+<span class="mono">2<sup>host bits</sup> &minus; 2</span> answer is wrong: a <b>/31</b> has no network
+and no broadcast (RFC 3021), and a <b>/32</b> is a single address, not an empty subnet.</p></section><section id="traps" class=""><h2>Where this goes wrong</h2><p class="lede">Each of these has cost somebody an evening, in class or on a ticket.</p>
+            <div class="trackgrid">
+              <div class="tcard"><span class="tag r">the /12 one</span><h4>172.16 &ndash; 172.31, and nothing else</h4>
+                <p>RFC 1918 private space is <span class="mono">10/8</span>,
+                <span class="mono">172.16.0.0/12</span> and <span class="mono">192.168/16</span>. The middle
+                one is not "all of 172": a /12 steps the second octet in <b>blocks of 16 starting on a
+                multiple of 16</b> (0&ndash;15, <b>16&ndash;31</b>, 32&ndash;47 &hellip;), so private runs 16 to 31
+                and <span class="mono">172.15.x.x</span> and <span class="mono">172.32.x.x</span> are public.
+                Derive it and you cannot forget it.</p></div>
+              <div class="tcard"><span class="tag r">the minus two</span><h4>Usable is not the count</h4>
+                <p>2<sup>host bits</sup> counts <em>addresses</em>. Assignable hosts are two fewer, because
+                the network address and the broadcast address are reserved. Except on a
+                <b>/31</b> (point-to-point, RFC 3021, both usable) and a <b>/32</b> (one address).</p></div>
+              <div class="tcard"><span class="tag r">class is not the mask</span><h4>The class comes from the first octet; the /n is the mask</h4>
+                <p>Two different axes. <span class="mono">192.168.0.0/16</span> is <em>Class C space</em> with
+                a <span class="mono">/16</span> on it &mdash; 256 classful C networks glued into one
+                supernet. Classful defaults (<span class="mono">/8 /16 /24</span>) are a default, not a
+                law, and <span class="ac" data-full="Classless Inter-Domain Routing" data-desc="any mask length demarcates a network; this replaced the fixed classes">CIDR</span> has ignored them since the mid-90s. Classes still earn their keep reading a
+                first octet fast and answering exam questions.</p></div>
+              <div class="tcard"><span class="tag r">not private, not public</span><h4>The ranges people forget</h4>
+                <p><span class="mono">127.0.0.0/8</span> loopback, <span class="mono">169.254.0.0/16</span>
+                link-local (what you get when DHCP fails and you have no <span class="ac" data-full="Automatic Private IP Addressing" data-desc="the 169.254.x.x address a host gives itself when DHCP never answers">APIPA</span> override),
+                <span class="mono">100.64.0.0/10</span> carrier-grade <span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span> (RFC 6598 &mdash; your ISP's
+                shared space, routable nowhere public, and not RFC 1918 either),
+                <span class="mono">224.0.0.0/4</span> multicast,
+                <span class="mono">240.0.0.0/4</span> reserved, and the three documentation ranges
+                (<span class="mono">192.0.2.0/24</span>, <span class="mono">198.51.100.0/24</span>,
+                <span class="mono">203.0.113.0/24</span>) that exist so examples like this page never
+                point at somebody's real network.</p></div>
+            </div></section><section id="also" class=""><h2>Practice it properly</h2><p class="lede">A calculator checks an answer; it does not build the skill. The drills are on the module page.</p>
+            <p><a href="m2-network-layer.html">Course 2, Module 2 — The Network Layer</a> carries the binary
+            &harr; decimal trainer and the subnet drill that grades you, plus the flashcards and the
+            quiz. Use <b>Give me one to work out</b> above to generate a problem, do it on paper, and
+            only then press <b>Reveal the answer</b>.</p>
+            </section>
+</main>
+
+<footer>
+      <p>Part of the Google IT Support study kit. Every number on this page is computed at run time
+      from the address and prefix you type, and the reference table is generated from Python's own
+      <span class="mono">ipaddress</span> module &mdash; nothing on it was typed by hand.</p>
+      <p class="src">Study aid. Nothing here is submitted for grading.</p>
+    </footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+/* ================= subnet calculator =================
+   One path from an address and a prefix to every number on the page, and every number is
+   derived, never looked up. Written in the same ES5 idiom as the engine so it reads the same. */
+function scOctets(s){
+  var p=String(s||'').trim().split('.');
+  if(p.length!==4) return null;
+  var o=[];
+  for(var i=0;i<4;i++){
+    if(!/^\d{1,3}$/.test(p[i])) return null;
+    var v=+p[i];
+    if(v>255) return null;
+    o.push(v);
+  }
+  return o;
+}
+function scNum(o){ return (((o[0]*256+o[1])*256+o[2])*256+o[3])>>>0 }
+function scIp(n){ n=n>>>0; return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.') }
+function scMaskNum(p){ if(p<=0) return 0; if(p>=32) return 4294967295; return (4294967295<<(32-p))>>>0 }
+function scBits(n){ var s=''; for(var i=31;i>=0;i--){ s+=String((n>>>i)&1) } return s }
+
+/* One row of 32 cells, used for the IP, the mask and the place values, so all three line up in
+   the same columns. The boundary is DRAWN (an amber rule where the prefix ends) and the host bits
+   are dashed rather than a different colour, so the split still reads in greyscale and in light
+   mode. */
+function scCells(cells,prefix,mode){
+  var h='<div class="scrow">', i, split='<span class="bsplit" title="the prefix ends here"></span>';
+  /* In the place-value row the same spacer is drawn invisibly, so the two rows keep one column
+     grid. Without it the digits after the boundary sit half a cell out of line with the bits. */
+  var bar=mode==='place'?'<span class="bsplit" style="background:transparent"></span>':split;
+  for(i=0;i<32;i++){
+    if(i===prefix) h+=bar;
+    if(mode==='place'){
+      h+='<span class="bitplace">'+cells[i]+'</span>';
+    }else{
+      h+='<span class="bit'+(cells[i]==='1'?' on':'')+(i>=prefix?' h':'')+'">'+cells[i]+'</span>';
+    }
+    if(i===31&&prefix===32) h+=bar;
+    if(i%8===7&&i<31&&i!==prefix) h+='<span style="width:7px;flex:none"></span>';
+  }
+  if(prefix===32) h+=bar;
+  return h+'</div>';
+}
+function scBitRow(n,prefix){ return scCells(scBits(n).split(''),prefix,'bit') }
+function scPlaceRow(prefix){
+  var pl=[],one=[128,64,32,16,8,4,2,1];
+  for(var o=0;o<4;o++){ for(var i=0;i<8;i++){ pl.push(one[i]) } }
+  return scCells(pl,prefix,'place');
+}
+
+function scInfo(ipStr,prefix){
+  var o=scOctets(ipStr); if(!o) return null;
+  if(prefix<0||prefix>32) return null;
+  var ip=scNum(o), mask=scMaskNum(prefix), host=32-prefix;
+  var net=(ip&mask)>>>0, bcast=(net|((~mask)>>>0))>>>0, block=Math.pow(2,host);
+  /* netN and bcastN are kept as NUMBERS. The first version of this reused r.net — which is the
+     dotted STRING — in a bitwise OR, and JS turned the whole expression into NaN|255 = 255, so the
+     broadcast binary row silently read 0.0.0.255 for every address. A screenshot caught it; the
+     browser probe could not, because it only asks whether things rendered. */
+  var r={ip:ipStr,ipN:ip,prefix:prefix,host:host,maskN:mask,mask:scIp(mask),
+         netN:net,bcastN:bcast,
+         net:scIp(net),bcast:scIp(bcast),block:block,wild:scIp((~mask)>>>0),
+         first:null,last:null,usable:null,note:''};
+  if(block===1){ r.first=r.net; r.last=r.net; r.usable=1;
+    r.note='A /32 is one address — a host route or a loopback. There is no network/broadcast pair to subtract.'; }
+  else if(block===2){ r.first=r.net; r.last=r.bcast; r.usable=2;
+    r.note='A /31 is a point-to-point link (RFC 3021): both addresses are usable, so the minus-two rule does not apply.'; }
+  else { r.first=scIp(net+1); r.last=scIp(bcast-1); r.usable=block-2; }
+  /* The interesting octet: where the mask stops being 255. Block size there is 256 minus the
+     mask value, and networks sit on multiples of it. This is the arithmetic the exam wants. */
+  var mo=[(mask>>>24)&255,(mask>>>16)&255,(mask>>>8)&255,mask&255];
+  var idx=0; while(idx<4&&mo[idx]===255) idx++;
+  if(idx>3) idx=3;
+  var bsize=(idx===0&&mo[0]===0)?256:(256-mo[idx]);
+  if(mo[idx]===255) bsize=1;
+  r.oi=idx+1; r.osize=bsize;
+  r.maskOctets=mo;
+  var onHost=(ip!==net&&ip!==bcast);
+  r.role = (block<=2) ? 'link address' : (ip===net?'network address':(ip===bcast?'broadcast address':'usable host'));
+  /* Classful reading, and how far this prefix sits from the class default. Kept because the
+     exam still asks it, and because "is this subnetting or supernetting" is the question the
+     /12 example raises. */
+  var a=o[0], cls, defm;
+  if(a<=126){cls='A';defm=8} else if(a===127){cls='A (loopback)';defm=8}
+  else if(a<=191){cls='B';defm=16} else if(a<=223){cls='C';defm=24}
+  else if(a<=239){cls='D (multicast)';defm=null} else {cls='E (reserved)';defm=null}
+  r.cls=cls; r.defm=defm;
+  if(defm!==null){
+    r.delta=prefix-defm;
+    r.deltaText = r.delta===0 ? 'the classful default mask'
+      : (r.delta>0 ? (r.delta+' bits subnetted past the classful /'+defm+' — 2^'+r.delta+' = '+Math.pow(2,r.delta)+' subnets of this size')
+                   : ((-r.delta)+' bits WIDER than the classful /'+defm+' — this is supernetting, 2^'+(-r.delta)+' classful blocks glued into one'));
+  } else { r.delta=null; r.deltaText='classful masking does not apply to '+cls; }
+  /* Ranges that are not ordinary public space. Each one is a thing that has wasted an evening. */
+  r.special=scSpecial(o);
+  r.priv=scInAny(ip,[[10,0,0,0,8],[172,16,0,0,12],[192,168,0,0,16]]);
+  return r;
+}
+/* Is this address inside one of these blocks? Containment, not equality: 192.168.1.130/26 is a
+   /26, and it is still inside 192.168.0.0/16. */
+function scInAny(addrN,blocks){
+  for(var i=0;i<blocks.length;i++){
+    var b=blocks[i], mask=scMaskNum(b[4]);
+    if(((addrN&mask)>>>0)===((scNum([b[0],b[1],b[2],b[3]])&mask)>>>0)) return true;
+  }
+  return false;
+}
+function scSpecial(o){
+  var a=o[0],b=o[1];
+  if(a===10) return 'RFC 1918 private — 10.0.0.0/8';
+  if(a===172&&b>=16&&b<=31) return 'RFC 1918 private — 172.16.0.0/12 (172.16 to 172.31 ONLY)';
+  if(a===192&&b===168) return 'RFC 1918 private — 192.168.0.0/16';
+  if(a===127) return 'loopback — 127.0.0.0/8, never leaves the host';
+  if(a===169&&b===254) return 'link-local — 169.254.0.0/16, what a NIC self-assigns when DHCP fails';
+  if(a===100&&b>=64&&b<=127) return 'carrier-grade NAT — 100.64.0.0/10 (RFC 6598). Not private, not public';
+  if(a>=224&&a<=239) return 'multicast — 224.0.0.0/4, a group you join, never a host';
+  if(a>=240) return 'reserved — 240.0.0.0/4, never assigned to a host';
+  if(a===192&&b===0&&o[2]===2) return 'documentation — 192.0.2.0/24, the example-address range';
+  if(a===198&&b===51&&o[2]===100) return 'documentation — 198.51.100.0/24';
+  if(a===203&&b===0&&o[2]===113) return 'documentation — 203.0.113.0/24';
+  if(a===198&&b>=18&&b<=19) return 'benchmarking — 198.18.0.0/15, never routed';
+  if(a===0) return 'this-network — 0.0.0.0/8';
+  if(a===255&&b===255&&o[2]===255&&o[3]===255) return 'limited broadcast';
+  return 'public (routable) address space';
+}
+
+var SC=null;
+
+/* Where the block boundary falls, in the octet a reader can actually see. Two shapes, and the
+   second is decided here rather than in prose: when the mask ends exactly on an octet boundary
+   (/24, /16, /8) the octet ABOVE steps, by a whole octet. "Multiples of 256 in octet 4" is the
+   same fact written in a way nobody can use, so the sentence is generated from this, not typed. */
+function scStep(r){
+  var h=r.host;
+  if(h<=0||h>=32) return null;
+  if(h%8===0) return {octet:4-h/8,width:256,hostbits:0,whole:true};
+  return {octet:4-Math.floor(h/8),width:Math.pow(2,h%8),hostbits:h%8,whole:false};
+}
+/* Eight bits with the host bits picked out. This is the row that answers "why is there no
+   .161.0?" without a paragraph: 161's host bits are not 00, so it is not a network. */
+function scBits8(v,hb){
+  var s='',i;
+  for(i=7;i>=0;i--){ s+=String((v>>>i)&1) }
+  if(hb>0&&hb<8) return s.substr(0,8-hb)+'<b class="scqbits">'+s.substr(8-hb)+'</b>';
+  return s;
+}
+/* The block-size explainer, shown under the neighbours. Every number comes from r, so the same
+   paragraph is true for a /12 (16 wide in octet 2), a /22 (4 wide in octet 3) and a /24 (a whole
+   octet) — which the shortcut wording was not, before this existed. */
+function scBlockExplained(r,st){
+  if(!st) return '';
+  var oct=+r.net.split('.')[st.octet-1], mos=r.maskOctets[st.octet-1];
+  var rows='', i, last=oct+st.width-1;
+  function row(v,what){
+    rows+='<tr><td class="mono">'+v+'</td><td class="mono">'+scBits8(v,st.whole?0:st.hostbits)
+        +'</td><td class="what">'+what+'</td></tr>';
+  }
+  if(st.whole){
+    row(oct,'<b>this network</b> — the octet is used up entirely by the network, so one block is a full 256 addresses');
+    if(oct+1<=255) row(oct+1,'<b>the next network</b> — one octet value later');
+  }else{
+    row(oct,'<b>this network</b> — the only value in the range with every host bit at 0');
+    if(st.width<=6){
+      for(i=1;i<st.width;i++) row(oct+i,'a host on this subnet — the host bits are not all 0');
+      if(oct+st.width<=255) row(oct+st.width,'<b>the next network</b> — the first value with the host bits back at 0');
+    }else{
+      row(oct+1,'a host on this subnet');
+      rows+='<tr><td colspan="3" class="what">…</td></tr>';
+      row(last,'the last host on this subnet');
+      if(oct+st.width<=255) row(oct+st.width,'<b>the next network</b> — the first value with the host bits back at 0');
+    }
+  }
+  var head='<p class="scnote"><b>Why the blocks start where they do.</b> In octet '+st.octet
+    +' the mask reads <span class="mono">'+mos+'</span> = <span class="mono">'+scBits8(mos,0)+'</span>';
+  if(st.whole){
+    head+=' — every bit there is a network bit, so the octet is used up completely and the next block '
+      +'begins at the next value of the octet.</p>';
+  }else{
+    head+=' — the last <b>'+st.hostbits+'</b> bit'+(st.hostbits===1?'':'s')+' of that octet are host bits. '
+      +'Those bits can only spell '+st.width+' different patterns, so <b>'+st.width+'</b> consecutive octet '
+      +'values are different addresses on the <i>same</i> network, and a block can only begin where they '
+      +'are all 0.</p>';
+  }
+  var tbl='<div class="scblock tbl-wrap"><table><thead><tr><th>Octet '+st.octet+'</th><th>binary</th>'
+    +'<th>what it is</th></tr></thead><tbody>'+rows+'</tbody></table></div>';
+  var tail='';
+  if(!st.whole&&oct+1<=255){
+    var q=r.net.split('.'); q[st.octet-1]=String(oct+1);
+    for(i=st.octet;i<4;i++) q[i]='0';
+    tail='<p class="scnote">So <span class="mono">'+q.join('.')+'/'+r.prefix+'</span> is <b>not</b> a '
+      +'network address — it is a host on the block that began at <span class="mono">'+r.net
+      +'</span>. A block '+st.width+' wide can only start on a multiple of '+st.width+': the same reason '
+      +'a chapter '+st.width+' pages long cannot begin on a page number that is not a multiple of '
+      +st.width+'.</p>';
+  }
+  return head+tbl+tail;
+}
+/* One tooltip, positioned in viewport coordinates, shared by every card. Delegated from the
+   document so a re-render does not leave stale listeners behind — and it opens on focus as well
+   as hover, because a pointer is not the only way to read a page. */
+function scTipInit(){
+  if(window.__scTip) return;
+  var t=document.createElement('div');
+  t.id='scTip'; t.setAttribute('role','tooltip');
+  document.body.appendChild(t);
+  window.__scTip=1;
+  function hide(){ t.classList.remove('on') }
+  function show(card){
+    var tip=card.getAttribute('data-tip'); if(!tip) return;
+    t.innerHTML=tip; t.classList.add('on');
+    var b=card.getBoundingClientRect(), w=t.offsetWidth, hh=t.offsetHeight;
+    var left=Math.max(8,Math.min(b.left, window.innerWidth-w-8));
+    var top=b.top-hh-10; if(top<8) top=b.bottom+10;
+    t.style.left=left+'px'; t.style.top=top+'px';
+  }
+  document.addEventListener('mouseover',function(e){
+    var c=e.target&&e.target.closest?e.target.closest('.sccard[data-tip]'):null;
+    if(c) show(c); else hide();
+  },true);
+  document.addEventListener('focusin',function(e){
+    var c=e.target&&e.target.closest?e.target.closest('.sccard[data-tip]'):null;
+    if(c) show(c); else hide();
+  },true);
+  document.addEventListener('focusout',hide,true);
+  document.addEventListener('keydown',function(e){ if(e.key==='Escape') hide() });
+  window.addEventListener('scroll',hide,true);
+  window.addEventListener('resize',hide);
+}
+function scRender(){
+  var ipEl=document.getElementById('scIp'), pEl=document.getElementById('scPrefix');
+  var host=document.getElementById('scOut');
+  var ip=ipEl.value.trim(), prefix=parseInt(pEl.value,10);
+  window.__scPrefix=isNaN(prefix)?-1:prefix;
+  host.classList.remove('schide');
+  var r=scInfo(ip,prefix);
+  if(!r){
+    ipEl.classList.add('no');
+    host.innerHTML='<p class="scerr">Give me four octets of 0–255 and a prefix from /0 to /32 — e.g. 112.15.167.104 and 22.</p>';
+    return;
+  }
+  ipEl.classList.remove('no');
+  try{ localStorage.setItem('sc:last',JSON.stringify({ip:ip,prefix:prefix})) }catch(e){}
+  var bits=scBits(r.ipN), mbits=scBits(r.maskN);
+  var st=scStep(r);
+  var h='';
+
+  /* ---- the worksheet, in the same eight steps the class slide uses ---- */
+  h+='<div class="scstep"><h3><span class="n">1</span>Decimal IP</h3>'
+    +'<div class="scans ans">'+esc(ip)+'/'+prefix+'</div>'
+    +'<p class="scnote">Class '+r.cls+'. '+r.deltaText+'.</p></div>';
+
+  h+='<div class="scstep"><h3><span class="n">2</span>IP in binary</h3>'
+    +scBitRow(r.ipN,prefix)+'<div style="margin-top:2px">'+scPlaceRow(prefix)+'</div>'
+    +'<p class="scnote">Left of the amber bar: the <b>network</b> part ('+prefix+' bits). '
+    +'Right of it, dashed: the <b>host</b> part ('+r.host+' bits). The bar IS the prefix.</p></div>';
+
+  h+='<div class="scstep"><h3><span class="n">3</span>/'+prefix+' subnet mask</h3>'
+    +scBitRow(r.maskN,prefix)
+    +'<div class="scans ans">'+r.mask+'</div>'
+    +'<p class="scnote">'+prefix+' ones, then '+r.host+' zeros. Wildcard (the inverse, what a Cisco '
+    +'access list asks for): <span class="mono">'+r.wild+'</span>.</p></div>';
+
+  h+='<div class="scstep"><h3><span class="n">4</span>Bitwise AND — the working</h3>'
+    +'<div class="scwork">'
+    +'<div><span class="lbl">IP</span>'+scGroup(bits)+'</div>'
+    +'<div><span class="lbl">MASK</span>'+scGroup(mbits)+'</div>'
+    +'<div><span class="lbl">AND</span><span class="res">'+scGroup(scBits((r.ipN&r.maskN)>>>0))+'</span></div>'
+    +'</div><p class="scnote">Wherever the mask has a <b>1</b> the bit survives; wherever it has a '
+    +'<b>0</b> the answer is 0. That is the whole trick: the AND throws away the host part.</p></div>';
+
+  h+='<div class="scstep"><h3><span class="n">5</span>Network address</h3>'
+    +'<div class="scans ans">'+r.net+'/'+prefix+'</div>'
+    +'<p class="scnote"><b>The name of the block.</b> Never assigned to a device: every host bit is 0, '
+    +'and all-zero host bits is how an address says <i>“the subnet itself”</i> rather than “a machine '
+    +'on it”.</p>'
+    +'<p class="scnote">Think of the address you typed as a house, and this as the street name — a '
+    +'street with <b>'+r.block.toLocaleString('en-US')+'</b> lots on it. It covers '
+    +'<span class="mono">'+r.net+'</span> to <span class="mono">'+r.bcast+'</span>; your address '
+    +'sits at a fixed distance inside it:</p>'
+    +'<div class="scwork"><div><span class="lbl" style="width:64px">block</span>'+r.net+'</div>'
+    +'<div><span class="lbl" style="width:64px">+ offset</span>'+(r.ipN-r.netN)+'</div>'
+    +'<div><span class="lbl" style="width:64px">=</span><span class="res">'+r.ip+'</span></div></div>'
+    +'<p class="scnote">So the same 32 bits read two ways: <span class="mono">'+r.net+'/'+prefix
+    +'</span> is <i>which network</i>, and the offset is <i>which host on it</i>. Routers, DHCP scopes '
+    +'and firewall rules are all written in the first form, because it names a whole range in one line '
+    +'and there is no table format that lists '+r.block.toLocaleString('en-US')+' addresses one by one.</p>'
+    +'<p class="scnote">Two devices could never share this address: then “the network” and “a host” '
+    +'would be the same answer, and the AND in step 4 could not tell you which one you meant.</p></div>';
+
+  h+='<div class="scstep"><h3><span class="n">6</span>Broadcast, in binary</h3>'
+    +scBitRow(r.bcastN,prefix)
+    +'<p class="scnote">Same AND result, but every host bit set to 1 instead of 0.</p></div>';
+
+  h+='<div class="scstep"><h3><span class="n">7</span>Broadcast address</h3>'
+    +'<div class="scans ans">'+r.bcast+'</div>'
+    +'<p class="scnote">Every host on this subnet. Also never assigned to a device.</p></div>';
+
+  var tipMask='<b>Mask</b> — says where the network part of an address stops and the host part '
+    +'starts. Written as a prefix (/'+prefix+') or as dotted decimal ('+r.mask+'): '+prefix+' ones, then '
+    +r.host+' zeros. Every host ANDs a destination with its own mask to answer one question: same '
+    +'network as me, or does this go to the gateway?';
+  var tipNet='<b>Network address</b> — the name of the block: every host bit at 0. It is a whole range '
+    +'written in its shortest form, which is why routing tables, DHCP scopes and firewall rules use it, '
+    +'and why no device is ever given it: all-zero host bits means <i>the subnet itself</i>.';
+  var tipBcast='<b>Broadcast</b> — the other end of the block: every host bit at 1. A frame sent here '
+    +'reaches every device on the subnet (this is how ARP asks who holds an address), so like the '
+    +'network address it cannot belong to one device.';
+  var tipFirst='<b>First usable</b> — the lowest address that can be handed to a device: the network '
+    +'address plus one. Below it is the block itself.';
+  var tipLast='<b>Last usable</b> — the highest address that can be handed to a device: one below the '
+    +'broadcast. Above it is everyone-on-this-subnet.';
+  var tipCount='<b>Addresses</b> — every address in the block, usable or not: 2 to the power of the '
+    +'host bits, here 2^'+r.host+' = '+r.block.toLocaleString('en-US')+'. This is also the block size, '
+    +'the step between neighbouring networks.';
+  var tipUsable=r.host>=2
+    ? '<b>Usable hosts</b> — the count a device can actually take: 2^'+r.host+' = '
+      +r.block.toLocaleString('en-US')+' addresses, minus the network (host bits all 0) and the '
+      +'broadcast (all 1) = <b>'+(r.usable||0).toLocaleString('en-US')+'</b>. Two exceptions: a /31 '
+      +'keeps both addresses (RFC 3021), and a /32 is a single address.'
+    : '<b>Usable hosts</b> — an exception case: a /31 point-to-point link has no network or broadcast '
+      +'to remove (RFC 3021), so both addresses are usable, and a /32 is one address (a host route or '
+      +'a loopback).';
+  h+='<div class="scstep"><h3><span class="n">8</span>Verified results</h3>'
+    +'<p class="scnote">Hover or tab onto any card — each one explains what the number is, not just '
+    +'what it reads.</p><div class="sclive">'
+    +scCard('Mask',r.mask,'/'+prefix+' = '+prefix+' ones',tipMask)
+    +scCard('Network',r.net+'/'+prefix,'the AND result',tipNet)
+    +scCard('Broadcast',r.bcast,'host bits all 1',tipBcast)
+    +scCard('First usable',r.first,r.host+' host bits',tipFirst)
+    +scCard('Last usable',r.last,'one below the broadcast',tipLast)
+    +scCard('Addresses',r.block.toLocaleString('en-US'),'2^'+r.host,tipCount)
+    +scCard('Usable hosts',(r.usable||0).toLocaleString('en-US'),
+            r.host>=2?('2^'+r.host+' &minus; 2'):'see the note',tipUsable)
+    +'</div>';
+  if(r.note) h+='<div class="big60 y" style="margin-top:12px">'+r.note+'</div>';
+  var role = r.role==='usable host'
+    ? '<span class="scflag good">you typed a usable host address</span>'
+    : (r.role==='network address'
+        ? '<span class="scflag bad">you typed the NETWORK address — not assignable</span>'
+        : (r.role==='broadcast address'
+            ? '<span class="scflag bad">you typed the BROADCAST address — not assignable</span>'
+            : '<span class="scflag">'+r.role+'</span>'));
+  h+='<div class="scflags">'+role
+    +'<span class="scflag'+(r.priv?' good':'')+'">'+esc(r.special)+'</span></div>';
+  h+='<p class="scnote"><b>The shortcut, shown on this address:</b> '
+    +(st&&!st.whole
+        ? 'watch octet '+st.octet+', where the mask reads <span class="mono">'+r.maskOctets[st.octet-1]
+          +'</span>. Block size is 256 &minus; '+r.maskOctets[st.octet-1]+' = <b>'+st.width
+          +'</b> addresses, so networks start on multiples of '+st.width+' in that octet — and this one '
+          +'starts on '+r.net.split('.')[st.octet-1]+'.'
+        : (st ? 'the mask ends on an octet boundary, so blocks step by a whole octet: octet '+st.octet
+               +' reads '+r.net.split('.')[st.octet-1]+' here, and '+(+r.net.split('.')[st.octet-1]+1)
+               +' at the next network.'
+             : 'a /0 is a single block and a /32 has none, so there is nothing to step through.'))
+    +' <b>Step 9 shows why</b>, bit by bit.</p>';
+  h+='</div>';
+
+  /* ---- neighbouring subnets, because checking "did I mean .164.0 or .168.0" is the real task ---- */
+  h+='<div class="scstep"><h3><span class="n">9</span>The neighbours</h3><div class="tbl-wrap"><table>'
+    +'<thead><tr><th>Subnet</th><th>Range</th><th>Broadcast</th></tr></thead><tbody>'
+    +scNeighbour(r,-1)+scNeighbour(r,0)+scNeighbour(r,1)
+    +'</tbody></table></div><p class="scnote">Three blocks of '+r.block.toLocaleString('en-US')
+    +' addresses'+(st?(st.whole?', one whole octet each — so they step by one in octet '+st.octet
+                             :', stepping by '+st.width+' in octet '+st.octet):'')+'.</p>'
+    +scBlockExplained(r,st)+'</div>';
+
+  /* ---- the question that actually decides traffic: same subnet or not? ---- */
+  h+='<div class="scstep"><h3><span class="n">10</span>Same subnet as…?</h3>'
+    +'<div class="iobox"><input id="scPeer" placeholder="another address, e.g. 112.15.164.20" '
+    +'value="'+esc(window.__scPeer||'')+'" autocomplete="off">'
+    +'<button class="primary" id="scPeerGo">Compare</button></div><div id="scPeerOut"></div></div>';
+
+  host.innerHTML=h;
+  scPaintPeer();
+  var pg=document.getElementById('scPeerGo');
+  if(pg) pg.onclick=function(){ window.__scPeer=document.getElementById('scPeer').value; scPaintPeer() };
+  var pi=document.getElementById('scPeer');
+  if(pi) pi.addEventListener('keydown',function(e){ if(e.key==='Enter'){ window.__scPeer=pi.value; scPaintPeer() } });
+}
+function scGroup(s){
+  var out='';
+  for(var o=0;o<4;o++){ out+=s.substr(o*8,8); if(o<3) out+=' '; }
+  return out;
+}
+function scCard(k,v,s,tip){
+  return '<div class="sccard"'+(tip?' data-tip="'+tip+'" tabindex="0"':'')+'>'
+        +'<div class="k">'+k+'</div><div class="v ans">'+v+'</div>'
+        +'<div class="s">'+s+'</div></div>';
+}
+function scNeighbour(r,step){
+  if(step===0){
+    return '<tr><td class="mono"><b>'+r.net+'/'+r.prefix+'</b></td><td class="mono">'
+      +r.first+' – '+r.last+'</td><td class="mono">'+r.bcast+'</td></tr>';
+  }
+  var base=scNum(scOctets(r.net)), lo=base+step*r.block;
+  if(lo<0||lo>4294967295) return '';   // there is no subnet below 0 or above 255.255.255.255
+  var mask=r.maskN, hi=(lo|((~mask)>>>0))>>>0;
+  lo=lo>>>0;
+  var first=(r.block<=2)?lo:lo+1, last=(r.block<=2)?hi:hi-1;
+  return '<tr><td class="mono" style="color:var(--text-mute)">'+scIp(lo)+'/'+r.prefix+'</td>'
+    +'<td class="mono" style="color:var(--text-mute)">'+scIp(first)+' – '+scIp(last)+'</td>'
+    +'<td class="mono" style="color:var(--text-mute)">'+scIp(hi)+'</td></tr>';
+}
+function scPaintPeer(){
+  var out=document.getElementById('scPeerOut'); if(!out) return;
+  var peer=(document.getElementById('scPeer')||{}).value||'';
+  if(!peer.trim()){
+    out.innerHTML='<p class="scnote">Type a second address. Two hosts can talk on the local network — '
+      'ARP for each other, no router — only if their addresses AND to the <b>same</b> network under '
+      'the <b>same</b> mask. Different network, and every packet goes to the default gateway first. '
+      'That single test is most of subnet-level troubleshooting.</p>';
+    return;
+  }
+  var a=scInfo(document.getElementById('scIp').value,SC_PREFIX());
+  var pOct=scOctets(peer);
+  if(!a||!pOct){ out.innerHTML='<p class="scerr">Both addresses need four octets of 0–255.</p>'; return; }
+  var pa=scNum(pOct), mask=a.maskN;
+  var na=(a.ipN&mask)>>>0, nb=(pa&mask)>>>0;
+  var same=na===nb;
+  out.innerHTML='<div class="scflags">'
+    +(same?'<span class="scflag good">SAME subnet — direct, ARP, no router</span>'
+           :'<span class="scflag bad">DIFFERENT subnet — everything goes via the default gateway</span>')
+    +'</div><p class="scnote"><span class="mono">'+esc(document.getElementById('scIp').value)
+    +'</span> AND <span class="mono">'+a.mask+'</span> = <span class="mono">'+scIp(na)
+    +'</span><br><span class="mono">'+esc(peer)+'</span> AND <span class="mono">'+a.mask
+    +'</span> = <span class="mono">'+scIp(nb)+'</span><br>'
+    +(same?'Same network number, so they are on one broadcast domain. A ping between them never leaves the LAN.'
+          :'Different network numbers, so a router has to be in the path — and if there is no route between them, that is the whole answer to "why can\'t they talk".')
+    +'</p>';
+}
+function SC_PREFIX(){ return parseInt((document.getElementById('scPrefix')||{}).value,10) }
+function scDrill(){
+  var pool=[16,20,22,23,24,25,26,27,28,30,12];
+  var p=pool[Math.floor(Math.random()*pool.length)];
+  var ip=[Math.floor(Math.random()*223)+11,Math.floor(Math.random()*256),
+          Math.floor(Math.random()*256),Math.floor(Math.random()*254)+1].join('.');
+  document.getElementById('scIp').value=ip;
+  document.getElementById('scPrefix').value=p;
+  scRender();
+  var host=document.getElementById('scOut');
+  host.classList.add('schide');
+  document.getElementById('scReveal').style.display='inline-block';
+  var q=document.getElementById('scDrillQ');
+  q.style.display='block';
+  q.innerHTML='<b>'+ip+'/'+p+'</b> — work it out on paper first: network address, broadcast, first '
+    +'and last usable host, usable count. Then <b>Reveal the answer</b>.';
+}
+function scReveal(){
+  document.getElementById('scOut').classList.remove('schide');
+  document.getElementById('scReveal').style.display='none';
+}
+function scCopy(){
+  var r=scInfo(document.getElementById('scIp').value,SC_PREFIX());
+  if(!r) return;
+  var t=['Subnetting: '+r.ip+'/'+r.prefix,'',
+    '1. Decimal IP        '+r.ip,
+    '2. IP in binary      '+scGroup(scBits(r.ipN)),
+    '3. /'+r.prefix+' mask          '+scGroup(scBits(r.maskN))+'  ('+r.mask+')',
+    '4. Bitwise AND       '+scGroup(scBits((r.ipN&r.maskN)>>>0)),
+    '5. Network address   '+r.net,
+    '6. Broadcast binary  '+scGroup(scBits(r.bcastN)),
+    '7. Broadcast address '+r.bcast,'',
+    'Mask            '+r.mask,
+    'First host      '+r.first,
+    'Last host       '+r.last,
+    'Total addresses '+r.block.toLocaleString('en-US'),
+    'Usable hosts    '+(r.usable||0).toLocaleString('en-US'),
+    'Network         '+r.net+'/'+r.prefix].join('\n');
+  var ta=document.createElement('textarea'); ta.value=t; document.body.appendChild(ta);
+  ta.select();
+  var done=false;
+  try{ done=document.execCommand('copy') }catch(e){}
+  if(!done&&navigator.clipboard){ try{ navigator.clipboard.writeText(t); done=true }catch(e){} }
+  document.body.removeChild(ta);
+  document.getElementById('scCopyMsg').textContent=done?'Copied — paste it into your notes.'
+    :'Select the numbers on the page and copy them yourself.';
+}
+function scInit(){
+  var last=null;
+  try{ last=JSON.parse(localStorage.getItem('sc:last')||'null') }catch(e){}
+  document.getElementById('scIp').value=(last&&last.ip)||'112.15.167.104';
+  document.getElementById('scPrefix').value=(last&&last.prefix)||22;
+  ['scIp','scPrefix'].forEach(function(id){
+    var e=document.getElementById(id);
+    e.addEventListener('input',scRender);
+    e.addEventListener('change',scRender);
+  });
+  document.getElementById('scDrillBtn').onclick=scDrill;
+  document.getElementById('scReveal').onclick=scReveal;
+  document.getElementById('scCopyBtn').onclick=scCopy;
+  var q=document.getElementById('scDrillQ');
+  q.style.display='none';
+  document.getElementById('scReset').onclick=function(){
+    document.getElementById('scIp').value='112.15.167.104';
+    document.getElementById('scPrefix').value='22';
+    scRender();
+  };
+  scTipInit();
+  scRender();
+  document.getElementById('scStamp').textContent=new Date().getFullYear();
+}
+document.addEventListener('DOMContentLoaded',scInit);
+
+</script>
+</body>
+</html>
