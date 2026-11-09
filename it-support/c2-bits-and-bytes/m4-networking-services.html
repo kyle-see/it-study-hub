@@ -1,0 +1,1529 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>The Bits and Bytes of Computer Networking — Networking Services, Module 4 (study)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Course 2 — Bits and Bytes · Module 4 — Networking Services</span>
+  <nav><a href="index.html">Course 2</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="../../glossary.html" title="Every term, with a definition">▤ glossary</a><a href="#essentials">Essentials</a><a href="m1-introduction.html">M1</a><a href="m2-network-layer.html">M2</a><a href="m3-transport-application.html">M3</a><a href="#quiz">Quiz</a><a href="#cards">Flashcards</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="essentials" class=""><h2>The essentials &mdash; hold these before the detail</h2><p class="lede">The module at entry-certification level: what you must be able to do, and the facts the quizzes and drills on this page are testing. Read this first, every time.</p>
+    <div class="learnbox">
+      <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
+        <ul class="lcan"><li>explain <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> and walk the four-message <span class="ac" data-full="Discover, Offer, Request, Acknowledge" data-desc="the four-step DHCP exchange">DORA</span> exchange</li><li>explain how a name becomes an address, and what each <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> record type is for</li><li>explain <span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span> and why almost every office uses it</li><li>tell a <span class="ac" data-full="Virtual Private Network" data-desc="an encrypted tunnel across an untrusted network">VPN</span> from a proxy, and say what each one protects</li><li>describe the cloud service models and what the customer still owns</li></ul></div>
+      <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 9 facts</span>
+        <div class="kv lfacts"><div class="k">DHCP</div><div>hands out address, mask, gateway and DNS servers automatically. DORA: Discover, Offer, Request, Acknowledge. Addresses are leased, not given.</div><div class="k">DNS resolution</div><div>root server, then the top-level domain, then the domain&#x27;s own authoritative server; the resolver caches the answer for its <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span>.</div><div class="k">DNS records</div><div>A (IPv4), <span class="ac" data-full="IPv6 Address record" data-desc="the DNS record mapping a name to an IPv6 address; A is the IPv4 one">AAAA</span> (IPv6), <span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span> (alias), <span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span> (mail), NS (nameserver), <span class="ac" data-full="Pointer record" data-desc="reverse DNS: address to name, used by mail servers to check a sender">PTR</span> (reverse lookup), <span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span> (verification and mail policy).</div><div class="k">NAT</div><div>rewrites private source addresses to one public address and keeps the mapping in a table. That is how one public <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> serves a whole office - and why it hides internal addresses.</div><div class="k">NAT is not a firewall</div><div>it changes addresses, it does not inspect content. <span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> forwarding is a NAT rule, not a security control.</div><div class="k">VPN</div><div>an encrypted tunnel between a client and a network, so the traffic behaves as if the client were on site. It protects the path, nothing on either end.</div><div class="k">Proxy</div><div>an intermediary for one application&#x27;s traffic. It can cache, filter and log; it does not encrypt by itself.</div><div class="k">Cloud models</div><div><span class="ac" data-full="Infrastructure as a Service" data-desc="you rent the compute, storage and network">IaaS</span> gives you virtual machines, <span class="ac" data-full="Platform as a Service" data-desc="the vendor runs the runtime; you bring the app">PaaS</span> a runtime, <span class="ac" data-full="Software as a Service" data-desc="you use the software; the vendor runs everything">SaaS</span> the finished application. You keep the data in all three.</div><div class="k"><span class="ac" data-full="Network Time Protocol" data-desc="keeps clocks in sync across a network">NTP</span></div><div>keeps clocks in sync. <span class="ac" data-full="Kerberos" data-desc="the ticket-based authentication protocol behind Active Directory; you authenticate once and receive tickets for each service.">Kerberos</span> and <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span> both fail or warn when clocks drift, which is why time is an infrastructure service.</div></div></div>
+      <div class="big60 r"><b>The trap:</b> Treating NAT as a firewall, or a VPN as a security product. Both change the path; neither inspects anything.</div>
+      <p class="src">Everything below this box explains these lines, in this order, with a drill
+      after each part that tests it. If you can say every line above without looking, the drills are
+      revision. If you cannot, read the section that matches the line and come back &mdash; that is
+      the whole study method. The same objectives for every module, built and not yet built, are on
+      <a href="../../learn/index.html">the learning path</a>.</p>
+    </div></section><section id="start" class=""><h2>What counts as a network service</h2><p class="lede">Four jobs the network does on your behalf instead of you doing them by hand, machine by machine.</p>
+    <p>Course 2 so far has been the machinery: cables, addresses, packets, ports. Module 4 is the part that
+    makes the machinery usable without a technician visiting every desk. Each service below exists to remove a
+    manual job, and each one has a signature failure you will meet on a helpdesk.</p>
+    <table>
+      <tr><th>Job</th><th>Service</th><th>The manual version it replaced</th><th>Its failure looks like…</th></tr>
+      <tr><td><b>Hand out addresses</b></td><td><span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span></td><td>Typing an address, mask, gateway and <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> server into every machine.</td><td>An address starting <span class="mono">169.254</span>, or two machines fighting over one address.</td></tr>
+      <tr><td><b>Answer names</b></td><td>DNS</td><td>A <i>hosts file</i> on every machine, edited by hand whenever anything moved.</td><td>The site loads by <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> but not by name.</td></tr>
+      <tr><td><b>Translate addresses</b></td><td><span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span></td><td>Owning a public IPv4 address for every single device.</td><td>Something inside cannot be reached from outside.</td></tr>
+      <tr><td><b>Carry traffic as if you were on site</b></td><td><span class="ac" data-full="Virtual Private Network" data-desc="an encrypted tunnel across an untrusted network">VPN</span>, proxies</td><td>A leased line to every branch office and every home worker.</td><td>It works from the office and not from home, or the other way round.</td></tr>
+      <tr><td><b>Supply computing itself</b></td><td>Cloud models</td><td>A server room, a purchase order, and three weeks of waiting.</td><td>Nobody can say who is responsible for the part that broke.</td></tr>
+    </table>
+    <div class="big60">
+      <b>The thread through all four:</b> the manual version does not scale, so the work moves to a service —
+      and the first diagnostic question about any of them is <i>which service, and where does it live?</i>
+      That question is what separates "the internet is down" from a ticket somebody can actually work.
+    </div>
+    <p>One more thing worth naming before the detail: <b>every service in this module is a server somewhere,
+    answering on a port, obeying a protocol.</b> DNS is <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> 53. DHCP is UDP 67 and 68. <span class="ac" data-full="Network Time Protocol" data-desc="keeps clocks in sync across a network">NTP</span> is UDP 123. Nothing
+    about them is magic; they are Module 3's sockets doing the jobs Module 4 cares about.</p>
+    </section><section id="dns" class=""><h2>DNS: how a name becomes an address</h2><p class="lede">People remember names; routers only understand numbers. <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> is the translation service between the two, and it is distributed so that no one machine has to know everything.</p>
+    <h3>Why it exists</h3>
+    <p>Before DNS, every machine carried a <b>hosts file</b>: a flat list of names and addresses, copied around
+    by hand. That works for ten machines and fails at a thousand — nobody can be the authority for every name,
+    and every change has to reach every machine. DNS answers both problems by being <b>hierarchical</b> (each
+    level delegates to the next) and <b>distributed</b> (each zone is served by whoever owns it).</p>
+    <div class="kv">
+      <div class="k">Forward lookup</div><div>Name to address. The one everybody means when they say "DNS".</div>
+      <div class="k">Reverse lookup</div><div>Address to name, through the <span class="mono">in-addr.arpa</span> tree. Mail servers use it to check that a sender is who it claims.</div>
+      <div class="k"><span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span></div><div><b>53</b>: <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> for ordinary queries, <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> for answers too large for a datagram and for zone transfers.</div>
+    </div>
+    <h3>The five roles in a lookup</h3>
+    <p>Textbooks say "DNS servers" as if there were one kind. There are five, and a question about "which server
+    answers this step" is asking you to tell them apart.</p>
+    <table>
+      <tr><th>Role</th><th>What it holds</th><th>Who runs it</th></tr>
+      <tr><td><b>Stub resolver</b></td><td>Nothing. It is the client library inside your <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span>.</td><td>You. It reads the DNS server address <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> handed out.</td></tr>
+      <tr><td><b>Caching resolver</b></td><td>Answers it has already seen, until their <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span> expires.</td><td>Your <span class="ac" data-full="Internet Service Provider" data-desc="the company that sells you the connection to the internet">ISP</span>, your router, or a public one (8.8.8.8, 1.1.1.1).</td></tr>
+      <tr><td><b>Recursive resolver</b></td><td>Nothing permanent — it does the chasing. Usually the same box as the cache.</td><td>Same as above.</td></tr>
+      <tr><td><b>Root server</b></td><td>Who runs each top-level domain. Thirteen named identities, <span class="mono">a</span> to <span class="mono">m</span>.</td><td><span class="ac" data-full="Internet Corporation for Assigned Names and Numbers" data-desc="coordinates the global name and number system and delegates blocks to the RIRs">ICANN</span>-coordinated operators, spread worldwide by <b>anycast</b>.</td></tr>
+      <tr><td><b><span class="ac" data-full="Top Level Domain" data-desc="the last label of a name: .com, .org, .ca, or a country code. It is the coarsest level of the DNS hierarchy.">TLD</span> server</b></td><td>Who is authoritative for each domain under one suffix.</td><td>Verisign for <span class="mono">.com</span>, PIR for <span class="mono">.org</span>, CIRA for <span class="mono">.ca</span>.</td></tr>
+      <tr><td><b>Authoritative server</b></td><td>The actual records for one zone — the final answer.</td><td>Whoever holds the domain: your host, your registrar, your company.</td></tr>
+    </table>
+    <div class="big60 y">
+      <b><span class="ac" data-full="Anycast" data-desc="one address advertised from many locations, with routing delivering the client to whichever is nearest or healthiest. This is how DNS root servers…">Anycast</span>, in one line:</b> the same address is advertised from many locations, and routing delivers each
+      query to whichever one is nearest. That is how thirteen root "servers" are really well over a thousand
+      machines, and why the answer comes back fast from anywhere on earth.
+    </div>
+    <h3>The walk, in order</h3>
+    <div class="kv">
+      <div class="k">1. Cache</div><div>Your machine checks its own cache, then the hosts file, then asks its configured resolver. Most queries end here or at the next step.</div>
+      <div class="k">2. Resolver cache</div><div>The resolver checks its cache. If the answer is there and the TTL has not expired, it replies immediately and the walk is over.</div>
+      <div class="k">3. Root</div><div>"I do not know <span class="mono">example.com</span>, but <span class="mono">.com</span> is handled by these servers."</div>
+      <div class="k">4. TLD</div><div>"I do not know the host either, but <span class="mono">example.com</span>'s name servers are these."</div>
+      <div class="k">5. Authoritative</div><div>"<span class="mono">www.example.com</span> is 93.184.216.34." The resolver caches it for the record's TTL and hands it back.</div>
+    </div>
+    <p>You ask <b>once</b>; the resolver does the walking. That is the difference between <b>recursion</b> (the
+    resolver chases the answer for you) and <b>iteration</b> (each server tells you who to ask next). The
+    client gets a recursive service; the resolver does iterative queries.</p>
+    <div class="big60 r">
+      <b>The support question this explains:</b> "I changed the DNS record an hour ago and it still goes to the
+      old server." Nothing is broken — a resolver somewhere is still holding the old answer until its TTL runs
+      out. Before you change a record you plan for, lower the TTL; after you change it, you wait. And
+      <span class="mono">ipconfig /flushdns</span> only clears <i>your</i> machine's cache, not the ISP's.
+    </div>
+    <button class="aud" data-audio="audio/c2m4-dns.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 33s</button></section><section id="dns-game" class=""><h2>Drill: put the lookup in order</h2><p class="lede">Five steps, and the cache is the one people forget.</p><div class="game" id="gDnsOrder"><div class="gtitle"><b>Order the resolution</b></div><p class="ghint">Click two tiles to swap them, then check.</p><div id="dnsOrderHost"></div></div></section><section id="records" class=""><h2>A name's anatomy, and the records it can hold</h2><p class="lede">A domain name is read right to left, one delegation per label. The records are the answers each zone is allowed to give.</p>
+    <h3>Reading a name right to left</h3>
+    <p>Take <span class="mono">www.support.example.com.</span> — the trailing dot is the root, and it is usually
+    implied:</p>
+    <table>
+      <tr><th>Label</th><th>Name</th><th>What it is</th></tr>
+      <tr><td><span class="mono">.</span></td><td>Root</td><td>The top of the tree. Thirteen root server identities answer for it.</td></tr>
+      <tr><td><span class="mono">com</span></td><td><b><span class="ac" data-full="Top Level Domain" data-desc="the last label of a name: .com, .org, .ca, or a country code. It is the coarsest level of the DNS hierarchy.">TLD</span></b></td><td>The suffix. Owned by a registry, delegated by the root.</td></tr>
+      <tr><td><span class="mono">example</span></td><td><b><span class="ac" data-full="Domain" data-desc="a named part of the DNS tree under a top-level domain, like example.com or, deeper, support.example.com.">Domain</span></b></td><td>What you register. The unit you buy and renew.</td></tr>
+      <tr><td><span class="mono">support</span></td><td><b>Subdomain</b></td><td>A delegation inside your own zone — you decide whether it is its own zone or just a record.</td></tr>
+      <tr><td><span class="mono">www</span></td><td><b>Hostname</b></td><td>The specific machine or service.</td></tr>
+    </table>
+    <p>The whole thing is a <b>fully qualified domain name</b>: complete, unambiguous, no search suffix can be
+    appended. In a zone file the trailing dot is mandatory for exactly that reason —
+    <span class="mono">www.example.com</span> without it gets the zone's own name appended again.</p>
+    <div class="kv">
+      <div class="k">Domain vs zone</div><div>A domain is the name. A <b>zone</b> is the slice of the namespace one server is authoritative for — the unit of authority. <span class="mono">example.com</span> can be one zone, or split so that <span class="mono">support.example.com</span> is delegated to someone else.</div>
+      <div class="k">Zone file</div><div>The text file holding a zone's records, loaded by the name server. Its first record is always the <b><span class="ac" data-full="Start of Authority" data-desc="the DNS record stating a zone&#x27;s primary server, admin contact and replication timers">SOA</span></b> — the start of authority.</div>
+      <div class="k">SOA</div><div>Names the primary server and the admin contact, and carries the zone's serial number plus its refresh, retry and expiry timers. Every zone has exactly one.</div>
+      <div class="k">Serial number</div><div>Bumped on every change. Secondary servers compare serials to decide whether to copy. A serial that did not go up is why a change never left the primary.</div>
+    </div>
+    <h3>The record types worth knowing</h3>
+    <table>
+      <tr><th>Record</th><th>Maps</th><th>Used for</th></tr>
+      <tr><td><b>A</b></td><td>name → IPv4 address</td><td>The basic record. Almost every name you reach has one.</td></tr>
+      <tr><td><b><span class="ac" data-full="IPv6 Address record" data-desc="the DNS record mapping a name to an IPv6 address; A is the IPv4 one">AAAA</span></b> ("quad A")</td><td>name → IPv6 address</td><td>The same job for 128-bit addresses. A name with only an A record is unreachable from an IPv6-only network.</td></tr>
+      <tr><td><b><span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span></b></td><td>name → another name</td><td>An alias. Point <span class="mono">shop.example.com</span> at a host provider's name and let them change the address. <b>Cannot</b> coexist with other records on the same name.</td></tr>
+      <tr><td><b><span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span></b></td><td>domain → mail server</td><td>Where mail for the domain goes, with a <b>priority</b>: lower wins, and the others are backups. Wrong MX means mail silently queues and then expires.</td></tr>
+      <tr><td><b>NS</b></td><td>zone → its name servers</td><td>Which servers are authoritative. Every delegation in <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> is a pair of NS records.</td></tr>
+      <tr><td><b><span class="ac" data-full="Pointer record" data-desc="reverse DNS: address to name, used by mail servers to check a sender">PTR</span></b></td><td>address → name</td><td>Reverse lookup, in the <span class="mono">in-addr.arpa</span> tree. Mail servers check it; a residential <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> usually fails it.</td></tr>
+      <tr><td><b><span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span></b></td><td>name → free text</td><td>Domain verification tokens, and mail policy: <b><span class="ac" data-full="Sender Policy Framework" data-desc="a DNS text record listing the servers allowed to send mail for a domain">SPF</span></b> (who may send), <b><span class="ac" data-full="DomainKeys Identified Mail" data-desc="a signature on outgoing mail, published in DNS, proving it came from the domain unchanged">DKIM</span></b> (a signature), <b><span class="ac" data-full="Domain-based Message Authentication, Reporting and Conformance" data-desc="the policy tying SPF and DKIM together: what to do when mail claiming your domain fails both">DMARC</span></b> (what to do when both fail, and where to report).</td></tr>
+      <tr><td><b><span class="ac" data-full="Service record" data-desc="a DNS record naming host and port for one service, so a client can find it unaided">SRV</span></b></td><td>service → host and port</td><td>How a client finds a service without being told an address. Priority and weight let it choose sensibly. Active Directory leans on these heavily.</td></tr>
+    </table>
+    <div class="big60">
+      <b>The helpdesk table, in one line each:</b> new website → <b>A</b> (or <b>AAAA</b>). Moved to a provider →
+      <b>CNAME</b>. Mail not arriving → <b>MX</b>, then TXT for SPF/DKIM/DMARC. "Prove you own the domain" →
+      <b>TXT</b>. Reverse lookup fails → <b>PTR</b>, and it belongs to whoever owns the address block, not to you.
+    </div>
+    <button class="aud" data-audio="audio/c2m4-records.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 42s</button></section><section id="records-game" class=""><h2>Drill: match the record to its job</h2><p class="lede">Six at a time. If you can do these without thinking, <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> questions stop being a risk.</p><div class="game" id="gDnsRec"><div class="gtitle"><b>Record match</b></div><p class="ghint">Click a record, then what it does.</p><div id="dnsRecHost"></div></div></section><section id="dhcp" class=""><h2>DHCP: DORA, leases and the 169.254 tell</h2><p class="lede">Dynamic Host Configuration <span class="ac" data-full="Protocol" data-desc="an agreed set of rules for communication. Also a header field: in IP it names what is inside the packet (TCP is 6, UDP is 17, ICMP is 1), and in a…">Protocol</span> hands a machine its whole network identity, then takes it back when the machine leaves.</p>
+    <h3>What DHCP actually hands out</h3>
+    <p>An address is the least of it. A <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> server tells a client:</p>
+    <div class="kv">
+      <div class="k">Address + mask</div><div>Which network it is on and how big that network is.</div>
+      <div class="k">Default gateway</div><div>The router to send off-subnet traffic to. Without it, the machine can talk to its own subnet and nothing else.</div>
+      <div class="k"><span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> servers</div><div>Usually two, so a dead resolver does not take the network down.</div>
+      <div class="k">Extras</div><div><span class="ac" data-full="Domain" data-desc="a named part of the DNS tree under a top-level domain, like example.com or, deeper, support.example.com.">Domain</span> name, <span class="ac" data-full="Network Time Protocol" data-desc="keeps clocks in sync across a network">NTP</span> servers, boot filename for PXE installs, WPAD for proxy discovery. All of it is just options in the same reply.</div>
+    </div>
+    <h3>The four messages</h3>
+    <div class="kv">
+      <div class="k">D — Discover</div><div><span class="ac" data-full="Client" data-desc="the device or process asking for data or a service; the other end is the server.">Client</span> broadcasts on <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> 68 to port 67: "is there a DHCP server?" It has no address, so it cannot unicast, and it does not know who to ask. Broadcast is the only option.</div>
+      <div class="k">O — Offer</div><div>A server replies with an address it is willing to lease, plus the options above.</div>
+      <div class="k">R — Request</div><div>The client broadcasts again, naming the offer it accepts. The broadcast is deliberate: it tells any <i>other</i> server that its offer was declined.</div>
+      <div class="k">A — Acknowledge</div><div>The server confirms the lease and records it. The client may now use the address.</div>
+    </div>
+    <div class="big60 y">
+      <b>Lease, not gift.</b> The address is yours for a fixed term. At <b>50%</b> of the lease the client asks
+      the server to renew; at <b>87.5%</b> it tries any server (rebinding); at expiry the address goes back to the
+      pool. That is why a laptop that has been off for a month comes back on a different address — and why
+      anything that must keep one (a printer, a server, a camera) needs a <b>reservation</b> or a static address.
+    </div>
+    <h3>Allocation types, and the one that bites</h3>
+    <table>
+      <tr><th>Type</th><th>How it works</th><th>Use it for</th></tr>
+      <tr><td><b>Dynamic</b></td><td>Any free address from the pool, first come first served, lease-limited.</td><td>Clients. Laptops, phones, guest Wi-Fi.</td></tr>
+      <tr><td><b>Automatic</b></td><td>Same as dynamic, but the server tries to give the same client the same address again.</td><td>Clients where stability is nice but not required.</td></tr>
+      <tr><td><b>Fixed / reservation</b></td><td>A specific address bound to a specific <b><span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> address</b>, still centrally managed.</td><td>Printers, access points, cameras — the compromise between static and dynamic.</td></tr>
+      <tr><td><b>Static</b></td><td>Configured by hand on the device. DHCP knows nothing about it.</td><td>Servers and network gear. Keep these <i>outside</i> the DHCP pool or you will eventually hand out an address twice.</td></tr>
+    </table>
+    <div class="big60 r">
+      <b>169.254.x.x is the diagnosis, not the fault.</b> When no DHCP server answers, Windows gives itself a
+      link-local address in <span class="mono">169.254.0.0/16</span> — <span class="ac" data-full="Automatic Private IP Addressing" data-desc="the 169.254.x.x address a host gives itself when DHCP never answers">APIPA</span>. It means "I asked and nobody
+      replied". So the ticket is not "no internet", it is one of: the DHCP server is down, the client is on the
+      wrong <span class="ac" data-full="Virtual LAN" data-desc="a logical network carved out of a switch, independent of cabling">VLAN</span>, the cable or switch port is dead, or the DHCP relay is misconfigured. Check that first and you
+      skip half the usual guessing.
+    </div>
+    <p>One more piece of the machinery: DHCP broadcast does not cross a router, so a network with one DHCP server
+    and several subnets needs a <b>DHCP relay</b> (helper address) on each router interface — it forwards the
+    broadcast to the server as a unicast and forwards the answer back. That is why "DHCP works on floor 1 and not
+    floor 2" is usually a relay or scope problem, not a server problem.</p>
+    <button class="aud" data-audio="audio/c2m4-dhcp.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 42s</button></section><section id="dhcp-game" class=""><h2>Drill: DORA, in order</h2><p class="lede">Four messages, and the reason for the second broadcast.</p><div class="game" id="gDora"><div class="gtitle"><b>Order the <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> exchange</b></div><p class="ghint">Click two tiles to swap them, then check.</p><div id="doraHost"></div></div></section><section id="nat" class=""><h2>NAT: one public address, a whole office behind it</h2><p class="lede">Network Address Translation rewrites addresses at a boundary, which is how four billion addresses serve far more than four billion devices.</p>
+    <h3>Why it is everywhere</h3>
+    <p>IPv4 has about 4.3 billion addresses, and it ran out at the top level in 2011. The fix that arrived first
+    was not IPv6, it was <b><span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span></b>: let every network reuse the same <b>private</b> ranges internally, and share
+    one public address at the edge.</p>
+    <div class="kv">
+      <div class="k">Private ranges</div><div><span class="mono">10.0.0.0/8</span>, <span class="mono">172.16.0.0/12</span> (172.16 – 172.31), <span class="mono">192.168.0.0/16</span>. Not routable on the internet; every office in the world may use them.</div>
+      <div class="k">Link-local</div><div><span class="mono">169.254.0.0/16</span> — <span class="ac" data-full="Automatic Private IP Addressing" data-desc="the 169.254.x.x address a host gives itself when DHCP never answers">APIPA</span>, self-assigned when <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> fails.</div>
+      <div class="k">CGNAT</div><div><span class="mono">100.64.0.0/10</span> — the range carriers use to put many subscribers behind one address. You do not own the address, so port forwarding is not yours to do.</div>
+    </div>
+    <h3>How the rewrite works</h3>
+    <p>Watch one connection leave an office. Two machines are both talking to the same web server, so the router
+    cannot tell their replies apart by address alone — it uses the <b>source port</b> as well:</p>
+    <table>
+      <tr><th>Inside the LAN</th><th></th><th>After translation</th></tr>
+      <tr><td><span class="mono">10.0.0.5:51234</span> → 93.184.216.34:443</td><td>→</td><td><span class="mono">203.0.113.9:40001</span> → 93.184.216.34:443</td></tr>
+      <tr><td><span class="mono">10.0.0.6:51234</span> → 93.184.216.34:443</td><td>→</td><td><span class="mono">203.0.113.9:40002</span> → 93.184.216.34:443</td></tr>
+    </table>
+    <p>The router keeps a <b>translation table</b>. When a reply arrives at <span class="mono">203.0.113.9:40001</span>,
+    the table says that was <span class="mono">10.0.0.5:51234</span>, so it rewrites the destination back and hands
+    it over. Many private hosts, one public address — which is why the everyday form is called <b><span class="ac" data-full="Port Address Translation" data-desc="the everyday form of NAT: many private hosts behind one public address, told apart by port">PAT</span></b>, NAT
+    overload, or <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> masquerading. Inside the <span class="ac" data-full="Local Area Network" data-desc="one local network - office, floor, home">LAN</span> nothing is rewritten at all; the translation happens only where
+    traffic crosses the boundary.</p>
+    <div class="kv">
+      <div class="k"><span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> preservation</div><div>When the client's source port is free on the outside, the router keeps it as-is. Protocols that put port numbers inside the payload (<span class="ac" data-full="File Transfer Protocol" data-desc="an old application-layer protocol for moving files, port 21">FTP</span>, SIP) depend on this.</div>
+      <div class="k">Port forwarding</div><div>An inbound rule: "traffic arriving on public port 8080 goes to <span class="mono">10.0.0.20:80</span>". Without one, unsolicited inbound traffic has nowhere to go. That is the whole reason a home server or a game console needs a rule.</div>
+      <div class="k"><span class="ac" data-full="Demilitarized Zone" data-desc="a segment for internet-facing servers, isolated so a compromised one is not a foothold inside">DMZ</span> host</div><div>A blunter version: forward <i>everything</i> to one internal address. Fine for a lab, reckless for anything with data on it.</div>
+    </div>
+    <div class="big60 r">
+      <b>NAT is not a firewall.</b> It hides internal addresses, which feels like security, and it happens to drop
+      unsolicited inbound traffic as a side effect of having no table entry — but it inspects nothing, filters
+      nothing by content and enforces no policy. Port forwarding is a NAT rule, not a security control. A firewall
+      decides; NAT translates.
+    </div>
+    <p><b>What NAT breaks</b> is worth knowing, because it explains odd tickets: anything that embeds an address or
+    port in its payload needs an <b>application-level gateway</b> to rewrite it too — FTP in active mode is the
+    classic casualty. Peer-to-peer, some games and any "connect to me from outside" service need a forwarding rule
+    or a relay. And IPv6 was designed so this problem does not exist; where it is available, NAT is optional.</p>
+    <button class="aud" data-audio="audio/c2m4-nat.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 38s</button></section><section id="nat-game" class=""><h2>Drill: what NAT does, and what it does not</h2><p class="lede">The exam loves this boundary. Sort the statements.</p><div class="game" id="gNat"><div class="gtitle"><b><span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span>: does it, or does it not?</b></div><p class="ghint">Click a statement, then the bucket it belongs in.</p><div id="natSortHost"></div></div></section><section id="vpn" class=""><h2>VPNs and proxies: both change the path, for different reasons</h2><p class="lede">A <span class="ac" data-full="Virtual Private Network" data-desc="an encrypted tunnel across an untrusted network">VPN</span> protects traffic between two points. A proxy intermediates one application's traffic. Neither is a security product by itself.</p>
+    <h3>VPN: a tunnel between two points</h3>
+    <p>A <b>VPN</b> encrypts traffic and delivers it as if the client were on another network. Two shapes matter:</p>
+    <div class="kv">
+      <div class="k"><span class="ac" data-full="Client" data-desc="the device or process asking for data or a service; the other end is the server.">Client</span>-to-site</div><div>A laptop connects to the office. The laptop gets an internal address and can reach internal servers. This is what "connect to the VPN" usually means.</div>
+      <div class="k">Site-to-site</div><div>Two offices joined by a permanent tunnel, handled by the routers at each end rather than by software on a laptop. Also called a point-to-point VPN.</div>
+      <div class="k">What it protects</div><div>The path: a café's Wi-Fi sees ciphertext and an endpoint address, not your traffic. Plus authentication, so the far end knows who connected.</div>
+      <div class="k">What it does not</div><div>The endpoints. A compromised laptop is still compromised. A malicious website is still malicious. And the far side of the tunnel can see everything it carries — that is the trade.</div>
+      <div class="k">Split tunnel</div><div>Only traffic for the office goes through the tunnel; everything else goes straight out. Faster and cheaper, and the usual explanation for "the intranet works but it says I am in the wrong country".</div>
+    </div>
+    <h3>Proxy: an intermediary for one application</h3>
+    <p>A <b>proxy</b> is a server that makes a request on a client's behalf, so the client never talks to the
+    destination directly. It can cache, filter, log and hide — which is why schools, offices and libraries use one.</p>
+    <table>
+      <tr><th></th><th>Forward proxy</th><th>Reverse proxy</th></tr>
+      <tr><td><b>Sits</b></td><td>In front of <i>clients</i>.</td><td>In front of <i>servers</i>.</td></tr>
+      <tr><td><b>Does the job for</b></td><td>The user: caching, filtering, logging, hiding the client's address.</td><td>The website: <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span> termination, load balancing, caching, hiding the backend servers.</td></tr>
+      <tr><td><b>Who configures it</b></td><td>You, or your network team, on the way out.</td><td>The service owner, on the way in. You probably never notice it.</td></tr>
+      <tr><td><b>Helpline signature</b></td><td><span class="mono">407 Proxy Authentication Required</span>, or "it works at home but not in the office".</td><td>Nothing: it is meant to be invisible. A 502 from a site is often its reverse proxy unable to reach the app behind it.</td></tr>
+    </table>
+    <div class="big60">
+      <b>VPN vs proxy in one sentence each:</b> a VPN moves <i>all</i> your traffic through an encrypted tunnel and
+      changes where you appear to be. A proxy moves <i>one application's</i> traffic through an intermediary that
+      can see it, and does not encrypt anything by itself. <span class="ac" data-full="HTTP Secure" data-desc="HTTP wrapped in TLS; port 443">HTTPS</span> is what encrypts; the tunnel and the proxy only
+      decide the path.
+    </div>
+    <button class="aud" data-audio="audio/c2m4-vpn.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 41s</button></section><section id="vpn-game" class=""><h2>Drill: VPN, forward proxy or reverse proxy</h2><p class="lede">Nine statements, three buckets. This is the distinction that gets confused most often.</p><div class="game" id="gVpn"><div class="gtitle"><b>Sort the intermediary</b></div><p class="ghint">Click a statement, then the thing it describes.</p><div id="vpnSortHost"></div></div></section><section id="cloud" class=""><h2>Cloud service models, and the part you still own</h2><p class="lede"><span class="ac" data-full="Infrastructure as a Service" data-desc="you rent the compute, storage and network">IaaS</span>, <span class="ac" data-full="Platform as a Service" data-desc="the vendor runs the runtime; you bring the app">PaaS</span> and <span class="ac" data-full="Software as a Service" data-desc="you use the software; the vendor runs everything">SaaS</span> are three different lines between what the provider runs and what you run — and the line never moves past your data.</p>
+    <table>
+      <tr><th>Model</th><th>You get</th><th>You still manage</th><th>Examples</th></tr>
+      <tr><td><b>IaaS</b><br>Infrastructure as a Service</td><td>Virtual machines, storage, networks.</td><td>The <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span>, the patches, the runtime, the application, the data.</td><td>EC2, Azure Virtual Machines, DigitalOcean droplets.</td></tr>
+      <tr><td><b>PaaS</b><br>Platform as a Service</td><td>A runtime and a deployment slot — push code, get a <span class="ac" data-full="Uniform Resource Locator" data-desc="a full web address: scheme, host, path - and the thing DNS turns the host part into an IP">URL</span>.</td><td>The application and the data. Not the OS or the servers.</td><td>App Engine, Heroku, Azure App Service.</td></tr>
+      <tr><td><b>SaaS</b><br>Software as a Service</td><td>The finished application over a browser.</td><td>The data, the accounts, the access rules, the configuration.</td><td>Microsoft 365, Google Workspace, Salesforce.</td></tr>
+    </table>
+    <div class="big60 y">
+      <b>The shared-responsibility line, stated the way an interview wants it:</b> moving to the cloud moves
+      <i>operations</i>, not <i>accountability</i>. You keep the data, the identities and who is allowed to touch
+      both. "The provider is responsible" is never an answer for a leaked bucket or a shared password.
+    </div>
+    <h3>Time as a service: NTP</h3>
+    <p><b><span class="ac" data-full="Network Time Protocol" data-desc="keeps clocks in sync across a network">NTP</span></b> keeps clocks in sync over <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> 123, in a hierarchy of <b>strata</b> (stratum 0 is the reference
+    clock, each level below it is one step further away). It sounds like housekeeping until you meet its
+    consequences: <b><span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span></b> certificates have validity windows, <b><span class="ac" data-full="Kerberos" data-desc="the ticket-based authentication protocol behind Active Directory; you authenticate once and receive tickets for each service.">Kerberos</span></b> authentication fails past about
+    five minutes of skew, and log timestamps are worthless for an investigation if two servers disagree about
+    what time it is. A domain-joined Windows machine gets its time from the domain controller for exactly this
+    reason, and "I cannot log in" with a wrong clock is a real ticket.</p>
+    </section><section id="cloud-game" class=""><h2>Drill: IaaS, PaaS or SaaS</h2><p class="lede">The model questions are easy marks once the line is clear.</p><div class="game" id="gCloud"><div class="gtitle"><b>Sort the service model</b></div><p class="ghint">Click an example, then the model it belongs to.</p><div id="cloudSortHost"></div></div></section><section id="cheat" class=""><h2>The one-page cheat sheet</h2><p class="lede">Everything in this module that a question could ask, in one table.</p>
+    <table>
+      <tr><th>Service</th><th>Protocol / port</th><th>The fact to remember</th></tr>
+      <tr><td><b><span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span></b></td><td><span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> 53 (<span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> 53 for large answers, zone transfers)</td><td>Resolver walks root → <span class="ac" data-full="Top Level Domain" data-desc="the last label of a name: .com, .org, .ca, or a country code. It is the coarsest level of the DNS hierarchy.">TLD</span> → authoritative, then caches for the <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span>.</td></tr>
+      <tr><td><b><span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span></b></td><td>UDP 67 (server) / 68 (client)</td><td><span class="ac" data-full="Discover, Offer, Request, Acknowledge" data-desc="the four-step DHCP exchange">DORA</span>. Broadcast because the client has no address. Lease renewed at 50%.</td></tr>
+      <tr><td><b><span class="ac" data-full="Network Time Protocol" data-desc="keeps clocks in sync across a network">NTP</span></b></td><td>UDP 123</td><td>Stratum hierarchy. Clock skew breaks <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span> and <span class="ac" data-full="Kerberos" data-desc="the ticket-based authentication protocol behind Active Directory; you authenticate once and receive tickets for each service.">Kerberos</span>.</td></tr>
+      <tr><td><b>Records</b></td><td>—</td><td>A = IPv4, <span class="ac" data-full="IPv6 Address record" data-desc="the DNS record mapping a name to an IPv6 address; A is the IPv4 one">AAAA</span> = IPv6, <span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span> = alias, <span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span> = mail (lower priority wins), NS = authority, <span class="ac" data-full="Pointer record" data-desc="reverse DNS: address to name, used by mail servers to check a sender">PTR</span> = reverse, <span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span> = <span class="ac" data-full="Sender Policy Framework" data-desc="a DNS text record listing the servers allowed to send mail for a domain">SPF</span>/<span class="ac" data-full="DomainKeys Identified Mail" data-desc="a signature on outgoing mail, published in DNS, proving it came from the domain unchanged">DKIM</span>/<span class="ac" data-full="Domain-based Message Authentication, Reporting and Conformance" data-desc="the policy tying SPF and DKIM together: what to do when mail claiming your domain fails both">DMARC</span> and verification, <span class="ac" data-full="Service record" data-desc="a DNS record naming host and port for one service, so a client can find it unaided">SRV</span> = service + port, <span class="ac" data-full="Start of Authority" data-desc="the DNS record stating a zone&#x27;s primary server, admin contact and replication timers">SOA</span> = zone's first record.</td></tr>
+      <tr><td><b><span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span></b></td><td>—</td><td>Rewrites address and port at the boundary, keeps a table, needs a forwarding rule for inbound. Not a firewall.</td></tr>
+      <tr><td><b>Private ranges</b></td><td>—</td><td>10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. Link-local 169.254.0.0/16. CGNAT 100.64.0.0/10.</td></tr>
+      <tr><td><b><span class="ac" data-full="Virtual Private Network" data-desc="an encrypted tunnel across an untrusted network">VPN</span></b></td><td>—</td><td>Encrypted tunnel, client-to-site or site-to-site. Protects the path, not the endpoints.</td></tr>
+      <tr><td><b>Proxy</b></td><td>—</td><td>Forward = for clients (cache, filter, log). Reverse = for servers (TLS termination, load balancing, hiding).</td></tr>
+      <tr><td><b>Cloud</b></td><td>—</td><td><span class="ac" data-full="Infrastructure as a Service" data-desc="you rent the compute, storage and network">IaaS</span> = VMs, <span class="ac" data-full="Platform as a Service" data-desc="the vendor runs the runtime; you bring the app">PaaS</span> = runtime, <span class="ac" data-full="Software as a Service" data-desc="you use the software; the vendor runs everything">SaaS</span> = application. You keep the data in all three.</td></tr>
+    </table>
+    <div class="big60">
+      <b>Say it back test:</b> explain — out loud, in one minute — why a laptop that shows
+      <span class="mono">169.254.14.7</span> cannot reach anything, and what you would check first, second and
+      third. If that comes out clean, this module is yours.
+    </div>
+    </section><section id="blitz" class=""><h2>Drill: the 75-second recall</h2><p class="lede">Records, ports, <span class="ac" data-full="Discover, Offer, Request, Acknowledge" data-desc="the four-step DHCP exchange">DORA</span>. Pure memorisation, so make it a race.</p><div class="game" id="gBlitz"><div class="gtitle"><b>Services blitz</b></div><p class="ghint">Pick the right answer before the clock runs out. Wrong answers cost time, not points.</p><div id="blitzHost"></div></div></section><section id="cards" class=""><h2>Flashcards</h2><p class="lede">The kit's glossary — 69 terms in this module, Coursera and CompTIA A+ together. <a href="../../glossary.html">Every term in the kit, defined</a>, is one page and works offline.</p><div class="game" id="gCards"><div class="gtitle"><b>Flashcards — 69 cards</b></div><p class="ghint">One question per card: <b>64</b> ask you to define a term, <b>5</b> ask what an acronym stands for. Every answer explains why, not just what.</p><div id="cardHost"></div></div></section><section id="quiz" class=""><h2>Quiz</h2><p class="lede">The thing to do last, and again in the morning.</p><div class="game" id="gQuiz"><div class="gtitle"><b>Module 4 quiz — 26 questions</b></div><p class="ghint">Every question shows why the answer is right. Misses go into the review queue.</p><div id="quizHost"></div></div></section>
+</main>
+
+<footer>
+      <p><b>Course 2, Module 4 — Networking Services.</b> Part of the Google IT Support Professional Certificate study
+      kit. Every definition and explanation on this page is our own wording; the course supplies the
+      syllabus and the vocabulary, not the prose.</p>
+      <p>Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera or NPower; course titles and trademarks belong to their owners. Study aid only. Nothing here is submitted for grading.</p>
+    </footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+
+/* ---- c2m4 ---- */
+
+/* ---- DNS resolution order ---- */
+orderGame('#dnsOrderHost','Put one lookup in the order it happens.',[
+  'The client checks its own cache and hosts file, then asks its configured resolver',
+  'The resolver checks its cache - a live entry ends the lookup here',
+  'The resolver asks a root server: which servers handle .com?',
+  'The resolver asks the .com TLD server: which servers are authoritative for example.com?',
+  'The resolver asks that authoritative server, which returns the A record',
+  'The resolver caches the answer for the record TTL and returns it to the client'
+],'dnsorder');
+
+/* ---- record types ---- */
+matchGame('#dnsRecHost',[
+  {t:'A',m:'name to IPv4 address'},
+  {t:'AAAA',m:'name to IPv6 address'},
+  {t:'CNAME',m:'this name is an alias for that name'},
+  {t:'MX',m:'the servers that accept mail, by priority'},
+  {t:'NS',m:'who is authoritative for the zone'},
+  {t:'PTR',m:'address back to name, in in-addr.arpa'},
+  {t:'TXT',m:'SPF, DKIM, DMARC and domain verification'},
+  {t:'SRV',m:'a service, its host and its port'}]);
+
+/* ---- DORA ---- */
+orderGame('#doraHost','Put the DHCP exchange in order.',[
+  'Client broadcasts Discover - it has no address, so it cannot unicast',
+  'A server sends an Offer: an address plus mask, gateway and DNS servers',
+  'Client broadcasts Request, naming the offer it accepts and declining the others',
+  'Server sends Acknowledge and records the lease',
+  'At half the lease the client asks to renew; at expiry the address returns to the pool'
+],'dora');
+
+/* ---- NAT: does it / does it not ---- */
+sortGame('#natSortHost',
+  [{id:'d',name:'What NAT does'},{id:'n',name:'What NAT does not do'}],
+  [{t:'Rewrites source address and source port at the boundary',b:'d'},
+   {t:'Keeps a translation table so replies find their machine',b:'d'},
+   {t:'Lets a whole office share one public IPv4 address',b:'d'},
+   {t:'Hides internal addresses from the outside',b:'d'},
+   {t:'Drops unsolicited inbound traffic that has no table entry',b:'d'},
+   {t:'Inspects packet contents for malware',b:'n'},
+   {t:'Filters traffic by policy like a firewall',b:'n'},
+   {t:'Encrypts anything it forwards',b:'n'},
+   {t:'Stops an insider from reaching the internet entirely',b:'n'},
+   {t:'Makes IPv6 unnecessary',b:'n'}]);
+
+/* ---- VPN / forward proxy / reverse proxy ---- */
+sortGame('#vpnSortHost',
+  [{id:'v',name:'VPN'},{id:'f',name:'Forward proxy'},{id:'r',name:'Reverse proxy'}],
+  [{t:'Encrypted tunnel that carries all of a client\'s traffic',b:'v'},
+   {t:'Gives a laptop an office address so internal servers are reachable',b:'v'},
+   {t:'Two offices joined permanently by a point-to-point tunnel',b:'v'},
+   {t:'Sits in front of clients and caches or filters what they fetch',b:'f'},
+   {t:'Returns 407 Proxy Authentication Required',b:'f'},
+   {t:'Hides the client from the destination',b:'f'},
+   {t:'Sits in front of servers, terminating TLS and balancing load',b:'r'},
+   {t:'Hides the backend servers behind one public endpoint',b:'r'},
+   {t:'A 502 from a website is often this box failing to reach the app',b:'r'}]);
+
+/* ---- cloud models ---- */
+sortGame('#cloudSortHost',
+  [{id:'i',name:'IaaS'},{id:'p',name:'PaaS'},{id:'s',name:'SaaS'}],
+  [{t:'You get virtual machines and still patch the OS',b:'i'},
+   {t:'EC2, Azure Virtual Machines, a droplet',b:'i'},
+   {t:'You push code and get a URL; the runtime is theirs',b:'p'},
+   {t:'App Engine, Heroku, Azure App Service',b:'p'},
+   {t:'The finished application in a browser',b:'s'},
+   {t:'Microsoft 365, Google Workspace, Salesforce',b:'s'},
+   {t:'You still own the data, the accounts and the access rules in all three',b:'s'}]);
+
+/* ---- the 60-second recall blitz ---- */
+blitz('#blitzHost',[
+  {q:'Which DNS record maps a name to an IPv4 address?',o:['A','AAAA','MX','CNAME'],a:'A'},
+  {q:'Which record maps a name to IPv6?',o:['AAAA','A','PTR','NS'],a:'AAAA'},
+  {q:'Which record is an alias to another name?',o:['CNAME','A','MX','TXT'],a:'CNAME'},
+  {q:'Which record names the mail servers?',o:['MX','NS','SRV','PTR'],a:'MX'},
+  {q:'Which record answers an address-to-name lookup?',o:['PTR','A','CNAME','SOA'],a:'PTR'},
+  {q:'Which record carries SPF, DKIM and DMARC?',o:['TXT','MX','SRV','NS'],a:'TXT'},
+  {q:'Which record is always the first in a zone file?',o:['SOA','NS','A','MX'],a:'SOA'},
+  {q:'Which record says who is authoritative for a zone?',o:['NS','SOA','SRV','MX'],a:'NS'},
+  {q:'What port does DNS use?',o:['53','67','123','443'],a:'53'},
+  {q:'What port does DHCP server listen on?',o:['67','68','53','123'],a:'67'},
+  {q:'What port does NTP use?',o:['123','53','67','161'],a:'123'},
+  {q:'What does DHCP stand for?',o:['Dynamic Host Configuration Protocol','Direct Host Control Protocol','Dynamic Hardware Configuration Program','Distributed Host Connection Protocol'],a:'Dynamic Host Configuration Protocol'},
+  {q:'What are the four DHCP messages, in order?',o:['Discover, Offer, Request, Acknowledge','Request, Offer, Discover, Acknowledge','Discover, Request, Offer, Acknowledge','Offer, Discover, Acknowledge, Request'],a:'Discover, Offer, Request, Acknowledge'},
+  {q:'At what fraction of a lease does a DHCP client try to renew?',o:['One half','One quarter','Three quarters','Only at expiry'],a:'One half'},
+  {q:'What does an address of 169.254.x.x usually mean?',o:['No DHCP server answered, so the machine self-assigned','The DNS server is down','The machine is behind NAT','The gateway is missing'],a:'No DHCP server answered, so the machine self-assigned'},
+  {q:'Which range is CGNAT?',o:['100.64.0.0/10','192.168.0.0/16','10.0.0.0/8','169.254.0.0/16'],a:'100.64.0.0/10'}
+],75,'Services and records, from memory. Seventy-five seconds - do it twice.');
+
+flashcards('#cardHost', [{"t": "Anycast", "d": "one address advertised from many locations, with routing delivering the client to whichever is nearest or healthiest. This is how DNS root servers and big content networks scale.", "mod": "m4", "cue": "define", "q": "Anycast"}, {"t": "Automatic allocation", "d": "DHCP handing out addresses from a pool as clients ask, with no lasting promise that a client gets the same address twice.", "mod": "m4", "cue": "define", "q": "Automatic allocation"}, {"t": "Caching and recursive name servers", "d": "servers that do the full lookup on a client's behalf and remember the answers, so the next client asking for the same name gets an instant reply. Most DNS traffic is answered from cache.", "mod": "m4", "cue": "define", "q": "Caching and recursive name servers"}, {"t": "CNAME", "d": "a DNS record type that says \"this name is an alias, look that other name up instead\". Useful for pointing many names at one target.", "mod": "m4", "cue": "expand", "q": "What does CNAME stand for?", "a": "Canonical Name"}, {"t": "Destination MAC address", "d": "the hardware address of the next hop on the current link — which, for traffic leaving the network, is the router, not the final server.", "mod": "m4", "cue": "define", "q": "Destination MAC address", "x": "MAC = Media Access Control"}, {"t": "Destination network", "d": "the network a packet is aimed at; routing tables are indexed by destination network rather than by individual host.", "mod": "m4", "cue": "define", "q": "Destination network"}, {"t": "DHCP", "d": "Hands a client its IP address, subnet mask, default gateway and DNS servers automatically, which is what makes plugging in a laptop and having it work possible.", "mod": "m4", "cue": "expand", "q": "What does DHCP stand for?", "a": "Dynamic Host Configuration Protocol"}, {"t": "DHCP discovery", "d": "the first step of leasing an address: the client broadcasts to find a server, because it has no address and no idea who might answer.", "mod": "m4", "cue": "define", "q": "DHCP discovery", "x": "DHCP = Dynamic Host Configuration Protocol"}, {"t": "DNS zones", "d": "the slices of the DNS namespace that one server or administrator is responsible for; a zone is the unit of authority, not the same thing as a domain.", "mod": "m4", "cue": "define", "q": "DNS zones", "x": "DNS = Domain Name System"}, {"t": "Domain", "d": "a named part of the DNS tree under a top-level domain, like example.com or, deeper, support.example.com.", "mod": "m4", "cue": "define", "q": "Domain"}, {"t": "Domain name", "d": "the human-readable label for something on the internet, read right to left: the TLD, then the domain, then hostnames and subdomains.", "mod": "m4", "cue": "define", "q": "Domain name"}, {"t": "Dynamic allocation", "d": "an address assigned for a limited lease and reclaimable when the client goes away; the normal case for client devices.", "mod": "m4", "cue": "define", "q": "Dynamic allocation"}, {"t": "Fixed allocation", "d": "an address permanently tied to one client's MAC address, so it is effectively static but still centrally managed by DHCP. The compromise between static and dynamic.", "mod": "m4", "cue": "define", "q": "Fixed allocation"}, {"t": "Flat file", "d": "a plain, unindexed list of records — a hosts file is the textbook example. Fine at small scale, hopeless at internet scale.", "mod": "m4", "cue": "define", "q": "Flat file"}, {"t": "Fully qualified domain name", "d": "the complete, unambiguous name including every level up to the root, such as www.example.com. — trailing dot included — so no search suffix can be appended.", "mod": "m4", "cue": "define", "q": "Fully qualified domain name"}, {"t": "IP masquerading", "d": "the everyday form of NAT, where many private hosts share one public address and the router remembers which conversation belongs to whom. Also called PAT or NAT overload.", "mod": "m4", "cue": "define", "q": "IP masquerading", "x": "IP = Internet Protocol"}, {"t": "Name resolution", "d": "translating a name into an address, by hosts file, cache, or a DNS query.", "mod": "m4", "cue": "define", "q": "Name resolution"}, {"t": "NAT", "d": "rewriting addresses as packets cross a boundary, letting a private network hide behind one public address. It also became, unintentionally, a crude firewall.", "mod": "m4", "cue": "expand", "q": "What does NAT stand for?", "a": "Network Address Translation"}, {"t": "Pointer resource record", "d": "a DNS record used for reverse lookups: it maps an address back to a name, and lives in the in-addr.arpa tree.", "mod": "m4", "cue": "define", "q": "Pointer resource record"}, {"t": "Port forwarding", "d": "a NAT rule that sends traffic arriving on a specific public port to a specific internal host and port, so something inside can be reachable from outside.", "mod": "m4", "cue": "define", "q": "Port forwarding"}, {"t": "Port preservation", "d": "a NAT technique that keeps the client's original source port when it is free, so protocols that embed port numbers in their payload still work.", "mod": "m4", "cue": "define", "q": "Port preservation"}, {"t": "Proxy service", "d": "a server that fetches things on a client's behalf, so the client never talks to the destination directly. Used for caching, filtering, logging and hiding the client.", "mod": "m4", "cue": "define", "q": "Proxy service"}, {"t": "Public DNS servers", "d": "resolvers open to anyone, such as 8.8.8.8 or 1.1.1.1, used when the local network's resolver is missing, slow or untrustworthy.", "mod": "m4", "cue": "define", "q": "Public DNS servers", "x": "DNS = Domain Name System"}, {"t": "Recursive name servers", "d": "resolvers that chase the answer all the way to an authoritative server and hand back a final result, doing the work the client asked for.", "mod": "m4", "cue": "define", "q": "Recursive name servers"}, {"t": "Registrar", "d": "the company through which a domain is bought and renewed; it holds the registration and points the world at your name servers.", "mod": "m4", "cue": "define", "q": "Registrar"}, {"t": "Reverse lookup zone files", "d": "zone files for the in-addr.arpa tree that answer \"which name belongs to this address\", the opposite of the usual query.", "mod": "m4", "cue": "define", "q": "Reverse lookup zone files"}, {"t": "Reverse proxy", "d": "a proxy in front of servers rather than clients: it receives public requests and forwards them inward, adding TLS termination, load balancing, caching and a hiding layer.", "mod": "m4", "cue": "define", "q": "Reverse proxy"}, {"t": "Round robin", "d": "answering one name with a rotating list of addresses so requests spread across several servers. Crude load balancing, and no health awareness unless something checks.", "mod": "m4", "cue": "define", "q": "Round robin"}, {"t": "Server or Service", "d": "the two halves of an SRV record: which service is wanted and which host provides it, with a port and priority, used by protocols that need more than a bare hostname.", "mod": "m4", "cue": "define", "q": "Server or Service"}, {"t": "Start of authority", "d": "the first record of a zone file, declaring which server is authoritative for it and stating the zone's serial number and timing defaults.", "mod": "m4", "cue": "define", "q": "Start of authority"}, {"t": "Top Level Domain (TLD)", "d": "the last label of a name: .com, .org, .ca, or a country code. It is the coarsest level of the DNS hierarchy.", "mod": "m4", "cue": "define", "q": "TLD", "x": "TLD = Top Level Domain"}, {"t": "Two-factor authentication", "d": "proving identity with two different kinds of evidence — something you know plus something you have. It defuses stolen passwords, which is why every serious service offers it.", "mod": "m4", "cue": "define", "q": "Two-factor authentication"}, {"t": "Types of DNS servers", "d": "the roles in a lookup: a caching resolver, a recursive resolver, a root server, a TLD server, and an authoritative server for the zone.", "mod": "m4", "cue": "define", "q": "Types of DNS servers", "x": "DNS = Domain Name System"}, {"t": "VPN", "d": "an encrypted tunnel that makes a remote device behave as if it were on another network, protecting traffic from the network in between.", "mod": "m4", "cue": "expand", "q": "What does VPN stand for?", "a": "Virtual Private Network"}, {"t": "Zone Files", "d": "the text files holding a zone's records: names, types, values and timings, which the name server loads and serves authoritatively.", "mod": "m4", "cue": "define", "q": "Zone Files"}, {"t": "A record", "d": "the basic DNS record: a name mapped to an IPv4 address.", "mod": "m4", "cue": "define", "q": "A record"}, {"t": "MX record", "d": "the mail exchange record: which server accepts email for this domain, with a priority when there are several.", "mod": "m4", "cue": "define", "q": "MX record", "x": "MX = Mail Exchanger"}, {"t": "NS record", "d": "the name server record: which servers are authoritative for this zone. Every delegation in DNS is really a pair of NS records.", "mod": "m4", "cue": "define", "q": "NS record"}, {"t": "Quad A (AAAA) record", "d": "the IPv6 equivalent of an A record: a name mapped to a 128-bit address.", "mod": "m4", "cue": "define", "q": "Quad A (AAAA) record", "x": "AAAA = IPv6 Address record"}, {"t": "SRV record", "d": "a service record naming the host and port for a particular service, plus priority and weight so clients can choose sensibly.", "mod": "m4", "cue": "define", "q": "SRV record", "x": "SRV = Service record"}, {"t": "TXT record", "d": "a free-text record with no addressing purpose. It carries domain verification tokens, email anti-spoofing policy (SPF, DKIM, DMARC) and other metadata.", "mod": "m4", "cue": "define", "q": "TXT record", "x": "TXT = Text record"}, {"t": "Mail Exchanger (MX)", "d": "the DNS record naming the servers that accept mail for a domain, with a priority so a backup can be listed second. Get it wrong and mail silently queues and then expires.", "mod": "m4", "cue": "define", "q": "MX", "x": "MX = Mail Exchanger"}, {"t": "Sender Policy Framework (SPF)", "d": "a DNS TXT record listing the servers allowed to send mail for a domain. It is checked against the envelope sender, which is why forwarding breaks it.", "mod": "m4", "cue": "define", "q": "SPF", "x": "SPF = Sender Policy Framework"}, {"t": "DomainKeys Identified Mail (DKIM)", "d": "a cryptographic signature added to outgoing mail and published as a DNS record. It proves the message really came from the domain and was not altered in transit.", "mod": "m4", "cue": "define", "q": "DKIM", "x": "DKIM = DomainKeys Identified Mail"}, {"t": "Domain-based Message Authentication, Reporting and Conformance (DMARC)", "d": "the policy that ties SPF and DKIM together: what to do when mail claiming your domain fails both, and where to send the reports. Without DMARC, SPF and DKIM are advice; with it, they are enforcement.", "mod": "m4", "cue": "define", "q": "DMARC", "x": "DMARC = Domain-based Message Authentication, Reporting and Conformance"}, {"t": "Start of Authority (SOA)", "d": "the DNS record that states a zone's primary server, its admin contact and the timers governing replication. Every zone has exactly one.", "mod": "m4", "cue": "define", "q": "SOA", "x": "SOA = Start of Authority"}, {"t": "Service record (SRV)", "d": "a DNS record naming the host and port for one service, such as Kerberos or SIP. It is how a client finds a service without being told an address.", "mod": "m4", "cue": "define", "q": "SRV", "x": "SRV = Service record"}, {"t": "Pointer record (PTR)", "d": "the reverse DNS record: address to name. Mail servers use it to check that a sending address has a matching name, which is why a residential IP struggles to send mail.", "mod": "m4", "cue": "define", "q": "PTR", "x": "PTR = Pointer record"}, {"t": "Text record (TXT)", "d": "a DNS record holding arbitrary text, used for SPF, DKIM, domain verification and anything else a vendor wants published. Several TXT records on one name are legal and commonly needed.", "mod": "m4", "cue": "define", "q": "TXT", "x": "TXT = Text record"}, {"t": "IPv6 Address record (AAAA)", "d": "the DNS record mapping a name to an IPv6 address, as the A record does for IPv4. A name with only an A record is unreachable from an IPv6-only network.", "mod": "m4", "cue": "define", "q": "AAAA", "x": "AAAA = IPv6 Address record"}, {"t": "Discover, Offer, Request, Acknowledge (DORA)", "d": "Discover, Offer, Request, Acknowledge - the broadcast conversation that ends with a host holding an address, a mask, a gateway and a DNS server. The acronym is DORA, and the order is how you read a DHCP log.", "mod": "m4", "cue": "define", "q": "DORA", "x": "DORA = Discover, Offer, Request, Acknowledge"}, {"t": "Server Message Block", "d": "the Windows file-and-printer sharing protocol, port 445; also the basis of Samba on Linux.", "mod": "m4", "cue": "define", "q": "Server Message Block", "src": "aplus"}, {"t": "Lightweight Directory Access Protocol", "d": "the protocol for querying a directory of users, groups and computers; port 389, or 636 over TLS.", "mod": "m4", "cue": "define", "q": "Lightweight Directory Access Protocol", "src": "aplus"}, {"t": "Simple Network Management Protocol", "d": "how network devices are monitored and polled; port 161 for queries, 162 for traps. Version 3 adds the encryption earlier versions lacked.", "mod": "m4", "cue": "define", "q": "Simple Network Management Protocol", "src": "aplus"}, {"t": "DHCP scope", "d": "the pool of addresses a server is allowed to hand out on one subnet, plus the options it hands out with them.", "mod": "m4", "cue": "define", "q": "DHCP scope", "x": "DHCP = Dynamic Host Configuration Protocol", "src": "aplus"}, {"t": "DHCP reservation", "d": "a rule tying one address to one MAC, so a device always gets the same address without anyone configuring it by hand.", "mod": "m4", "cue": "define", "q": "DHCP reservation", "x": "DHCP = Dynamic Host Configuration Protocol", "src": "aplus"}, {"t": "DHCP lease", "d": "the time an address is lent to a client; at half the lease the client tries to renew, and if it cannot, the address eventually expires.", "mod": "m4", "cue": "define", "q": "DHCP lease", "x": "DHCP = Dynamic Host Configuration Protocol", "src": "aplus"}, {"t": "Print server", "d": "the machine or appliance that queues jobs for a printer and shares it to the network.", "mod": "m4", "cue": "define", "q": "Print server", "src": "aplus"}, {"t": "Internet of Things", "d": "everyday devices with a network connection and often no security updates; put them on their own VLAN.", "mod": "m4", "cue": "define", "q": "Internet of Things", "src": "aplus"}, {"t": "Multicast DNS", "d": "name resolution with no server, where devices answer for themselves on the local link; how printers and speakers appear automatically.", "mod": "m4", "cue": "define", "q": "Multicast DNS", "x": "DNS = Domain Name System", "src": "aplus"}, {"t": "RADIUS", "d": "the central server that authenticates users for network access — Wi-Fi, VPN, switch logins — so credentials live in one place.", "mod": "m4", "cue": "expand", "q": "What does RADIUS stand for?", "a": "Remote Authentication Dial-In User Service", "src": "aplus"}, {"t": "Kerberos", "d": "the ticket-based authentication protocol behind Active Directory; you authenticate once and receive tickets for each service.", "mod": "m4", "cue": "define", "q": "Kerberos", "src": "aplus"}, {"t": "Single sign-on", "d": "authenticating once and being trusted by many systems, which is convenient and concentrates risk in that one credential.", "mod": "m4", "cue": "define", "q": "Single sign-on", "src": "aplus"}, {"t": "Access control list", "d": "an ordered list of permit and deny rules attached to a resource or interface; order matters, and an implicit deny is usually last.", "mod": "m4", "cue": "define", "q": "Access control list", "src": "aplus"}, {"t": "Least privilege", "d": "granting the minimum access a job needs and no more, so a compromised account cannot do much.", "mod": "m4", "cue": "define", "q": "Least privilege", "src": "aplus"}, {"t": "Printer Command Language (PCL)", "d": "HP's page-description language, the default for office printing. A driver speaks PCL or PostScript, which is why the same document can print differently on two machines.", "mod": "m4", "cue": "define", "q": "PCL", "x": "PCL = Printer Command Language", "src": "aplus"}, {"t": "Page Description Language (PDL)", "d": "the general term for what a driver sends a printer: PCL, PostScript, PDF-direct. The printer's interpreter turns it into dots, so an unsupported PDL means a blank page or garbage.", "mod": "m4", "cue": "define", "q": "PDL", "x": "PDL = Page Description Language", "src": "aplus"}, {"t": "Automatic Document Feeder (ADF)", "d": "the tray that pulls pages through a scanner one at a time, for multi-page scans and copies. Most 'the scanner is broken' tickets are a jammed ADF or a page that was never picked up.", "mod": "m4", "cue": "define", "q": "ADF", "x": "ADF = Automatic Document Feeder", "src": "aplus"}, {"t": "Print spooler", "d": "the Windows service that queues print jobs and hands them to the printer. When it hangs, every printer disappears at once - restart the service before reinstalling anything.", "mod": "m4", "cue": "define", "q": "Print spooler", "src": "aplus"}]);
+
+quiz('#quizHost', [{"k": "c2m4q1", "lo": "LO1", "q": "Why does the DHCP client broadcast its first message?", "o": ["broadcast is faster than unicast", "it has no address yet and does not know which server to ask", "broadcast is encrypted", "the router requires it"], "a": 1, "why": "Discover goes out before the client owns an address, so unicast is impossible. That is also why DHCP must be UDP: only UDP can broadcast."}, {"k": "c2m4q2", "lo": "LO1", "q": "Put the DHCP exchange in order.", "o": ["Offer, Discover, Request, Acknowledge", "Discover, Offer, Request, Acknowledge", "Discover, Request, Offer, Acknowledge", "Request, Offer, Discover, Acknowledge"], "a": 1, "why": "DORA. The second broadcast (Request) is deliberate: it tells the servers whose offer you declined that they can release it."}, {"k": "c2m4q3", "lo": "LO1", "q": "A machine reports 169.254.14.7. What is the most likely cause?", "o": ["its DNS server is unreachable", "no DHCP server answered, so the OS self-assigned a link-local address", "it is behind CGNAT", "its default gateway is wrong"], "a": 1, "why": "APIPA. It means the ask went unanswered - DHCP server down, wrong VLAN, dead switch port, or a missing relay. It is a local addressing failure, not an internet one."}, {"k": "c2m4q4", "lo": "LO1", "q": "A printer must always have the same address, but you want central management. What do you use?", "o": ["a DHCP reservation bound to its MAC address", "a DHCP pool address", "a shorter lease", "a CNAME"], "a": 0, "why": "A reservation is the compromise: the server still hands it out, but always the same address to that MAC. A static address would also work but takes it out of central management."}, {"k": "c2m4q5", "lo": "LO1", "q": "One DHCP server serves three subnets, and clients on the third get no address. What is the usual missing piece?", "o": ["more DNS servers", "a DHCP relay on that subnet's router interface, forwarding broadcasts to the server", "a larger scope", "a second default gateway"], "a": 1, "why": "DHCP broadcast does not cross a router. Without a relay, the Discover never reaches the server, so the subnet self-assigns 169.254 addresses."}, {"k": "c2m4q6", "lo": "LO2", "q": "What is the difference between a recursive and an iterative query?", "o": ["recursive uses TCP, iterative uses UDP", "recursive returns the final answer; iterative returns a referral to the next server", "they are the same thing", "iterative is encrypted"], "a": 1, "why": "You ask your resolver once and it does the walking. That is recursion from your side; the resolver's own queries are iterative."}, {"k": "c2m4q7", "lo": "LO2", "q": "Which server in the chain holds the actual records for example.com?", "o": ["the root server", "the .com TLD server", "example.com's authoritative name server", "your ISP's cache"], "a": 2, "why": "Root and TLD only delegate - they say who to ask next. Only the authoritative server for the zone gives the final answer."}, {"k": "c2m4q8", "lo": "LO2", "q": "You moved a site to a new server and the old address still resolves for some users. Why?", "o": ["the A record was wrong", "their resolvers are still holding the old answer until its TTL expires", "DNS does not support changes", "the NS record is missing"], "a": 1, "why": "That is caching doing its job. Flushing the local cache only helps your machine; the ISP's resolver waits out the TTL."}, {"k": "c2m4q9", "lo": "LO2", "q": "Which record would you create to point shop.example.com at a provider's hostname instead of an address?", "o": ["A", "CNAME", "MX", "PTR"], "a": 1, "why": "A CNAME delegates the name to another name, so the provider can change the address without you touching your zone. It cannot coexist with other records on the same name."}, {"k": "c2m4q10", "lo": "LO2", "q": "Mail for a domain is not arriving, but the website works. Which record do you check first?", "o": ["A", "MX", "PTR", "NS"], "a": 1, "why": "MX names the mail servers and their priority. Send it to the wrong host, or leave a dead primary with a lower priority number, and mail queues and then expires."}, {"k": "c2m4q11", "lo": "LO2", "q": "What is the difference between a domain and a zone?", "o": ["nothing, they are synonyms", "a domain is the name; a zone is the slice of the namespace one server is authoritative for", "a zone is always smaller than a subdomain", "a domain is IPv4, a zone is IPv6"], "a": 1, "why": "The zone is the unit of authority. One domain can be one zone, or be split into several with subdomains delegated elsewhere."}, {"k": "c2m4q12", "lo": "LO2", "q": "A vendor asks you to add a TXT record. What is it usually for?", "o": ["domain verification, or mail policy such as SPF, DKIM and DMARC", "mapping a name to an address", "reverse lookups", "declaring the zone's primary server"], "a": 0, "why": "TXT holds arbitrary text, and in practice it means 'prove you own this domain' or 'here is who may send mail for it'."}, {"k": "c2m4q13", "lo": "LO2", "q": "Which is the correct way to write a fully qualified name in a zone file?", "o": ["www.example.com", "www.example.com. (trailing dot)", "www", "example.com/www"], "a": 1, "why": "The trailing dot means 'this is complete'. Without it the zone's own name is appended again, which is how you get www.example.com.example.com."}, {"k": "c2m4q14", "lo": "LO2", "q": "Why do root servers use anycast?", "o": ["to encrypt queries", "so one address is served from many locations and every client reaches a nearby one", "to hide the root servers' identities", "because IPv6 requires it"], "a": 1, "why": "Thirteen named identities, but over a thousand physical instances. Anycast turns a global hierarchy into a short trip."}, {"k": "c2m4q15", "lo": "LO3", "q": "What does NAT rewrite as a packet leaves the private network?", "o": ["the destination address only", "the source address, and usually the source port, with a table entry to reverse it", "the MAC address", "the TTL only"], "a": 1, "why": "Address plus port is what lets many internal machines share one public address: the port distinguishes their conversations."}, {"k": "c2m4q16", "lo": "LO3", "q": "Why is port forwarding needed for an internal web server?", "o": ["to speed it up", "so unsolicited inbound traffic on a public port has a table entry pointing at that host", "to encrypt the traffic", "to give it a DNS name"], "a": 1, "why": "NAT only forwards replies it has a table entry for. An inbound request nobody inside asked for has nowhere to go without a rule."}, {"k": "c2m4q17", "lo": "LO3", "q": "Which statement about NAT is true?", "o": ["NAT inspects payloads for malware", "NAT is a firewall because it blocks inbound traffic", "NAT translates addresses and hides internal hosts, but it inspects and filters nothing", "NAT encrypts traffic between networks"], "a": 2, "why": "The trap in this module. Dropping unsolicited inbound traffic is a side effect of having no mapping, not a policy decision."}, {"k": "c2m4q18", "lo": "LO3", "q": "Which of these is a private IPv4 range?", "o": ["100.64.0.0/10", "172.16.0.0/12", "169.254.0.0/16", "8.8.8.0/24"], "a": 1, "why": "10.0.0.0/8, 172.16.0.0/12 and 192.168.0.0/16 are the RFC 1918 private ranges. 169.254 is link-local, and 100.64/10 is the carrier-grade NAT range."}, {"k": "c2m4q19", "lo": "LO3", "q": "A customer's home router shows a public address of 100.71.x.x. Why can they not forward a port?", "o": ["the router is broken", "they are behind carrier-grade NAT: that address is the carrier's, and the public address is shared", "the port is blocked by DNS", "they need a static IP"], "a": 1, "why": "CGNAT means there is another translation layer you do not control. The fix is a different service (a relay, a VPN, or a business line), not a router setting."}, {"k": "c2m4q20", "lo": "LO4", "q": "What does a VPN protect?", "o": ["the endpoints on both sides", "the path between the client and the far network", "the website you visit from its own bugs", "nothing, it is only for privacy"], "a": 1, "why": "It encrypts the tunnel. A compromised laptop is still compromised, and the far side of the tunnel can still see what it carries."}, {"k": "c2m4q21", "lo": "LO4", "q": "A user can reach internal servers through the VPN but reports the site thinks they are abroad. Most likely cause?", "o": ["DNS is broken", "the VPN is split-tunnelled, so only office traffic goes through the tunnel", "the proxy is caching", "NAT is disabled"], "a": 1, "why": "Everything not destined for the office goes straight out of the local connection. That is the trade split tunnelling makes."}, {"k": "c2m4q22", "lo": "LO4", "q": "Which is a reverse proxy's job?", "o": ["caching and filtering what office clients fetch", "sitting in front of servers to terminate TLS, balance load and hide the backends", "encrypting a whole machine's traffic", "handing out IP addresses"], "a": 1, "why": "Forward proxy serves clients; reverse proxy serves servers. Visitors never notice a reverse proxy - that is the point."}, {"k": "c2m4q23", "lo": "LO4", "q": "A browser shows 407 Proxy Authentication Required. What is happening?", "o": ["the website is down", "the forward proxy requires credentials before it will relay the request", "the DNS record expired", "the server's certificate is invalid"], "a": 1, "why": "407 is the proxy's own authentication challenge - distinct from 401, which comes from the destination server."}, {"k": "c2m4q24", "lo": "LO5", "q": "Which model gives you a runtime and a deployment slot, with the OS managed for you?", "o": ["IaaS", "PaaS", "SaaS", "on-premises"], "a": 1, "why": "PaaS. You own the application and its data; the platform owns the OS, the runtime and the scaling."}, {"k": "c2m4q25", "lo": "LO5", "q": "In SaaS, what does the customer still own?", "o": ["the hypervisor", "the operating system", "the data, the identities and the access rules", "the physical network"], "a": 2, "why": "Shared responsibility moves operations, never accountability. A leaked shared password is still your incident."}, {"k": "c2m4q26", "lo": "LO5", "q": "Why does clock drift break logins and TLS?", "o": ["it changes the IP address", "certificates are only valid inside a time window, and Kerberos rejects large skew", "it slows the network down", "it changes the DNS TTL"], "a": 1, "why": "Time is infrastructure. NTP over UDP 123 keeps the hierarchy in step, which is why domain machines take their time from the domain controller."}]);
+
+</script>
+</body>
+</html>
