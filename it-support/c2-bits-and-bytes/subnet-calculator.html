@@ -633,10 +633,22 @@ ol.methodsteps li{margin:9px 0;max-width:88ch}
 .sgrow2 .op{color:var(--text-mute)}
 .sgrow2 input{background:var(--bg);color:var(--text);border:1px solid var(--rule-2);border-radius:7px;
   font-family:var(--mono);font-size:13px;padding:5px 8px;min-width:96px}
-.sgrow2 input.wide{min-width:352px}
 .sgrow2 input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
 .sgrow2 output{color:var(--accent-bright);font-size:15px;min-width:40px;font-family:var(--mono)}
 .sgrow2 .lbl{color:var(--text-mute);font-size:11px;min-width:62px}
+/* One cell per octet, dotted like the notation (Kyle, 2026-11-10). Fixed width with the same padding and
+   border box on a span and an input, so the address row, the mask row and the reader's own row line up
+   in columns without a table. A wide field that has to be typed as a.b.c.d is the thing this replaces. */
+.sgbytes{display:flex;align-items:center;font-family:var(--mono);font-size:13px;flex-wrap:nowrap}
+.sgbytes .c{box-sizing:border-box;width:calc(8ch + 14px);padding:5px 6px;border:1px solid transparent;
+  text-align:left;white-space:nowrap;overflow:hidden}
+.sgbytes input.c{background:var(--bg);border:1px solid var(--rule-2);border-radius:6px;color:var(--text);
+  font-family:var(--mono);font-size:13px;text-align:center}
+.sgbytes input.c.ip{width:calc(3ch + 14px)}
+.sgbytes input.c:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.sgbytes .d{width:8px;text-align:center;color:var(--text-mute);font-size:11px}
+.sgbytes b{color:var(--amber-400);font-weight:700}
+.sgbytes i{color:var(--text-mute);font-style:normal;border-bottom:1px dashed var(--text-mute)}
 .sgbits{font-family:var(--mono);font-size:13px;letter-spacing:.02em;white-space:nowrap}
 .sgbits b{color:var(--amber-400);font-weight:700}
 .sgbits i{color:var(--text-mute);font-style:normal;border-bottom:1px dashed var(--text-mute)}
@@ -644,7 +656,27 @@ ol.methodsteps li{margin:9px 0;max-width:88ch}
 .sgbmsg:empty{display:none}
 .sgbmsg.good{color:var(--good-bright)}
 .sgbmsg.bad{color:var(--bad-bright)}
-@media (max-width:640px){.sgbits{font-size:10.5px}.sgrow2 input.wide{min-width:180px}}
+/* Buttons you can see (Kyle, 2026-11-10: "these buttons need borders to make it clear that they are
+   buttons"). The house .ghost is a text link in disguise; on this page a control announces itself. */
+.sgwrap .ghost,.scbtns .ghost{border:1px solid var(--rule-2);background:var(--surface-3);
+  color:var(--text-mute);border-radius:7px;padding:6px 11px}
+.sgwrap .ghost:hover:not(:disabled),.scbtns .ghost:hover:not(:disabled){border-color:var(--amber-400);
+  color:var(--accent-bright);background:var(--tint-accent)}
+.sgwrap .ghost:disabled{opacity:.5}
+.sgbench .sgcalc{border:1px solid var(--rule-2);background:var(--surface-3);color:var(--accent-bright);
+  border-radius:7px;padding:6px 12px;font-family:var(--mono);font-size:12px;cursor:pointer}
+.sgbench .sgcalc:hover{border-color:var(--amber-400);background:var(--tint-accent)}
+/* checkpoint 3: pick an octet instead of typing a number */
+.sgopick{border:1px solid var(--rule-2);background:var(--surface-3);color:var(--text-mute);border-radius:7px;
+  padding:7px 13px;font-family:var(--mono);font-size:12px;cursor:pointer;text-align:center}
+.sgopick small{display:block;font-size:9.5px;letter-spacing:.06em;opacity:.75}
+.sgopick:hover:not(:disabled){border-color:var(--amber-400);color:var(--accent-bright)}
+.sgopick.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill);font-weight:600}
+.sgopick.on small{opacity:.85}
+.sgopick:disabled{cursor:default;opacity:.75}
+@media (max-width:640px){.sgbits{font-size:10.5px}.sgbytes{font-size:11px}
+  .sgbytes .c{width:calc(8ch + 10px);padding:4px 3px}
+  .sgbytes input.c.ip{width:calc(3ch + 10px)}}
 /* ---- the guided walkthrough (2026-11-10) ---- */
 .scmode{display:inline-flex;margin:14px 0 4px;border:1px solid var(--rule-2);border-radius:10px;overflow:hidden;max-width:100%}
 .scmode button{border:0;border-radius:0;background:transparent;color:var(--text-mute);font-size:13px;
@@ -678,11 +710,16 @@ ol.methodsteps li{margin:9px 0;max-width:88ch}
 /* the table that fills itself in: pending rows stay visible, dimmed, with the checkpoint that earns them */
 table.sgfacts td.v{font-family:var(--mono);font-size:13.5px;color:var(--accent-bright)}
 table.sgfacts td.needs{font-family:var(--mono);font-size:10.5px;color:var(--text-mute);white-space:nowrap}
+/* (2026-11-10) The Step column used to turn into a tick once a fact was earned, which is exactly when a
+   reader loses the answer to "which step gave me this?". The tick moved to its own column. */
+table.sgfacts td.ob{font-family:var(--mono);font-size:13px;text-align:center;color:var(--good-bright)}
+table.sgfacts tr.shown td.ob{color:var(--accent)}
+table.sgfacts tr.pend td.ob{color:var(--text-mute)}
 table.sgfacts tr.pend td{opacity:.55}
 table.sgfacts tr.pend td.v{color:var(--text-mute)}
 table.sgfacts tr.grp th{background:var(--surface-3);font-family:var(--mono);font-size:10.5px;
   letter-spacing:.06em;color:var(--text-mute);text-align:left;padding:7px 11px;font-weight:600}
-table.sgfacts tr.shown td.v::after{content:' »1';color:var(--text-mute)}
+table.sgfacts tr.shown td.v::after{content:''}
 table.sgfacts td.what[data-tip]{cursor:help}
 table.sgfacts td.what[data-tip]::after{content:' ?';color:var(--accent);opacity:.7;font-size:10.5px}
 table.sgfacts td.what[data-tip]:focus{outline:1px solid var(--amber-400);outline-offset:2px;border-radius:4px}
@@ -1975,6 +2012,24 @@ function scInit(){
     var b=e.target&&e.target.closest?e.target.closest('.sgcalc'):null;
     if(b) sgCalc(b);
   });
+  /* One box per octet: jump to the next octet when this one is full, so a reader typing a mask never
+     has to reach for Tab (Kyle, 2026-11-10). Backspace in an empty box goes back one. */
+  document.addEventListener('input',function(e){
+    var t=e.target;
+    if(!t||!t.className||(' '+t.className).indexOf(' sgoct')<0) return;
+    var n=+(t.getAttribute('maxlength')||0);
+    if(n&&t.value.length>=n){
+      var all=t.parentNode.querySelectorAll('.sgoct'), i;
+      for(i=0;i<all.length-1;i++) if(all[i]===t){ all[i+1].focus(); all[i+1].select(); break }
+    }
+  });
+  document.addEventListener('keydown',function(e){
+    var t=e.target;
+    if(e.key!=='Backspace'||!t||!t.className||(' '+t.className).indexOf(' sgoct')<0) return;
+    if(t.value) return;
+    var all=t.parentNode.querySelectorAll('.sgoct'), i;
+    for(i=1;i<all.length;i++) if(all[i]===t){ all[i-1].focus(); break }
+  });
   scSetMode(SG.mode);          /* before the first render, so the right half of the page is shown */
   scRender();
   document.getElementById('scStamp').textContent=new Date().getFullYear();
@@ -1989,7 +2044,7 @@ document.addEventListener('DOMContentLoaded',scInit);
    would have earned. Nothing here is ever allowed to reveal an answer except the `Show me` button,
    which marks the row as shown rather than solved. */
 
-var SG={mode:'guide',key:'',step:0,solved:{},shown:{},hints:{},done:false,r:null,last:null};
+var SG={mode:'guide',key:'',step:0,solved:{},shown:{},hints:{},done:false,r:null,last:null,pick:0};
 try{ SG.mode=(localStorage.getItem('sc:mode')==='show')?'show':'guide' }catch(e){}
 
 function scPick(ip,p){
@@ -2029,11 +2084,32 @@ function scPrevNext(r){
   return out;
 }
 /* ---- the per-checkpoint working boxes: one input each, one button, no grading ---- */
-function sgBitsMarked(bits,prefix){
-  var h='',i;
-  for(i=0;i<32;i++){
-    if(i%8===0&&i) h+=' ';
-    h+=(i>=prefix)?('<i>'+bits.charAt(i)+'</i>'):('<b>'+bits.charAt(i)+'</b>');
+/* One span per octet, eight characters wide, dots between — so every row of the working lines up in
+   columns and nobody has to hold a decimal point in their head while typing (Kyle, 2026-11-10). */
+function sgBitsRow(bits,prefix){
+  var h='', i, j, k;
+  for(i=0;i<4;i++){
+    if(i) h+='<span class="d">.</span>';
+    h+='<span class="c">';
+    for(j=0;j<8;j++){
+      k=i*8+j;
+      h+=(k>=prefix)?('<i>'+bits.charAt(k)+'</i>'):('<b>'+bits.charAt(k)+'</b>');
+    }
+    h+='</span>';
+  }
+  return h;
+}
+/* four boxes, one per octet: kind 'bit' takes 8 bits each, kind 'ip' takes 0-255 each. The dots are
+   furniture, so the reader never types one. */
+function sgOctIn(vals,kind){
+  var parts=vals?(kind==='bit'?[vals.substr(0,8),vals.substr(8,8),vals.substr(16,8),vals.substr(24,8)]
+                                  :String(vals).split('.')):[];
+  var ph=(kind==='bit')?'8 bits':'octet', h='', i;
+  for(i=0;i<4;i++){
+    if(i) h+='<span class="d">.</span>';
+    h+='<input class="c sgoct'+(kind==='ip'?' ip':'')+'" maxlength="'+(kind==='bit'?8:3)+'"'
+      +' inputmode="numeric" autocomplete="off" spellcheck="false" placeholder="'+ph+'"'
+      +(parts[i]!==undefined&&parts[i]!==''?(' value="'+parts[i]+'"'):'')+'>';
   }
   return h;
 }
@@ -2059,16 +2135,25 @@ function sgCalc(b){
   }
   if(!box||!box.getAttribute('data-op')) return;
   out=box.querySelector('output');
-  var inp=box.querySelector('.sgbinput'), msg=box.querySelector('.sgbmsg');
-  var op=box.getAttribute('data-op'), v=inp?(inp.value||'').trim():'';
+  var oct=box.querySelectorAll('.sgoct'), inp=box.querySelector('.sgbinput'), msg=box.querySelector('.sgbmsg');
+  var op=box.getAttribute('data-op'), v='', parts=[], i, blank=false;
+  if(oct.length){
+    for(i=0;i<oct.length;i++){
+      var t=(oct[i].value||'').trim();
+      if(!t) blank=true;
+      parts.push(t);
+    }
+    v=parts.join('');
+  }else if(inp){ v=(inp.value||'').trim() }
   function say(html,cls){ if(msg){ msg.className='sgbmsg '+(cls||''); msg.innerHTML=html } }
-  if(!inp||!out) return;
-  if(!v){ say('Fill the box first.','bad'); return }
+  if(!out) return;
+  if(!v){ say('Fill the boxes first.','bad'); return }
+  if(oct.length&&blank){ say('All four octets, or the sum proves nothing.','bad'); return }
   if(op==='bits'){
     var bits=v.replace(/[.\s]/g,''), want=box.getAttribute('data-want')||'';
     var pfx=+(box.getAttribute('data-prefix')||0);
     if(!/^[01]+$/.test(bits)||bits.length!==32){
-      say('It has to be 32 bits, 1s and 0s only &mdash; you gave '+bits.length+'.','bad'); return;
+      say('Eight bits in every box, 1s and 0s only.','bad'); return;
     }
     if(bits!==want){
       var diff=[];
@@ -2078,7 +2163,7 @@ function sgCalc(b){
       return;
     }
     out.textContent=sgBitsToIp(bits);
-    say('That is the row: <span class="sgbits">'+sgBitsMarked(bits,pfx)+'</span> '
+    say('That is the row: <span class="sgbytes">'+sgBitsRow(bits,pfx)+'</span> '
       +'<span style="color:var(--text-mute)">&mdash; amber are the '+pfx+' network bits, dashed are the '
       +(32-pfx)+' host bits.</span>','good');
     return;
@@ -2095,7 +2180,7 @@ function sgCalc(b){
       say('Those host bits spell <b>a host on this block</b> &mdash; offset '+parseInt(hb,2)+' inside it, not the broadcast. '
         +'The broadcast is the one pattern where every host bit is 1.','bad');
     }else{
-      say('Every host bit at 1: <span class="sgbits">'+sgBitsMarked(full,pfx2)+'</span> &mdash; that is the broadcast.','good');
+      say('Every host bit at 1: <span class="sgbytes">'+sgBitsRow(full,pfx2)+'</span> &mdash; that is the broadcast.','good');
     }
     return;
   }
@@ -2108,16 +2193,16 @@ function sgCalc(b){
     var a=(fixed==='a')?+(box.getAttribute('data-a')):n;
     var bb=(fixed==='a')?n:+(box.getAttribute('data-b'));
     out.textContent=(a-bb).toLocaleString('en-US');
-    say(a+' &minus; '+bb+' = <b>'+(a-bb).toLocaleString('en-US')+'</b>.','good');
+    say(a+' &minus; '+bb+' = <b>'+(a-bb).toLocaleString('en-US')+'</b>','good');
     return;
   }
   if(op==='ipadd'){
-    var o=scOctets(v);
-    if(!o){ say('Four octets, 0 to 255.','bad'); return }
+    var o=scOctets(parts.join('.'));
+    if(!o){ say('Each box takes an octet: 0 to 255.','bad'); return }
     var n2=scNum(o)+(+(box.getAttribute('data-delta'))||0);
     if(n2<0||n2>4294967295){ say('That runs off the end of the address space.','bad'); return }
     out.textContent=scIp(n2>>>0);
-    say(scIp(scNum(o))+' '+(n2-scNum(o)>=0?'+ ':'&minus; ')+Math.abs(n2-scNum(o))+' = <b>'+scIp(n2>>>0)+'</b>.','good');
+    say(scIp(scNum(o))+' '+(n2-scNum(o)>=0?'+ ':'&minus; ')+Math.abs(n2-scNum(o))+' = <b>'+scIp(n2>>>0)+'</b>','good');
   }
 }
 function sgAt(r,id){
@@ -2157,8 +2242,8 @@ function sgSteps(r){
     bench:'<div class="sgbench" data-op="bits" data-want="'+scBits(r.maskN)+'" data-prefix="'+r.prefix+'">'
       +'<div class="cap">Write the prefix out as bits, then read it back</div>'
       +'<div class="sgrow2"><span class="lbl">'+r.prefix+' ones</span>'
-      +'<input class="sgbinput wide" placeholder="32 bits, dots optional">'
-      +'<button type="button" class="ghost sgcalc">Read it back</button></div>'
+      +'<span class="sgbytes">'+sgOctIn(null,'bit')+'</span>'
+      +'<button type="button" class="sgcalc">Convert to decimal</button></div>'
       +'<div class="sgrow2"><span class="lbl">decimal</span><output></output></div>'
       +'<div class="sgbmsg"></div></div>',
     work:'<div class="scwork"><div><span class="lbl">bits</span>'+scGroup(scBits(r.maskN))+'</div>'
@@ -2173,7 +2258,7 @@ function sgSteps(r){
     s.push({id:'octet',
       q:'Which <b>octet</b> does the mask stop being <span class="mono">255</span> in?',
       sub:'That is the interesting octet: the one the blocks step in. Every octet before it is all network bits, every octet after it is all host bits.',
-      kind:'num', want:r.oi,
+      kind:'octet', want:r.oi,
       hint:'Read the mask octet by octet and find the first one that is not 255.',
       work:'<div class="scwork">'+r.maskOctets.map(function(v,i){
         return '<div><span class="lbl" style="width:62px">octet '+(i+1)+'</span>'+v
@@ -2217,10 +2302,10 @@ function sgSteps(r){
     hint:'Set every host bit to 0 &mdash; the last '+r.host+' bits all become zero.',
     bench:'<div class="sgbench" data-op="bits" data-want="'+scBits(r.netN)+'" data-prefix="'+r.prefix+'">'
       +'<div class="cap">Route 1: write the AND out, the third row is yours</div>'
-      +'<div class="sgrow2"><span class="lbl">address</span><span class="sgbits">'+sgBitsMarked(scBits(r.ipN),r.prefix)+'</span></div>'
-      +'<div class="sgrow2"><span class="lbl">mask</span><span class="sgbits">'+sgBitsMarked(scBits(r.maskN),r.prefix)+'</span></div>'
-      +'<div class="sgrow2"><span class="lbl">AND</span><input class="sgbinput wide" placeholder="your third row, 32 bits">'
-      +'<button type="button" class="ghost sgcalc">Read it back</button></div>'
+      +'<div class="sgrow2"><span class="lbl">address</span><span class="sgbytes">'+sgBitsRow(scBits(r.ipN),r.prefix)+'</span></div>'
+      +'<div class="sgrow2"><span class="lbl">mask</span><span class="sgbytes">'+sgBitsRow(scBits(r.maskN),r.prefix)+'</span></div>'
+      +'<div class="sgrow2"><span class="lbl">AND</span><span class="sgbytes">'+sgOctIn(null,'bit')+'</span>'
+      +'<button type="button" class="sgcalc">Convert to decimal</button></div>'
       +'<div class="sgrow2"><span class="lbl">decimal</span><output></output></div>'
       +'<div class="sgbmsg"></div></div>'
       +'<div class="sgbench"><div class="cap">Route 2: the multiples of '+r.osize+' in octet '+r.oi+'</div>'
@@ -2247,7 +2332,7 @@ function sgSteps(r){
     sub:'Same block, other end: <b>keep the network bits exactly as they are and set every host bit to 1</b>. Nothing else moves. The bench shows the network row and takes just the host bits from you.',
     bench:'<div class="sgbench" data-op="hostbits" data-net="'+scBits(r.netN)+'" data-prefix="'+r.prefix+'">'
       +'<div class="cap">Put the host bits on</div>'
-      +'<div class="sgrow2"><span class="lbl">network</span><span class="sgbits">'+sgBitsMarked(scBits(r.netN),r.prefix)+'</span></div>'
+      +'<div class="sgrow2"><span class="lbl">network</span><span class="sgbytes">'+sgBitsRow(scBits(r.netN),r.prefix)+'</span></div>'
       +'<div class="sgrow2"><span class="lbl">host bits</span><input class="sgbinput" placeholder="'+r.host+' bits">'
       +'<button type="button" class="ghost sgcalc">Build the address</button></div>'
       +'<div class="sgrow2"><span class="lbl">result</span><output></output></div>'
@@ -2270,7 +2355,7 @@ function sgSteps(r){
       :'The lowest address a device can take: the network address itself is never given out, so start there and step one up. The bench does the addition.',
     bench:'<div class="sgbench" data-op="ipadd" data-delta="1">'
       +'<div class="cap">One up from the network</div>'
-      +'<div class="sgrow2"><span class="lbl">network</span><input class="sgbinput wide" value="'+r.net+'">'
+      +'<div class="sgrow2"><span class="lbl">network</span><span class="sgbytes">'+sgOctIn(null,'ip')+'</span>'
       +'<span class="big">+ 1</span><button type="button" class="ghost sgcalc">Calculate</button>'
       +'<span class="op">=</span><output></output></div><div class="sgbmsg"></div></div>',
     kind:'ip', want:r.first,
@@ -2287,7 +2372,7 @@ function sgSteps(r){
     sub:(r.block<=2)?('On a /'+r.prefix+' that is the other end of the link.'):'The <span class="term" data-tip="<b>Highest usable</b> - the last address a device can take. The broadcast above it belongs to every device at once, so no single one may have it.">highest address</span> a device can take: start at the broadcast and step one down.',
     bench:'<div class="sgbench" data-op="ipadd" data-delta="-1">'
       +'<div class="cap">One down from the broadcast</div>'
-      +'<div class="sgrow2"><span class="lbl">broadcast</span><input class="sgbinput wide" value="'+r.bcast+'">'
+      +'<div class="sgrow2"><span class="lbl">broadcast</span><span class="sgbytes">'+sgOctIn(null,'ip')+'</span>'
       +'<span class="big">&minus; 1</span><button type="button" class="ghost sgcalc">Calculate</button>'
       +'<span class="op">=</span><output></output></div><div class="sgbmsg"></div></div>',
     kind:'ip', want:r.last,
@@ -2369,12 +2454,12 @@ function scFactRows(r){
 function sgFacts(r){
   var hostEl=document.getElementById('scFacts'); if(!hostEl) return;
   var rows=scFactRows(r), h='<div class="tbl-wrap"><table class="sgfacts"><thead><tr>'
-    +'<th>What you now know</th><th>Value</th><th>Step</th></tr></thead><tbody>';
+    +'<th>What you now know</th><th>Value</th><th>Step</th><th>Obtained</th></tr></thead><tbody>';
   var g='', got=0, shown=0, i, j;
   for(i=0;i<rows.length;i++){
     var row=rows[i];
-    if(row.g!==g){ g=row.g; h+='<tr class="grp"><th colspan="3">'+g+'</th></tr>' }
-    var have=true, viaShown=false, needTxt='\u2014';
+    if(row.g!==g){ g=row.g; h+='<tr class="grp"><th colspan="4">'+g+'</th></tr>' }
+    var have=true, viaShown=false, needTxt='free';
     if(row.need&&row.need.length){
       var ns=[];
       for(j=0;j<row.need.length;j++){
@@ -2391,7 +2476,8 @@ function sgFacts(r){
     h+='<tr class="'+(have?(viaShown?'shown':'got'):'pend')+'">'
       +'<td class="what"'+(row.tip?(' data-tip="'+row.tip+'" tabindex="0"'):'')+'>'+row.k+'</td>'
       +'<td class="v">'+(have?row.v:'&mdash;')+'</td>'
-      +'<td class="needs">'+(have?'&#10003;':needTxt)+'</td></tr>';
+      +'<td class="needs">'+needTxt+'</td>'
+      +'<td class="ob">'+(have?(viaShown?'&#10033;':'&#10003;'):'&middot;')+'</td></tr>';
   }
   h+='</tbody></table></div>';
   hostEl.innerHTML=h;
@@ -2454,8 +2540,14 @@ function sgPaint(){
   var st=steps[SG.step];
   box.innerHTML=bar+'<div class="sgstep"><p class="sgq"><span class="n">'+(SG.step+1)+'</span>'+st.q+'</p>'
     +'<p class="sgsub">'+st.sub+'</p>'
-    +'<div class="iobox"><input id="sgIn" autocomplete="off" spellcheck="false" placeholder="'+
-      (st.kind==='num'?'a number':'e.g. 255.255.255.252')+'">'
+    +'<div class="iobox">'
+    +((st.kind==='octet')
+      ? '<span class="sgpicks" id="sgPick">'+[1,2,3,4].map(function(n){
+          return '<button type="button" class="sgopick" data-o="'+n+'">'+['1st','2nd','3rd','4th'][n-1]
+            +'<small>octet</small></button>';
+        }).join('')+'</span>'
+      : '<input id="sgIn" autocomplete="off" spellcheck="false" placeholder="'
+        +(st.kind==='num'?'a number':'e.g. 255.255.255.252')+'">')
     +'<button class="primary" id="sgCheck">Check</button>'
     +'<button class="ghost" id="sgHint">Hint</button>'
     +'<button class="ghost" id="sgShow">Show me</button></div>'
@@ -2468,18 +2560,40 @@ function sgPaint(){
   document.getElementById('sgHint').onclick=function(){ sgHint(r) };
   document.getElementById('sgShow').onclick=function(){ sgShow(r) };
   document.getElementById('sgNext').onclick=function(){ sgNext(r) };
-  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); sgCheck(r) } });
+  if(inp) inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); sgCheck(r) } });
+  var picks=document.querySelectorAll('#scGuide .sgopick');
+  for(var pi=0;pi<picks.length;pi++){
+    picks[pi].onclick=function(){ sgPick(this.getAttribute('data-o')) };
+  }
+}
+/* checkpoint 3 asks for one of four octets, so it offers four buttons and Check grades the choice */
+function sgPick(n){
+  SG.pick=+n;
+  var picks=document.querySelectorAll('#scGuide .sgopick');
+  for(var i=0;i<picks.length;i++)
+    picks[i].classList.toggle('on', +picks[i].getAttribute('data-o')===SG.pick);
+}
+function sgLockPicks(){
+  var picks=document.querySelectorAll('#scGuide .sgopick');
+  for(var i=0;i<picks.length;i++) picks[i].disabled=true;
 }
 function sgMsg(fb,cls,html){ fb.className='sgfb on '+cls; fb.innerHTML=html }
 function sgFb(){ return document.querySelector('#scGuide .sgfb') }
 function sgCheck(r){
   var steps=sgSteps(r), st=steps[SG.step]; if(!st) return;
   var inp=document.getElementById('sgIn'), fb=sgFb();
-  if(!inp||!fb) return;
-  var raw=(inp.value||'').trim();
-  if(!raw){ sgMsg(fb,'bad','Type an answer first. <b>Hint</b> nudges you and <b>Show me</b> works it through with you.'); return }
+  if(!fb) return;
+  if(st.kind==='octet'){
+    if(!SG.pick){ sgMsg(fb,'bad','Pick one of the four octets, then press <b>Check</b>.'); return }
+  }
+  var raw=inp?(inp.value||'').trim():'';
+  if(!raw&&st.kind!=='octet'){ sgMsg(fb,'bad','Type an answer first. <b>Hint</b> nudges you and <b>Show me</b> works it through with you.'); return }
   var ok=false, val=null, diag='';
-  if(st.kind==='num'){
+  if(st.kind==='octet'){
+    val=SG.pick;
+    ok=(val===st.want);
+    if(!ok&&st.why) diag=st.why(val);
+  }else if(st.kind==='num'){
     var digits=raw.replace(/[\s,]/g,'');
     if(!/^[0-9]+$/.test(digits)||digits.length>10){
       return sgMsg(fb,'bad','A whole number only &mdash; digits, no dots and no units.');
@@ -2498,12 +2612,12 @@ function sgCheck(r){
     if(!ok&&st.why) diag=st.why(val);
   }
   if(!ok){
-    inp.classList.add('no');
+    if(inp) inp.classList.add('no');
     sgMsg(fb,'bad','<b>Not yet.</b>'+(diag?('<span class="why">'+diag+'</span>'):'<span class="why">Read the step again, or take the hint.</span>'));
     return;
   }
-  inp.classList.remove('no');
-  inp.disabled=true;
+  if(inp){ inp.classList.remove('no'); inp.disabled=true }
+  else sgLockPicks();
   SG.solved[st.id]=1; delete SG.shown[st.id];
   document.getElementById('sgWork').innerHTML=st.work||'';
   sgMsg(fb,'good','<b>Right.</b> '+(st.ok||''));
@@ -2527,8 +2641,9 @@ function sgHint(r){
 function sgShow(r){
   var steps=sgSteps(r), st=steps[SG.step]; if(!st) return;
   var inp=document.getElementById('sgIn'), fb=sgFb();
-  if(!inp||!fb) return;
-  inp.value=st.want; inp.disabled=true;
+  if(!fb) return;
+  if(st.kind==='octet'){ SG.pick=st.want; sgPick(st.want); sgLockPicks() }
+  else if(inp){ inp.value=st.want; inp.disabled=true }
   SG.shown[st.id]=1; delete SG.solved[st.id];
   document.getElementById('sgWork').innerHTML=st.work||'';
   sgMsg(fb,'','<b>Shown, not solved.</b> The row gets a star in the table &mdash; you can read it, but it is not yours yet.');
@@ -2540,17 +2655,17 @@ function sgShow(r){
   sgFacts(r); sgBar(r);
 }
 function sgNext(r){
-  var s=sgSteps(r), st=s[SG.step];
-  /* Never skip past an unanswered checkpoint. The Next button is hidden until the step is solved or
+  var s=sgSteps(r), st=s[SG.step];  /* Never skip past an unanswered checkpoint. The Next button is hidden until the step is solved or
      shown, so a reader cannot click it early — but the handler still has to refuse, or a script (or
      a stray Enter) could walk the whole method without answering anything. */
   if(st&&!(SG.solved[st.id]||SG.shown[st.id])) return;
   SG.step++;
+  SG.pick=0;
   sgPaint();
 }
 function scGuideSync(r){
   var key=r.ip+'/'+r.prefix;
-  if(SG.key!==key){ SG.key=key; SG.step=0; SG.solved={}; SG.shown={}; SG.hints={}; SG.done=false }
+  if(SG.key!==key){ SG.key=key; SG.step=0; SG.solved={}; SG.shown={}; SG.hints={}; SG.done=false; SG.pick=0 }
   SG.r=r;
   sgFacts(r);
   if(SG.mode==='guide') sgPaint();
