@@ -618,6 +618,51 @@ mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px
 .scerr{color:var(--bad-bright);font-family:var(--mono);font-size:13px;margin-top:8px}
 ol.methodsteps{padding-left:22px;margin:12px 0}
 ol.methodsteps li{margin:9px 0;max-width:88ch}
+/* ---- the guided walkthrough (2026-11-10) ---- */
+.scmode{display:inline-flex;margin:14px 0 4px;border:1px solid var(--rule-2);border-radius:10px;overflow:hidden;max-width:100%}
+.scmode button{border:0;border-radius:0;background:transparent;color:var(--text-mute);font-size:13px;
+  padding:9px 15px;font-family:inherit;box-shadow:none}
+.scmode button.on{background:var(--fill);color:var(--on-fill);font-weight:600}
+.scex{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:9px;margin:12px 0 2px}
+.scex button{text-align:left;background:var(--surface-2);border:1px solid var(--rule);border-radius:10px;
+  padding:10px 13px;cursor:pointer;color:var(--text);font-family:inherit;box-shadow:none}
+.scex button:hover,.scex button:focus{border-color:var(--amber-400);outline:none}
+.scex .a{display:block;font-family:var(--mono);font-size:14px;color:var(--accent-bright)}
+.scex .p{display:block;font-size:11.5px;color:var(--text-mute);line-height:1.5;margin-top:3px}
+.sgwrap{border:1px solid var(--rule-2);border-radius:12px;background:var(--surface);padding:15px 17px 16px;margin:16px 0}
+.sgbar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;font-family:var(--mono);font-size:11px;
+  color:var(--text-mute);letter-spacing:.04em;margin-bottom:12px}
+.sgbar .k{color:var(--accent)}
+.sgtrack{flex:1;min-width:110px;height:5px;border-radius:3px;background:var(--surface-3);overflow:hidden}
+.sgtrack i{display:block;height:100%;width:0;background:var(--amber-400);transition:width .25s}
+.sgq{margin:2px 0 5px;font-family:var(--display);font-size:17px;font-weight:600;color:var(--text-strong);line-height:1.45}
+.sgq .n{font-family:var(--mono);color:var(--accent);font-size:13px;margin-right:7px}
+.sgsub{font-size:12.5px;color:var(--text-mute);margin:0 0 11px;line-height:1.65;max-width:82ch}
+.sgfb{font-size:13px;line-height:1.65;margin:11px 0 0;padding:10px 13px;border-radius:9px;display:none;border-left:3px solid var(--rule-2);background:var(--surface-2)}
+.sgfb.on{display:block}
+.sgfb.good{background:var(--tint-good);border-left-color:var(--moss);color:var(--good-bright)}
+.sgfb.bad{background:var(--tint-bad);border-left-color:var(--rust);color:var(--bad-bright)}
+.sgfb b{color:var(--text-strong)}
+.sgfb .why{display:block;color:var(--text-dim);margin-top:5px}
+.sghint{font-size:12.5px;color:var(--text-mute);margin:9px 0 0;line-height:1.6;border-left:2px solid var(--rule-2);padding-left:10px}
+.sghint b{color:var(--accent-bright)}
+#scGuide .scwork{margin-top:11px}
+.sgstep.done .sgq{opacity:.85}
+/* the table that fills itself in: pending rows stay visible, dimmed, with the checkpoint that earns them */
+table.sgfacts td.v{font-family:var(--mono);font-size:13.5px;color:var(--accent-bright)}
+table.sgfacts td.needs{font-family:var(--mono);font-size:10.5px;color:var(--text-mute);white-space:nowrap}
+table.sgfacts tr.pend td{opacity:.55}
+table.sgfacts tr.pend td.v{color:var(--text-mute)}
+table.sgfacts tr.grp th{background:var(--surface-3);font-family:var(--mono);font-size:10.5px;
+  letter-spacing:.06em;color:var(--text-mute);text-align:left;padding:7px 11px;font-weight:600}
+table.sgfacts tr.shown td.v::after{content:' »1';color:var(--text-mute)}
+table.sgfacts td.what[data-tip]{cursor:help}
+table.sgfacts td.what[data-tip]::after{content:' ?';color:var(--accent);opacity:.7;font-size:10.5px}
+table.sgfacts td.what[data-tip]:focus{outline:1px solid var(--amber-400);outline-offset:2px;border-radius:4px}
+/* a term with its own explanation, in the same popup the result cards use */
+.term{border-bottom:1px dotted var(--accent);cursor:help;color:inherit}
+.term:hover{border-bottom-style:solid;border-bottom-color:var(--accent-bright)}
+.term:focus{outline:1px solid var(--amber-400);outline-offset:2px;border-radius:4px}
 @media (max-width:640px){.bit{width:16px;font-size:11px;padding:4px 0}.bitplace{width:16px;font-size:8px}}
 </style>
 </head>
@@ -625,28 +670,26 @@ ol.methodsteps li{margin:9px 0;max-width:88ch}
 <header class="topbar">
   <span class="mark"><i></i><i></i><i></i></span>
   <span class="title">Subnet calculator — IPv4 addressing, worked</span>
-  <nav><a href="../../index.html">Certificate</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="../../glossary.html" title="Every term, with a definition">▤ glossary</a><a href="index.html">Course 2</a><a href="m2-network-layer.html">M2 — Network layer</a><a href="#why">Why</a><a href="#method">Method</a><a href="#reference">Reference</a><a href="#traps">Traps</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+  <nav><a href="../../index.html">Certificate</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="../../glossary.html" title="Every term, with a definition">▤ glossary</a><a href="index.html">Course 2</a><a href="m2-network-layer.html">M2 — Network layer</a><a href="#walk">Walkthrough</a><a href="#why">Why</a><a href="#method">Method</a><a href="#reference">Reference</a><a href="#traps">Traps</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
 </header>
 <main>
-<section id="what" class=""><h2>The subnet calculator</h2><p class="lede">Type an address and a prefix; get the same working the class worksheet does, plus the arithmetic behind it. Nothing here is looked up from a table — every row is computed from the two numbers you typed, the moment you type them.</p>
-            <div class="big60">
-              <b>What it gives you:</b> the <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> and the mask in binary with the network/host split drawn
-              in, the bitwise AND written out bit by bit, the network and broadcast addresses, the first
-              and last usable host, the counts, whether the address you typed is itself assignable,
-              what kind of address space it is, the three neighbouring subnets, and a
-              <b>same-subnet?</b> test against a second address.
-            </div>
+<section id="walk" class=""><h2>The subnet calculator</h2><p class="lede">An address and a slash in, the whole method out &mdash; asked back to you one checkpoint at a time, with a table that fills in as you go.</p><div class="big60"><b>What this section gets you.</b> Two numbers &mdash; an address and a slash &mdash; are the whole input. Out of them the method produces: the <span class="term" data-tip="Subnet mask — the slash written as four octets: a run of 1s for the network, then 0s for the host" tabindex="0">subnet mask</span>, how many <span class="term" data-tip="Host bits — 32 minus the prefix. Everything the mask does not cover belongs to the host, and that count decides the size of the block" tabindex="0">host bits</span> are left, the <span class="term" data-tip="Block size — 256 minus the mask value in the interesting octet &mdash; the step between one network and the next in that octet" tabindex="0">block size</span> and the <span class="term" data-tip="Interesting octet — the first octet where the mask is not 255: the one the blocks step in" tabindex="0">interesting octet</span>, the <span class="term" data-tip="Network address — the address with every host bit at 0 &mdash; the name of the whole block, and the form a route, a DHCP scope or a firewall rule is written in" tabindex="0">network address</span>, the <span class="term" data-tip="Broadcast — the same block with every host bit at 1 &mdash; anything sent here reaches every device on the subnet" tabindex="0">broadcast</span>, the first and last <span class="term" data-tip="Usable host — an address a device can actually be given: not the network address and not the broadcast" tabindex="0">usable host</span>, how many devices fit, whether the address you typed can even be given to one, what kind of <span class="term" data-tip="Address space — public and routable, private (RFC 1918), loopback, link-local, multicast, carrier-grade NAT, or a documentation range" tabindex="0">address space</span> it sits in, and the <span class="term" data-tip="Subnet — one block of addresses that share a network address &mdash; what a mask cuts a larger range into" tabindex="0">subnet</span> either side of it. Two of those &mdash; the class and the scope &mdash; need no method at all: they are readable straight off the first octet. Nothing is looked up; every value is computed from what you type.</div><p>Pick an example or type your own, then work down the checkpoints. Each answer adds a row to the table underneath, so <b>you can stop as soon as the row you wanted is there</b>: the dimmed rows name the checkpoint that would earn them, and nothing later in the method changes a fact you already hold. If you would rather see the whole answer printed at once, switch to <b>Show the whole working</b> &mdash; the same arithmetic, none of the questions.</p>
+            <h3>The address and the slash</h3>
             <div class="scform">
-              <div class="scfield"><label for="scIp">IP ADDRESS</label>
+              <div class="scfield"><label for="scIp"><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> ADDRESS</label>
                 <input id="scIp" autocomplete="off" spellcheck="false" placeholder="112.15.167.104"></div>
               <div class="scfield"><label for="scPrefix">PREFIX (/n)</label>
                 <input id="scPrefix" autocomplete="off" inputmode="numeric" placeholder="22"></div>
               <div class="scfield"><label>&nbsp;</label>
-                <span class="src" style="max-width:34ch">Or type the mask instead —
-                <span class="mono">255.255.252.0</span> is <span class="mono">/22</span>, but this
-                box wants the prefix length.</span></div>
+                <span class="src" style="max-width:34ch">This box wants the prefix length. The
+                <span class="mono">255.255.252.0</span> form is a step you will be asked for anyway.</span></div>
             </div>
-            <div class="scpresets"><button class="ghost" onclick="document.getElementById('scIp').value='112.15.167.104';document.getElementById('scPrefix').value=22;scRender()">112.15.167.104 /22</button><button class="ghost" onclick="document.getElementById('scIp').value='172.20.14.9';document.getElementById('scPrefix').value=12;scRender()">172.20.14.9 /12</button><button class="ghost" onclick="document.getElementById('scIp').value='192.168.1.100';document.getElementById('scPrefix').value=24;scRender()">192.168.1.100 /24</button><button class="ghost" onclick="document.getElementById('scIp').value='10.44.7.5';document.getElementById('scPrefix').value=27;scRender()">10.44.7.5 /27</button><button class="ghost" onclick="document.getElementById('scIp').value='100.64.32.7';document.getElementById('scPrefix').value=10;scRender()">100.64.32.7 /10</button><button class="ghost" onclick="document.getElementById('scIp').value='192.0.2.130';document.getElementById('scPrefix').value=28;scRender()">192.0.2.130 /28</button></div>
+            <h3>Or start from an example</h3>
+            <div class="scex"><button type="button" onclick="scPick('112.15.167.104',22)"><span class="a">112.15.167.104 /22</span><span class="p">The class example. <span class="ac" data-full="Octet" data-desc="eight bits. An IPv4 address is four octets, so &quot;octet&quot; is the precise way of saying &quot;byte&quot; in this context.">Octet</span> 3 moves in fours, and 112.15.161.0 is not a network.</span></button><button type="button" onclick="scPick('10.128.240.50',30)"><span class="a">10.128.240.50 /30</span><span class="p">Two usable hosts. .50 looks like a middle number but is the last one.</span></button><button type="button" onclick="scPick('192.168.1.100',24)"><span class="a">192.168.1.100 /24</span><span class="p">The home-<span class="ac" data-full="Local Area Network" data-desc="one local network - office, floor, home">LAN</span> baseline: blocks step by a whole octet.</span></button><button type="button" onclick="scPick('192.168.10.0',26)"><span class="a">192.168.10.0 /26</span><span class="p">The class handout: a /24 cut into four. You land on a network address.</span></button><button type="button" onclick="scPick('172.20.14.9',12)"><span class="a">172.20.14.9 /12</span><span class="p">Private space stops at 172.31: blocks of 16 in the second octet.</span></button><button type="button" onclick="scPick('100.64.32.7',10)"><span class="a">100.64.32.7 /10</span><span class="p">Carrier-grade <span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span>: not private, not public, and a 64-wide block.</span></button><button type="button" onclick="scPick('10.44.7.5',27)"><span class="a">10.44.7.5 /27</span><span class="p">30 usable each, and a block that is not a quarter of anything.</span></button><button type="button" onclick="scPick('10.0.0.5',31)"><span class="a">10.0.0.5 /31</span><span class="p">The exception: no network/broadcast pair, both addresses usable (<span class="ac" data-full="Request for Comments" data-desc="the documents that define internet standards">RFC</span> 3021).</span></button></div>
+            <div class="scmode" role="group" aria-label="How to use this page">
+              <button type="button" id="scModeGuide" onclick="scSetMode('guide')">Walk me through it</button>
+              <button type="button" id="scModeShow" onclick="scSetMode('show')">Show the whole working</button>
+            </div>
             <div class="scbtns">
               <button class="secondary" id="scDrillBtn">Give me one to work out</button>
               <button class="secondary" id="scReveal" style="display:none">Reveal the answer</button>
@@ -654,11 +697,20 @@ ol.methodsteps li{margin:9px 0;max-width:88ch}
               <button class="ghost" id="scReset">Back to the class example</button>
             </div>
             <div class="src" id="scCopyMsg"></div>
-            <div class="src">New to this, or is a number below unexplained? The section after the
-            working — <b>Why a network address exists at all</b> — explains the concept the steps
-            assume, and step 9 draws why a block can only begin on a multiple of its own size.</div>
             <div class="big60 y" id="scDrillQ" style="display:none"></div>
-            </section><section id="working"><div id="scOut"></div></section><section id="why" class=""><h2>Why a network address exists at all</h2><p class="lede">Step 5 prints a number that is on no device. It is not a formality — it is the value the whole system is built on, and this page used to assume you already had it.</p>
+            <div id="scGuideWrap">
+              <div id="scGuide" class="sgwrap"></div>
+              <div id="scFactsWrap">
+                <h3>What you have so far</h3>
+                <p class="src" id="scFactsCount"></p>
+                <div id="scFacts"></div>
+                <p class="src">Each row is earned by the checkpoint in its <b>Step</b> column &mdash;
+                that column is the answer to "how much of this method do I actually need". The first
+                group needs no method at all.</p>
+              </div>
+            </div>
+            <div id="scWorking"><div id="scOut"></div></div>
+            </section><section id="why" class=""><h2>Why a network address exists at all</h2><p class="lede">Step 5 prints a number that is on no device. It is not a formality — it is the value the whole system is built on, and this page used to assume you already had it.</p>
             <p><b>An address is two numbers packed into one, and the mask is the ruler that says where
             the cut is.</b> Take <span class="mono">112.15.167.104/22</span>: the first 22 bits say
             <i>which network</i>, the last 10 say <i>which host on it</i>. Zero the host bits and what is
@@ -691,7 +743,7 @@ ol.methodsteps li{margin:9px 0;max-width:88ch}
             <span class="mono">2<sup>n</sup> &minus; 2</span> comes from — with /31 and /32 as the two
             documented exceptions further down this page.</p>
             <h3>Why it feels strange at home: the third octet moves</h3>
-            <p>An ordinary <span class="ac" data-full="Local Area Network" data-desc="one local network - office, floor, home">LAN</span> is all <span class="mono">/24</span>, so the network address is always
+            <p>An ordinary LAN is all <span class="mono">/24</span>, so the network address is always
             <span class="mono">x.x.x.0</span> and the gateway always <span class="mono">x.x.x.1</span> —
             the pattern never varies and there is nothing to notice. Widen the mask past an octet boundary
             and the third octet stops being fixed. A <span class="mono">/22</span> is four values wide
@@ -736,7 +788,7 @@ ol.methodsteps li{margin:9px 0;max-width:88ch}
             <p class="src">Use the calculator's step 10 to test any pair. It is the same test a router
             does, done by hand.</p></section><section id="reference" class=""><h2>Prefix reference</h2><p class="lede">The rows worth being able to reach for. Computed, not typed — including the two where the usual host formula gives the wrong answer.</p><div class="tbl-wrap"><table>
 <thead><tr><th>Prefix</th><th>Mask</th><th>Addresses</th><th>Usable</th><th>Where you meet it</th></tr></thead>
-<tbody><tr><td class='mono'>/8</td><td class='mono'>255.0.0.0</td><td class='mono'>16,777,216</td><td class='mono'>16,777,214</td><td>The old Class A scale; `10/8` is the largest private space there is.</td></tr><tr><td class='mono'>/12</td><td class='mono'>255.240.0.0</td><td class='mono'>1,048,576</td><td class='mono'>1,048,574</td><td>Not a class boundary — `172.16.0.0/12` is 16 Class-B-sized blocks, 16 to 31.</td></tr><tr><td class='mono'>/16</td><td class='mono'>255.255.0.0</td><td class='mono'>65,536</td><td class='mono'>65,534</td><td>Class B default, and the size of one private `192.168/16`-style supernet.</td></tr><tr><td class='mono'>/17</td><td class='mono'>255.255.128.0</td><td class='mono'>32,768</td><td class='mono'>32,766</td><td>The first subdivision of a /16: two halves, 32 766 hosts each.</td></tr><tr><td class='mono'>/20</td><td class='mono'>255.255.240.0</td><td class='mono'>4,096</td><td class='mono'>4,094</td><td>Common <span class="ac" data-full="Internet Service Provider" data-desc="the company that sells you the connection to the internet">ISP</span> allocation for a small site; 16 contiguous /24s.</td></tr><tr><td class='mono'>/22</td><td class='mono'>255.255.252.0</td><td class='mono'>1,024</td><td class='mono'>1,022</td><td>Today's class example. 4 contiguous /24s, 1 022 usable.</td></tr><tr><td class='mono'>/23</td><td class='mono'>255.255.254.0</td><td class='mono'>512</td><td class='mono'>510</td><td>Two /24s glued together; the smallest supernet you see in the wild.</td></tr><tr><td class='mono'>/24</td><td class='mono'>255.255.255.0</td><td class='mono'>256</td><td class='mono'>254</td><td>Class C default, and the size of an ordinary home or office LAN.</td></tr><tr><td class='mono'>/25</td><td class='mono'>255.255.255.128</td><td class='mono'>128</td><td class='mono'>126</td><td>Half a /24. Host bits 7, so 126 usable.</td></tr><tr><td class='mono'>/26</td><td class='mono'>255.255.255.192</td><td class='mono'>64</td><td class='mono'>62</td><td>The usual way to carve a /24 into departments.</td></tr><tr><td class='mono'>/27</td><td class='mono'>255.255.255.224</td><td class='mono'>32</td><td class='mono'>30</td><td>Small team subnet — 30 usable, and a favourite exam number.</td></tr><tr><td class='mono'>/28</td><td class='mono'>255.255.255.240</td><td class='mono'>16</td><td class='mono'>14</td><td>14 usable; often a voice or management <span class="ac" data-full="Virtual LAN" data-desc="a logical network carved out of a switch, independent of cabling">VLAN</span>.</td></tr><tr><td class='mono'>/29</td><td class='mono'>255.255.255.248</td><td class='mono'>8</td><td class='mono'>6</td><td>6 usable.</td></tr><tr><td class='mono'>/30</td><td class='mono'>255.255.255.252</td><td class='mono'>4</td><td class='mono'>2</td><td>2 usable — the classic point-to-point link size on Cisco gear.</td></tr><tr><td class='mono'>/31</td><td class='mono'>255.255.255.254</td><td class='mono'>2</td><td class='mono'>2</td><td>2 usable under <span class="ac" data-full="Request for Comments" data-desc="the documents that define internet standards">RFC</span> 3021, no network and no broadcast. Inter-router links only.</td></tr><tr><td class='mono'>/32</td><td class='mono'>255.255.255.255</td><td class='mono'>1</td><td class='mono'>1</td><td>One address. A host route, or the loopback of a router.</td></tr></tbody></table></div>
+<tbody><tr><td class='mono'>/8</td><td class='mono'>255.0.0.0</td><td class='mono'>16,777,216</td><td class='mono'>16,777,214</td><td>The old Class A scale; `10/8` is the largest private space there is.</td></tr><tr><td class='mono'>/12</td><td class='mono'>255.240.0.0</td><td class='mono'>1,048,576</td><td class='mono'>1,048,574</td><td>Not a class boundary — `172.16.0.0/12` is 16 Class-B-sized blocks, 16 to 31.</td></tr><tr><td class='mono'>/16</td><td class='mono'>255.255.0.0</td><td class='mono'>65,536</td><td class='mono'>65,534</td><td>Class B default, and the size of one private `192.168/16`-style supernet.</td></tr><tr><td class='mono'>/17</td><td class='mono'>255.255.128.0</td><td class='mono'>32,768</td><td class='mono'>32,766</td><td>The first subdivision of a /16: two halves, 32 766 hosts each.</td></tr><tr><td class='mono'>/20</td><td class='mono'>255.255.240.0</td><td class='mono'>4,096</td><td class='mono'>4,094</td><td>Common <span class="ac" data-full="Internet Service Provider" data-desc="the company that sells you the connection to the internet">ISP</span> allocation for a small site; 16 contiguous /24s.</td></tr><tr><td class='mono'>/22</td><td class='mono'>255.255.252.0</td><td class='mono'>1,024</td><td class='mono'>1,022</td><td>Today's class example. 4 contiguous /24s, 1 022 usable.</td></tr><tr><td class='mono'>/23</td><td class='mono'>255.255.254.0</td><td class='mono'>512</td><td class='mono'>510</td><td>Two /24s glued together; the smallest supernet you see in the wild.</td></tr><tr><td class='mono'>/24</td><td class='mono'>255.255.255.0</td><td class='mono'>256</td><td class='mono'>254</td><td>Class C default, and the size of an ordinary home or office LAN.</td></tr><tr><td class='mono'>/25</td><td class='mono'>255.255.255.128</td><td class='mono'>128</td><td class='mono'>126</td><td>Half a /24. Host bits 7, so 126 usable.</td></tr><tr><td class='mono'>/26</td><td class='mono'>255.255.255.192</td><td class='mono'>64</td><td class='mono'>62</td><td>The usual way to carve a /24 into departments.</td></tr><tr><td class='mono'>/27</td><td class='mono'>255.255.255.224</td><td class='mono'>32</td><td class='mono'>30</td><td>Small team subnet — 30 usable, and a favourite exam number.</td></tr><tr><td class='mono'>/28</td><td class='mono'>255.255.255.240</td><td class='mono'>16</td><td class='mono'>14</td><td>14 usable; often a voice or management <span class="ac" data-full="Virtual LAN" data-desc="a logical network carved out of a switch, independent of cabling">VLAN</span>.</td></tr><tr><td class='mono'>/29</td><td class='mono'>255.255.255.248</td><td class='mono'>8</td><td class='mono'>6</td><td>6 usable.</td></tr><tr><td class='mono'>/30</td><td class='mono'>255.255.255.252</td><td class='mono'>4</td><td class='mono'>2</td><td>2 usable — the classic point-to-point link size on Cisco gear.</td></tr><tr><td class='mono'>/31</td><td class='mono'>255.255.255.254</td><td class='mono'>2</td><td class='mono'>2</td><td>2 usable under RFC 3021, no network and no broadcast. Inter-router links only.</td></tr><tr><td class='mono'>/32</td><td class='mono'>255.255.255.255</td><td class='mono'>1</td><td class='mono'>1</td><td>One address. A host route, or the loopback of a router.</td></tr></tbody></table></div>
 <p class="src">Every row is computed from the prefix — including the two rows where the usual
 <span class="mono">2<sup>host bits</sup> &minus; 2</span> answer is wrong: a <b>/31</b> has no network
 and no broadcast (RFC 3021), and a <b>/32</b> is a single address, not an empty subnet.</p></section><section id="traps" class=""><h2>Where this goes wrong</h2><p class="lede">Each of these has cost somebody an evening, in class or on a ticket.</p>
@@ -761,7 +813,7 @@ and no broadcast (RFC 3021), and a <b>/32</b> is a single address, not an empty 
               <div class="tcard"><span class="tag r">not private, not public</span><h4>The ranges people forget</h4>
                 <p><span class="mono">127.0.0.0/8</span> loopback, <span class="mono">169.254.0.0/16</span>
                 link-local (what you get when DHCP fails and you have no <span class="ac" data-full="Automatic Private IP Addressing" data-desc="the 169.254.x.x address a host gives itself when DHCP never answers">APIPA</span> override),
-                <span class="mono">100.64.0.0/10</span> carrier-grade <span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span> (RFC 6598 &mdash; your ISP's
+                <span class="mono">100.64.0.0/10</span> carrier-grade NAT (RFC 6598 &mdash; your ISP's
                 shared space, routable nowhere public, and not RFC 1918 either),
                 <span class="mono">224.0.0.0/4</span> multicast,
                 <span class="mono">240.0.0.0/4</span> reserved, and the three documentation ranges
@@ -778,8 +830,9 @@ and no broadcast (RFC 3021), and a <b>/32</b> is a single address, not an empty 
 
 <footer>
       <p>Part of the Google IT Support study kit. Every number on this page is computed at run time
-      from the address and prefix you type, and the reference table is generated from Python's own
-      <span class="mono">ipaddress</span> module &mdash; nothing on it was typed by hand.</p>
+      from the address and prefix you type &mdash; the walkthrough's expected answers included, so it
+      cannot mark a right answer wrong &mdash; and the reference table is generated from Python's own
+      <span class="mono">ipaddress</span> module. Nothing on it was typed by hand.</p>
       <p class="src">Study aid. Nothing here is submitted for grading.</p>
     </footer>
 <script>
@@ -1586,6 +1639,10 @@ function scTipInit(){
   function hide(){ t.classList.remove('on') }
   function show(card){
     var tip=card.getAttribute('data-tip'); if(!tip) return;
+    /* Python-authored tips (the `.term` spans) carry no markup, because a `>` inside an attribute
+       would be mangled by the glossary wrapper. Bold the head here instead, so both sources look
+       the same without putting HTML through that regex. */
+    if(tip.indexOf('<')<0) tip=tip.replace(/^(.{1,40}?) \u2014 /,'<b>$1</b> \u2014 ');
     t.innerHTML=tip; t.classList.add('on');
     var b=card.getBoundingClientRect(), w=t.offsetWidth, hh=t.offsetHeight;
     var left=Math.max(8,Math.min(b.left, window.innerWidth-w-8));
@@ -1593,11 +1650,11 @@ function scTipInit(){
     t.style.left=left+'px'; t.style.top=top+'px';
   }
   document.addEventListener('mouseover',function(e){
-    var c=e.target&&e.target.closest?e.target.closest('.sccard[data-tip]'):null;
+    var c=e.target&&e.target.closest?e.target.closest('[data-tip]'):null;
     if(c) show(c); else hide();
   },true);
   document.addEventListener('focusin',function(e){
-    var c=e.target&&e.target.closest?e.target.closest('.sccard[data-tip]'):null;
+    var c=e.target&&e.target.closest?e.target.closest('[data-tip]'):null;
     if(c) show(c); else hide();
   },true);
   document.addEventListener('focusout',hide,true);
@@ -1755,6 +1812,8 @@ function scRender(){
   if(pg) pg.onclick=function(){ window.__scPeer=document.getElementById('scPeer').value; scPaintPeer() };
   var pi=document.getElementById('scPeer');
   if(pi) pi.addEventListener('keydown',function(e){ if(e.key==='Enter'){ window.__scPeer=pi.value; scPaintPeer() } });
+  /* last, so the walkthrough and its table always describe the address on screen */
+  SG.r=r; scGuideSync(r);
 }
 function scGroup(s){
   var out='';
@@ -1815,11 +1874,17 @@ function scDrill(){
           Math.floor(Math.random()*256),Math.floor(Math.random()*254)+1].join('.');
   document.getElementById('scIp').value=ip;
   document.getElementById('scPrefix').value=p;
+  SG.key='';                    /* a new problem, so the walkthrough starts at checkpoint 1 */
   scRender();
+  var q=document.getElementById('scDrillQ');
+  if(SG.mode==='guide'){        /* in guided mode the question IS the stepper: nothing to hide */
+    q.style.display='none';
+    document.getElementById('scReveal').style.display='none';
+    return;
+  }
   var host=document.getElementById('scOut');
   host.classList.add('schide');
   document.getElementById('scReveal').style.display='inline-block';
-  var q=document.getElementById('scDrillQ');
   q.style.display='block';
   q.innerHTML='<b>'+ip+'/'+p+'</b> — work it out on paper first: network address, broadcast, first '
     +'and last usable host, usable count. Then <b>Reveal the answer</b>.';
@@ -1875,10 +1940,440 @@ function scInit(){
     scRender();
   };
   scTipInit();
+  scSetMode(SG.mode);          /* before the first render, so the right half of the page is shown */
   scRender();
   document.getElementById('scStamp').textContent=new Date().getFullYear();
 }
 document.addEventListener('DOMContentLoaded',scInit);
+
+/* ================= the guided walkthrough =================
+   The teaching half. The calculator above answers the question; this asks it back, one checkpoint
+   at a time, in the order the class was taught, and every answer adds a row to a table that is visible
+   the whole way down. That table is the reason the order matters: a reader who only wanted "which
+   subnet is this on" can stop at checkpoint 5, and the dimmed rows name what a later checkpoint
+   would have earned. Nothing here is ever allowed to reveal an answer except the `Show me` button,
+   which marks the row as shown rather than solved. */
+
+var SG={mode:'guide',key:'',step:0,solved:{},shown:{},hints:{},done:false,r:null,last:null};
+try{ SG.mode=(localStorage.getItem('sc:mode')==='show')?'show':'guide' }catch(e){}
+
+function scPick(ip,p){
+  document.getElementById('scIp').value=ip;
+  document.getElementById('scPrefix').value=p;
+  scRender();
+  scSetMode('guide');
+}
+function scSetMode(m){
+  if(m) SG.mode=(m==='show')?'show':'guide';
+  try{ localStorage.setItem('sc:mode',SG.mode) }catch(e){}
+  var g=document.getElementById('scModeGuide'), s=document.getElementById('scModeShow');
+  if(g) g.className=(SG.mode==='guide')?'on':'';
+  if(s) s.className=(SG.mode==='show')?'on':'';
+  var gw=document.getElementById('scGuideWrap'), wk=document.getElementById('scWorking');
+  var rv=document.getElementById('scReveal'), dq=document.getElementById('scDrillQ');
+  if(gw) gw.style.display=(SG.mode==='guide')?'':'none';
+  if(wk) wk.style.display=(SG.mode==='show')?'':'none';
+  if(rv) rv.style.display='none';
+  if(dq) dq.style.display='none';
+  if(SG.mode==='guide'&&SG.r) sgPaint();
+}
+
+/* ---- the arithmetic helpers the walkthrough needs on top of scInfo ---- */
+function scPrefixOf(n){                      /* how many leading 1s, or null if the mask has a hole */
+  var seen0=false,c=0,i,b;
+  for(i=31;i>=0;i--){ b=(n>>>i)&1;
+    if(b===1){ if(seen0) return null; c++ } else { seen0=true }
+  }
+  return c;
+}
+function scPrevNext(r){
+  var base=scNum(scOctets(r.net)), out=[null,null];
+  var lo=base-r.block, hi=base+r.block;
+  if(lo>=0) out[0]=scIp(lo);
+  if(hi<=4294967295) out[1]=scIp(hi);
+  return out;
+}
+function sgAt(r,id){
+  var s=sgSteps(r),i;
+  for(i=0;i<s.length;i++){ if(s[i].id===id) return i+1 }
+  return null;
+}
+function sgHave(r,id){
+  if(sgAt(r,id)===null) return true;         /* not a checkpoint on this prefix: nothing to earn */
+  return !!(SG.solved[id]||SG.shown[id]);
+}
+
+/* ---- the nine checkpoints, built from r so every expected value is computed ---- */
+function sgSteps(r){
+  var s=[];
+  s.push({id:'host',
+    q:'How many <b>host bits</b> does <span class="mono">/'+r.prefix+'</span> leave?',
+    sub:'The slash counts network bits. Whatever is left of the 32 belongs to the host, and that one number decides everything else on this page.',
+    kind:'num', want:r.host,
+    hint:'An address is 32 bits. The prefix takes '+r.prefix+' of them.',
+    work:'<div class="scwork"><div><span class="lbl" style="width:58px">32</span>bits in an IPv4 address</div>'
+      +'<div><span class="lbl" style="width:58px">&minus; '+r.prefix+'</span>network bits (the prefix)</div>'
+      +'<div><span class="lbl" style="width:58px">=</span><span class="res">'+r.host+' host bits</span></div></div>'
+      +'<p class="sgnote">'+r.host+' bits spell 2<sup>'+r.host+'</sup> = '+r.block.toLocaleString('en-US')
+      +' values, so this block contains <b>'+r.block.toLocaleString('en-US')+'</b> addresses in total.</p>',
+    ok:'That is '+r.prefix+' + '+r.host+' = 32.',
+    why:function(v){ return v>r.host
+      ? 'Too many: the prefix is already using '+r.prefix+' of the 32 bits.'
+      : 'Too few: everything the prefix does not use is a host bit.' }});
+  s.push({id:'mask',
+    q:'What is the <b>subnet mask</b> in dotted decimal?',
+    sub:'Write the prefix out as 32 bits &mdash; that many 1s, then 0s &mdash; and read each group of eight back as a number.',
+    kind:'ip', want:r.mask,
+    hint:'/'+r.prefix+' is '+r.prefix+' ones and '+r.host+' zeros. Count the ones in each octet separately.',
+    work:'<div class="scwork"><div><span class="lbl">bits</span>'+scGroup(scBits(r.maskN))+'</div>'
+      +'<div><span class="lbl">octet</span>'+r.maskOctets.join(' . ')+'</div></div>'
+      +'<p class="sgnote">The mask is not a second setting that has to agree with the prefix: it <i>is</i> the prefix, in dotted form. '
+      +r.prefix+' ones, then '+r.host+' zeros.</p>',
+    ok:'That is /'+r.prefix+' written out.',
+    why:function(v){ var p=scPrefixOf(v);
+      return p===null?'A mask has to be a run of 1s followed by a run of 0s &mdash; yours has a 1 after a 0, which is not a mask.'
+        :('That mask is /'+p+', and this address needs /'+r.prefix+'. You are '+(p<r.prefix?(r.prefix-p)+' ones short':(p-r.prefix)+' ones too many')+'.') }});
+  if(r.prefix>=1&&r.prefix<32){
+    s.push({id:'octet',
+      q:'Which <b>octet</b> does the mask stop being <span class="mono">255</span> in?',
+      sub:'That is the interesting octet: the one the blocks step in. Every octet before it is all network bits, every octet after it is all host bits.',
+      kind:'num', want:r.oi,
+      hint:'Read the mask octet by octet and find the first one that is not 255.',
+      work:'<div class="scwork">'+r.maskOctets.map(function(v,i){
+        return '<div><span class="lbl" style="width:62px">octet '+(i+1)+'</span>'+v
+          +(v===255?' &nbsp;<i>all network</i>':(v===0?' &nbsp;<i>all host</i>':' &nbsp;<i>the split</i>'))+'</div>' }).join('')
+        +'</div><p class="sgnote">Octet '+r.oi+' reads <span class="mono">'+r.maskOctets[r.oi-1]+'</span> = <span class="mono">'
+        +scBits8(r.maskOctets[r.oi-1],0)+'</span>. '
+        +((r.host%8===0)?'Every bit in it is a network bit, so one block uses the whole octet.'
+          :'Its last '+(r.host%8)+' bit'+(r.host%8===1?'':'s')+' are host bits, which is what makes the block smaller than a whole octet.')
+        +'</p>',
+      ok:'Octet '+r.oi+', where the mask reads '+r.maskOctets[r.oi-1]+'.',
+      why:function(v){ var m=r.maskOctets[v-1];
+        return 'Not that one: octet '+v+' reads '+m
+          +(m===255?', which is all network bits &mdash; a 255 never changes anything.':(m===0?', which is all host bits, so the split happened earlier.':'.'))
+          +' Look for the FIRST octet that is not 255.' }});
+    s.push({id:'block',
+      q:'What is the <b>block size</b> in that octet?',
+      sub:'Block size is 256 minus the mask value in the interesting octet. It is the step between one network and the next in that octet.',
+      kind:'num', want:r.osize,
+      hint:'256 &minus; '+r.maskOctets[r.oi-1]+' = ?',
+      work:'<div class="scwork"><div><span class="lbl" style="width:58px">256</span>values in one octet</div>'
+        +'<div><span class="lbl" style="width:58px">&minus; '+r.maskOctets[r.oi-1]+'</span>the mask in octet '+r.oi+'</div>'
+        +'<div><span class="lbl" style="width:58px">=</span><span class="res">'+r.osize+'</span></div></div>'
+        +'<p class="sgnote">So networks begin on multiples of <b>'+r.osize+'</b> in octet '+r.oi+'. '
+        +((r.host%8===0)?'Because the mask ends on an octet boundary, that is a whole octet of 256 values.'
+          :'Every network after this one begins '+r.osize+' higher in that octet.')+'</p>',
+      ok:'256 &minus; '+r.maskOctets[r.oi-1]+' = '+r.osize+'.',
+      why:function(v){ return '256 minus the mask value in octet '+r.oi+' ('+r.maskOctets[r.oi-1]+'). Your '+v+' does not match that.' }});
+  }
+  s.push({id:'net',
+    q:'What is the <b>network address</b>?',
+    sub:'Two routes to the same answer: AND the address with the mask, or walk down to the nearest multiple of the block size in octet '
+      +(r.prefix>=1&&r.prefix<32?r.oi:1)+'.',
+    kind:'ip', want:r.net,
+    hint:'Set every host bit to 0 &mdash; the last '+r.host+' bits all become zero.',
+    work:'<div class="scwork"><div><span class="lbl">IP</span>'+scGroup(scBits(r.ipN))+'</div>'
+      +'<div><span class="lbl">MASK</span>'+scGroup(scBits(r.maskN))+'</div>'
+      +'<div><span class="lbl">AND</span><span class="res">'+scGroup(scBits(r.netN))+'</span></div></div>'
+      +'<p class="sgnote">A 1 in the mask lets the bit through; a 0 forces the answer to 0. The same thing in decimal: '
+      +(r.prefix>=1&&r.prefix<32?('networks start on multiples of '+r.osize+' in octet '+r.oi+', and '+r.ip.split('.')[r.oi-1]
+        +' sits in the block that begins at '+r.net.split('.')[r.oi-1]+'.')
+        :'with this prefix there is no octet to step in &mdash; the whole address is network.')+'</p>',
+    ok:'The host bits are now all 0.',
+    why:function(v){
+      if(v===r.ipN) return 'That is the address you were given. The network address is that same address with every host bit set to 0.';
+      if((v&(4294967295-r.maskN))!==0) return 'The last '+r.host+' bits are the host part, and on a network address they all have to be 0. Yours still has some set.';
+      if(r.prefix>=1&&r.prefix<32){
+        var oct=+scIp(v).split('.')[r.oi-1], netOct=+r.net.split('.')[r.oi-1];
+        if(oct%r.osize!==0) return 'Blocks '+r.osize+' wide can only begin on a multiple of '+r.osize+' in octet '+r.oi+', and '+oct+' is not one.';
+        return 'Right shape, wrong block: octet '+r.oi+' has to land on '+netOct+' for this address.';
+      }
+      return 'Zero the host bits and compare again.' }});
+  s.push({id:'bcast',
+    q:'What is the <b>broadcast address</b>?',
+    sub:'The other end of the same block: the host bits all set to 1 instead of 0.',
+    kind:'ip', want:r.bcast,
+    hint:'The next network begins one whole block later ('+(scPrevNext(r)[1]||'past the end of the address space')+'). The broadcast is the address just before it.',
+    work:'<div class="scwork"><div><span class="lbl">NET</span>'+scGroup(scBits(r.netN))+'</div>'
+      +'<div><span class="lbl">BCAST</span>'+scGroup(scBits(r.bcastN))+'</div></div>'
+      +'<p class="sgnote">In decimal it is the network plus the block, minus one: '+r.net+' + '
+      +r.block.toLocaleString('en-US')+' &minus; 1 = '+r.bcast+'.</p>',
+    ok:'The host bits are all 1s.',
+    why:function(v){
+      if(v===r.netN) return 'That is the network address, where the host bits are all 0. The broadcast is the same block with them all 1.';
+      if(v===r.ipN) return 'That is your own address. The broadcast is the last address in the block, not a host inside it.';
+      if(v===r.netN+r.block-2) return 'One too low. The last address of the block <i>is</i> the broadcast, not a host.';
+      return 'Count from the network: '+r.net+' plus '+r.block.toLocaleString('en-US')+' addresses ends at '+r.bcast+'.' }});
+  s.push({id:'first',
+    q:'What is the <b>first usable host</b>?',
+    sub:(r.block<=2)?('A /'+r.prefix+' is the exception: there is no reserved pair to skip, so the network address itself is usable (RFC 3021).')
+      :'The lowest address that can be handed to a device.',
+    kind:'ip', want:r.first,
+    hint:(r.block<=2)?'Every address in this block is usable.':'One above the network address.',
+    work:(r.block<=2)?'<p class="sgnote">RFC 3021 keeps both addresses of a /'+r.prefix+' usable, because a point-to-point link has no need to broadcast.</p>'
+      :('<div class="scwork"><div><span class="lbl" style="width:70px">network</span>'+r.net+'</div><div><span class="lbl" style="width:70px">+ 1</span><span class="res">'+r.first+'</span></div></div>'),
+    ok:'Network + 1.',
+    why:function(v){
+      if(v===r.netN) return 'The network address is never given to a device &mdash; all-zero host bits is how an address says "the subnet itself".';
+      if(v===r.bcastN) return 'The broadcast is never given to a device: it means every host on the subnet.';
+      return 'Start at the network address ('+r.net+') and step one.' }});
+  s.push({id:'last',
+    q:'What is the <b>last usable host</b>?',
+    sub:(r.block<=2)?('On a /'+r.prefix+' that is the other end of the link.'):'The highest address that can be handed to a device.',
+    kind:'ip', want:r.last,
+    hint:(r.block<=2)?'Both ends of the link are usable.':'One below the broadcast.',
+    work:(r.block<=2)?'<p class="sgnote">Both endpoints of a /'+r.prefix+' are ordinary addresses.</p>'
+      :('<div class="scwork"><div><span class="lbl" style="width:70px">broadcast</span>'+r.bcast+'</div><div><span class="lbl" style="width:70px">&minus; 1</span><span class="res">'+r.last+'</span></div></div>'),
+    ok:'Broadcast &minus; 1.',
+    why:function(v){
+      if(v===r.bcastN) return 'The broadcast itself is never given to a device &mdash; it means every host on the subnet.';
+      if(v===r.netN) return 'The network address is not a host. Start from the broadcast and step back one.';
+      return 'One below the broadcast: '+r.bcast+' &minus; 1.' }});
+  s.push({id:'usable',
+    q:'How many <b>usable hosts</b> fit?',
+    sub:(r.block<=2)?('A /'+r.prefix+' is the exception to the minus-two rule &mdash; count the addresses in the block.'):'Addresses in the block, minus the two that can never be given out.',
+    kind:'num', want:(r.usable||0),
+    hint:(r.block<=2)?'How many addresses does the block hold?':'2^'+r.host+' &minus; 2.',
+    work:(r.block<=2)?('<p class="sgnote">The block holds '+r.block+' address'+(r.block===1?'':'es')+', and a /'+r.prefix+' keeps all of them usable.</p>')
+      :('<div class="scwork"><div><span class="lbl" style="width:58px">2^'+r.host+'</span>'+r.block.toLocaleString('en-US')+' addresses</div>'
+        +'<div><span class="lbl" style="width:58px">&minus; 2</span>network + broadcast</div>'
+        +'<div><span class="lbl" style="width:58px">=</span><span class="res">'+(r.usable||0)+' usable</span></div></div>'),
+    ok:'2^'+r.host+' &minus; '+(r.block<=2?'0':'2')+' = '+(r.usable||0)+'.',
+    why:function(v){
+      if(v===r.block) return 'That is every address in the block. Two of them &mdash; the network and the broadcast &mdash; can never be given to a device.';
+      return '2^'+r.host+' = '+r.block+' addresses, minus the network and the broadcast.' }});
+  return s;
+}
+
+/* ---- the table that fills itself in ---- */
+function scFactRows(r){
+  var pn=scPrevNext(r), rows=[];
+  var cf = (r.defm===null) ? 'no classful default'
+    : (r.delta===0 ? ('default /'+r.defm+', exactly on it')
+    : (r.delta>0 ? ('default /'+r.defm+' + '+r.delta+' bits of subnetting')
+                 : ('default /'+r.defm+' minus '+(-r.delta)+' bits, supernetting')));
+  rows.push({g:'From the address alone \u2014 no method needed', k:'Class', v:'Class '+r.cls,
+    tip:'<b>Class</b> &mdash; the classful reading of the first octet: 1&ndash;126 is A, 128&ndash;191 is B, 192&ndash;223 is C, 224 and up is multicast or reserved. A useful habit and an exam answer; the slash is the real mask.'});
+  rows.push({g:'', k:'Scope', v:r.special,
+    tip:'<b>Scope</b> &mdash; whether the address is public and routable, or belongs to a block kept for something else: private space (RFC 1918), loopback, link-local, multicast, carrier-grade NAT, or a documentation range.'});
+  rows.push({g:'', k:'Classful default', v:cf,
+    tip:'<b>Classful default</b> &mdash; the mask the address class would have had before CIDR. Longer than the default is subnetting, shorter is supernetting. The class says where the habit came from, not what the mask is.'});
+  rows.push({g:'From the slash \u2014 checkpoints 1 to 4', k:'Host bits', v:String(r.host), need:['host'],
+    tip:'<b>Host bits</b> &mdash; 32 minus the prefix. How many bits the host part gets, which decides the size of the block.'});
+  rows.push({g:'', k:'Subnet mask', v:r.mask, need:['mask'],
+    tip:'<b>Subnet mask</b> &mdash; the prefix written as four octets: a run of 1s for the network, then 0s for the host.'});
+  rows.push({g:'', k:'Wildcard mask', v:r.wild, need:['mask'],
+    tip:'<b>Wildcard mask</b> &mdash; the mask with every bit flipped. What a Cisco access list or an OSPF statement asks for: 0 means must match, 1 means do not care.'});
+  rows.push({g:'', k:'Interesting octet', v:'octet '+r.oi, need:['octet'],
+    tip:'<b>Interesting octet</b> &mdash; the first octet where the mask is not 255. Blocks step in that octet; everything before it is network and everything after it is host.'});
+  rows.push({g:'', k:'Block size there', v:String(r.osize)+' in octet '+r.oi, need:['block'],
+    tip:'<b>Block size</b> &mdash; 256 minus the mask value in the interesting octet. Networks begin on multiples of it in that octet.'});
+  rows.push({g:'', k:'Addresses in the block', v:r.block.toLocaleString('en-US'), need:['host'],
+    tip:'<b>Addresses in the block</b> &mdash; 2 to the power of the host bits. It equals the block size only when every host bit sits in the interesting octet; a /22 steps by 4 in octet 3 but each network holds 1,024 addresses.'});
+  rows.push({g:'From the AND \u2014 checkpoint 5', k:'Network address', v:r.net+'/'+r.prefix, need:['net'],
+    tip:'<b>Network address</b> &mdash; the address with every host bit at 0. The name of the whole block, and the form a route, a DHCP scope or a firewall rule is written in.'});
+  rows.push({g:'From the host bits \u2014 checkpoints 6 to 9', k:'Broadcast', v:r.bcast, need:['bcast'],
+    tip:'<b>Broadcast</b> &mdash; the same block with every host bit at 1. Anything sent here reaches every device on the subnet.'});
+  rows.push({g:'', k:'First usable', v:r.first, need:['first'],
+    tip:'<b>First usable</b> &mdash; the lowest address a device can take: network plus one, except on a /31 where the network address is usable too.'});
+  rows.push({g:'', k:'Last usable', v:r.last, need:['last'],
+    tip:'<b>Last usable</b> &mdash; the highest address a device can take: one below the broadcast, except on a /31.'});
+  rows.push({g:'', k:'Usable hosts', v:String(r.usable||0), need:['usable'],
+    tip:'<b>Usable hosts</b> &mdash; addresses minus the network and the broadcast: 2 to the power of the host bits, minus 2. Exceptions: a /31 keeps both addresses (RFC 3021), a /32 is a single address.'});
+  rows.push({g:'', k:'Your address', v:r.role, need:['net','bcast'],
+    tip:'<b>Your address</b> &mdash; where the address you typed sits: an ordinary usable host, or the network or broadcast address itself, which no device may be given.'});
+  rows.push({g:'', k:'Either side', v:((pn[0]||'\u2014')+' \u00b7 '+(pn[1]||'\u2014')), need:['net','block'],
+    tip:'<b>Either side</b> &mdash; the previous and next subnet of the same size. Worth checking before you type a neighbouring subnet into a router.'});
+  return rows;
+}
+function sgFacts(r){
+  var hostEl=document.getElementById('scFacts'); if(!hostEl) return;
+  var rows=scFactRows(r), h='<div class="tbl-wrap"><table class="sgfacts"><thead><tr>'
+    +'<th>What you now know</th><th>Value</th><th>Step</th></tr></thead><tbody>';
+  var g='', got=0, shown=0, i, j;
+  for(i=0;i<rows.length;i++){
+    var row=rows[i];
+    if(row.g!==g){ g=row.g; h+='<tr class="grp"><th colspan="3">'+g+'</th></tr>' }
+    var have=true, viaShown=false, needTxt='\u2014';
+    if(row.need&&row.need.length){
+      var ns=[];
+      for(j=0;j<row.need.length;j++){
+        var id=row.need[j], at=sgAt(r,id);
+        if(at===null) continue;
+        ns.push(at);
+        if(SG.solved[id]) continue;
+        if(SG.shown[id]){ viaShown=true; continue }
+        have=false;
+      }
+      needTxt=ns.length?('step '+ns.join(' + ')):'free';
+    }
+    if(have){ got++; if(viaShown) shown++ }
+    h+='<tr class="'+(have?(viaShown?'shown':'got'):'pend')+'">'
+      +'<td class="what"'+(row.tip?(' data-tip="'+row.tip+'" tabindex="0"'):'')+'>'+row.k+'</td>'
+      +'<td class="v">'+(have?row.v:'&mdash;')+'</td>'
+      +'<td class="needs">'+(have?'&#10003;':needTxt)+'</td></tr>';
+  }
+  h+='</tbody></table></div>';
+  hostEl.innerHTML=h;
+  var c=document.getElementById('scFactsCount');
+  if(c) c.innerHTML='You hold <b>'+got+'</b> of '+rows.length+' facts'
+    +(shown?' ('+shown+' shown rather than solved)':'')+'.';
+}
+
+/* ---- the stepper itself ---- */
+function sgScore(r){
+  var s=sgSteps(r), own=0, shy=0, h=0, i;
+  for(i=0;i<s.length;i++){
+    if(SG.solved[s[i].id]) own++;
+    else if(SG.shown[s[i].id]) shy++;
+    h+=(SG.hints[s[i].id]||0);
+  }
+  var t=own+' / '+s.length+' on your own';
+  if(shy) t+=' \u00b7 '+shy+' shown';
+  if(h) t+=' \u00b7 '+h+' hint'+(h===1?'':'s');
+  return t;
+}
+function sgBar(r){
+  var s=sgSteps(r), n=s.length||1;
+  var k=document.getElementById('sgProg');
+  if(k) k.textContent=Math.min(SG.step+1,n)+' / '+n;
+  var f=document.getElementById('sgFill');
+  if(f) f.style.width=(100*Math.min(SG.step,n)/n)+'%';
+  var sc=document.getElementById('sgScore');
+  if(sc) sc.textContent=sgScore(r);
+}
+function sgPaint(){
+  var r=SG.r; if(!r) return;
+  var box=document.getElementById('scGuide'); if(!box) return;
+  if(r.prefix<1){
+    box.innerHTML='<p class="sgnote">A <b>/0</b> gives all 32 bits to the host and leaves no network part, so there is no '
+      +'block boundary to walk to and nothing to AND. Type a prefix of /1 or longer to use the walkthrough &mdash; or switch to '
+      +'<b>Show the whole working</b>, which still computes it.</p>';
+    return;
+  }
+  var steps=sgSteps(r), n=steps.length;
+  var bar='<div class="sgbar"><span class="k" id="sgProg">'+Math.min(SG.step+1,n)+' / '+n+'</span>'
+    +'<span>checkpoint</span><span class="sgtrack"><i id="sgFill" style="width:'+(100*Math.min(SG.step,n)/n)+'%"></i></span>'
+    +'<span id="sgScore">'+sgScore(r)+'</span></div>';
+  if(SG.step>=n){
+    SG.done=true;
+    var own=0, shy=0, i;
+    for(i=0;i<n;i++){ if(SG.solved[steps[i].id]) own++; else if(SG.shown[steps[i].id]) shy++ }
+    box.innerHTML=bar+'<div class="big60 g" style="margin-top:0"><b>Done &mdash; '+n+' checkpoints, '+own+' on your own.</b> '
+      +(shy?('You had '+shy+' shown rather than solved; those rows carry a star in the table below.')
+           :'Every one of them was yours.')
+      +' The table under this box is everything those two numbers gave up, and its <b>Step</b> column says where you could have stopped if you only wanted part of it.</div>'
+      +'<div class="scbtns"><button class="secondary" id="sgAgain">Work another one</button>'
+      +'<button class="ghost" id="sgReview">Show the whole working</button></div>';
+    var a=document.getElementById('sgAgain'), v=document.getElementById('sgReview');
+    if(a) a.onclick=scDrill;
+    if(v) v.onclick=function(){ scSetMode('show') };
+    sgBar(r); sgFacts(r);
+    return;
+  }
+  var st=steps[SG.step];
+  box.innerHTML=bar+'<div class="sgstep"><p class="sgq"><span class="n">'+(SG.step+1)+'</span>'+st.q+'</p>'
+    +'<p class="sgsub">'+st.sub+'</p>'
+    +'<div class="iobox"><input id="sgIn" autocomplete="off" spellcheck="false" placeholder="'+
+      (st.kind==='num'?'a number':'e.g. 255.255.255.252')+'">'
+    +'<button class="primary" id="sgCheck">Check</button>'
+    +'<button class="ghost" id="sgHint">Hint</button>'
+    +'<button class="ghost" id="sgShow">Show me</button></div>'
+    +'<div class="sgfb" id="sgFb"></div><div class="sgwork" id="sgWork"></div>'
+    +'<div class="scbtns" style="margin-top:11px"><button class="secondary" id="sgNext" style="display:none">Next checkpoint</button></div>'
+    +'</div>';
+  var inp=document.getElementById('sgIn');
+  document.getElementById('sgCheck').onclick=function(){ sgCheck(r) };
+  document.getElementById('sgHint').onclick=function(){ sgHint(r) };
+  document.getElementById('sgShow').onclick=function(){ sgShow(r) };
+  document.getElementById('sgNext').onclick=function(){ sgNext(r) };
+  inp.addEventListener('keydown',function(e){ if(e.key==='Enter'){ e.preventDefault(); sgCheck(r) } });
+}
+function sgMsg(fb,cls,html){ fb.className='sgfb on '+cls; fb.innerHTML=html }
+function sgFb(){ return document.querySelector('#scGuide .sgfb') }
+function sgCheck(r){
+  var steps=sgSteps(r), st=steps[SG.step]; if(!st) return;
+  var inp=document.getElementById('sgIn'), fb=sgFb();
+  if(!inp||!fb) return;
+  var raw=(inp.value||'').trim();
+  if(!raw){ sgMsg(fb,'bad','Type an answer first. <b>Hint</b> nudges you and <b>Show me</b> works it through with you.'); return }
+  var ok=false, val=null, diag='';
+  if(st.kind==='num'){
+    var digits=raw.replace(/[\s,]/g,'');
+    if(!/^[0-9]+$/.test(digits)||digits.length>10){
+      return sgMsg(fb,'bad','A whole number only &mdash; digits, no dots and no units.');
+    }
+    val=parseInt(digits,10);
+    ok=(val===st.want);
+    if(!ok&&st.why) diag=st.why(val);
+  }else{
+    if(/^\/?[0-9]{1,2}$/.test(raw)&&parseInt(raw.replace('/',''),10)<=32){
+      return sgMsg(fb,'bad','That is the prefix. The mask is the same thing written as four dotted octets &mdash; count the ones.');
+    }
+    var o=scOctets(raw);
+    if(!o){ return sgMsg(fb,'bad','Four octets from 0 to 255, separated by dots.') }
+    val=scNum(o);
+    ok=(val===scNum(scOctets(st.want)));
+    if(!ok&&st.why) diag=st.why(val);
+  }
+  if(!ok){
+    inp.classList.add('no');
+    sgMsg(fb,'bad','<b>Not yet.</b>'+(diag?('<span class="why">'+diag+'</span>'):'<span class="why">Read the step again, or take the hint.</span>'));
+    return;
+  }
+  inp.classList.remove('no');
+  inp.disabled=true;
+  SG.solved[st.id]=1; delete SG.shown[st.id];
+  document.getElementById('sgWork').innerHTML=st.work||'';
+  sgMsg(fb,'good','<b>Right.</b> '+(st.ok||''));
+  document.getElementById('sgCheck').disabled=true;
+  var nx=document.getElementById('sgNext');
+  nx.style.display='inline-block';
+  nx.textContent=(SG.step>=steps.length-1)?'Finish':'Next checkpoint';
+  try{ nx.focus({preventScroll:true}) }catch(e){}
+  sgFacts(r); sgBar(r);
+}
+function sgHint(r){
+  var steps=sgSteps(r), st=steps[SG.step]; if(!st) return;
+  if(SG.hints[st.id]) return;                 /* one hint per checkpoint, so the button cannot stack */
+  SG.hints[st.id]=1;
+  var w=document.getElementById('sgWork'); if(!w) return;
+  var p=document.createElement('p'); p.className='sghint';
+  p.innerHTML='<b>Hint.</b> '+(st.hint||'Re-read the step: the arithmetic is in the question.');
+  w.appendChild(p);
+  sgBar(r);
+}
+function sgShow(r){
+  var steps=sgSteps(r), st=steps[SG.step]; if(!st) return;
+  var inp=document.getElementById('sgIn'), fb=sgFb();
+  if(!inp||!fb) return;
+  inp.value=st.want; inp.disabled=true;
+  SG.shown[st.id]=1; delete SG.solved[st.id];
+  document.getElementById('sgWork').innerHTML=st.work||'';
+  sgMsg(fb,'','<b>Shown, not solved.</b> The row gets a star in the table &mdash; you can read it, but it is not yours yet.');
+  document.getElementById('sgCheck').disabled=true;
+  var nx=document.getElementById('sgNext');
+  nx.style.display='inline-block';
+  nx.textContent=(SG.step>=steps.length-1)?'Finish':'Next checkpoint';
+  try{ nx.focus({preventScroll:true}) }catch(e){}
+  sgFacts(r); sgBar(r);
+}
+function sgNext(r){
+  var s=sgSteps(r), st=s[SG.step];
+  /* Never skip past an unanswered checkpoint. The Next button is hidden until the step is solved or
+     shown, so a reader cannot click it early — but the handler still has to refuse, or a script (or
+     a stray Enter) could walk the whole method without answering anything. */
+  if(st&&!(SG.solved[st.id]||SG.shown[st.id])) return;
+  SG.step++;
+  sgPaint();
+}
+function scGuideSync(r){
+  var key=r.ip+'/'+r.prefix;
+  if(SG.key!==key){ SG.key=key; SG.step=0; SG.solved={}; SG.shown={}; SG.hints={}; SG.done=false }
+  SG.r=r;
+  sgFacts(r);
+  if(SG.mode==='guide') sgPaint();
+}
 
 </script>
 </body>

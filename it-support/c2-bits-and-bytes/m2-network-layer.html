@@ -955,7 +955,10 @@ mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px
     first host is network + 1, last host is broadcast − 1. Then verify the neighbours tile the /24 with no gaps —
     <span class="mono">.63</span> and <span class="mono">.64</span> touch, which is the sign nothing was skipped.
     Check yourself against <a href="subnet-calculator.html">the subnet calculator</a> instead of the table if you are
-    not sure the method is right yet.</p>
+    not sure the method is right yet. Its <b>Walk me through it</b> mode asks the method back to you one
+    checkpoint at a time — mask, block size, network, broadcast, host range — and fills a table of what
+    each answer buys you, so you can see exactly which steps you still need and stop as soon as you have
+    the fact you came for.</p>
     <button class="aud" data-audio="audio/m2-count-first.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · the count-first table</button><button class="aud" data-audio="audio/m2-sunny-cafe.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · Sunny Cafe</button></section><section id="subnet-game" class=""><h2>Drill: subnetting, until it's boring</h2><p class="lede">Generated problems, all four question shapes, difficulty ramping with your streak. This is the single highest-value thing on the page.</p><div class="game" id="gSubnet"><div class="gtitle"><b>Subnetting drill</b></div><p class="ghint">Network address, broadcast, mask, first/last host, usable count — asked at random. Hint shows the block size if you're stuck.</p><div id="subnetHost"></div></div><div class="game" id="gMasks"><div class="gtitle"><b>Match mask to usable hosts</b></div><p class="ghint">Six masks. Get these to reflex and half the module is done.</p><div id="maskHost"></div></div></section><section id="binary" class=""><h2>Binary math — the two operators that matter</h2><p class="lede">You need AND. You should recognise OR. Nothing else is asked.</p>
     <table>
       <tr><th>Operation</th><th>Rule</th><th>Examples</th></tr>
