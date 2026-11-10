@@ -33,7 +33,7 @@ getting shared. So, as a request on top of the licence: **share
 
 Course names, syllabi and exam objectives belong to Google, Coursera and CompTIA. This site is not
 affiliated with, sponsored by or endorsed by them, and reproduces none of their text: every definition,
-explanation, diagram and quiz question here is the author's own wording. `robots.txt` and the per-page
+explanation, diagram and quiz question here is written for this site, not copied from theirs. `robots.txt` and the per-page
 `noindex` are deliberate, not an oversight.
 
 Corrections, and permissions beyond these terms: [open an issue](https://github.com/kyle-see/it-study-hub/issues/new).

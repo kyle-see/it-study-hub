@@ -509,6 +509,8 @@ footer{
 }
 footer p{margin:6px 0}
 
+footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);font-size:11px}
+
 @media print{
   .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
   body{background:#fff;color:#000}
@@ -858,12 +860,11 @@ and no broadcast (RFC 3021), and a <b>/32</b> is a single address, not an empty 
       from the address and prefix you type &mdash; the walkthrough's expected answers included, so it
       cannot mark a right answer wrong &mdash; and the reference table is generated from Python's own
       <span class="mono">ipaddress</span> module. Nothing on it was typed by hand.</p>
-      <p class="src">The calculator and its walkthrough were written in a <b>pi-agent</b> session against
-      <b>DeepSeek-V4.1-Flash-1017</b> (Unsloth <span class="mono">UD-Q3_K_XL</span>) running locally through
-      <b>llama-swap</b> &mdash; no hosted model wrote any of it, and the same machine runs the gate that
-      checks its arithmetic.</p>
       <p class="src">Study aid. Nothing here is submitted for grading.</p>
-    </footer>
+    <p class="cred">Written by <b>pi-agent</b> driving <b>DeepSeek-V4.1-Flash-1017</b>
+  (Unsloth <code>UD-Q3_K_XL</code>) on the author's own machine, under his direction and review. No Claude,
+  OpenAI or other hosted model wrote any of it, and no page of it needed a network.</p>
+</footer>
 <script>
 
 var STORE='c2:v1';

@@ -19,7 +19,7 @@ trackers, no analytics. It works offline, from a phone, from a double-click.
 
 Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera
 or NPower; course titles and trademarks belong to their owners. Every definition, explanation and
-quiz question in this repo is my own wording — the courses supply the syllabus and the vocabulary,
+quiz question in this repo is written for this site: the courses supply the syllabus and the vocabulary,
 not the prose.
 
 ## Use it, share the link
@@ -30,13 +30,15 @@ place stays corrected, and the mirror nobody maintains is the one that keeps get
 
 Support is optional and changes nothing: <https://buymeacoffee.com/kyle.see>.
 
-## How the subnet calculator was built
+## How this was built
 
-`it-support/c2-bits-and-bytes/subnet-calculator.html` was written with a coding agent on the author's own
-machine: a `pi-agent` session driving **DeepSeek-V4.1-Flash-1017** (Unsloth `UD-Q3_K_XL`) served locally
-through **llama-swap**. No hosted model wrote a line of that page, nothing in it left the box it was
-written on, and the same machine runs the gate that recomputes every number in the walkthrough before a
-publish is allowed to go out.
+Every page here — the prose, the drills, the generators that build them and the gate that checks them —
+was written by a model running on the author's own machine, under his direction and review: a
+`pi-agent` session driving **DeepSeek-V4.1-Flash-1017** (Unsloth `UD-Q3_K_XL`) served locally through
+**llama-swap**. No Claude, OpenAI or other hosted model wrote any of it. The loop was a person's: he set
+the syllabus, the house style and the standard a page had to reach, read every page, and sent it back
+until it did. The machines did the typing and the arithmetic, and a gate recomputes the numbers before
+anything is published — which is why the site can promise that a wrong answer is never marked right.
 
 ## Spotted a mistake?
 
