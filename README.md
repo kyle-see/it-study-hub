@@ -30,6 +30,14 @@ place stays corrected, and the mirror nobody maintains is the one that keeps get
 
 Support is optional and changes nothing: <https://buymeacoffee.com/kyle.see>.
 
+## How the subnet calculator was built
+
+`it-support/c2-bits-and-bytes/subnet-calculator.html` was written with a coding agent on the author's own
+machine: a `pi-agent` session driving **DeepSeek-V4.1-Flash-1017** (Unsloth `UD-Q3_K_XL`) served locally
+through **llama-swap**. No hosted model wrote a line of that page, nothing in it left the box it was
+written on, and the same machine runs the gate that recomputes every number in the walkthrough before a
+publish is allowed to go out.
+
 ## Spotted a mistake?
 
 [Open an issue](https://github.com/kyle-see/it-study-hub/issues/new). A wrong sentence on a page that a

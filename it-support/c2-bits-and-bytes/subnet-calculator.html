@@ -618,6 +618,31 @@ mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px
 .scerr{color:var(--bad-bright);font-family:var(--mono);font-size:13px;margin-top:8px}
 ol.methodsteps{padding-left:22px;margin:12px 0}
 ol.methodsteps li{margin:9px 0;max-width:88ch}
+/* ---- the working boxes inside a checkpoint (2026-11-10) ----
+   Kyle: "basically i never want the user have to open a scratch pad, we should provide that in the
+   study-hub, and it should be where its needed". So each checkpoint that does arithmetic carries its
+   own bench: the numbers laid out, one box for the part the reader contributes, and a button that
+   works it out. The bench never grades anything — the answer box does that — it just removes the
+   reason to reach for paper. */
+.sgbench{border:1px solid var(--rule);border-radius:10px;background:var(--surface-2);padding:11px 13px;margin:12px 0 0}
+.sgbench .cap{font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;color:var(--text-mute);margin-bottom:8px}
+.sgrow2{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:var(--mono);font-size:13px;margin:6px 0}
+.sgrow2 .big{font-size:15px;color:var(--accent-bright)}
+.sgrow2 .op{color:var(--text-mute)}
+.sgrow2 input{background:var(--bg);color:var(--text);border:1px solid var(--rule-2);border-radius:7px;
+  font-family:var(--mono);font-size:13px;padding:5px 8px;min-width:96px}
+.sgrow2 input.wide{min-width:352px}
+.sgrow2 input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.sgrow2 output{color:var(--accent-bright);font-size:15px;min-width:40px;font-family:var(--mono)}
+.sgrow2 .lbl{color:var(--text-mute);font-size:11px;min-width:62px}
+.sgbits{font-family:var(--mono);font-size:13px;letter-spacing:.02em;white-space:nowrap}
+.sgbits b{color:var(--amber-400);font-weight:700}
+.sgbits i{color:var(--text-mute);font-style:normal;border-bottom:1px dashed var(--text-mute)}
+.sgbmsg{font-size:12.5px;line-height:1.65;margin:8px 0 0;color:var(--text-mute)}
+.sgbmsg:empty{display:none}
+.sgbmsg.good{color:var(--good-bright)}
+.sgbmsg.bad{color:var(--bad-bright)}
+@media (max-width:640px){.sgbits{font-size:10.5px}.sgrow2 input.wide{min-width:180px}}
 /* ---- the guided walkthrough (2026-11-10) ---- */
 .scmode{display:inline-flex;margin:14px 0 4px;border:1px solid var(--rule-2);border-radius:10px;overflow:hidden;max-width:100%}
 .scmode button{border:0;border-radius:0;background:transparent;color:var(--text-mute);font-size:13px;
@@ -833,6 +858,10 @@ and no broadcast (RFC 3021), and a <b>/32</b> is a single address, not an empty 
       from the address and prefix you type &mdash; the walkthrough's expected answers included, so it
       cannot mark a right answer wrong &mdash; and the reference table is generated from Python's own
       <span class="mono">ipaddress</span> module. Nothing on it was typed by hand.</p>
+      <p class="src">The calculator and its walkthrough were written in a <b>pi-agent</b> session against
+      <b>DeepSeek-V4.1-Flash-1017</b> (Unsloth <span class="mono">UD-Q3_K_XL</span>) running locally through
+      <b>llama-swap</b> &mdash; no hosted model wrote any of it, and the same machine runs the gate that
+      checks its arithmetic.</p>
       <p class="src">Study aid. Nothing here is submitted for grading.</p>
     </footer>
 <script>
@@ -1940,6 +1969,11 @@ function scInit(){
     scRender();
   };
   scTipInit();
+  /* the working boxes: one delegated handler, so a re-render never leaves a dead button behind */
+  document.addEventListener('click',function(e){
+    var b=e.target&&e.target.closest?e.target.closest('.sgcalc'):null;
+    if(b) sgCalc(b);
+  });
   scSetMode(SG.mode);          /* before the first render, so the right half of the page is shown */
   scRender();
   document.getElementById('scStamp').textContent=new Date().getFullYear();
@@ -1993,6 +2027,98 @@ function scPrevNext(r){
   if(hi<=4294967295) out[1]=scIp(hi);
   return out;
 }
+/* ---- the per-checkpoint working boxes: one input each, one button, no grading ---- */
+function sgBitsMarked(bits,prefix){
+  var h='',i;
+  for(i=0;i<32;i++){
+    if(i%8===0&&i) h+=' ';
+    h+=(i>=prefix)?('<i>'+bits.charAt(i)+'</i>'):('<b>'+bits.charAt(i)+'</b>');
+  }
+  return h;
+}
+function sgBitsToIp(bits){
+  return scIp(scNum([parseInt(bits.substr(0,8),2),parseInt(bits.substr(8,8),2),
+                     parseInt(bits.substr(16,8),2),parseInt(bits.substr(24,8),2)]));
+}
+/* The other route to the network address, shown rather than described: the multiples of the block
+   size in the octet that moves, with the given address marked as a host inside one of them. */
+function sgMultiples(r){
+  if(!(r.prefix>=1&&r.prefix<32)) return 'there is no octet to step in here.';
+  var v=+r.ip.split('.')[r.oi-1], step=r.osize, lo=Math.floor(v/step)*step;
+  var start=Math.max(0,lo-2*step), out=[], i;
+  for(i=start;i<=Math.min(255,start+5*step);i+=step) out.push(i===lo?('<b>'+i+'</b>'):String(i));
+  return out.join(' &middot; ')+' &mdash; your '+v+' is a host inside the '+lo+' block, and the next '
+    +'network begins at '+Math.min(255,lo+step)+'.';
+}
+function sgCalc(b){
+  var box=b, out=null, i;
+  for(i=0;i<6&&box;i++){
+    if((' '+box.className+' ').indexOf(' sgbench ')>-1) break;
+    box=box.parentNode;
+  }
+  if(!box||!box.getAttribute('data-op')) return;
+  out=box.querySelector('output');
+  var inp=box.querySelector('.sgbinput'), msg=box.querySelector('.sgbmsg');
+  var op=box.getAttribute('data-op'), v=inp?(inp.value||'').trim():'';
+  function say(html,cls){ if(msg){ msg.className='sgbmsg '+(cls||''); msg.innerHTML=html } }
+  if(!inp||!out) return;
+  if(!v){ say('Fill the box first.','bad'); return }
+  if(op==='bits'){
+    var bits=v.replace(/[.\s]/g,''), want=box.getAttribute('data-want')||'';
+    var pfx=+(box.getAttribute('data-prefix')||0);
+    if(!/^[01]+$/.test(bits)||bits.length!==32){
+      say('It has to be 32 bits, 1s and 0s only &mdash; you gave '+bits.length+'.','bad'); return;
+    }
+    if(bits!==want){
+      var diff=[];
+      for(i=0;i<32;i++){ if(bits.charAt(i)!==want.charAt(i)) diff.push(i+1) }
+      say('Not yet: bit'+(diff.length>1?'s ':' ')+diff.slice(0,6).join(', ')+(diff.length>6?' ...':'')
+        +' differ'+(diff.length>1?'':'s')+' from the row this step wants. Compare those columns with the rows above.','bad');
+      return;
+    }
+    out.textContent=sgBitsToIp(bits);
+    say('That is the row: <span class="sgbits">'+sgBitsMarked(bits,pfx)+'</span> '
+      +'<span style="color:var(--text-mute)">&mdash; amber are the '+pfx+' network bits, dashed are the '
+      +(32-pfx)+' host bits.</span>','good');
+    return;
+  }
+  if(op==='hostbits'){
+    var hb=v.replace(/[.\s]/g,''), net=box.getAttribute('data-net')||'';
+    var pfx2=+(box.getAttribute('data-prefix')||0), nhost=32-pfx2;
+    if(!/^[01]+$/.test(hb)||hb.length!==nhost){
+      say('The host part is '+nhost+' bit'+(nhost===1?'':'s')+' &mdash; you gave '+hb.length+'.','bad'); return;
+    }
+    var full=net.substr(0,pfx2)+hb;
+    out.textContent=sgBitsToIp(full);
+    if(hb!==new Array(nhost+1).join('1')){
+      say('Those host bits spell <b>a host on this block</b> &mdash; offset '+parseInt(hb,2)+' inside it, not the broadcast. '
+        +'The broadcast is the one pattern where every host bit is 1.','bad');
+    }else{
+      say('Every host bit at 1: <span class="sgbits">'+sgBitsMarked(full,pfx2)+'</span> &mdash; that is the broadcast.','good');
+    }
+    return;
+  }
+  if(op==='sub'){
+    var fixed=box.getAttribute('data-fixed')||'a';
+    var digits=v.replace(/[,\s]/g,'');
+    if(!/^[0-9]{1,10}$/.test(digits)){ say('That box wants a number: digits only, no dots.','bad'); return }
+    var n=parseInt(digits,10);
+    if(isNaN(n)){ say('A number.','bad'); return }
+    var a=(fixed==='a')?+(box.getAttribute('data-a')):n;
+    var bb=(fixed==='a')?n:+(box.getAttribute('data-b'));
+    out.textContent=(a-bb).toLocaleString('en-US');
+    say(a+' &minus; '+bb+' = <b>'+(a-bb).toLocaleString('en-US')+'</b>.','good');
+    return;
+  }
+  if(op==='ipadd'){
+    var o=scOctets(v);
+    if(!o){ say('Four octets, 0 to 255.','bad'); return }
+    var n2=scNum(o)+(+(box.getAttribute('data-delta'))||0);
+    if(n2<0||n2>4294967295){ say('That runs off the end of the address space.','bad'); return }
+    out.textContent=scIp(n2>>>0);
+    say(scIp(scNum(o))+' '+(n2-scNum(o)>=0?'+ ':'&minus; ')+Math.abs(n2-scNum(o))+' = <b>'+scIp(n2>>>0)+'</b>.','good');
+  }
+}
 function sgAt(r,id){
   var s=sgSteps(r),i;
   for(i=0;i<s.length;i++){ if(s[i].id===id) return i+1 }
@@ -2008,23 +2134,32 @@ function sgSteps(r){
   var s=[];
   s.push({id:'host',
     q:'How many <b>host bits</b> does <span class="mono">/'+r.prefix+'</span> leave?',
-    sub:'The slash counts network bits. Whatever is left of the 32 belongs to the host, and that one number decides everything else on this page.',
+    sub:'The slash counts network bits. Whatever is left of the 32 belongs to the host -- and because each host bit doubles the number of addresses the block can hold, this one number decides everything else on the page.',
     kind:'num', want:r.host,
     hint:'An address is 32 bits. The prefix takes '+r.prefix+' of them.',
     work:'<div class="scwork"><div><span class="lbl" style="width:58px">32</span>bits in an IPv4 address</div>'
       +'<div><span class="lbl" style="width:58px">&minus; '+r.prefix+'</span>network bits (the prefix)</div>'
       +'<div><span class="lbl" style="width:58px">=</span><span class="res">'+r.host+' host bits</span></div></div>'
       +'<p class="sgnote">'+r.host+' bits spell 2<sup>'+r.host+'</sup> = '+r.block.toLocaleString('en-US')
-      +' values, so this block contains <b>'+r.block.toLocaleString('en-US')+'</b> addresses in total.</p>',
+      +' values, so this block contains <b>'+r.block.toLocaleString('en-US')+'</b> addresses in total.'
+      +' <b>Why 2 to the power of n:</b> a bit has two states, so every bit you add doubles the count -- '
+      +'0 host bits = 1 address, 1 = 2, 2 = 4, 3 = 8, 4 = 16, 8 = 256. That is the whole formula: doubling, written as a power.</p>',
     ok:'That is '+r.prefix+' + '+r.host+' = 32.',
     why:function(v){ return v>r.host
       ? 'Too many: the prefix is already using '+r.prefix+' of the 32 bits.'
       : 'Too few: everything the prefix does not use is a host bit.' }});
   s.push({id:'mask',
     q:'What is the <b>subnet mask</b> in dotted decimal?',
-    sub:'Write the prefix out as 32 bits &mdash; that many 1s, then 0s &mdash; and read each group of eight back as a number.',
+    sub:'Write the '+r.prefix+' ones and '+r.host+' zeros out as 32 bits, then read each group of eight back as a number. The bench below takes the bits and turns them into that decimal.',
     kind:'ip', want:r.mask,
     hint:'/'+r.prefix+' is '+r.prefix+' ones and '+r.host+' zeros. Count the ones in each octet separately.',
+    bench:'<div class="sgbench" data-op="bits" data-want="'+scBits(r.maskN)+'" data-prefix="'+r.prefix+'">'
+      +'<div class="cap">Write the prefix out as bits, then read it back</div>'
+      +'<div class="sgrow2"><span class="lbl">'+r.prefix+' ones</span>'
+      +'<input class="sgbinput wide" placeholder="32 bits, dots optional">'
+      +'<button type="button" class="ghost sgcalc">Read it back</button></div>'
+      +'<div class="sgrow2"><span class="lbl">decimal</span><output></output></div>'
+      +'<div class="sgbmsg"></div></div>',
     work:'<div class="scwork"><div><span class="lbl">bits</span>'+scGroup(scBits(r.maskN))+'</div>'
       +'<div><span class="lbl">octet</span>'+r.maskOctets.join(' . ')+'</div></div>'
       +'<p class="sgnote">The mask is not a second setting that has to agree with the prefix: it <i>is</i> the prefix, in dotted form. '
@@ -2054,9 +2189,17 @@ function sgSteps(r){
           +' Look for the FIRST octet that is not 255.' }});
     s.push({id:'block',
       q:'What is the <b>block size</b> in that octet?',
-      sub:'Block size is 256 minus the mask value in the interesting octet. It is the step between one network and the next in that octet.',
+      sub:'256 minus the mask value in the <span class="term" data-tip="<b>Interesting octet</b> - the first octet where the mask is not 255: the one the blocks step in.">interesting octet</span>. It is the step between one network and the next in that octet, and the bench is the subtraction itself.',
       kind:'num', want:r.osize,
       hint:'256 &minus; '+r.maskOctets[r.oi-1]+' = ?',
+      bench:'<div class="sgbench" data-op="sub" data-fixed="a" data-a="256">'
+        +'<div class="cap">Do the subtraction</div>'
+        +'<div class="sgrow2"><span class="big">256</span><span class="lbl">octet values</span><span class="op">&minus;</span>'
+        +'<input class="sgbinput" placeholder="mask value">'
+        +'<button type="button" class="ghost sgcalc">Work it out</button>'
+        +'<span class="op">=</span><output></output></div>'
+        +'<p class="sgnote" style="margin:6px 0 0">The <span class="term" data-tip="<b>Mask value</b> - what the mask reads in that octet: here 252, the last 2 of 30 ones followed by 2 zeros.">mask value</span> is the number the mask shows in octet '+r.oi+'.</p>'
+        +'<div class="sgbmsg"></div></div>',
       work:'<div class="scwork"><div><span class="lbl" style="width:58px">256</span>values in one octet</div>'
         +'<div><span class="lbl" style="width:58px">&minus; '+r.maskOctets[r.oi-1]+'</span>the mask in octet '+r.oi+'</div>'
         +'<div><span class="lbl" style="width:58px">=</span><span class="res">'+r.osize+'</span></div></div>'
@@ -2068,10 +2211,19 @@ function sgSteps(r){
   }
   s.push({id:'net',
     q:'What is the <b>network address</b>?',
-    sub:'Two routes to the same answer: AND the address with the mask, or walk down to the nearest multiple of the block size in octet '
-      +(r.prefix>=1&&r.prefix<32?r.oi:1)+'.',
+    sub:'Two routes, same answer. <b>AND</b> the address with the mask - a 1 in the mask lets the bit through, a 0 forces the answer to 0 - or walk down to the nearest multiple of the block size in octet '+(r.prefix>=1&&r.prefix<32?r.oi:1)+'. Both benches are below; either one is a full answer.',
     kind:'ip', want:r.net,
     hint:'Set every host bit to 0 &mdash; the last '+r.host+' bits all become zero.',
+    bench:'<div class="sgbench" data-op="bits" data-want="'+scBits(r.netN)+'" data-prefix="'+r.prefix+'">'
+      +'<div class="cap">Route 1: write the AND out, the third row is yours</div>'
+      +'<div class="sgrow2"><span class="lbl">address</span><span class="sgbits">'+sgBitsMarked(scBits(r.ipN),r.prefix)+'</span></div>'
+      +'<div class="sgrow2"><span class="lbl">mask</span><span class="sgbits">'+sgBitsMarked(scBits(r.maskN),r.prefix)+'</span></div>'
+      +'<div class="sgrow2"><span class="lbl">AND</span><input class="sgbinput wide" placeholder="your third row, 32 bits">'
+      +'<button type="button" class="ghost sgcalc">Read it back</button></div>'
+      +'<div class="sgrow2"><span class="lbl">decimal</span><output></output></div>'
+      +'<div class="sgbmsg"></div></div>'
+      +'<div class="sgbench"><div class="cap">Route 2: the multiples of '+r.osize+' in octet '+r.oi+'</div>'
+      +'<p class="sgnote" style="margin:0">'+sgMultiples(r)+'</p></div>',
     work:'<div class="scwork"><div><span class="lbl">IP</span>'+scGroup(scBits(r.ipN))+'</div>'
       +'<div><span class="lbl">MASK</span>'+scGroup(scBits(r.maskN))+'</div>'
       +'<div><span class="lbl">AND</span><span class="res">'+scGroup(scBits(r.netN))+'</span></div></div>'
@@ -2091,7 +2243,14 @@ function sgSteps(r){
       return 'Zero the host bits and compare again.' }});
   s.push({id:'bcast',
     q:'What is the <b>broadcast address</b>?',
-    sub:'The other end of the same block: the host bits all set to 1 instead of 0.',
+    sub:'Same block, other end: <b>keep the network bits exactly as they are and set every host bit to 1</b>. Nothing else moves. The bench shows the network row and takes just the host bits from you.',
+    bench:'<div class="sgbench" data-op="hostbits" data-net="'+scBits(r.netN)+'" data-prefix="'+r.prefix+'">'
+      +'<div class="cap">Put the host bits on</div>'
+      +'<div class="sgrow2"><span class="lbl">network</span><span class="sgbits">'+sgBitsMarked(scBits(r.netN),r.prefix)+'</span></div>'
+      +'<div class="sgrow2"><span class="lbl">host bits</span><input class="sgbinput" placeholder="'+r.host+' bits">'
+      +'<button type="button" class="ghost sgcalc">Build the address</button></div>'
+      +'<div class="sgrow2"><span class="lbl">result</span><output></output></div>'
+      +'<div class="sgbmsg"></div></div>',
     kind:'ip', want:r.bcast,
     hint:'The next network begins one whole block later ('+(scPrevNext(r)[1]||'past the end of the address space')+'). The broadcast is the address just before it.',
     work:'<div class="scwork"><div><span class="lbl">NET</span>'+scGroup(scBits(r.netN))+'</div>'
@@ -2107,7 +2266,12 @@ function sgSteps(r){
   s.push({id:'first',
     q:'What is the <b>first usable host</b>?',
     sub:(r.block<=2)?('A /'+r.prefix+' is the exception: there is no reserved pair to skip, so the network address itself is usable (RFC 3021).')
-      :'The lowest address that can be handed to a device.',
+      :'The lowest address a device can take: the network address itself is never given out, so start there and step one up. The bench does the addition.',
+    bench:'<div class="sgbench" data-op="ipadd" data-delta="1">'
+      +'<div class="cap">One up from the network</div>'
+      +'<div class="sgrow2"><span class="lbl">network</span><input class="sgbinput wide" value="'+r.net+'">'
+      +'<span class="big">+ 1</span><button type="button" class="ghost sgcalc">Calculate</button>'
+      +'<span class="op">=</span><output></output></div><div class="sgbmsg"></div></div>',
     kind:'ip', want:r.first,
     hint:(r.block<=2)?'Every address in this block is usable.':'One above the network address.',
     work:(r.block<=2)?'<p class="sgnote">RFC 3021 keeps both addresses of a /'+r.prefix+' usable, because a point-to-point link has no need to broadcast.</p>'
@@ -2119,7 +2283,12 @@ function sgSteps(r){
       return 'Start at the network address ('+r.net+') and step one.' }});
   s.push({id:'last',
     q:'What is the <b>last usable host</b>?',
-    sub:(r.block<=2)?('On a /'+r.prefix+' that is the other end of the link.'):'The highest address that can be handed to a device.',
+    sub:(r.block<=2)?('On a /'+r.prefix+' that is the other end of the link.'):'The <span class="term" data-tip="<b>Highest usable</b> - the last address a device can take. The broadcast above it belongs to every device at once, so no single one may have it.">highest address</span> a device can take: start at the broadcast and step one down.',
+    bench:'<div class="sgbench" data-op="ipadd" data-delta="-1">'
+      +'<div class="cap">One down from the broadcast</div>'
+      +'<div class="sgrow2"><span class="lbl">broadcast</span><input class="sgbinput wide" value="'+r.bcast+'">'
+      +'<span class="big">&minus; 1</span><button type="button" class="ghost sgcalc">Calculate</button>'
+      +'<span class="op">=</span><output></output></div><div class="sgbmsg"></div></div>',
     kind:'ip', want:r.last,
     hint:(r.block<=2)?'Both ends of the link are usable.':'One below the broadcast.',
     work:(r.block<=2)?'<p class="sgnote">Both endpoints of a /'+r.prefix+' are ordinary addresses.</p>'
@@ -2131,7 +2300,14 @@ function sgSteps(r){
       return 'One below the broadcast: '+r.bcast+' &minus; 1.' }});
   s.push({id:'usable',
     q:'How many <b>usable hosts</b> fit?',
-    sub:(r.block<=2)?('A /'+r.prefix+' is the exception to the minus-two rule &mdash; count the addresses in the block.'):'Addresses in the block, minus the two that can never be given out.',
+    sub:(r.block<=2)?('A /'+r.prefix+' is the exception to the minus-two rule &mdash; count the addresses in the block.'):'Addresses in the block is 2 to the power of the host bits (checkpoint 1). Two of them can never be given to a device, so subtract 2. The bench is the formula.',
+    bench:'<div class="sgbench" data-op="sub" data-fixed="b" data-b="2">'
+      +'<div class="cap">The formula, as a bench</div>'
+      +'<div class="sgrow2"><input class="sgbinput" placeholder="addresses in the block">'
+      +'<span class="big">&minus; 2</span><button type="button" class="ghost sgcalc">Calculate</button>'
+      +'<span class="op">=</span><output></output></div>'
+      +'<p class="sgnote" style="margin:6px 0 0">The 2 is the <span class="term" data-tip="<b>Network address</b> - every host bit at 0: the block itself, never a device.">network address</span> and the <span class="term" data-tip="<b>Broadcast</b> - every host bit at 1: every device on the subnet at once, so never one device.">broadcast</span>.</p>'
+      +'<div class="sgbmsg"></div></div>',
     kind:'num', want:(r.usable||0),
     hint:(r.block<=2)?'How many addresses does the block hold?':'2^'+r.host+' &minus; 2.',
     work:(r.block<=2)?('<p class="sgnote">The block holds '+r.block+' address'+(r.block===1?'':'es')+', and a /'+r.prefix+' keeps all of them usable.</p>')
@@ -2150,14 +2326,17 @@ function scFactRows(r){
   var pn=scPrevNext(r), rows=[];
   var cf = (r.defm===null) ? 'no classful default'
     : (r.delta===0 ? ('default /'+r.defm+', exactly on it')
-    : (r.delta>0 ? ('default /'+r.defm+' + '+r.delta+' bits of subnetting')
-                 : ('default /'+r.defm+' minus '+(-r.delta)+' bits, supernetting')));
+    : (r.delta>0 ? ('default /'+r.defm+'; this prefix is '+r.delta+' larger, so the block is smaller: subnetting')
+                 : ('default /'+r.defm+'; this prefix is '+(-r.delta)+' smaller, so the block is larger: supernetting')));
+  var cfTip = (r.defm===null)
+    ? '<b>Classful default</b> - this address is not in a classful range (D or E), so there is no default mask to compare against.'
+    : '<b>Classful default</b> - the mask this class had before CIDR: A = /8, B = /16, C = /24, so this address has /'+r.defm+'. Compare the numbers after the slash: a <b>larger</b> prefix than '+r.defm+' means a smaller block than the classful one, which is subnetting; a <b>smaller</b> prefix means a larger block, which is supernetting. The class says where the habit came from, not what the mask is.';
   rows.push({g:'From the address alone \u2014 no method needed', k:'Class', v:'Class '+r.cls,
     tip:'<b>Class</b> &mdash; the classful reading of the first octet: 1&ndash;126 is A, 128&ndash;191 is B, 192&ndash;223 is C, 224 and up is multicast or reserved. A useful habit and an exam answer; the slash is the real mask.'});
   rows.push({g:'', k:'Scope', v:r.special,
     tip:'<b>Scope</b> &mdash; whether the address is public and routable, or belongs to a block kept for something else: private space (RFC 1918), loopback, link-local, multicast, carrier-grade NAT, or a documentation range.'});
   rows.push({g:'', k:'Classful default', v:cf,
-    tip:'<b>Classful default</b> &mdash; the mask the address class would have had before CIDR. Longer than the default is subnetting, shorter is supernetting. The class says where the habit came from, not what the mask is.'});
+    tip:cfTip});
   rows.push({g:'From the slash \u2014 checkpoints 1 to 4', k:'Host bits', v:String(r.host), need:['host'],
     tip:'<b>Host bits</b> &mdash; 32 minus the prefix. How many bits the host part gets, which decides the size of the block.'});
   rows.push({g:'', k:'Subnet mask', v:r.mask, need:['mask'],
@@ -2279,6 +2458,7 @@ function sgPaint(){
     +'<button class="primary" id="sgCheck">Check</button>'
     +'<button class="ghost" id="sgHint">Hint</button>'
     +'<button class="ghost" id="sgShow">Show me</button></div>'
+    +(st.bench||'')
     +'<div class="sgfb" id="sgFb"></div><div class="sgwork" id="sgWork"></div>'
     +'<div class="scbtns" style="margin-top:11px"><button class="secondary" id="sgNext" style="display:none">Next checkpoint</button></div>'
     +'</div>';
