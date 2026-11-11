@@ -668,6 +668,142 @@ a.ccard:hover .go{color:var(--accent-bright)}
 .syl .v{color:var(--text-dim);line-height:1.6}
 .syl .v b{color:var(--text)}
 @media(max-width:620px){.syl .row{grid-template-columns:1fr;gap:3px}}
+</style><style>
+/* ============================================================
+   Field Plates — the 2026-11-10 visual pass.
+   Tokens: none added. Every colour below is an Anchor token.
+   ============================================================ */
+
+/* ---- M6: grain ---- */
+.grain{
+  position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- the mark, at any size ---- */
+.g{flex:none;vertical-align:-3px}
+.gm{display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:9px;background:var(--tint-accent);
+  border:1px solid var(--rule-2);color:var(--accent-bright)}
+
+/* ---------- M1: masthead ---------- */
+.mast{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--rule);
+  background:
+    radial-gradient(700px 340px at 82% 30%,rgba(240,195,74,.10),transparent 70%),
+    linear-gradient(180deg,var(--surface-2) 0%,var(--bg) 100%);
+  margin:0 0 20px;min-height:392px;display:flex;align-items:center}
+.mast-art{position:absolute;inset:0 0 0 auto;width:66%;background-size:cover;
+  background-position:center right;opacity:.92;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 26%,#000 62%);
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 26%,#000 62%)}
+.mast-art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 45%,var(--bg) 100%);opacity:.85}
+.mast.empty .mast-art{display:none}
+.mast-in{position:relative;z-index:3;padding:44px 40px;max-width:min(660px,84%)}
+.mast .eyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.mast h1{font-family:var(--display);font-size:clamp(2.15rem,4.6vw,3.5rem);line-height:1.04;
+  letter-spacing:-.025em;font-weight:600;color:var(--text-strong);margin:0 0 18px}
+.mast h1 em{font-style:normal;color:var(--accent)}
+.mast .lede{font-size:14px;max-width:52ch;margin:0 0 22px;color:var(--text-dim)}
+.mast-rule{height:1px;background:linear-gradient(90deg,var(--accent),transparent);
+  margin:0 0 18px;max-width:260px}
+.mast-stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 16px}
+.mast-chips{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.mast-chips .mchip{background:transparent}
+.mast .cta{display:inline-flex;align-items:center;gap:8px;background:var(--fill);color:var(--on-fill);
+  border:0;border-radius:8px;padding:9px 17px;font-weight:700;font-size:13px;border-bottom:0}
+.mast .cta:hover{background:var(--accent-bright);color:var(--on-fill)}
+@media(max-width:760px){
+  .mast{min-height:0}
+  .mast-art{width:100%;opacity:.32;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
+  .mast-in{padding:30px 22px;max-width:100%}
+}
+
+/* ---------- the front door is a document, not a stack of boxes ---------- */
+.home > section{
+  background:transparent;border:0;border-top:1px solid var(--rule);border-radius:0;
+  box-shadow:none;padding:30px 2px 14px;margin:0 0 8px;
+}
+.home > section:first-of-type{border-top:0;padding-top:6px}
+.home > section > h2{font-size:27px}
+
+/* ---------- M2/M3: plate cards ---------- */
+.plates{display:grid;grid-template-columns:1fr;gap:18px;margin-top:20px}
+@media(min-width:1080px){.plates{grid-template-columns:1fr 1fr}}
+.cp{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--rule);
+  border-radius:14px;overflow:hidden;transition:border-color .18s,box-shadow .18s,transform .18s}
+.cp:hover{border-color:var(--rule-2);box-shadow:var(--shadow)}
+.cp-frame{position:relative;display:block;aspect-ratio:16/8;
+  background:linear-gradient(150deg,var(--surface-3),var(--stone-900) 60%,var(--surface));
+  border-bottom:1px solid var(--rule);overflow:hidden;border-bottom:0}
+.cp-frame img,.cp-frame .plate{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease,filter .3s}
+.cp:hover .cp-frame img{transform:scale(1.022)}
+.cp-frame::after{content:"";position:absolute;inset:auto 0 0 0;height:58%;
+  background:linear-gradient(180deg,transparent,var(--surface) 92%);pointer-events:none}
+.cp-frame .plate-empty{display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;color:var(--accent);opacity:.34;
+  background:radial-gradient(circle at 50% 46%,rgba(240,195,74,.10),transparent 62%)}
+.cp-soon{opacity:.9}
+.cp-body{padding:17px 20px 19px;display:flex;flex-direction:column;gap:0;flex:1 1 auto}
+.cp-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+.cp-num{font-family:var(--display);font-size:52px;line-height:.82;font-weight:600;
+  letter-spacing:-.04em;color:var(--accent);opacity:.20;flex:none;margin-left:auto;
+  font-variant-numeric:tabular-nums}
+.cp h3{margin:0;font-family:var(--display);font-size:19px;line-height:1.22;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;text-transform:none}
+.cp h3 a{color:inherit;border-bottom:0}
+.cp h3 a:hover{color:var(--accent-bright)}
+.cp .meta{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 11px}
+.cp .sub{font-size:12.5px;color:var(--text-mute);line-height:1.6;margin:0 0 14px}
+
+/* ---------- M4: module tiles ---------- */
+.mtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:7px;
+  margin:0 0 14px}
+.mtile{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
+  background:var(--surface-2);border:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  transition:border-color .15s,background .15s,color .15s;text-decoration:none}
+a.mtile:hover{border-color:var(--rule-2);background:var(--surface-3)}
+a.mtile:hover .mt{color:var(--accent-bright)}
+.mtile .mg{color:var(--accent);display:flex;flex:none;opacity:.95}
+.mtile .mn{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;
+  color:var(--accent);flex:none;min-width:19px}
+.mtile .mt{font-size:11.8px;line-height:1.3;color:var(--text-dim);overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mtile.soon{background:transparent;border-style:dashed;opacity:.66}
+.mtile.soon .mg,.mtile.soon .mn{color:var(--text-mute)}
+.mtile.soon .mt{color:var(--text-mute)}
+.cp .go{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);border-bottom:0;margin-top:auto}
+.cp .go:hover{color:var(--accent-bright)}
+
+/* ---------- module page header ---------- */
+.pagehead{display:flex;align-items:center;gap:15px;margin:0 0 18px;padding:0 2px}
+.pagehead .gm{width:46px;height:46px;border-radius:12px}
+.pagehead .pe{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 3px}
+.pagehead h1{margin:0;font-family:var(--display);font-size:26px;font-weight:600;
+  letter-spacing:-.02em;line-height:1.16;color:var(--text-strong)}
+.pagehead .prule{height:1px;flex:1 1 auto;margin-left:8px;
+  background:linear-gradient(90deg,var(--rule-2),transparent)}
+@media(max-width:640px){.pagehead h1{font-size:21px}.pagehead .gm{width:38px;height:38px}}
+
+/* ---------- M5: the route ---------- */
+.route{position:relative;padding-left:26px}
+.route::before{content:"";position:absolute;left:6px;top:10px;bottom:14px;width:2px;
+  background:linear-gradient(180deg,var(--rule-2),var(--rule) 40%,transparent);border-radius:2px}
+.route > .lcard{position:relative;margin-left:0}
+.route > .lcard::before{content:"";position:absolute;left:-26px;top:22px;width:9px;height:9px;
+  border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.route > .lcard.lcard-c{margin-top:26px}
+.route > .lcard.lcard-c::before{left:-30px;top:18px;width:15px;height:15px;border-width:2px;
+  background:var(--accent);box-shadow:0 0 0 4px var(--tint-accent)}
+.route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
+@media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
+  .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
 </style>
 </head>
 <body>
@@ -677,7 +813,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
   <nav><a href="../../index.html">Certificate</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="../../glossary.html" title="Every term, with a definition">▤ glossary</a><a href="m1-introduction-to-it.html">M1</a><a href="m2-hardware.html">M2</a><a href="m3-operating-systems.html">M3</a><a href="m4-networking-flyover.html">M4</a><a href="m5-software.html">M5</a><a href="m6-troubleshooting.html">M6</a><a href="#tracks">What this covers</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
 </header>
 <main>
-<section id="start" class=""><h2>Technical Support Fundamentals</h2><div class="big60"><b>6 of 6 modules built.</b> The floor of the whole certificate: what IT is, what an IT support specialist does, binary and character encoding, the hardware inside a computer, installing an operating system, what the internet is, and how software is built and managed.</div>
+<div class="grain" aria-hidden="true"></div><section id="start" class=""><h2>Technical Support Fundamentals</h2><div class="big60"><b>6 of 6 modules built.</b> The floor of the whole certificate: what IT is, what an IT support specialist does, binary and character encoding, the hardware inside a computer, installing an operating system, what the internet is, and how software is built and managed.</div>
     <p><b>How to use this:</b> open a module and read <b>The essentials</b> at the top &mdash; the
     objectives and the facts, at the level the exams test. Read only the sections that explain the
     lines you could not say back. Flashcard them out loud, play the drill that follows each part,

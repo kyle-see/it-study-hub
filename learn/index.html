@@ -723,6 +723,142 @@ a.ccard:hover .go{color:var(--accent-bright)}
 .syl .v{color:var(--text-dim);line-height:1.6}
 .syl .v b{color:var(--text)}
 @media(max-width:620px){.syl .row{grid-template-columns:1fr;gap:3px}}
+</style><style>
+/* ============================================================
+   Field Plates — the 2026-11-10 visual pass.
+   Tokens: none added. Every colour below is an Anchor token.
+   ============================================================ */
+
+/* ---- M6: grain ---- */
+.grain{
+  position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- the mark, at any size ---- */
+.g{flex:none;vertical-align:-3px}
+.gm{display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:9px;background:var(--tint-accent);
+  border:1px solid var(--rule-2);color:var(--accent-bright)}
+
+/* ---------- M1: masthead ---------- */
+.mast{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--rule);
+  background:
+    radial-gradient(700px 340px at 82% 30%,rgba(240,195,74,.10),transparent 70%),
+    linear-gradient(180deg,var(--surface-2) 0%,var(--bg) 100%);
+  margin:0 0 20px;min-height:392px;display:flex;align-items:center}
+.mast-art{position:absolute;inset:0 0 0 auto;width:66%;background-size:cover;
+  background-position:center right;opacity:.92;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 26%,#000 62%);
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 26%,#000 62%)}
+.mast-art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 45%,var(--bg) 100%);opacity:.85}
+.mast.empty .mast-art{display:none}
+.mast-in{position:relative;z-index:3;padding:44px 40px;max-width:min(660px,84%)}
+.mast .eyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.mast h1{font-family:var(--display);font-size:clamp(2.15rem,4.6vw,3.5rem);line-height:1.04;
+  letter-spacing:-.025em;font-weight:600;color:var(--text-strong);margin:0 0 18px}
+.mast h1 em{font-style:normal;color:var(--accent)}
+.mast .lede{font-size:14px;max-width:52ch;margin:0 0 22px;color:var(--text-dim)}
+.mast-rule{height:1px;background:linear-gradient(90deg,var(--accent),transparent);
+  margin:0 0 18px;max-width:260px}
+.mast-stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 16px}
+.mast-chips{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.mast-chips .mchip{background:transparent}
+.mast .cta{display:inline-flex;align-items:center;gap:8px;background:var(--fill);color:var(--on-fill);
+  border:0;border-radius:8px;padding:9px 17px;font-weight:700;font-size:13px;border-bottom:0}
+.mast .cta:hover{background:var(--accent-bright);color:var(--on-fill)}
+@media(max-width:760px){
+  .mast{min-height:0}
+  .mast-art{width:100%;opacity:.32;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
+  .mast-in{padding:30px 22px;max-width:100%}
+}
+
+/* ---------- the front door is a document, not a stack of boxes ---------- */
+.home > section{
+  background:transparent;border:0;border-top:1px solid var(--rule);border-radius:0;
+  box-shadow:none;padding:30px 2px 14px;margin:0 0 8px;
+}
+.home > section:first-of-type{border-top:0;padding-top:6px}
+.home > section > h2{font-size:27px}
+
+/* ---------- M2/M3: plate cards ---------- */
+.plates{display:grid;grid-template-columns:1fr;gap:18px;margin-top:20px}
+@media(min-width:1080px){.plates{grid-template-columns:1fr 1fr}}
+.cp{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--rule);
+  border-radius:14px;overflow:hidden;transition:border-color .18s,box-shadow .18s,transform .18s}
+.cp:hover{border-color:var(--rule-2);box-shadow:var(--shadow)}
+.cp-frame{position:relative;display:block;aspect-ratio:16/8;
+  background:linear-gradient(150deg,var(--surface-3),var(--stone-900) 60%,var(--surface));
+  border-bottom:1px solid var(--rule);overflow:hidden;border-bottom:0}
+.cp-frame img,.cp-frame .plate{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease,filter .3s}
+.cp:hover .cp-frame img{transform:scale(1.022)}
+.cp-frame::after{content:"";position:absolute;inset:auto 0 0 0;height:58%;
+  background:linear-gradient(180deg,transparent,var(--surface) 92%);pointer-events:none}
+.cp-frame .plate-empty{display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;color:var(--accent);opacity:.34;
+  background:radial-gradient(circle at 50% 46%,rgba(240,195,74,.10),transparent 62%)}
+.cp-soon{opacity:.9}
+.cp-body{padding:17px 20px 19px;display:flex;flex-direction:column;gap:0;flex:1 1 auto}
+.cp-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+.cp-num{font-family:var(--display);font-size:52px;line-height:.82;font-weight:600;
+  letter-spacing:-.04em;color:var(--accent);opacity:.20;flex:none;margin-left:auto;
+  font-variant-numeric:tabular-nums}
+.cp h3{margin:0;font-family:var(--display);font-size:19px;line-height:1.22;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;text-transform:none}
+.cp h3 a{color:inherit;border-bottom:0}
+.cp h3 a:hover{color:var(--accent-bright)}
+.cp .meta{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 11px}
+.cp .sub{font-size:12.5px;color:var(--text-mute);line-height:1.6;margin:0 0 14px}
+
+/* ---------- M4: module tiles ---------- */
+.mtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:7px;
+  margin:0 0 14px}
+.mtile{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
+  background:var(--surface-2);border:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  transition:border-color .15s,background .15s,color .15s;text-decoration:none}
+a.mtile:hover{border-color:var(--rule-2);background:var(--surface-3)}
+a.mtile:hover .mt{color:var(--accent-bright)}
+.mtile .mg{color:var(--accent);display:flex;flex:none;opacity:.95}
+.mtile .mn{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;
+  color:var(--accent);flex:none;min-width:19px}
+.mtile .mt{font-size:11.8px;line-height:1.3;color:var(--text-dim);overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mtile.soon{background:transparent;border-style:dashed;opacity:.66}
+.mtile.soon .mg,.mtile.soon .mn{color:var(--text-mute)}
+.mtile.soon .mt{color:var(--text-mute)}
+.cp .go{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);border-bottom:0;margin-top:auto}
+.cp .go:hover{color:var(--accent-bright)}
+
+/* ---------- module page header ---------- */
+.pagehead{display:flex;align-items:center;gap:15px;margin:0 0 18px;padding:0 2px}
+.pagehead .gm{width:46px;height:46px;border-radius:12px}
+.pagehead .pe{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 3px}
+.pagehead h1{margin:0;font-family:var(--display);font-size:26px;font-weight:600;
+  letter-spacing:-.02em;line-height:1.16;color:var(--text-strong)}
+.pagehead .prule{height:1px;flex:1 1 auto;margin-left:8px;
+  background:linear-gradient(90deg,var(--rule-2),transparent)}
+@media(max-width:640px){.pagehead h1{font-size:21px}.pagehead .gm{width:38px;height:38px}}
+
+/* ---------- M5: the route ---------- */
+.route{position:relative;padding-left:26px}
+.route::before{content:"";position:absolute;left:6px;top:10px;bottom:14px;width:2px;
+  background:linear-gradient(180deg,var(--rule-2),var(--rule) 40%,transparent);border-radius:2px}
+.route > .lcard{position:relative;margin-left:0}
+.route > .lcard::before{content:"";position:absolute;left:-26px;top:22px;width:9px;height:9px;
+  border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.route > .lcard.lcard-c{margin-top:26px}
+.route > .lcard.lcard-c::before{left:-30px;top:18px;width:15px;height:15px;border-width:2px;
+  background:var(--accent);box-shadow:0 0 0 4px var(--tint-accent)}
+.route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
+@media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
+  .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
 </style>
 </head>
 <body>
@@ -732,7 +868,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
   <nav><a href="../index.html">Hub</a><a href="../search.html" title="Search every page, section and definition">⌕ search</a><a href="../glossary.html" title="Every term, with a definition">▤ glossary</a><a href="#path">Courses</a><a href="#how">How to study</a><a href="#built">What's built</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
 </header>
 <main>
-<section id="start" class=""><h2>The learning path</h2><p class="lede">The whole certificate, module by module, at the level the exams actually test. Read the objectives, take the facts, then go and prove it on the drills.</p>
+<div class="grain" aria-hidden="true"></div><section id="start" class=""><h2>The learning path</h2><p class="lede">The whole certificate, module by module, at the level the exams actually test. Read the objectives, take the facts, then go and prove it on the drills.</p>
         <div class="big60">
           <b>What this page is.</b> A map, not a textbook. Every one of the 35 modules states why it
           exists, what you must be able to <i>do</i> afterwards, and the facts that are the actual
@@ -765,7 +901,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
         </div>
         <div class="big60 y"><b>The one rule:</b> the drills are not the learning. They are the
         proof. If a game is frustrating, the fix is to go back up to the section it came from, not to
-        keep guessing &mdash; guessing teaches you the wrong answer with confidence.</div></section><section id="c1" class=""><h2>Course 1 &mdash; Technical Support Fundamentals</h2><p class="lede">19 hours &middot; 6 modules &middot; 6 built &middot; A+ Core 1 · 3.0 Hardware · 1.0 Mobile Devices · Core 2 · 1.0 Operating Systems</p><p>The floor of the whole certificate: what IT is, what an IT support specialist does, binary and character encoding, the hardware inside a computer, installing an operating system, what the internet is, and how software is built and managed.</p><article class="lcard" id="c1m1">
+        keep guessing &mdash; guessing teaches you the wrong answer with confidence.</div></section><section id="c1" class=""><h2>Course 1 &mdash; Technical Support Fundamentals</h2><p class="lede">19 hours &middot; 6 modules &middot; 6 built &middot; A+ Core 1 · 3.0 Hardware · 1.0 Mobile Devices · Core 2 · 1.0 Operating Systems</p><p>The floor of the whole certificate: what IT is, what an IT support specialist does, binary and character encoding, the hardware inside a computer, installing an operating system, what the internet is, and how software is built and managed.</p><div class="route"><article class="lcard" id="c1m1">
   <div class="lhead"><span class="lnum">M1</span><h3>Introduction to IT and Computing</h3><div class="lmeta"><span class="mchip live">taught &middot; 40 min</span><span class="mchip aplus">A+ Core 1 · 3.0 (vocabulary)</span></div></div>
   <p class="lwhy"><b>why</b>The floor under everything else: what the job is, and why a computer can only work in two symbols.</p>
   <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>explain what an IT support specialist does, and what tier 1, 2 and 3 mean</li><li>convert between binary and decimal by hand, in both directions</li><li>explain why computers use base two, and what a bit and a byte are</li><li>explain character encoding, and why the same bytes can mean different text</li><li>name the four layers of abstraction in a computer</li></ul></div>
@@ -819,7 +955,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
     <div class="big60 r"><b>The trap:</b> Changing three things at once. If it works afterwards you no longer know which change fixed it, and you cannot write it down for the next person.</div>
   </details>
   <div class="lgo"><a href="../it-support/c1-technical-support/m6-troubleshooting.html">Lesson, drills and quiz &rarr;</a></div>
-</article></section><section id="c2" class=""><h2>Course 2 &mdash; The Bits and Bytes of Computer Networking</h2><p class="lede">22 hours &middot; 6 modules &middot; 4 built &middot; A+ Core 1 · 2.0 Networking · 5.0 Troubleshooting · Core 2 · 2.0 Security</p><p>The full networking course: the five-layer model, IP addressing and subnetting, transport and application layers, DNS and DHCP, how networks connect to the internet, and the troubleshooting tools that prove where a problem is.</p><article class="lcard" id="c2m1">
+</article></div></section><section id="c2" class=""><h2>Course 2 &mdash; The Bits and Bytes of Computer Networking</h2><p class="lede">22 hours &middot; 6 modules &middot; 4 built &middot; A+ Core 1 · 2.0 Networking · 5.0 Troubleshooting · Core 2 · 2.0 Security</p><p>The full networking course: the five-layer model, IP addressing and subnetting, transport and application layers, DNS and DHCP, how networks connect to the internet, and the troubleshooting tools that prove where a problem is.</p><div class="route"><article class="lcard" id="c2m1">
   <div class="lhead"><span class="lnum">M1</span><h3>Introduction to Networking</h3><div class="lmeta"><span class="mchip live">taught &middot; 45 min</span><span class="mchip aplus">A+ Core 1 · 2.1–2.2 · 3.1</span></div></div>
   <p class="lwhy"><b>why</b>How data physically moves: the five-layer model, the cables, and the frames that carry the packets.</p>
   <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>name the five layers and say what each one is responsible for</li><li>explain encapsulation and name the data unit at each layer</li><li>describe how a hub and a switch move data differently</li><li>explain what a MAC address is and how a switch learns where to send frames</li><li>tell the TCP/IP model from the OSI model</li></ul></div>
@@ -873,7 +1009,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
     <div class="big60 r"><b>The trap:</b> Reading a failed ping as a dead host. Plenty of hosts and firewalls drop ICMP and answer everything else perfectly.</div>
   </details>
   <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
-</article></section><section id="c3" class=""><h2>Course 3 &mdash; Operating Systems and You: Becoming a Power User</h2><p class="lede">28 hours &middot; 6 modules &middot; 0 built &middot; A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</p><p>Windows and Linux as an administrator: the GUI, the shell, users and permissions, packages, filesystems, disk management and process control.</p><article class="lcard soon" id="c3m1">
+</article></div></section><section id="c3" class=""><h2>Course 3 &mdash; Operating Systems and You: Becoming a Power User</h2><p class="lede">28 hours &middot; 6 modules &middot; 0 built &middot; A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</p><p>Windows and Linux as an administrator: the GUI, the shell, users and permissions, packages, filesystems, disk management and process control.</p><div class="route"><article class="lcard soon" id="c3m1">
   <div class="lhead"><span class="lnum">M1</span><h3>Navigating the System</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 2 · 1.0 Operating Systems · 3.0 Software Troubleshooting</span></div></div>
   <p class="lwhy"><b>why</b>The command line: faster than clicking, scriptable, and the only way to work on a server with no desktop.</p>
   <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>navigate a filesystem and manage files from PowerShell or Bash</li><li>use wildcards, pipes and redirection</li><li>find, read and filter text output</li><li>tell an absolute path from a relative path</li><li>do the same task on Windows and on Linux</li></ul></div>
@@ -927,7 +1063,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
     <div class="big60 r"><b>The trap:</b> Calling a snapshot a backup. Delete the disk and the snapshot goes with it.</div>
   </details>
   <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
-</article></section><section id="c4" class=""><h2>Course 4 &mdash; System Administration and IT Infrastructure Services</h2><p class="lede">24 hours &middot; 6 modules &middot; 0 built &middot; A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</p><p>From one machine to a fleet: servers, directory services, cloud infrastructure, centralised management, backup and disaster recovery.</p><article class="lcard soon" id="c4m1">
+</article></div></section><section id="c4" class=""><h2>Course 4 &mdash; System Administration and IT Infrastructure Services</h2><p class="lede">24 hours &middot; 6 modules &middot; 0 built &middot; A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</p><p>From one machine to a fleet: servers, directory services, cloud infrastructure, centralised management, backup and disaster recovery.</p><div class="route"><article class="lcard soon" id="c4m1">
   <div class="lhead"><span class="lnum">M1</span><h3>What is System Administration?</h3><div class="lmeta"><span class="mchip">facts only &middot; 35 min</span><span class="mchip aplus">A+ Core 1 · 4.0 Virtualization and Cloud · Core 2 · 4.0 Operational Procedures</span></div></div>
   <p class="lwhy"><b>why</b>The role: keeping a fleet of machines, accounts and services running predictably, and documented well enough that someone else could.</p>
   <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>describe what a sysadmin owns that a support technician does not</li><li>explain documentation, change management and configuration management</li><li>name the common server roles</li><li>plan a small infrastructure on paper</li><li>explain uptime, SLAs and the real cost of downtime</li></ul></div>
@@ -981,7 +1117,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
     <div class="big60 r"><b>The trap:</b> Designing for the happy path. The marks are in what happens when a service dies at two in the morning.</div>
   </details>
   <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
-</article></section><section id="c5" class=""><h2>Course 5 &mdash; IT Security: Defense against the digital dark arts</h2><p class="lede">23 hours &middot; 7 modules &middot; 0 built &middot; A+ Core 2 · 2.0 Security</p><p>Threats and attacks, cryptography, the three A's, hardening a network, defence in depth, and building a security culture.</p><article class="lcard soon" id="c5m1">
+</article></div></section><section id="c5" class=""><h2>Course 5 &mdash; IT Security: Defense against the digital dark arts</h2><p class="lede">23 hours &middot; 7 modules &middot; 0 built &middot; A+ Core 2 · 2.0 Security</p><p>Threats and attacks, cryptography, the three A's, hardening a network, defence in depth, and building a security culture.</p><div class="route"><article class="lcard soon" id="c5m1">
   <div class="lhead"><span class="lnum">M1</span><h3>Understanding Security Threats</h3><div class="lmeta"><span class="mchip">facts only &middot; 40 min</span><span class="mchip aplus">A+ Core 2 · 2.0 Security</span></div></div>
   <p class="lwhy"><b>why</b>What actually attacks a system, so that every defence later in the course has a target.</p>
   <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>name the malware families and what each one does</li><li>recognise social engineering and phishing patterns</li><li>explain sniffing, spoofing, denial of service and on-path attacks</li><li>tell a vulnerability from an exploit from a threat from a risk</li><li>explain defence in depth as the answer to all of the above</li></ul></div>
@@ -1044,7 +1180,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
     <div class="big60 r"><b>The trap:</b> Pasting an error message that contains a customer name, an internal hostname and a token. Redact before you paste.</div>
   </details>
   <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
-</article></section><section id="c6" class=""><h2>Course 6 &mdash; Accelerate Your Job Search with AI</h2><p class="lede">6 hours &middot; 4 modules &middot; 0 built &middot; optional &middot; A+ —</p><p>The optional course Coursera bundles with the certificate: transferable skills, a job search plan, applications and interview practice, each with AI assistance.</p><article class="lcard soon" id="c6m1">
+</article></div></section><section id="c6" class=""><h2>Course 6 &mdash; Accelerate Your Job Search with AI</h2><p class="lede">6 hours &middot; 4 modules &middot; 0 built &middot; optional &middot; A+ —</p><p>The optional course Coursera bundles with the certificate: transferable skills, a job search plan, applications and interview practice, each with AI assistance.</p><div class="route"><article class="lcard soon" id="c6m1">
   <div class="lhead"><span class="lnum">M1</span><h3>Uncover Your Transferable Skills with AI</h3><div class="lmeta"><span class="mchip">facts only &middot; 25 min</span></div></div>
   <p class="lwhy"><b>why</b>Turning what you have already done into language an employer recognises.</p>
   <div class="lblk"><span class="ltag">You can</span><ul class="lcan"><li>extract transferable skills from past work</li><li>match your evidence to a job ad&#x27;s own vocabulary</li><li>write evidence rather than adjectives</li><li>use AI to generate options and reject the inflated ones</li></ul></div>
@@ -1080,7 +1216,7 @@ a.ccard:hover .go{color:var(--accent-bright)}
     <div class="big60 r"><b>The trap:</b> Memorising a script. It breaks at the first follow-up question, which is the one that matters.</div>
   </details>
   <div class="lgo">No teaching page yet &mdash; these facts and objectives are the entry-level summary, and the drills arrive with the page.</div>
-</article></section><section id="aplus" class=""><h2>The A+ index &mdash; one domain, which modules teach it</h2><p class="lede">A+ is a second syllabus, and it is filed inside the Google courses rather than given its own site. So here it is the other way round: pick the domain, read the modules. Percentages are CompTIA's own domain weights.</p><div class="agrid">
+</article></div></section><section id="aplus" class=""><h2>The A+ index &mdash; one domain, which modules teach it</h2><p class="lede">A+ is a second syllabus, and it is filed inside the Google courses rather than given its own site. So here it is the other way round: pick the domain, read the modules. Percentages are CompTIA's own domain weights.</p><div class="agrid">
       <div class="acard"><h4>CompTIA A+ Core 1 <span class="aw">220-1201</span></h4><div class="adom"><div class="ahead"><span class="adn">Core 1 1.0</span><b>Mobile Devices</b><span class="aw">13%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m2-hardware.html" title="Computer Components and Hardware">C1 M2</a></div></div><div class="adom"><div class="ahead"><span class="adn">Core 1 2.0</span><b>Networking</b><span class="aw">23%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m4-networking-flyover.html" title="Networking">C1 M4</a> &middot; <a href="../it-support/c2-bits-and-bytes/m1-introduction.html" title="Introduction to Networking">C2 M1</a> &middot; <a href="../it-support/c2-bits-and-bytes/m2-network-layer.html" title="The Network Layer">C2 M2</a> &middot; <a href="../it-support/c2-bits-and-bytes/m3-transport-application.html" title="The Transport and Application Layers">C2 M3</a> &middot; <a href="../it-support/c2-bits-and-bytes/m4-networking-services.html" title="Networking Services">C2 M4</a> &middot; <span title="Connecting to the Internet &mdash; not built yet">C2 M5</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 1 3.0</span><b>Hardware</b><span class="aw">25%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m1-introduction-to-it.html" title="Introduction to IT and Computing">C1 M1</a> &middot; <a href="../it-support/c1-technical-support/m2-hardware.html" title="Computer Components and Hardware">C1 M2</a> &middot; <a href="../it-support/c2-bits-and-bytes/m1-introduction.html" title="Introduction to Networking">C2 M1</a></div></div><div class="adom"><div class="ahead"><span class="adn">Core 1 4.0</span><b>Virtualization and Cloud Computing</b><span class="aw">11%</span></div><div class="amods"><span title="Troubleshooting and the Future of Networking &mdash; not built yet">C2 M6</span> &middot; <span title="What is System Administration? &mdash; not built yet">C4 M1*</span> &middot; <span title="Network and Infrastructure Services &mdash; not built yet">C4 M2*</span> &middot; <span title="Software and Platform Services &mdash; not built yet">C4 M3*</span> &middot; <span title="Directory Services &mdash; not built yet">C4 M4*</span> &middot; <span title="Data Recovery and Backup &mdash; not built yet">C4 M5*</span> &middot; <span title="Final Project &mdash; not built yet">C4 M6*</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 1 5.0</span><b>Hardware and Network Troubleshooting</b><span class="aw">28%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m6-troubleshooting.html" title="Troubleshooting Best Practices and Customer Support">C1 M6</a> &middot; <span title="Troubleshooting and the Future of Networking &mdash; not built yet">C2 M6</span></div></div></div>
       <div class="acard"><h4>CompTIA A+ Core 2 <span class="aw">220-1202</span></h4><div class="adom"><div class="ahead"><span class="adn">Core 2 1.0</span><b>Operating Systems</b><span class="aw">28%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m3-operating-systems.html" title="Installing and Using Operating Systems">C1 M3</a> &middot; <a href="../it-support/c1-technical-support/m5-software.html" title="Interacting with Software">C1 M5</a> &middot; <span title="Navigating the System &mdash; not built yet">C3 M1*</span> &middot; <span title="Users and Permissions &mdash; not built yet">C3 M2*</span> &middot; <span title="Package and Software Management &mdash; not built yet">C3 M3*</span> &middot; <span title="Filesystems &mdash; not built yet">C3 M4*</span> &middot; <span title="Process Management &mdash; not built yet">C3 M5*</span> &middot; <span title="Operating Systems in Practice &mdash; not built yet">C3 M6*</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 2 2.0</span><b>Security</b><span class="aw">28%</span></div><div class="amods"><a href="../it-support/c2-bits-and-bytes/m3-transport-application.html" title="The Transport and Application Layers">C2 M3</a> &middot; <span title="Understanding Security Threats &mdash; not built yet">C5 M1*</span> &middot; <span title="Pelcgbybtl (Cryptology) &mdash; not built yet">C5 M2*</span> &middot; <span title="The 3 A&#x27;s of Cybersecurity: Authentication, Authorization, Accounting &mdash; not built yet">C5 M3*</span> &middot; <span title="Securing Your Networks &mdash; not built yet">C5 M4*</span> &middot; <span title="Defense in Depth &mdash; not built yet">C5 M5*</span> &middot; <span title="Creating a Company Culture for Security &mdash; not built yet">C5 M6*</span> &middot; <span title="Streamline Workflows with AI &mdash; not built yet">C5 M7*</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 2 3.0</span><b>Software Troubleshooting</b><span class="aw">23%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m5-software.html" title="Interacting with Software">C1 M5</a> &middot; <span title="Navigating the System &mdash; not built yet">C3 M1*</span> &middot; <span title="Users and Permissions &mdash; not built yet">C3 M2*</span> &middot; <span title="Package and Software Management &mdash; not built yet">C3 M3*</span> &middot; <span title="Filesystems &mdash; not built yet">C3 M4*</span> &middot; <span title="Process Management &mdash; not built yet">C3 M5*</span> &middot; <span title="Operating Systems in Practice &mdash; not built yet">C3 M6*</span></div></div><div class="adom"><div class="ahead"><span class="adn">Core 2 4.0</span><b>Operational Procedures</b><span class="aw">21%</span></div><div class="amods"><a href="../it-support/c1-technical-support/m6-troubleshooting.html" title="Troubleshooting Best Practices and Customer Support">C1 M6</a> &middot; <span title="What is System Administration? &mdash; not built yet">C4 M1*</span> &middot; <span title="Network and Infrastructure Services &mdash; not built yet">C4 M2*</span> &middot; <span title="Software and Platform Services &mdash; not built yet">C4 M3*</span> &middot; <span title="Directory Services &mdash; not built yet">C4 M4*</span> &middot; <span title="Data Recovery and Backup &mdash; not built yet">C4 M5*</span> &middot; <span title="Final Project &mdash; not built yet">C4 M6*</span></div></div></div>
     </div><p class="src">Tags come from <span class="mono">courses.py</span>; domain names and weights from CompTIA's 220-1201 and 220-1202 objectives (v4.0). <b>*</b> means the whole course covers that domain rather than that one module. Modules in plain grey have no teaching page yet.</p></section><section id="built" class=""><h2>What's built, and what's next</h2><p class="lede">The order the pages are being written in, so the gap is visible rather than remembered.</p><div class="lstat"><b>10 taught &middot; 35 mapped &middot; 25 to write.</b></div>

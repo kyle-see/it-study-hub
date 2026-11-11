@@ -697,6 +697,15 @@ ol.methodsteps li{margin:9px 0;max-width:88ch}
 .sgq{margin:2px 0 5px;font-family:var(--display);font-size:17px;font-weight:600;color:var(--text-strong);line-height:1.45}
 .sgq .n{font-family:var(--mono);color:var(--accent);font-size:13px;margin-right:7px}
 .sgsub{font-size:12.5px;color:var(--text-mute);margin:0 0 11px;line-height:1.65;max-width:82ch}
+/* (2026-11-10) The formula box, added because checkpoint 9 asked the reader to trust a rule it never
+   spelled out symbolically. One strip between the question's prose and the bench: the formula, what
+   its letter stands for, then the substitution with this block's numbers. */
+.sgformula{margin:0 0 11px;padding:10px 13px 11px;border:1px solid var(--rule);
+  border-left:3px solid var(--accent);border-radius:9px;background:var(--surface-2);max-width:82ch}
+.sgformula .f{display:block;font-family:var(--mono);font-size:14px;color:var(--accent-bright);line-height:1.55}
+.sgformula .f+.f{margin-top:2px}
+.sgformula .p{display:block;font-size:12px;color:var(--text-mute);line-height:1.6;margin-top:6px}
+.sgformula .p b{color:var(--text-dim)}
 .sgfb{font-size:13px;line-height:1.65;margin:11px 0 0;padding:10px 13px;border-radius:9px;display:none;border-left:3px solid var(--rule-2);background:var(--surface-2)}
 .sgfb.on{display:block}
 .sgfb.good{background:var(--tint-good);border-left-color:var(--moss);color:var(--good-bright)}
@@ -2386,7 +2395,13 @@ function sgSteps(r){
       return 'One below the broadcast: '+r.bcast+' &minus; 1.' }});
   s.push({id:'usable',
     q:'How many <b>usable hosts</b> fit?',
-    sub:(r.block<=2)?('A /'+r.prefix+' is the exception to the minus-two rule &mdash; count the addresses in the block.'):'Addresses in the block is 2 to the power of the host bits (checkpoint 1). Two of them can never be given to a device, so subtract 2. The bench is the formula.',
+    sub:(r.block<=2)?('A /'+r.prefix+' is the exception to the minus-two rule &mdash; count the addresses in the block.')
+      :'Addresses in the block is 2 to the power of the host bits (checkpoint 1), and two of them can never be given to a device, so subtract 2. The formula is below and the bench does the arithmetic with it.',
+    formula:(r.block<=2)?''
+      :('<span class="f"><b>usable hosts</b> = 2<sup>h</sup> &minus; 2</span>'
+        +'<span class="f">h = 32 &minus; prefix length</span>'
+        +'<span class="p"><b>In plain English:</b> take 32 minus the number after the slash (32 &minus; '+r.prefix
+        +' = '+r.host+' host bits here), raise 2 to that power, then subtract 2.</span>'),
     bench:'<div class="sgbench" data-op="sub" data-fixed="b" data-b="2">'
       +'<div class="cap">The formula, as a bench</div>'
       +'<div class="sgrow2"><input class="sgbinput" placeholder="addresses in the block">'
@@ -2395,7 +2410,8 @@ function sgSteps(r){
       +'<p class="sgnote" style="margin:6px 0 0">The 2 is the <span class="term" data-tip="<b>Network address</b> - every host bit at 0: the block itself, never a device.">network address</span> and the <span class="term" data-tip="<b>Broadcast</b> - every host bit at 1: every device on the subnet at once, so never one device.">broadcast</span>.</p>'
       +'<div class="sgbmsg"></div></div>',
     kind:'num', want:(r.usable||0),
-    hint:(r.block<=2)?'How many addresses does the block hold?':'2^'+r.host+' &minus; 2.',
+    hint:(r.block<=2)?'How many addresses does the block hold?'
+      :('32 &minus; '+r.prefix+' = '+r.host+' host bits, so 2<sup>'+r.host+'</sup> &minus; 2.'),
     work:(r.block<=2)?('<p class="sgnote">The block holds '+r.block+' address'+(r.block===1?'':'es')+', and a /'+r.prefix+' keeps all of them usable.</p>')
       :('<div class="scwork"><div><span class="lbl" style="width:58px">2^'+r.host+'</span>'+r.block.toLocaleString('en-US')+' addresses</div>'
         +'<div><span class="lbl" style="width:58px">&minus; 2</span>network + broadcast</div>'
@@ -2540,6 +2556,7 @@ function sgPaint(){
   var st=steps[SG.step];
   box.innerHTML=bar+'<div class="sgstep"><p class="sgq"><span class="n">'+(SG.step+1)+'</span>'+st.q+'</p>'
     +'<p class="sgsub">'+st.sub+'</p>'
+    +(st.formula?('<div class="sgformula">'+st.formula+'</div>'):'')
     +'<div class="iobox">'
     +((st.kind==='octet')
       ? '<span class="sgpicks" id="sgPick">'+[1,2,3,4].map(function(n){
