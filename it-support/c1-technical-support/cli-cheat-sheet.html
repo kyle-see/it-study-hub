@@ -1,0 +1,1228 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>CLI cheat sheet — CMD and PowerShell, verified</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);font-size:11px}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  :root{--text:#000;--surface:#fff}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+<style>
+.ccnote{margin:10px 0;font-size:13px;color:var(--text-dim);line-height:1.62}
+.ccnote .chip{vertical-align:1px;margin-right:6px}
+pre.cc{background:var(--surface-2);border:1px solid var(--rule);border-left:2px solid var(--amber-400);
+ border-radius:0 8px 8px 0;padding:12px 14px;margin:12px 0;font-family:var(--mono);font-size:12.2px;
+ line-height:1.62;white-space:pre-wrap;overflow-wrap:anywhere;color:var(--text)}
+td.task{font-weight:600;color:var(--text-strong)}
+.tbl-wrap table td{vertical-align:top}
+h3{font-size:14px;margin:22px 0 8px;color:var(--text-strong)}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">CLI cheat sheet — CMD and PowerShell</span>
+  <nav><a href="../../index.html">Certificate</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="../../glossary.html" title="Every term, with a definition">▤ glossary</a><a href="index.html">Course 1</a><a href="m3-operating-systems.html">M3 — Operating systems</a><a href="#operators">Operators</a><a href="#changes">Change log</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<section id="intro" class=""><h2>How to read this</h2>
+<p class="lede">One task per row, three shells per row. Every Windows cell was executed on Windows 11
+before it was written down — the Linux/macOS column is carried over from the original sheet and is
+marked where a tool is not installed by default.</p>
+
+<p><span class="chip y">start here</span> <strong>Windows 11 ships two PowerShells-in-waiting.</strong>
+The built-in <strong>Windows PowerShell 5.1</strong> (<code>powershell.exe</code>) and, if someone
+installed it, <strong>PowerShell 7</strong> (<code>pwsh</code>). They disagree about two things on this
+page: <code>&amp;&amp;</code>/<code>||</code>, and <code>-Filter</code> wildcard matching. Check yours
+with <code>$PSVersionTable.PSVersion</code> before blaming a command.</p>
+
+<p><span class="chip r">the big one</span> <strong>CMD is not PowerShell.</strong> If a command is a
+PowerShell <em>Verb-Noun</em> pair — <code>Test-NetConnection</code>, <code>Get-Process</code>,
+<code>Get-EventLog</code> — it belongs in the last column only. Typed into CMD it fails with
+<code>'X' is not recognized as an internal or external command</code>. Five cells in the original
+sheet had this; they are corrected below.</p>
+</section><section id="fs" class=""><h2>File system &amp; directory navigation</h2><p class="lede">The everyday half. Both Windows columns are real; the differences that bite are <code>rm -r</code>, <code>xcopy</code> and <code>robocopy</code>.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task">View command manual / help</td><td><code>man [command]</code> (or <code>[command] --help</code>)</td><td><code>[command] /?</code> (or <code>help [command]</code>)</td><td><code>Get-Help [command]</code> (or <code>[command] -?</code>)</td></tr><tr><td class="task">List directory contents</td><td><code>ls</code></td><td><code>dir</code></td><td><code>ls</code></td></tr><tr><td class="task">Detailed list + hidden files</td><td><code>ls -la</code> (<code>-lah</code> = human-readable sizes)</td><td><code>dir /a</code></td><td><code>Get-ChildItem -Force</code> (or <code>ls -Force</code>)</td></tr><tr><td class="task">Change directory</td><td><code>cd</code></td><td><code>cd</code></td><td><code>cd</code></td></tr><tr><td class="task">Go up one directory</td><td><code>cd ..</code></td><td><code>cd ..</code></td><td><code>cd ..</code></td></tr><tr><td class="task">Jump to home directory</td><td><code>cd ~</code> (or <code>cd</code>)</td><td><code>cd %userprofile%</code></td><td><code>cd ~</code> (or <code>cd $HOME</code>)</td></tr><tr><td class="task">Create a folder</td><td><code>mkdir</code></td><td><code>mkdir</code> (or <code>md</code>)</td><td><code>mkdir</code> (a function: New-Item -ItemType Directory)</td></tr><tr><td class="task">Copy files only</td><td><code>cp</code></td><td><code>copy</code></td><td><code>cp</code></td></tr><tr><td class="task">Copy directory trees</td><td><code>cp -r</code> (or <code>cp -a</code>)</td><td><code>xcopy /E /H /Y</code> — append a <code>\</code> to the destination or add <code>/I</code></td><td><code>cp -r</code></td></tr><tr><td class="task">Enterprise / advanced copy</td><td><code>rsync -av</code></td><td><code>robocopy /E /MT</code> (not <code>/ZB</code> — see below)</td><td><code>robocopy /E /MT</code></td></tr><tr><td class="task">Move or rename</td><td><code>mv</code></td><td><code>move</code> (or <code>ren</code>)</td><td><code>mv</code></td></tr><tr><td class="task">Delete files</td><td><code>rm</code></td><td><code>del</code> (or <code>erase</code>)</td><td><code>rm</code></td></tr><tr><td class="task">Delete a tree (files + folders)</td><td><code>rm -r</code></td><td><code>del /s /q [folder]</code> then <code>rmdir /s /q [folder]</code></td><td><code>rm -r</code></td></tr><tr><td class="task">Print working directory</td><td><code>pwd</code></td><td><code>cd</code> (with no arguments)</td><td><code>pwd</code></td></tr><tr><td class="task">View full text file</td><td><code>cat FILE</code></td><td><code>type FILE</code></td><td><code>Get-Content FILE</code> (or <code>cat</code> / <code>type</code>)</td></tr><tr><td class="task"><span class="ac" data-full="Page" data-desc="the fixed-size unit memory is divided into and moved in, typically 4 KB.">Page</span> through large files</td><td><code>less FILE</code></td><td><code>more FILE</code></td><td><code>Get-Content FILE | Out-Host -Paging</code> (or <code>more FILE</code>)</td></tr><tr><td class="task">Show first 10 lines</td><td><code>head -n 10 FILE.txt</code></td><td>no native command</td><td><code>Get-Content FILE.txt -Head 10</code> (or <code>cat FILE.txt -Head 10</code>)</td></tr><tr><td class="task">Show last 10 lines</td><td><code>tail -n 10 FILE.txt</code></td><td>no native command</td><td><code>Get-Content FILE.txt -Tail 10</code> (or <code>cat FILE.txt -Tail 10</code>)</td></tr><tr><td class="task">Clear the terminal screen</td><td><code>clear</code> (or Ctrl + L)</td><td><code>cls</code></td><td><code>Clear-Host</code> (or <code>cls</code> / <code>clear</code>)</td></tr></tbody></table></div><p class="ccnote"><span class="chip r">trap</span> <strong>&lt;code&gt;rm -r&lt;/code&gt; has no single-command CMD twin.</strong> &lt;code&gt;rmdir /s&lt;/code&gt; removes &lt;em&gt;directories&lt;/em&gt;; hand it a file and it answers &lt;code&gt;The directory name is invalid.&lt;/code&gt; The pair is &lt;code&gt;del /s /q&lt;/code&gt; for the files, then &lt;code&gt;rmdir /s /q&lt;/code&gt; for the folders.</p><p class="ccnote"><span class="chip r">trap</span> <strong>&lt;code&gt;robocopy /ZB&lt;/code&gt; fails on a standard account</strong> — exit code 16, nothing copied, &lt;code&gt;ERROR : You do not have the <span class="ac" data-full="Backup" data-desc="a separate copy that can restore the data. The test is a restore, not the existence of a file.">Backup</span> and Restore Files user rights.&lt;/code&gt; &lt;code&gt;/ZB&lt;/code&gt; needs elevation. &lt;code&gt;/E /MT&lt;/code&gt; needs nothing and works.</p><p class="ccnote"><span class="chip">note</span> <strong>robocopy exit codes are not errors.</strong> 0–7 means success (0 = nothing to do, 1 = files copied, 3 = copied plus extra files present). 8 and above is a failure.</p><p class="ccnote"><span class="chip">note</span> <strong>&lt;code&gt;xcopy src dst&lt;/code&gt; asks a question</strong> — &lt;em&gt;F = file, D = directory?&lt;/em&gt; — unless the destination ends in &lt;code&gt;\&lt;/code&gt; or you pass &lt;code&gt;/I&lt;/code&gt;.</p><p class="ccnote"><span class="chip">note</span> <strong>&lt;code&gt;-Head&lt;/code&gt; and &lt;code&gt;-Tail&lt;/code&gt; are provider dynamic parameters.</strong> They work on files in PowerShell 5.1 and 7, but &lt;code&gt;Get-Command Get-Content&lt;/code&gt; will not list them, and they do not exist for the registry or certificate providers.</p></section><section id="net" class=""><h2>Networking: configuration and diagnostics</h2><p class="lede">The <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> config, the ping and the routing table — plus the <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> cache flush, which is the fix people forget.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task">View IP / interface config</td><td><code>ip addr</code> (or <code>ifconfig</code>)</td><td><code>ipconfig /all</code></td><td><code>Get-NetIPAddress</code> / <code>Get-NetIPConfiguration</code></td></tr><tr><td class="task">Test core connectivity</td><td><code>ping [target]</code> (runs until Ctrl + C)</td><td><code>ping [target]</code> (4 replies; <code>-t</code> = continuous, <code>-n N</code> = count)</td><td><code>ping [target]</code> (same — it calls the same ping.exe)</td></tr><tr><td class="task">Flush the DNS cache</td><td><code>sudo resolvectl flush-caches</code></td><td><code>ipconfig /flushdns</code></td><td><code>Clear-DnsClientCache</code></td></tr><tr><td class="task">Show the routing table</td><td><code>ip route</code> (or <code>netstat -rn</code>)</td><td><code>route print</code></td><td><code>Get-NetRoute</code></td></tr></tbody></table></div><p class="ccnote"><span class="chip">note</span> <strong>&lt;code&gt;Get-NetIPAddress&lt;/code&gt; lists every adapter</strong>, loopback and disconnected virtual ones included. &lt;code&gt;ipconfig /all&lt;/code&gt; shows the same facts in the order a beginner expects.</p><p class="ccnote"><span class="chip">note</span> &lt;code&gt;ipconfig&lt;/code&gt;, &lt;code&gt;ping&lt;/code&gt;, &lt;code&gt;tracert&lt;/code&gt;, &lt;code&gt;netstat&lt;/code&gt;, &lt;code&gt;nslookup&lt;/code&gt; and &lt;code&gt;route&lt;/code&gt; are ordinary &lt;code&gt;.exe&lt;/code&gt; files — they run unchanged from inside PowerShell. That is not true in the other direction.</p></section><section id="route" class=""><h2>Route path mapping</h2><p class="lede">Where the packet actually goes, and where it starts being dropped.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task"><span class="ac" data-full="Hop" data-desc="one router-to-router step along a path. `tracert` counts hops, and each one is a place where delay and filtering can happen.">Hop</span>-by-hop route trace</td><td><code>traceroute [target]</code> (<span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> probes)</td><td><code>tracert [target]</code> (<span class="ac" data-full="Internet Control Message Protocol" data-desc="error and diagnostic messages; ping and traceroute are built on it">ICMP</span> probes)</td><td><code>Test-NetConnection [target] -TraceRoute</code></td></tr><tr><td class="task">Limit hops / timeout</td><td><code>traceroute -m 15 [target]</code></td><td><code>tracert -h 15 -w 200 [target]</code></td><td><code>tracert -h 15 -w 200 [target]</code></td></tr><tr><td class="task">Real-time path analysis</td><td><code>mtr [target]</code> (interactive, continuous)</td><td><code>pathping [target]</code> (per-hop loss over time)</td><td><code>pathping [target]</code></td></tr></tbody></table></div><p class="ccnote"><span class="chip">note</span> &lt;code&gt;pathping&lt;/code&gt; is not a live view — it samples for about five minutes before printing anything. &lt;code&gt;-q N&lt;/code&gt; lowers the samples per hop, &lt;code&gt;-p ms&lt;/code&gt; the gap between them.</p><p class="ccnote"><span class="chip">note</span> &lt;code&gt;mtr&lt;/code&gt; is not installed by default on most distributions (&lt;code&gt;apt install mtr-tiny&lt;/code&gt;).</p></section><section id="ports" class=""><h2>Ports and reconnaissance</h2><p class="lede">Is anything listening, and who owns it. This is the section where the v3.1 CMD column had a PowerShell command in it.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task">Test a remote port</td><td><code>nc -zv [IP] [port]</code></td><td><code>curl -v telnet://[IP]:[port]</code> (curl ships with Windows 10/11)</td><td><code>Test-NetConnection [IP] -Port [port]</code></td></tr><tr><td class="task">Shorthand alias</td><td><code>netcat</code></td><td>— (no equivalent)</td><td><code>tnc</code></td></tr><tr><td class="task">Which process owns a listening port</td><td><code>sudo ss -tunlp</code></td><td><code>netstat -ano</code> then <code>tasklist /fi "pid eq [PID]"</code></td><td><code>Get-NetTCPConnection -LocalPort [port] | Select-Object OwningProcess</code></td></tr><tr><td class="task">List local listening ports</td><td><code>ss -tln</code></td><td><code>netstat -an | findstr LISTENING</code></td><td><code>Get-NetTCPConnection -State Listen</code></td></tr></tbody></table></div><p class="ccnote"><span class="chip r">trap</span> <strong>Windows CMD has no built-in port tester.</strong> &lt;code&gt;Test-NetConnection&lt;/code&gt; and &lt;code&gt;tnc&lt;/code&gt; are PowerShell only: run them from CMD and you get &lt;code&gt;'Test-NetConnection' is not recognized as an internal or external command&lt;/code&gt;. &lt;code&gt;curl -v telnet://1.1.1.1:443&lt;/code&gt; is the native alternative — a successful connect prints &lt;code&gt;* Established connection to 1.1.1.1 (1.1.1.1 port 443)&lt;/code&gt;.</p><p class="ccnote"><span class="chip">note</span> &lt;code&gt;Get-NetTCPConnection -<span class="ac" data-full="State" data-desc="the information a system remembers between actions. Stateful systems are easier to reason about and harder to scale.">State</span> <span class="ac" data-full="Listen" data-desc="a TCP state where a process is waiting on a port for incoming connection requests.">Listen</span>&lt;/code&gt; returns objects, not text. <span class="ac" data-full="Pipe" data-desc="sending one command&#x27;s output into the next command&#x27;s input. The `|` that makes small tools add up.">Pipe</span> it through &lt;code&gt;Select-Object LocalAddress, LocalPort, OwningProcess&lt;/code&gt;.</p></section><section id="dns" class=""><h2>DNS troubleshooting</h2><p class="lede">Name resolution: what the record says, and which server is being asked.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task">Basic name lookup</td><td><code>nslookup [domain]</code></td><td><code>nslookup [domain]</code></td><td><code>Resolve-DnsName [domain]</code></td></tr><tr><td class="task">Advanced query (record type)</td><td><code>dig [domain] [type]</code> (<code>dig</code> needs bind-utils / dnsutils)</td><td><code>nslookup -type=[type] [domain]</code></td><td><code>Resolve-DnsName [domain] -Type [type]</code></td></tr><tr><td class="task">Which DNS servers am I using</td><td><code>cat /etc/resolv.conf</code></td><td><code>ipconfig /all</code></td><td><code>Get-DnsClientServerAddress</code></td></tr></tbody></table></div><p class="ccnote"><span class="chip">note</span> &lt;code&gt;Resolve-DnsName&lt;/code&gt; prints the whole record set as a table. Narrow it with &lt;code&gt;-Type <span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span>&lt;/code&gt;, &lt;code&gt;-Type <span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span>&lt;/code&gt;, &lt;code&gt;-Type A&lt;/code&gt;.</p></section><section id="sys" class=""><h2>System administration and monitoring</h2><p class="lede">Processes, ports, disk and the event log. This section had the most v3.1 corrections: three PowerShell cmdlets in the CMD column and a <code>wmic</code> that no longer exists.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task">Live resource monitor</td><td><code>top</code> (or <code>htop</code>)</td><td><code>taskmgr</code> (<span class="ac" data-full="Graphical User Interface" data-desc="windows, icons and pointers rather than typed commands">GUI</span>) / <code>resmon</code> (GUI)</td><td><code>resmon</code> (GUI), or the loop below</td></tr><tr><td class="task">List running processes</td><td><code>ps aux</code></td><td><code>tasklist</code></td><td><code>Get-Process</code></td></tr><tr><td class="task">Kill a process by ID</td><td><code>kill [PID]</code></td><td><code>taskkill /PID [PID]</code></td><td><code>Stop-Process -Id [PID]</code></td></tr><tr><td class="task">Kill a process by name</td><td><code>killall [name]</code></td><td><code>taskkill /IM [name].exe /F</code></td><td><code>Stop-Process -Name "[name]" -Force</code></td></tr><tr><td class="task">View active network connections</td><td><code>ss -tunlp</code> (or <code>netstat -an</code>)</td><td><code>netstat -an</code></td><td><code>Get-NetTCPConnection</code></td></tr><tr><td class="task">Check disk space / usage</td><td><code>df -h</code></td><td><code>dir C:\ | findstr bytes</code> (not <code>wmic</code> — see below)</td><td><code>Get-Volume</code> (or <code>Get-PSDrive -PSProvider FileSystem</code>)</td></tr><tr><td class="task">View system log files</td><td><code>journalctl -xe</code></td><td><code>wevtutil qe System /c:5 /rd:true /f:text</code> (or <code>eventvwr</code> GUI)</td><td><code>Get-WinEvent</code> (<code>Get-EventLog</code> is deprecated)</td></tr><tr><td class="task">Shut down the system</td><td><code>shutdown -h now</code></td><td><code>shutdown /s /t 0</code></td><td><code>Stop-Computer</code></td></tr><tr><td class="task">Restart the system</td><td><code>shutdown -r now</code></td><td><code>shutdown /r /t 0</code></td><td><code>Restart-Computer</code></td></tr></tbody></table></div><p class="ccnote"><span class="chip r">trap</span> <strong>&lt;code&gt;wmic&lt;/code&gt; was removed.</strong> It became a Feature-on-Demand in Windows 11 21H2 and is not installed from 24H2 onward: &lt;code&gt;'wmic' is not recognized as an internal or external command&lt;/code&gt;. &lt;code&gt;dir C:\ | findstr bytes&lt;/code&gt; needs no admin and prints the free-space line. &lt;code&gt;fsutil volume diskfree C:&lt;/code&gt; needs an elevated prompt — without one it returns &lt;code&gt;Error 5: Access is denied&lt;/code&gt;.</p><p class="ccnote"><span class="chip r">trap</span> <strong>&lt;code&gt;Get-<span class="ac" data-full="Process" data-desc="a running program: its code, its memory, its open files, and its current state.">Process</span> loop&lt;/code&gt; is not a command.</strong> PowerShell reads &lt;code&gt;loop&lt;/code&gt; as a process name and answers &lt;code&gt;Cannot find a process with the name "loop"&lt;/code&gt;.</p><p class="ccnote"><span class="chip">note</span> &lt;code&gt;Get-EventLog&lt;/code&gt; is Windows-only and deprecated. &lt;code&gt;wevtutil qe System /c:5 /rd:true /f:text&lt;/code&gt; is the CMD-native read of the same log, needs no admin, and is what the CMD column should say.</p><pre class='cc'>while ($true) { Get-Process | Sort-Object CPU -Descending | Select-Object -First 10 Name, CPU, WS; Start-Sleep -Seconds 2; Clear-Host }</pre></section><section id="indexing" class=""><h2>Desktop search and indexing</h2><p class="lede">Who is building the index, and what is in it. Three operating systems, three answers.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task"><span class="ac" data-full="Service" data-desc="a background program with no window, started by the OS: print spooler, DNS client, update agent. Most &quot;the network is broken&quot; issues are one service.">Service</span> / daemon</td><td>Spotlight</td><td>Tracker / LocalSearch</td><td>Windows Search</td></tr><tr><td class="task">Process name</td><td><code>mds</code> / <code>mdworker</code></td><td><code>tracker-miner-fs-3</code></td><td><code>WSearch</code></td></tr><tr><td class="task"><span class="ac" data-full="Command-Line Interface" data-desc="a prompt where you type commands instead of clicking">CLI</span> status check</td><td><code>mdutil -s /</code></td><td><code>tracker3 status</code></td><td><code>Get-Service WSearch</code></td></tr><tr><td class="task">Default scope</td><td>User home &amp; apps</td><td>User home folders</td><td>User libraries &amp; Start</td></tr><tr><td class="task">Indexes system files?</td><td>Partly — the system volume is indexed; system files are hidden from *results*</td><td>No (user home by default)</td><td>No (excludes system and app files by default)</td></tr></tbody></table></div><p class="ccnote"><span class="chip">note</span> GNOME 47+ renamed the daemon. &lt;code&gt;tracker3&lt;/code&gt; still works on Ubuntu 22.04 and 24.04; newer releases ship it as &lt;code&gt;localsearch&lt;/code&gt;. Try &lt;code&gt;tracker3 status&lt;/code&gt;, then &lt;code&gt;localsearch status&lt;/code&gt;.</p></section><section id="search" class=""><h2>CLI search</h2><p class="lede">One row here is the classic migration bug: <code>findstr</code> is case-sensitive by default and <code>Select-String</code> is not. Silence is the failure mode.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task">Command</td><td><code>grep</code></td><td><code>findstr</code></td><td><code>Select-String</code> (alias <code>sls</code>)</td></tr><tr><td class="task">Case sensitive by default?</td><td>Yes — <code>-i</code> to ignore case</td><td>Yes — <code>/i</code> to ignore case</td><td><strong>No</strong> — <code>-CaseSensitive</code> to force it</td></tr><tr><td class="task">Search text in a file</td><td><code>grep "error" app.log</code></td><td><code>findstr "error" app.log</code></td><td><code>sls "error" app.log</code></td></tr><tr><td class="task">Case-insensitive search</td><td><code>grep -i "error" app.log</code></td><td><code>findstr /i "error" app.log</code></td><td><code>sls "error" app.log</code> (already the default)</td></tr><tr><td class="task">Recursive folder search</td><td><code>grep -r "error" .</code></td><td><code>findstr /s "error" *.*</code></td><td><code>dir -r | sls "error"</code> (or <code>Get-ChildItem -Recurse -File | Select-String error</code>)</td></tr><tr><td class="task">Show line numbers</td><td><code>grep -n "error" app.log</code></td><td><code>findstr /n "error" app.log</code></td><td>shown by default (<code>LineNumber</code> column)</td></tr><tr><td class="task">Filter command output</td><td><code>ss -tunlp | grep "443"</code></td><td><code>netstat -ano | findstr ":443"</code></td><td><code>netstat -ano | sls ":443"</code></td></tr><tr><td class="task">Recursive search by file extension</td><td><code>find /usr/bin -name "*.sh"</code></td><td><code>dir "C:\Program Files\*.exe" /s /b</code></td><td><code>Get-ChildItem 'C:\Program Files\' -Recurse -Filter *.exe</code></td></tr></tbody></table></div><p class="ccnote"><span class="chip r">trap</span> <strong>&lt;code&gt;findstr "ERROR" app.log&lt;/code&gt; against a line containing &lt;code&gt;error&lt;/code&gt; prints nothing at all.</strong> No error, no message — just an empty result that looks like &lt;em&gt;no matches&lt;/em&gt;. That is the whole difference between the two shells.</p><p class="ccnote"><span class="chip">note</span> &lt;code&gt;dir -r | sls "error"&lt;/code&gt; works because &lt;code&gt;Select-String&lt;/code&gt; binds the &lt;code&gt;<span class="ac" data-full="Path" data-desc="the sequence of hops a packet takes. IP does not promise a stable one; two packets in the same connection can take different routes.">Path</span>&lt;/code&gt; property from piped &lt;code&gt;FileInfo&lt;/code&gt; objects. &lt;code&gt;Get-ChildItem -Recurse -<span class="ac" data-full="File" data-desc="a named block of data. Its name, location and permissions are metadata the filesystem stores beside it.">File</span>&lt;/code&gt; is the clearer way to write it.</p></section><section id="redirection" class=""><h2>Piping and redirection</h2><p class="lede">Text in bash and CMD, objects in PowerShell — and two operators that do not mean what they look like.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Task</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task">Pipe output to the next command</td><td><code>cmd1 | cmd2</code></td><td><code>cmd1 | cmd2</code></td><td><code>cmd1 | cmd2</code> — passes full objects, not text</td></tr><tr><td class="task">Write / overwrite output (stdout)</td><td><code>cmd &gt; file.txt</code></td><td><code>cmd &gt; file.txt</code></td><td><code>cmd &gt; file.txt</code></td></tr><tr><td class="task">Append output (stdout)</td><td><code>cmd &gt;&gt; file.txt</code></td><td><code>cmd &gt;&gt; file.txt</code></td><td><code>cmd &gt;&gt; file.txt</code></td></tr><tr><td class="task">Redirect errors only (stderr)</td><td><code>cmd 2&gt; errors.txt</code></td><td><code>cmd 2&gt; errors.txt</code></td><td><code>cmd 2&gt; errors.txt</code></td></tr><tr><td class="task">Merge output and errors</td><td><code>cmd &gt; all.txt 2&gt;&amp;1</code> (or <code>&amp;&gt; all.txt</code>)</td><td><code>cmd &gt; all.txt 2&gt;&amp;1</code> — the order matters</td><td><code>cmd *&gt; all.txt</code> (<code>2&gt;&amp;1</code> alone writes no file)</td></tr><tr><td class="task">Discard / silence errors</td><td><code>cmd 2&gt; /dev/null</code></td><td><code>cmd 2&gt; nul</code></td><td><code>cmd 2&gt; $null</code></td></tr><tr><td class="task">Feed a file as input (stdin)</td><td><code>cmd &lt; input.txt</code></td><td><code>cmd &lt; input.txt</code></td><td><code>Get-Content input.txt | cmd</code> (no <code>&lt;</code> operator)</td></tr></tbody></table></div><p class="ccnote"><span class="chip">note</span> <strong>Text versus objects.</strong> In bash and CMD the pipe carries plain text, so you need &lt;code&gt;awk&lt;/code&gt;, &lt;code&gt;cut&lt;/code&gt; or &lt;code&gt;findstr&lt;/code&gt; to reach into it. In PowerShell it carries .NET objects: &lt;code&gt;(Get-Process | Where-Object <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span> -gt 100).Name&lt;/code&gt; needs no text parsing at all.</p><p class="ccnote"><span class="chip r">trap</span> <strong>&lt;code&gt;2&gt;&amp;1&lt;/code&gt; is a stream merge, not a file redirect.</strong> &lt;code&gt;cmd *&gt; all.txt&lt;/code&gt; writes the file; &lt;code&gt;cmd 2&gt;&amp;1&lt;/code&gt; on its own just prints both streams to the console. On PowerShell 5.1 a native program's stderr captured through &lt;code&gt;*&gt;&lt;/code&gt; lands in the file wrapped in PowerShell's &lt;code&gt;NativeCommandError&lt;/code&gt; decoration; on 7.x it is clean.</p><p class="ccnote"><span class="chip">note</span> <strong>PowerShell has no &lt;code&gt;&amp;lt;&lt;/code&gt; redirection</strong> — &lt;code&gt;cmd &lt; input.txt&lt;/code&gt; is a parse error. In CMD the order is load-bearing: &lt;code&gt;cmd &gt; all.txt 2&gt;&amp;1&lt;/code&gt; works, &lt;code&gt;cmd 2&gt;&amp;1 &gt; all.txt&lt;/code&gt; does not.</p></section><section id="operators" class=""><h2>Operators</h2><p class="lede">Two tables: the operators that match filenames, and the ones that glue commands together. This is where v3.1 had its one silent error.</p><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Operator</th><th>Meaning</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task"><code>|</code></td><td>Pipe: output of one command into another</td><td>text</td><td>text</td><td>objects</td></tr><tr><td class="task"><code>*</code></td><td>Any number of characters</td><td>yes</td><td>yes — see the extension rule</td><td>yes for cmdlets and providers; <strong>not</strong> expanded for native <code>.exe</code> arguments</td></tr><tr><td class="task"><code>?</code></td><td>Exactly one character</td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td class="task"><code>[abc]</code>, <code>[a-c]</code></td><td>Character set / range</td><td>yes</td><td>no — CMD has no character sets</td><td>yes</td></tr><tr><td class="task"><code>[!abc]</code></td><td>Negated set</td><td>yes</td><td>no</td><td><strong>no</strong> — PowerShell has no wildcard negation</td></tr><tr><td class="task"><code>[^abc]</code></td><td>Negated set</td><td>yes (bash takes <code>!</code> and <code>^</code>)</td><td>no</td><td><strong>no</strong> — <code>^</code> is a literal member of the set</td></tr><tr><td class="task"><code>[</code> in a real filename</td><td>Literal bracket</td><td>n/a</td><td>n/a</td><td><code>Get-ChildItem -LiteralPath 'report[final].txt'</code></td></tr></tbody></table></div><h3>Statements, variables and quoting</h3><div class="tbl-wrap"><table><colgroup><col style="width:21%"><col style="width:21%"><col style="width:28%"><col style="width:30%"></colgroup><thead><tr><th>Operator</th><th>Meaning</th><th>Linux / macOS</th><th>Windows (CMD)</th><th>PowerShell</th></tr></thead><tbody><tr><td class="task"><code>;</code></td><td>Statement separator</td><td>yes</td><td>no — use <code>&amp;</code></td><td>yes</td></tr><tr><td class="task"><code>&amp;</code></td><td>bash: run in background · CMD: run next anyway · PS: call operator</td><td>yes</td><td>yes</td><td>yes</td></tr><tr><td class="task"><code>&amp;&amp;</code></td><td>Run the next command only if this succeeded</td><td>yes</td><td>yes</td><td><strong>PowerShell 7+ only</strong> — a parse error on 5.1</td></tr><tr><td class="task"><code>||</code></td><td>Run the next command only if this failed</td><td>yes</td><td>yes</td><td><strong>PowerShell 7+ only</strong> — a parse error on 5.1</td></tr><tr><td class="task">variable</td><td>Reference a variable</td><td><code>$var</code> / <code>${var}</code></td><td><code>%var%</code></td><td><code>$var</code> / <code>${var}</code></td></tr><tr><td class="task">escape character</td><td>Make the next character literal</td><td><code>\</code></td><td><code>^</code></td><td>backtick `<code> </code> ``</td></tr><tr><td class="task">string quoting</td><td>Literal versus expanding strings</td><td><code>'…'</code> and <code>"…"</code> both expand</td><td>no distinction</td><td><code>'…'</code> is literal, <code>"…"</code> expands</td></tr><tr><td class="task">object placeholder</td><td>The current pipeline item</td><td>n/a (use awk/sed)</td><td>n/a</td><td><code>$_</code> or <code>$PSItem</code></td></tr><tr><td class="task">home directory</td><td>Shortcut for the user's home</td><td><code>~</code></td><td><code>%userprofile%</code></td><td><code>~</code> / <code>$HOME</code></td></tr><tr><td class="task">discard output</td><td>Send output nowhere</td><td><code>/dev/null</code></td><td><code>nul</code></td><td><code>$null</code></td></tr></tbody></table></div><h3>What that means in practice</h3><p><span class="chip r">the error v3.1 had</span> <strong>PowerShell has no wildcard negation.</strong> <code>[^abc]</code> is not “anything but a, b, c”; it is the literal set <code>{ ^, a, b, c }</code>. <code>[!abc]</code> is <code>{ !, a, b, c }</code>. Both run happily and both return the wrong files:</p><pre class='cc'>'5' -like '[^0-9]'                 # True  &lt;- a digit matches the "not a digit" set
+'a' -like '[^0-9]'                 # False &lt;- a letter does not
+Get-ChildItem 'file_[^0-9].txt'    # returns file_1.txt, not file_a.txt</pre><p>The working form is a <code>-not</code> operator:</p><pre class='cc'>Get-ChildItem | Where-Object { $_.Name -notlike 'file_[0-9].txt' }
+Get-ChildItem | Where-Object { $_.BaseName -notmatch '\d$' }</pre><p><span class="chip r">5.1 versus 7</span> <strong><code>&amp;&amp;</code> and <code>||</code> do not exist in PowerShell 5.1</strong> — the version that ships with Windows 11. The error is explicit: <code>The token '&amp;&amp;' is not a valid statement separator in this version.</code> The 5.1-compatible form:</p><pre class='cc'>.\build.ps1; if ($?) { .\test.ps1 }              # the '&amp;&amp;' of PowerShell 5.1
+.\build.ps1; if (-not $?) { .\fallback.ps1 }     # the '||' of PowerShell 5.1</pre><p><strong>“CMD sometimes” is exactly right for <code>*</code>.</strong> Windows file matching treats a wildcard extension as a <em>prefix</em> match, so <code>dir *.txt</code> also returns <code>a.txtx</code>. PowerShell's provider does not — <code>ls *.txt</code> correctly excludes it. (<code>Get-ChildItem -Filter '*.txt'</code> on PowerShell 5.1 still includes it, because <code>-Filter</code> goes through the older provider path; 7.x excludes it.)</p><p><strong>Wildcards are not expanded for native programs in PowerShell.</strong> <code>cmd /c echo *.txt</code> prints the literal <code>*.txt</code>, because PowerShell hands <code>.exe</code> arguments through untouched.</p></section><section id="changes" class=""><h2>What changed from v3.1</h2><div class="tbl-wrap"><table><colgroup><col style="width:18%"><col style="width:26%"><col style="width:56%"></colgroup><thead><tr><th>Where</th><th>v3.1 said</th><th>v3.2 now says</th></tr></thead><tbody><tr><td class='task'>Operators — <code>[ ]</code> row</td><td>&lt;code&gt;ls file_[^0-9].txt (Powershell)&lt;/code&gt; given as a negation example</td><td>PowerShell has no wildcard negation: &lt;code&gt;^&lt;/code&gt; and &lt;code&gt;!&lt;/code&gt; are literal members of the set, so that line returns &lt;code&gt;file_1.txt&lt;/code&gt;. Replaced with &lt;code&gt;-notlike&lt;/code&gt; / &lt;code&gt;-notmatch&lt;/code&gt; and a warning.</td></tr><tr><td class='task'>Operators — <code>*</code> row</td><td>“CMD sometimes”, with no reason</td><td>Kept and explained: Windows matches a wildcard extension as a prefix, so &lt;code&gt;dir *.txt&lt;/code&gt; also returns &lt;code&gt;a.txtx&lt;/code&gt;; PowerShell's provider does not.</td></tr><tr><td class='task'>Operators — missing</td><td>&lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt;, &lt;code&gt;||&lt;/code&gt;, &lt;code&gt;;&lt;/code&gt;, &lt;code&gt;&amp;amp;&lt;/code&gt;, variables, escapes, quoting, &lt;code&gt;$_&lt;/code&gt;</td><td>Added as a second table. &lt;code&gt;&amp;amp;&amp;amp;&lt;/code&gt; and &lt;code&gt;||&lt;/code&gt; are PowerShell 7+ only and fail on the 5.1 that ships with Windows 11 — with the &lt;code&gt;if ($?)&lt;/code&gt; equivalent shown.</td></tr><tr><td class='task'>Ports — CMD column</td><td>&lt;code&gt;Test-NetConnection [IP] -<span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> [Port]&lt;/code&gt;, alias &lt;code&gt;tnc&lt;/code&gt;</td><td>Both are PowerShell only. CMD now shows &lt;code&gt;curl -v telnet://[IP]:[port]&lt;/code&gt; and &lt;code&gt;—&lt;/code&gt; for the alias.</td></tr><tr><td class='task'>Processes — CMD column</td><td>&lt;code&gt;tasklist (or Get-Process)&lt;/code&gt;</td><td>&lt;code&gt;Get-Process&lt;/code&gt; is not a CMD command. The cmdlet stays in the PowerShell column.</td></tr><tr><td class='task'>System log — CMD column</td><td>&lt;code&gt;eventvwr (GUI) / Get-EventLog&lt;/code&gt;</td><td>&lt;code&gt;Get-EventLog&lt;/code&gt; is not a CMD command. Replaced with &lt;code&gt;wevtutil qe System /c:5 /rd:true /f:text&lt;/code&gt;, which needs no admin.</td></tr><tr><td class='task'>Disk space — CMD column</td><td>&lt;code&gt;wmic logicaldisk get size,freespace&lt;/code&gt;</td><td>&lt;code&gt;wmic&lt;/code&gt; is not installed from Windows 11 24H2 onward. Replaced with &lt;code&gt;dir C:\ | findstr bytes&lt;/code&gt;, with the &lt;code&gt;fsutil&lt;/code&gt; option noted as needing elevation.</td></tr><tr><td class='task'>Resource monitor — PowerShell column</td><td>&lt;code&gt;resmon (GUI) / Get-Process loop (CLI)&lt;/code&gt;</td><td>&lt;code&gt;Get-Process loop&lt;/code&gt; is not a command. Replaced with a real loop plus the &lt;code&gt;Get-Counter&lt;/code&gt; one-liner.</td></tr><tr><td class='task'>Delete recursive — CMD column</td><td>&lt;code&gt;rmdir /S (or rd /s)&lt;/code&gt;</td><td>&lt;code&gt;rmdir&lt;/code&gt; deletes directories; on a file it answers &lt;code&gt;The directory name is invalid.&lt;/code&gt; Replaced with the &lt;code&gt;del&lt;/code&gt; then &lt;code&gt;rmdir&lt;/code&gt; pair.</td></tr><tr><td class='task'>Advanced copy</td><td>&lt;code&gt;robocopy /E /ZB /MT&lt;/code&gt;</td><td>&lt;code&gt;/ZB&lt;/code&gt; needs the Backup and Restore Files privilege: on a standard account it exits 16 and copies nothing. Changed to &lt;code&gt;/E /MT&lt;/code&gt;, with the 0–7 exit-code scale noted.</td></tr><tr><td class='task'>Indexing — process name</td><td>&lt;code&gt;racker-miner-fs-3&lt;/code&gt;</td><td>Typo. Corrected to &lt;code&gt;tracker-miner-fs-3&lt;/code&gt;, with the GNOME 47+ &lt;code&gt;localsearch&lt;/code&gt; rename noted.</td></tr><tr><td class='task'>Indexing — “skips system/hidden”</td><td>macOS “Yes”</td><td>Softened to “Partly”: the system volume is indexed, and system files are hidden from results rather than skipped.</td></tr><tr><td class='task'>Redirection — merge row</td><td>&lt;code&gt;cmd *&gt; all.txt (or 2&gt;&amp;1)&lt;/code&gt;</td><td>&lt;code&gt;2&gt;&amp;1&lt;/code&gt; alone writes no file. Corrected to &lt;code&gt;*&gt;&lt;/code&gt; for PowerShell, with the CMD ordering trap and the 5.1 &lt;code&gt;NativeCommandError&lt;/code&gt; decoration noted.</td></tr><tr><td class='task'>Additions</td><td>—</td><td>DNS cache flush, routing table, hop/timeout limits, which process owns a port, local listening ports, which DNS servers are in use, and a verification note on the page.</td></tr></tbody></table></div><p class="lede" style="margin-top:16px">Fourteen items. The first is the one that silently returned the wrong file; the next five are PowerShell commands that were sitting in the CMD column.</p></section><section id="verified" class=""><h2>How this was checked</h2><p><strong>Windows: executed, not recalled.</strong> Every CMD and PowerShell cell on this
+page was run on 2026-11-12 against Windows 11 build 26100 — once from <code>cmd.exe</code>, once from Windows
+PowerShell 5.1.26100, and the PowerShell column again from PowerShell 7.7.0. Output was captured.
+Where 5.1 and 7 disagree (the <code>&amp;&amp;</code>/<code>||</code> operators, and <code>-Filter</code>
+wildcard matching) both results are stated, because a lab machine has 5.1 unless someone installed 7.</p>
+
+<p><strong>Linux/macOS: reviewed, not executed.</strong> The original column is carried over as written
+— this kit was built on a Windows machine, so there is no Linux host to test against. Cells name the
+package when a tool is not installed by default (<code>mtr</code>, <code>dig</code>, <code>htop</code>).</p>
+
+<p><strong>Network commands depend on the network.</strong> <code>ping</code>, <code>tracert</code>,
+<code>pathping</code>, <code>curl</code>, <code>Test-NetConnection</code>, <code>nslookup</code> and
+<code>Resolve-DnsName</code> were run against live targets; your output will differ from anyone else's.</p>
+</section>
+</main>
+
+<footer>
+  <p><strong>Credit where it belongs:</strong> the original <em>Systems &amp; Networking CLI
+  Cheat Sheet v3.1</em> was written by <b>Liz</b>, a classmate in JITA Class 4A — the three-column
+  structure and the whole Linux/macOS column are hers. This edition is that sheet, reviewed and
+  re-verified for the study kit; the change log above says exactly what moved and why.</p>
+  <p>Windows cells executed on Windows 11 (build 26100) against <span class="mono">cmd.exe</span>,
+  Windows PowerShell 5.1.26100 and PowerShell 7.7.0 on 2026-11-12. The Linux/macOS column was reviewed but
+  not re-run — there is no Linux host in this kit.</p>
+  <p class="src">Study aid. Nothing here is submitted for grading.</p>
+<p class="cred">Written by <b>pi-agent</b> driving <b>DeepSeek-V4.1-Flash-1017</b>
+  (Unsloth <code>UD-Q3_K_XL</code>) on the author's own machine, under his direction and review. No Claude,
+  OpenAI or other hosted model wrote any of it, and no page of it needed a network.</p>
+</footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
+  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
+  tog.appendChild(b1); tog.appendChild(b2);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+</script>
+</body>
+</html>
