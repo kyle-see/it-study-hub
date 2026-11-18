@@ -9745,6 +9745,19 @@ function themeToggle(){
 }
 
 document.addEventListener('DOMContentLoaded',function(){
+  
+  if(typeof window!=='undefined'&&window.TUTOR_PRESETS){
+    var wrap=document.querySelector('.tpresets');
+    if(wrap){
+      wrap.innerHTML='';
+      window.TUTOR_PRESETS.forEach(function(pr){
+        var b=el('button','tpreset',pr.label);
+        b.setAttribute('data-ask',pr.ask);
+        if(pr.mode)b.setAttribute('data-mode',pr.mode);
+        wrap.appendChild(b);
+      });
+    }
+  }
   var ask=$('#tutorAsk');
   if(ask){
     ask.querySelector('button').addEventListener('click',function(){

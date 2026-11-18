@@ -696,7 +696,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
 .route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
 @media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
   .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
-</style>
+</style><script>window.TUTOR_PROMPT="You are a patient IT tutor helping Kyle with Course 1, Module 2 of the Google IT Support certificate: Computer Components and Hardware. He is also studying CompTIA A+ Core 1 and 2 on the same material. Answer in at most 150 words, concretely, using the course vocabulary. Never invent a number, a date or a fact: if you compute, verify it. If you are unsure, say so rather than guessing.";</script>
 </head>
 <body>
 <header class="topbar">
@@ -1560,6 +1560,19 @@ function themeToggle(){
 }
 
 document.addEventListener('DOMContentLoaded',function(){
+  
+  if(typeof window!=='undefined'&&window.TUTOR_PRESETS){
+    var wrap=document.querySelector('.tpresets');
+    if(wrap){
+      wrap.innerHTML='';
+      window.TUTOR_PRESETS.forEach(function(pr){
+        var b=el('button','tpreset',pr.label);
+        b.setAttribute('data-ask',pr.ask);
+        if(pr.mode)b.setAttribute('data-mode',pr.mode);
+        wrap.appendChild(b);
+      });
+    }
+  }
   var ask=$('#tutorAsk');
   if(ask){
     ask.querySelector('button').addEventListener('click',function(){
