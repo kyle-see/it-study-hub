@@ -1,5 +1,7 @@
 # IT fundamentals — study hub
 
+**[Live site → kyle-see.github.io/it-study-hub](https://kyle-see.github.io/it-study-hub/)**
+
 **To help a learner learn the concepts introduced in Coursera's Google IT Support Professional
 Certificate and the CompTIA A+ Core 1 and Core 2 objectives** — understand them, say them back, then
 prove it on the drills.
@@ -25,8 +27,9 @@ not the prose.
 ## Use it, share the link
 
 [CC BY-NC-ND 4.0](LICENSE.md): attribute it, don't sell it, don't remix it. Read it as much as you like
-and send people to `https://kyle-see.github.io/it-study-hub/` rather than copying the files around — one
-place stays corrected, and the mirror nobody maintains is the one that keeps getting shared.
+and send people to [kyle-see.github.io/it-study-hub](https://kyle-see.github.io/it-study-hub/) rather
+than copying the files around — one place stays corrected, and the mirror nobody maintains is the one
+that keeps getting shared.
 
 Support is optional and changes nothing: <https://buymeacoffee.com/kyle.see>.
 
