@@ -184,6 +184,8 @@ button:disabled{opacity:.4;cursor:default}
 .ghost:hover{background:var(--surface-3);color:var(--text)}
 .rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
 
+.rowbtns button.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+
 code,.mono{
   font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
   border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
@@ -254,7 +256,7 @@ td b,th b{color:var(--text-strong)}
   border-radius:6px;padding:8px 0;background:var(--surface-3);
   border:1px solid var(--rule);color:var(--text-mute);
 }
-.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}
 .bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
 .prompt{
   font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
@@ -515,7 +517,9 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
   body{background:#fff;color:#000}
   section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
-  :root{--text:#000;--surface:#fff}
+  
+  :root{--text:#000;--text-strong:#000;--text-dim:#333;--text-mute:#4a4a4a;
+        --surface:#fff;--surface-2:#fff;--surface-3:#fff;--code-bg:#f4f4f4}
 }
 @media(max-width:640px){
   .kv{grid-template-columns:1fr;gap:3px 0}
@@ -523,6 +527,12 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   main{padding:18px 12px 90px}
   section{padding:18px 16px 22px;border-radius:11px}
   h2{font-size:19px}
+  
+  .topbar{position:static}
+  
+  html,body{overflow-x:clip}
+  
+  section:target{margin-left:0}
 }
 
 
@@ -696,7 +706,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
 .route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
 @media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
   .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
-</style><script>window.TUTOR_PROMPT="You are a patient IT tutor helping Kyle with Course 2, Module 4 of the Google IT Support certificate: Networking Services. He is also studying CompTIA A+ Core 1 and 2 on the same material. Answer in at most 150 words, concretely, using the course vocabulary. Never invent a number, a date or a fact: if you compute, verify it. If you are unsure, say so rather than guessing.";</script>
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -710,7 +720,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
         <ul class="lcan"><li>explain <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> and walk the four-message <span class="ac" data-full="Discover, Offer, Request, Acknowledge" data-desc="the four-step DHCP exchange">DORA</span> exchange</li><li>explain how a name becomes an address, and what each <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> record type is for</li><li>explain <span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span> and why almost every office uses it</li><li>tell a <span class="ac" data-full="Virtual Private Network" data-desc="an encrypted tunnel across an untrusted network">VPN</span> from a proxy, and say what each one protects</li><li>describe the cloud service models and what the customer still owns</li></ul></div>
       <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 9 facts</span>
-        <div class="kv lfacts"><div class="k">DHCP</div><div>hands out address, mask, gateway and DNS servers automatically. DORA: Discover, Offer, Request, Acknowledge. Addresses are leased, not given.</div><div class="k">DNS resolution</div><div>root server, then the top-level domain, then the domain&#x27;s own authoritative server; the resolver caches the answer for its <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span>.</div><div class="k">DNS records</div><div>A (IPv4), <span class="ac" data-full="IPv6 Address record" data-desc="the DNS record mapping a name to an IPv6 address; A is the IPv4 one">AAAA</span> (IPv6), <span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span> (alias), <span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span> (mail), NS (nameserver), <span class="ac" data-full="Pointer record" data-desc="reverse DNS: address to name, used by mail servers to check a sender">PTR</span> (reverse lookup), <span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span> (verification and mail policy).</div><div class="k">NAT</div><div>rewrites private source addresses to one public address and keeps the mapping in a table. That is how one public <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> serves a whole office - and why it hides internal addresses.</div><div class="k">NAT is not a firewall</div><div>it changes addresses, it does not inspect content. <span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> forwarding is a NAT rule, not a security control.</div><div class="k">VPN</div><div>an encrypted tunnel between a client and a network, so the traffic behaves as if the client were on site. It protects the path, nothing on either end.</div><div class="k">Proxy</div><div>an intermediary for one application&#x27;s traffic. It can cache, filter and log; it does not encrypt by itself.</div><div class="k">Cloud models</div><div><span class="ac" data-full="Infrastructure as a Service" data-desc="you rent the compute, storage and network">IaaS</span> gives you virtual machines, <span class="ac" data-full="Platform as a Service" data-desc="the vendor runs the runtime; you bring the app">PaaS</span> a runtime, <span class="ac" data-full="Software as a Service" data-desc="you use the software; the vendor runs everything">SaaS</span> the finished application. You keep the data in all three.</div><div class="k"><span class="ac" data-full="Network Time Protocol" data-desc="keeps clocks in sync across a network">NTP</span></div><div>keeps clocks in sync. <span class="ac" data-full="Kerberos" data-desc="the ticket-based authentication protocol behind Active Directory; you authenticate once and receive tickets for each service.">Kerberos</span> and <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span> both fail or warn when clocks drift, which is why time is an infrastructure service.</div></div></div>
+        <div class="kv lfacts"><div class="k">DHCP</div><div>hands out address, mask, gateway and DNS servers automatically. DORA: Discover, Offer, Request, Acknowledge. Addresses are leased, not given.</div><div class="k">DNS resolution</div><div>root server, then the top-level domain, then the domain&#x27;s own authoritative server; the resolver caches the answer for its <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span>.</div><div class="k">DNS records</div><div>A (IPv4), <span class="ac" data-full="IPv6 Address record" data-desc="the DNS record mapping a name to an IPv6 address; A is the IPv4 one">AAAA</span> (IPv6), <span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span> (alias), <span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span> (mail), NS (nameserver), <span class="ac" data-full="Pointer record" data-desc="reverse DNS: address to name, used by mail servers to check a sender">PTR</span> (reverse lookup), <span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span> (verification and mail policy).</div><div class="k">NAT</div><div>rewrites private source addresses to one public address and keeps the mapping in a table. That is how one public <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> serves a whole office - and why it hides internal addresses.</div><div class="k">NAT is not a firewall</div><div>it changes addresses, it does not inspect content. <span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> forwarding is a NAT rule, not a security control.</div><div class="k">VPN</div><div>an encrypted tunnel between a client and a network, so the traffic behaves as if the client were on site. It protects the path, nothing on either end.</div><div class="k">Proxy</div><div>an intermediary for one application&#x27;s traffic. It can cache, filter and log; it does not encrypt by itself.</div><div class="k">Cloud models</div><div><span class="ac" data-full="Infrastructure as a Service" data-desc="you rent the compute, storage and network">IaaS</span> gives you virtual machines, <span class="ac" data-full="Platform as a Service" data-desc="the vendor runs the runtime; you bring the app">PaaS</span> a runtime, <span class="ac" data-full="Software as a Service" data-desc="you use the software; the vendor runs everything">SaaS</span> the finished application. You keep the data in all three.</div><div class="k"><span class="ac" data-full="Network Time Protocol" data-desc="keeps clocks in sync across a network">NTP</span></div><div>keeps clocks in sync. <span class="ac" data-full="Kerberos" data-desc="the ticket-based authentication protocol behind Active Directory; you authenticate once and receive tickets for each service.">Kerberos</span> and <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span> both fail or warn when clocks drift, which is why time is an infrastructure service.</div></div></div>
       <div class="big60 r"><b>The trap:</b> Treating NAT as a firewall, or a VPN as a security product. Both change the path; neither inspects anything.</div>
       <p class="src">Everything below this box explains these lines, in this order, with a drill
       after each part that tests it. If you can say every line above without looking, the drills are
@@ -724,7 +734,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
     <table>
       <tr><th>Job</th><th>Service</th><th>The manual version it replaced</th><th>Its failure looks like…</th></tr>
       <tr><td><b>Hand out addresses</b></td><td><span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span></td><td>Typing an address, mask, gateway and <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> server into every machine.</td><td>An address starting <span class="mono">169.254</span>, or two machines fighting over one address.</td></tr>
-      <tr><td><b>Answer names</b></td><td>DNS</td><td>A <i>hosts file</i> on every machine, edited by hand whenever anything moved.</td><td>The site loads by <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> but not by name.</td></tr>
+      <tr><td><b>Answer names</b></td><td>DNS</td><td>A <i>hosts file</i> on every machine, edited by hand whenever anything moved.</td><td>The site loads by <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> but not by name.</td></tr>
       <tr><td><b>Translate addresses</b></td><td><span class="ac" data-full="Network Address Translation" data-desc="lets many private hosts share one public address">NAT</span></td><td>Owning a public IPv4 address for every single device.</td><td>Something inside cannot be reached from outside.</td></tr>
       <tr><td><b>Carry traffic as if you were on site</b></td><td><span class="ac" data-full="Virtual Private Network" data-desc="an encrypted tunnel across an untrusted network">VPN</span>, proxies</td><td>A leased line to every branch office and every home worker.</td><td>It works from the office and not from home, or the other way round.</td></tr>
       <tr><td><b>Supply computing itself</b></td><td>Cloud models</td><td>A server room, a purchase order, and three weeks of waiting.</td><td>Nobody can say who is responsible for the part that broke.</td></tr>
@@ -761,7 +771,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <tr><td><b>Authoritative server</b></td><td>The actual records for one zone — the final answer.</td><td>Whoever holds the domain: your host, your registrar, your company.</td></tr>
     </table>
     <div class="big60 y">
-      <b><span class="ac" data-full="Anycast" data-desc="one address advertised from many locations, with routing delivering the client to whichever is nearest or healthiest. This is how DNS root servers…">Anycast</span>, in one line:</b> the same address is advertised from many locations, and routing delivers each
+      <b><span class="ac" data-full="Anycast" data-desc="one address advertised from many locations, with routing delivering the client to whichever is nearest or healthiest.">Anycast</span>, in one line:</b> the same address is advertised from many locations, and routing delivers each
       query to whichever one is nearest. That is how thirteen root "servers" are really well over a thousand
       machines, and why the answer comes back fast from anywhere on earth.
     </div>
@@ -811,7 +821,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <tr><td><b><span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span></b></td><td>name → another name</td><td>An alias. Point <span class="mono">shop.example.com</span> at a host provider's name and let them change the address. <b>Cannot</b> coexist with other records on the same name.</td></tr>
       <tr><td><b><span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span></b></td><td>domain → mail server</td><td>Where mail for the domain goes, with a <b>priority</b>: lower wins, and the others are backups. Wrong MX means mail silently queues and then expires.</td></tr>
       <tr><td><b>NS</b></td><td>zone → its name servers</td><td>Which servers are authoritative. Every delegation in <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> is a pair of NS records.</td></tr>
-      <tr><td><b><span class="ac" data-full="Pointer record" data-desc="reverse DNS: address to name, used by mail servers to check a sender">PTR</span></b></td><td>address → name</td><td>Reverse lookup, in the <span class="mono">in-addr.arpa</span> tree. Mail servers check it; a residential <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> usually fails it.</td></tr>
+      <tr><td><b><span class="ac" data-full="Pointer record" data-desc="reverse DNS: address to name, used by mail servers to check a sender">PTR</span></b></td><td>address → name</td><td>Reverse lookup, in the <span class="mono">in-addr.arpa</span> tree. Mail servers check it; a residential <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> usually fails it.</td></tr>
       <tr><td><b><span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span></b></td><td>name → free text</td><td>Domain verification tokens, and mail policy: <b><span class="ac" data-full="Sender Policy Framework" data-desc="a DNS text record listing the servers allowed to send mail for a domain">SPF</span></b> (who may send), <b><span class="ac" data-full="DomainKeys Identified Mail" data-desc="a signature on outgoing mail, published in DNS, proving it came from the domain unchanged">DKIM</span></b> (a signature), <b><span class="ac" data-full="Domain-based Message Authentication, Reporting and Conformance" data-desc="the policy tying SPF and DKIM together: what to do when mail claiming your domain fails both">DMARC</span></b> (what to do when both fail, and where to report).</td></tr>
       <tr><td><b><span class="ac" data-full="Service record" data-desc="a DNS record naming host and port for one service, so a client can find it unaided">SRV</span></b></td><td>service → host and port</td><td>How a client finds a service without being told an address. Priority and weight let it choose sensibly. Active Directory leans on these heavily.</td></tr>
     </table>
@@ -882,7 +892,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
     <p>The router keeps a <b>translation table</b>. When a reply arrives at <span class="mono">203.0.113.9:40001</span>,
     the table says that was <span class="mono">10.0.0.5:51234</span>, so it rewrites the destination back and hands
     it over. Many private hosts, one public address — which is why the everyday form is called <b><span class="ac" data-full="Port Address Translation" data-desc="the everyday form of NAT: many private hosts behind one public address, told apart by port">PAT</span></b>, NAT
-    overload, or <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> masquerading. Inside the <span class="ac" data-full="Local Area Network" data-desc="one local network - office, floor, home">LAN</span> nothing is rewritten at all; the translation happens only where
+    overload, or <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> masquerading. Inside the <span class="ac" data-full="Local Area Network" data-desc="one local network - office, floor, home">LAN</span> nothing is rewritten at all; the translation happens only where
     traffic crosses the boundary.</p>
     <div class="kv">
       <div class="k"><span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> preservation</div><div>When the client's source port is free on the outside, the router keeps it as-is. Protocols that put port numbers inside the payload (<span class="ac" data-full="File Transfer Protocol" data-desc="an old application-layer protocol for moving files, port 21">FTP</span>, SIP) depend on this.</div>
@@ -1033,7 +1043,7 @@ function quiz(hostId,items,opts){
         if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
         else{
           b.classList.add('wrong');markMiss(q.k||q.q);
-          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          btns.forEach(function(x){if(x.textContent===String(correct))x.classList.add('right')});
           if(navigator.vibrate)navigator.vibrate(35);
         }
         if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
@@ -1140,7 +1150,8 @@ function flashcards(hostId,cards){
     paint();
   });
   no.addEventListener('click',function(){
-    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    missed[order[idx].t]=1;
+    
     idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
     paint();
   });
@@ -1184,7 +1195,7 @@ function matchGame(hostId,pairs){
       selL.classList.remove('sel'); selR.classList.remove('sel');
       markHit(selL.dataset.key); done++;
       fb.className='fb ok'; fb.textContent='Right.';
-      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+      if(done===set.length){fb.textContent='All '+set.length+' matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
     }else{
       var a=selL,b=selR;
       fb.className='fb no'; fb.textContent='Not those two.';
@@ -1335,7 +1346,7 @@ function blitz(hostId,items,seconds,label){
 function octetTrainer(hostId){
   var host=$(hostId); if(!host)return;
   host.innerHTML='';
-  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var mode='dec', locked='', v=0, right=0, wrong=0, streak=0;
   var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
   host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
   var PLACES=[128,64,32,16,8,4,2,1];
@@ -1369,7 +1380,7 @@ function octetTrainer(hostId){
       if(got===want){
         inp.classList.add('ok'); right++; streak++;
         markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
-        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+        setTimeout(function(){if(!locked){mode=(mode==='dec')?'bin':'dec'}paint()},650);
       }else{
         inp.classList.add('no'); wrong++; streak=0;
         markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
@@ -1381,14 +1392,23 @@ function octetTrainer(hostId){
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
     inp.focus({preventScroll:true});
     upd();
+    
+    var act=(locked==='bin')?b1:(locked==='dec')?b2:b3;
+    [b1,b2,b3].forEach(function(b){b.classList.toggle('on',b===act)});
   }
   function upd(){
     bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
   }
+  
   var tog=el('div','rowbtns');
-  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
-  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
-  tog.appendChild(b1); tog.appendChild(b2);
+  var b1=el('button','secondary','Decimal → binary only');
+  var b2=el('button','secondary','Binary → decimal only');
+  var b3=el('button','secondary','Alternate both');
+  function setMode(m){ locked=m; if(m)mode=m; paint() }
+  b1.onclick=function(){setMode('bin')};
+  b2.onclick=function(){setMode('dec')};
+  b3.onclick=function(){setMode('')};
+  tog.appendChild(b1); tog.appendChild(b2); tog.appendChild(b3);
   host.insertBefore(tog,host.firstChild);
   paint();
 }
@@ -1569,11 +1589,16 @@ document.addEventListener('DOMContentLoaded',function(){
       var q=b.getAttribute('data-ask');
       if(b.dataset.mode==='copy')tutorCopy(q);
       else if(b.dataset.mode==='open')tutorOpenApp(q);
-      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+      else{tutorSetOpen(true);tutorAsk(q)}
     });
   });
   $$('[data-audio]').forEach(function(b){
     b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  
+  tutorSetOpen($('#tutorPanel').classList.contains('open'),true);
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.key==='Esc')&&$('#tutorPanel').classList.contains('open'))tutorToggle();
   });
   var rm=$('#reviewMissed');
   if(rm)rm.textContent='Review queue: '+missedCount();

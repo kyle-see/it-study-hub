@@ -184,6 +184,8 @@ button:disabled{opacity:.4;cursor:default}
 .ghost:hover{background:var(--surface-3);color:var(--text)}
 .rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
 
+.rowbtns button.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+
 code,.mono{
   font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
   border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
@@ -254,7 +256,7 @@ td b,th b{color:var(--text-strong)}
   border-radius:6px;padding:8px 0;background:var(--surface-3);
   border:1px solid var(--rule);color:var(--text-mute);
 }
-.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}
 .bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
 .prompt{
   font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
@@ -515,7 +517,9 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
   body{background:#fff;color:#000}
   section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
-  :root{--text:#000;--surface:#fff}
+  
+  :root{--text:#000;--text-strong:#000;--text-dim:#333;--text-mute:#4a4a4a;
+        --surface:#fff;--surface-2:#fff;--surface-3:#fff;--code-bg:#f4f4f4}
 }
 @media(max-width:640px){
   .kv{grid-template-columns:1fr;gap:3px 0}
@@ -523,6 +527,12 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   main{padding:18px 12px 90px}
   section{padding:18px 16px 22px;border-radius:11px}
   h2{font-size:19px}
+  
+  .topbar{position:static}
+  
+  html,body{overflow-x:clip}
+  
+  section:target{margin-left:0}
 }
 
 
@@ -696,7 +706,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
 .route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
 @media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
   .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
-</style><script>window.TUTOR_PROMPT="You are a patient IT tutor helping Kyle with Course 2, Module 2 of the Google IT Support certificate: The Network Layer. He is also studying CompTIA A+ Core 1 and 2 on the same material. Answer in at most 150 words, concretely, using the course vocabulary. Never invent a number, a date or a fact: if you compute, verify it. If you are unsure, say so rather than guessing.";</script>
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -710,7 +720,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
         <ul class="lcan"><li>read and validate an IPv4 address, and convert octets to binary</li><li>classify an address at a glance: class, private or public, loopback, <span class="ac" data-full="Automatic Private IP Addressing" data-desc="the 169.254.x.x address a host gives itself when DHCP never answers">APIPA</span></li><li>explain network ID and host ID, and read a subnet mask or <span class="ac" data-full="Classless Inter-Domain Routing" data-desc="any mask length demarcates a network; this replaced the fixed classes">CIDR</span> prefix</li><li>subnet a network and answer: network address, broadcast, host range, host count</li><li>given a required number of networks, choose the mask from the count-first table and say how many usable hosts each piece holds</li><li>explain <span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span> and why it sits between layer 2 and layer 3</li><li>explain how a router chooses the next hop</li></ul></div>
       <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 9 facts</span>
-        <div class="kv lfacts"><div class="k">IPv4</div><div>32 bits, written as four decimal octets. Any octet above 255 makes the address invalid, which is the fastest validity check there is.</div><div class="k">Classes</div><div>Leading bits decide everything: A 0xxx (1-126), B 10xx (128-191), C 110x (192-223), D 1110 (224-239, multicast), E 1111 (240-255, research/experimental). The class ends at 127, 191, 223, 239, 255. Historic, still examined, still how you read a first octet at a glance.</div><div class="k">Special ranges</div><div>private: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. Loopback: 127.0.0.0/8. APIPA: 169.254.0.0/16, which means <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> failed.</div><div class="k">Mask and CIDR</div><div>the prefix length is how many leading bits are the network. /24 = 255.255.255.0. Host count is 2^(32-prefix) - 2, where 32-prefix is the number of HOST bits - never plug the prefix in as the exponent.</div><div class="k">Why minus two</div><div>the all-zeros host value is the network address and the all-ones value is the broadcast, so neither can be given to a machine.</div><div class="k">Gateway</div><div>a host sends directly to anything on its own subnet; everything else goes to the default gateway, which is the router.</div><div class="k">ARP</div><div>broadcasts &#x27;who has this <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span>&#x27;, the owner replies with its <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span>, and the answer is cached. ARP never crosses a router - that is why it is a layer-2.5 mechanic.</div><div class="k">Routing</div><div>a router keeps a table of destination network to next hop; the most specific match wins; anything unmatched takes the default route.</div><div class="k">Header fields</div><div>version, header length, <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span> (decremented at every hop), protocol (1 <span class="ac" data-full="Internet Control Message Protocol" data-desc="error and diagnostic messages; ping and traceroute are built on it">ICMP</span>, 6 <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>, 17 <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span>), source and destination address, checksum.</div></div></div>
+        <div class="kv lfacts"><div class="k">IPv4</div><div>32 bits, written as four decimal octets. Any octet above 255 makes the address invalid, which is the fastest validity check there is.</div><div class="k">Classes</div><div>Leading bits decide everything: A 0xxx (1-126), B 10xx (128-191), C 110x (192-223), D 1110 (224-239, multicast), E 1111 (240-255, research/experimental). The class ends at 127, 191, 223, 239, 255. Historic, still examined, still how you read a first octet at a glance.</div><div class="k">Special ranges</div><div>private: 10.0.0.0/8, 172.16.0.0/12, 192.168.0.0/16. Loopback: 127.0.0.0/8. APIPA: 169.254.0.0/16, which means <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span> failed.</div><div class="k">Mask and CIDR</div><div>the prefix length is how many leading bits are the network. /24 = 255.255.255.0. Host count is 2^(32-prefix) - 2, where 32-prefix is the number of HOST bits - never plug the prefix in as the exponent.</div><div class="k">Why minus two</div><div>the all-zeros host value is the network address and the all-ones value is the broadcast, so neither can be given to a machine.</div><div class="k">Gateway</div><div>a host sends directly to anything on its own subnet; everything else goes to the default gateway, which is the router.</div><div class="k">ARP</div><div>broadcasts &#x27;who has this <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span>&#x27;, the owner replies with its <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span>, and the answer is cached. ARP never crosses a router - that is why it is a layer-2.5 mechanic.</div><div class="k">Routing</div><div>a router keeps a table of destination network to next hop; the most specific match wins; anything unmatched takes the default route.</div><div class="k">Header fields</div><div>version, header length, <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span> (decremented at every hop), protocol (1 <span class="ac" data-full="Internet Control Message Protocol" data-desc="error and diagnostic messages; ping and traceroute are built on it">ICMP</span>, 6 <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>, 17 <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span>), source and destination address, checksum.</div></div></div>
       <div class="big60 r"><b>The trap:</b> /24 does not mean 256 usable hosts. It means 254, because the network and broadcast addresses are not assignable - and that one subtraction is the most commonly lost mark in the whole course.</div>
       <p class="src">Everything below this box explains these lines, in this order, with a drill
       after each part that tests it. If you can say every line above without looking, the drills are
@@ -721,7 +731,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
     <p>You already know the data link layer shuffles frames around one local network using <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> addresses. That is a
     delivery service that stops at the router's door. The network layer is the one that keeps going.</p>
     <div class="big60">
-      <b>The one sentence to own:</b> the <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> address is <b>end-to-end</b>; the MAC address is <b>hop-to-hop</b>.
+      <b>The one sentence to own:</b> the <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> address is <b>end-to-end</b>; the MAC address is <b>hop-to-hop</b>.
       The IP header survives every hop unchanged in meaning. The MAC header is thrown away and rebuilt at every hop.
     </div>
     <table>
@@ -826,7 +836,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <div class="band a-paper"><span class="bn">Options · Padding</span><span class="bp">variable</span><span style="font-size:12px;color:var(--text-mute)">testing; padding zeroes it out to a 32-bit boundary</span></div>
     </div>
     <div class="big60">
-      <b>Encapsulation, in one line:</b> the <b>entire <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> datagram</b> becomes the <b>payload</b> of an <span class="ac" data-full="Ethernet" data-desc="the dominant wired LAN standard: it defines the frame layout and the rules for sharing the wire.">Ethernet</span> frame.
+      <b>Encapsulation, in one line:</b> the <b>entire <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> datagram</b> becomes the <b>payload</b> of an <span class="ac" data-full="Ethernet" data-desc="the dominant wired LAN standard: it defines the frame layout and the rules for sharing the wire.">Ethernet</span> frame.
       So the frame is bigger than the datagram, and the datagram is bigger than the TCP segment inside it.
     </div>
     <div class="big60 y">
@@ -835,7 +845,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <span class="mono">traceroute</span> in Module 6.
     </div>
     <button class="aud" data-audio="audio/m2-routing.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · router in four steps</button></section><section id="datagram-game" class=""><h2>Drill: field → job</h2><div class="game" id="gFields"><div class="gtitle"><b>Match the header field to its job</b></div><p class="ghint">Six fields. Pick one from each column.</p><div id="fieldHost"></div></div></section><section id="arp" class=""><h2>ARP — the glue between L3 and L2</h2><p class="lede">This is the module's favourite 'explain the mechanic' question, and it is a clean sequence game.</p>
-    <p>You have an <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> address for the destination and a frame that needs a <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> address. <span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span> bridges that gap
+    <p>You have an <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> address for the destination and a frame that needs a <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> address. <span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span> bridges that gap
     <b>on the local network only</b>.</p>
     <div class="kv">
       <div class="k">ARP request</div><div><b>Broadcast</b> to every device on the <span class="ac" data-full="Local Area Network" data-desc="one local network - office, floor, home">LAN</span>: "who has 10.0.0.5?"</div>
@@ -865,7 +875,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
     <div class="tbl-wrap">
     <table>
       <tr><th></th><th>Octet 1</th><th>Octet 2</th><th>Octet 3</th><th>Octet 4</th></tr>
-      <tr><td><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> <span class="mono">192.168.123.132</span></td><td class="mono">11000000</td><td class="mono">10101000</td><td class="mono">01111011</td><td class="mono">10000100</td></tr>
+      <tr><td><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> <span class="mono">192.168.123.132</span></td><td class="mono">11000000</td><td class="mono">10101000</td><td class="mono">01111011</td><td class="mono">10000100</td></tr>
       <tr><td>Mask <span class="mono">255.255.255.0</span></td><td class="mono">11111111</td><td class="mono">11111111</td><td class="mono">11111111</td><td class="mono">00000000</td></tr>
       <tr><td><b>AND result</b></td><td class="mono">11000000</td><td class="mono">10101000</td><td class="mono">01111011</td><td class="mono">00000000</td></tr>
       <tr><td><b>= network</b></td><td class="mono">192</td><td class="mono">168</td><td class="mono">123</td><td class="mono">0</td></tr>
@@ -1120,7 +1130,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
     <h3>The forwarding loop</h3>
     <div class="big60">
       <b>1.</b> A frame arrives because the destination <b><span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span></b> belongs to this router.<br>
-      <b>2.</b> The router <b>strips the L2 header</b> and is left holding the <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> datagram.<br>
+      <b>2.</b> The router <b>strips the L2 header</b> and is left holding the <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> datagram.<br>
       <b>3.</b> It looks up the destination <b>IP</b> in its routing table → picks a <b>next hop</b>.<br>
       <b>4.</b> It <b>decrements <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span></b>, recomputes the header checksum, and builds a <b>new frame</b> for that next hop.<br>
       <span class="src">Then it repeats at the next router. The IP addresses never change; the MAC addresses change every hop.</span>
@@ -1191,7 +1201,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <tr><td>Usable hosts</td><td>2<sup>n</sup> − 2 = block − 2</td></tr>
       <tr><td>Subnets from borrowed bits</td><td>2<sup>borrowed</sup> — each borrowed bit halves the hosts</td></tr>
       <tr><td>Broadcast</td><td>network + block − 1</td></tr>
-      <tr><td><span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span> asks</td><td>"who has this <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span>?" → broadcast; answer is unicast</td></tr>
+      <tr><td><span class="ac" data-full="Address Resolution Protocol" data-desc="the protocol that finds the MAC address for an IP already known to be on the local link: broadcast the question, and the owner answers directly.">ARP</span> asks</td><td>"who has this <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span>?" → broadcast; answer is unicast</td></tr>
       <tr><td><span class="ac" data-full="Router" data-desc="a device that forwards packets from one network to another, choosing a next hop from its routing table.">Router</span> needs</td><td>≥ 2 interfaces; forwarding is IP, delivery is <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span></td></tr>
       <tr><td>Distance-vector</td><td>whole table to neighbours — <span class="ac" data-full="Routing Information Protocol" data-desc="the classic distance-vector protocol">RIP</span></td></tr>
       <tr><td>Link-state</td><td>whole topology — <span class="ac" data-full="Open Shortest Path First" data-desc="the link-state interior gateway protocol">OSPF</span>, IS-IS</td></tr>
@@ -1271,7 +1281,7 @@ function quiz(hostId,items,opts){
         if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
         else{
           b.classList.add('wrong');markMiss(q.k||q.q);
-          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          btns.forEach(function(x){if(x.textContent===String(correct))x.classList.add('right')});
           if(navigator.vibrate)navigator.vibrate(35);
         }
         if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
@@ -1378,7 +1388,8 @@ function flashcards(hostId,cards){
     paint();
   });
   no.addEventListener('click',function(){
-    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    missed[order[idx].t]=1;
+    
     idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
     paint();
   });
@@ -1422,7 +1433,7 @@ function matchGame(hostId,pairs){
       selL.classList.remove('sel'); selR.classList.remove('sel');
       markHit(selL.dataset.key); done++;
       fb.className='fb ok'; fb.textContent='Right.';
-      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+      if(done===set.length){fb.textContent='All '+set.length+' matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
     }else{
       var a=selL,b=selR;
       fb.className='fb no'; fb.textContent='Not those two.';
@@ -1573,7 +1584,7 @@ function blitz(hostId,items,seconds,label){
 function octetTrainer(hostId){
   var host=$(hostId); if(!host)return;
   host.innerHTML='';
-  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var mode='dec', locked='', v=0, right=0, wrong=0, streak=0;
   var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
   host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
   var PLACES=[128,64,32,16,8,4,2,1];
@@ -1607,7 +1618,7 @@ function octetTrainer(hostId){
       if(got===want){
         inp.classList.add('ok'); right++; streak++;
         markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
-        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+        setTimeout(function(){if(!locked){mode=(mode==='dec')?'bin':'dec'}paint()},650);
       }else{
         inp.classList.add('no'); wrong++; streak=0;
         markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
@@ -1619,14 +1630,23 @@ function octetTrainer(hostId){
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
     inp.focus({preventScroll:true});
     upd();
+    
+    var act=(locked==='bin')?b1:(locked==='dec')?b2:b3;
+    [b1,b2,b3].forEach(function(b){b.classList.toggle('on',b===act)});
   }
   function upd(){
     bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
   }
+  
   var tog=el('div','rowbtns');
-  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
-  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
-  tog.appendChild(b1); tog.appendChild(b2);
+  var b1=el('button','secondary','Decimal → binary only');
+  var b2=el('button','secondary','Binary → decimal only');
+  var b3=el('button','secondary','Alternate both');
+  function setMode(m){ locked=m; if(m)mode=m; paint() }
+  b1.onclick=function(){setMode('bin')};
+  b2.onclick=function(){setMode('dec')};
+  b3.onclick=function(){setMode('')};
+  tog.appendChild(b1); tog.appendChild(b2); tog.appendChild(b3);
   host.insertBefore(tog,host.firstChild);
   paint();
 }
@@ -1807,11 +1827,16 @@ document.addEventListener('DOMContentLoaded',function(){
       var q=b.getAttribute('data-ask');
       if(b.dataset.mode==='copy')tutorCopy(q);
       else if(b.dataset.mode==='open')tutorOpenApp(q);
-      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+      else{tutorSetOpen(true);tutorAsk(q)}
     });
   });
   $$('[data-audio]').forEach(function(b){
     b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  
+  tutorSetOpen($('#tutorPanel').classList.contains('open'),true);
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.key==='Esc')&&$('#tutorPanel').classList.contains('open'))tutorToggle();
   });
   var rm=$('#reviewMissed');
   if(rm)rm.textContent='Review queue: '+missedCount();

@@ -184,6 +184,8 @@ button:disabled{opacity:.4;cursor:default}
 .ghost:hover{background:var(--surface-3);color:var(--text)}
 .rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
 
+.rowbtns button.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+
 code,.mono{
   font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
   border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
@@ -254,7 +256,7 @@ td b,th b{color:var(--text-strong)}
   border-radius:6px;padding:8px 0;background:var(--surface-3);
   border:1px solid var(--rule);color:var(--text-mute);
 }
-.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}
 .bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
 .prompt{
   font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
@@ -515,7 +517,9 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
   body{background:#fff;color:#000}
   section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
-  :root{--text:#000;--surface:#fff}
+  
+  :root{--text:#000;--text-strong:#000;--text-dim:#333;--text-mute:#4a4a4a;
+        --surface:#fff;--surface-2:#fff;--surface-3:#fff;--code-bg:#f4f4f4}
 }
 @media(max-width:640px){
   .kv{grid-template-columns:1fr;gap:3px 0}
@@ -523,6 +527,12 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   main{padding:18px 12px 90px}
   section{padding:18px 16px 22px;border-radius:11px}
   h2{font-size:19px}
+  
+  .topbar{position:static}
+  
+  html,body{overflow-x:clip}
+  
+  section:target{margin-left:0}
 }
 
 
@@ -696,7 +706,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
 .route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
 @media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
   .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
-</style><script>window.TUTOR_PROMPT="You are a patient IT tutor helping Kyle with Course 2, Module 3 of the Google IT Support certificate: The Transport and Application Layers. He is also studying CompTIA A+ Core 1 and 2 on the same material. Answer in at most 150 words, concretely, using the course vocabulary. Never invent a number, a date or a fact: if you compute, verify it. If you are unsure, say so rather than guessing.";</script>
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -710,7 +720,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
         <ul class="lcan"><li>name the well-known ports on sight</li><li>explain the <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span> three-way handshake and the four-message close</li><li>tell TCP from <span class="ac" data-full="User Datagram Protocol" data-desc="connectionless transport; fast, no delivery guarantee">UDP</span> and pick one for a given workload</li><li>read a socket state and say what the connection is doing</li><li>explain what <span class="ac" data-full="HyperText Transfer Protocol" data-desc="the request/response protocol of the web">HTTP</span>, <span class="ac" data-full="Domain Name System" data-desc="translates names a human can read into IP addresses">DNS</span> and mail protocols do, and which ports they use</li><li>trace one request down all four layers, header by header</li></ul></div>
       <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 10 facts</span>
-        <div class="kv lfacts"><div class="k">Ports to know</div><div>20/21 <span class="ac" data-full="File Transfer Protocol" data-desc="an old application-layer protocol for moving files, port 21">FTP</span>, 22 <span class="ac" data-full="Secure Shell" data-desc="an encrypted remote terminal on port 22">SSH</span>, 23 <span class="ac" data-full="Telnet" data-desc="the original remote-terminal protocol, port 23, entirely unencrypted. Useful as a port-connectivity test; never for logging in.">Telnet</span>, 25 <span class="ac" data-full="Simple Mail Transfer Protocol" data-desc="sends and relays mail on port 25; it moves mail between servers, it does not collect it">SMTP</span>, 53 DNS, 67/68 <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span>, 80 HTTP, 110 <span class="ac" data-full="Post Office Protocol 3" data-desc="collects mail on port 110 and usually deletes it from the server - one device, one mailbox">POP3</span>, 143 <span class="ac" data-full="Internet Message Access Protocol" data-desc="collects mail on port 143 but leaves it on the server and syncs state across devices">IMAP</span>, 443 <span class="ac" data-full="HTTP Secure" data-desc="HTTP wrapped in TLS; port 443">HTTPS</span>, 3389 <span class="ac" data-full="Remote Desktop Protocol" data-desc="Windows&#x27; remote graphical session on port 3389 - you see the other machine&#x27;s desktop">RDP</span>.</div><div class="k"><span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> ranges</div><div>0-1023 well known, 1024-49151 registered, 49152-65535 ephemeral (the source port your machine picks).</div><div class="k"><span class="ac" data-full="Socket" data-desc="one endpoint of a connection, identified by the combination of IP address and port. A TCP connection is a pair of sockets.">Socket</span></div><div><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> address + port + protocol. A connection is a pair of sockets, which is how one server serves thousands of clients on one port.</div><div class="k">TCP handshake</div><div><span class="ac" data-full="SYN" data-desc="the flag that opens a TCP connection and carries the sender&#x27;s starting sequence number.">SYN</span>, SYN/<span class="ac" data-full="ACK" data-desc="the flag that acknowledges received data, or completes the handshake.">ACK</span>, ACK - three messages. Close is <span class="ac" data-full="FIN" data-desc="the TCP flag that says &quot;I have finished sending&quot;. Each direction closes separately, which is why a full shutdown takes two FINs.">FIN</span>, ACK, FIN, ACK - four.</div><div class="k">Sequence numbers</div><div>they count bytes, not packets, which is how a lost segment is retransmitted precisely instead of resending everything.</div><div class="k">UDP</div><div>no connection, no ordering, no retransmission. Cheap and fast: DNS queries, DHCP, voice, video, games.</div><div class="k">HTTP</div><div>request and response. Methods GET/<span class="ac" data-full="Power-On Self-Test" data-desc="the firmware&#x27;s check of CPU, RAM and devices before anything boots">POST</span>/PUT/DELETE. Status codes: 2xx success, 3xx redirect, 4xx your fault, 5xx their fault. HTTPS is HTTP inside <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span>.</div><div class="k">DNS</div><div>resolves a name to an address over UDP 53. Records worth knowing: A, <span class="ac" data-full="IPv6 Address record" data-desc="the DNS record mapping a name to an IPv6 address; A is the IPv4 one">AAAA</span>, <span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span>, <span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span>, NS, <span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span>.</div><div class="k">Mail</div><div>SMTP sends (25, or 587 for submission), POP3 downloads and usually removes (110), IMAP syncs and leaves it on the server (143).</div><div class="k">Firewalls</div><div>stateless filters each packet by rule; stateful remembers connections and allows the replies. Default deny is the only sane posture.</div></div></div>
+        <div class="kv lfacts"><div class="k">Ports to know</div><div>20/21 <span class="ac" data-full="File Transfer Protocol" data-desc="an old application-layer protocol for moving files, port 21">FTP</span>, 22 <span class="ac" data-full="Secure Shell" data-desc="an encrypted remote terminal on port 22">SSH</span>, 23 <span class="ac" data-full="Telnet" data-desc="the original remote-terminal protocol, port 23, entirely unencrypted. Useful as a port-connectivity test; never for logging in.">Telnet</span>, 25 <span class="ac" data-full="Simple Mail Transfer Protocol" data-desc="sends and relays mail on port 25; it moves mail between servers, it does not collect it">SMTP</span>, 53 DNS, 67/68 <span class="ac" data-full="Dynamic Host Configuration Protocol" data-desc="hands out IP addresses automatically; the opposite is a static address set by hand">DHCP</span>, 80 HTTP, 110 <span class="ac" data-full="Post Office Protocol 3" data-desc="collects mail on port 110 and usually deletes it from the server - one device, one mailbox">POP3</span>, 143 <span class="ac" data-full="Internet Message Access Protocol" data-desc="collects mail on port 143 but leaves it on the server and syncs state across devices">IMAP</span>, 443 <span class="ac" data-full="HTTP Secure" data-desc="HTTP wrapped in TLS; port 443">HTTPS</span>, 3389 <span class="ac" data-full="Remote Desktop Protocol" data-desc="Windows&#x27; remote graphical session on port 3389 - you see the other machine&#x27;s desktop">RDP</span>.</div><div class="k"><span class="ac" data-full="Port" data-desc="the number that identifies a conversation or service within a host, from 0 to 65535, split into well-known, registered and ephemeral ranges.">Port</span> ranges</div><div>0-1023 well known, 1024-49151 registered, 49152-65535 ephemeral (the source port your machine picks).</div><div class="k"><span class="ac" data-full="Socket" data-desc="one endpoint of a connection, identified by the combination of IP address and port. A TCP connection is a pair of sockets.">Socket</span></div><div><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> address + port + protocol. A connection is a pair of sockets, which is how one server serves thousands of clients on one port.</div><div class="k">TCP handshake</div><div><span class="ac" data-full="SYN" data-desc="the flag that opens a TCP connection and carries the sender&#x27;s starting sequence number.">SYN</span>, SYN/<span class="ac" data-full="ACK" data-desc="the flag that acknowledges received data, or completes the handshake.">ACK</span>, ACK - three messages. Close is <span class="ac" data-full="FIN" data-desc="the TCP flag that says &quot;I have finished sending&quot;. Each direction closes separately, which is why a full shutdown takes two FINs.">FIN</span>, ACK, FIN, ACK - four.</div><div class="k">Sequence numbers</div><div>they count bytes, not packets, which is how a lost segment is retransmitted precisely instead of resending everything.</div><div class="k">UDP</div><div>no connection, no ordering, no retransmission. Cheap and fast: DNS queries, DHCP, voice, video, games.</div><div class="k">HTTP</div><div>request and response. Methods GET/<span class="ac" data-full="Power-On Self-Test" data-desc="the firmware&#x27;s check of CPU, RAM and devices before anything boots">POST</span>/PUT/DELETE. Status codes: 2xx success, 3xx redirect, 4xx your fault, 5xx their fault. HTTPS is HTTP inside <span class="ac" data-full="Transport Layer Security" data-desc="encrypts a connection after the TCP handshake completes">TLS</span>.</div><div class="k">DNS</div><div>resolves a name to an address over UDP 53. Records worth knowing: A, <span class="ac" data-full="IPv6 Address record" data-desc="the DNS record mapping a name to an IPv6 address; A is the IPv4 one">AAAA</span>, <span class="ac" data-full="Canonical Name" data-desc="a DNS record that says &#x27;this name is really that other name&#x27;">CNAME</span>, <span class="ac" data-full="Mail Exchanger" data-desc="the DNS record naming the servers that accept mail for a domain, with a priority">MX</span>, NS, <span class="ac" data-full="Text record" data-desc="a DNS record holding arbitrary text - SPF, DKIM, domain verification">TXT</span>.</div><div class="k">Mail</div><div>SMTP sends (25, or 587 for submission), POP3 downloads and usually removes (110), IMAP syncs and leaves it on the server (143).</div><div class="k">Firewalls</div><div>stateless filters each packet by rule; stateful remembers connections and allows the replies. Default deny is the only sane posture.</div></div></div>
       <div class="big60 r"><b>The trap:</b> Mixing up the handshake and the close. The handshake is three messages, the close is four, and swapping them is the single most common lost mark in this module.</div>
       <p class="src">Everything below this box explains these lines, in this order, with a drill
       after each part that tests it. If you can say every line above without looking, the drills are
@@ -735,7 +745,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
     transport layer is the plumbing that makes those protocols possible without each of them reinventing
     retransmission.</p>
     </section><section id="ports" class=""><h2>Ports: how one machine runs many conversations</h2><p class="lede">A port is a number that identifies a program, the way an apartment number identifies a door in a building.</p>
-    <p>An <b><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> address</b> gets data to the machine. A <b>port number</b> gets it to the program. Together they form a
+    <p>An <b><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> address</b> gets data to the machine. A <b>port number</b> gets it to the program. Together they form a
     <b>socket</b>: <span class="mono">192.168.1.10:443</span> is a specific program on a specific machine.</p>
     <table>
       <tr><th>Range</th><th>Name</th><th>Used for</th></tr>
@@ -893,7 +903,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <tr><th>Layer</th><th>What it adds</th><th>In this example</th></tr>
       <tr><td><b>Application</b></td><td>The request itself</td><td><span class="mono">GET / HTTP/1.1</span> plus headers — Module 3</td></tr>
       <tr><td><b>Transport</b></td><td>Ports, sequence numbers, reliability</td><td>Source port 51234 → destination 443, <span class="ac" data-full="Transmission Control Protocol" data-desc="connection-oriented transport; guarantees order and delivery">TCP</span>, <span class="ac" data-full="SYN" data-desc="the flag that opens a TCP connection and carries the sender&#x27;s starting sequence number.">SYN</span> first — Module 3</td></tr>
-      <tr><td><b>Network</b></td><td>Addresses and routing</td><td>Your <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> → the server's IP, <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span> decrementing at each hop — Module 2</td></tr>
+      <tr><td><b>Network</b></td><td>Addresses and routing</td><td>Your <span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> → the server's IP, <span class="ac" data-full="Time To Live" data-desc="8 bits; every router decrements it, and at zero the packet is dropped">TTL</span> decrementing at each hop — Module 2</td></tr>
       <tr><td><b>Link</b></td><td>Frames and physical addressing</td><td><span class="ac" data-full="Ethernet" data-desc="the dominant wired LAN standard: it defines the frame layout and the rules for sharing the wire.">Ethernet</span> frame to your router's <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span>, then the next hop's, and so on — Module 1</td></tr>
     </table>
     <p>Each layer wraps the one above it — <b>encapsulation</b> — and the receiver unwraps in reverse. Nothing above
@@ -974,7 +984,7 @@ function quiz(hostId,items,opts){
         if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
         else{
           b.classList.add('wrong');markMiss(q.k||q.q);
-          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          btns.forEach(function(x){if(x.textContent===String(correct))x.classList.add('right')});
           if(navigator.vibrate)navigator.vibrate(35);
         }
         if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
@@ -1081,7 +1091,8 @@ function flashcards(hostId,cards){
     paint();
   });
   no.addEventListener('click',function(){
-    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    missed[order[idx].t]=1;
+    
     idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
     paint();
   });
@@ -1125,7 +1136,7 @@ function matchGame(hostId,pairs){
       selL.classList.remove('sel'); selR.classList.remove('sel');
       markHit(selL.dataset.key); done++;
       fb.className='fb ok'; fb.textContent='Right.';
-      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+      if(done===set.length){fb.textContent='All '+set.length+' matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
     }else{
       var a=selL,b=selR;
       fb.className='fb no'; fb.textContent='Not those two.';
@@ -1276,7 +1287,7 @@ function blitz(hostId,items,seconds,label){
 function octetTrainer(hostId){
   var host=$(hostId); if(!host)return;
   host.innerHTML='';
-  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var mode='dec', locked='', v=0, right=0, wrong=0, streak=0;
   var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
   host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
   var PLACES=[128,64,32,16,8,4,2,1];
@@ -1310,7 +1321,7 @@ function octetTrainer(hostId){
       if(got===want){
         inp.classList.add('ok'); right++; streak++;
         markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
-        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+        setTimeout(function(){if(!locked){mode=(mode==='dec')?'bin':'dec'}paint()},650);
       }else{
         inp.classList.add('no'); wrong++; streak=0;
         markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
@@ -1322,14 +1333,23 @@ function octetTrainer(hostId){
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
     inp.focus({preventScroll:true});
     upd();
+    
+    var act=(locked==='bin')?b1:(locked==='dec')?b2:b3;
+    [b1,b2,b3].forEach(function(b){b.classList.toggle('on',b===act)});
   }
   function upd(){
     bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
   }
+  
   var tog=el('div','rowbtns');
-  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
-  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
-  tog.appendChild(b1); tog.appendChild(b2);
+  var b1=el('button','secondary','Decimal → binary only');
+  var b2=el('button','secondary','Binary → decimal only');
+  var b3=el('button','secondary','Alternate both');
+  function setMode(m){ locked=m; if(m)mode=m; paint() }
+  b1.onclick=function(){setMode('bin')};
+  b2.onclick=function(){setMode('dec')};
+  b3.onclick=function(){setMode('')};
+  tog.appendChild(b1); tog.appendChild(b2); tog.appendChild(b3);
   host.insertBefore(tog,host.firstChild);
   paint();
 }
@@ -1510,11 +1530,16 @@ document.addEventListener('DOMContentLoaded',function(){
       var q=b.getAttribute('data-ask');
       if(b.dataset.mode==='copy')tutorCopy(q);
       else if(b.dataset.mode==='open')tutorOpenApp(q);
-      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+      else{tutorSetOpen(true);tutorAsk(q)}
     });
   });
   $$('[data-audio]').forEach(function(b){
     b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  
+  tutorSetOpen($('#tutorPanel').classList.contains('open'),true);
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.key==='Esc')&&$('#tutorPanel').classList.contains('open'))tutorToggle();
   });
   var rm=$('#reviewMissed');
   if(rm)rm.textContent='Review queue: '+missedCount();

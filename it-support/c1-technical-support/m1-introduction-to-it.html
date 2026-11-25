@@ -184,6 +184,8 @@ button:disabled{opacity:.4;cursor:default}
 .ghost:hover{background:var(--surface-3);color:var(--text)}
 .rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
 
+.rowbtns button.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+
 code,.mono{
   font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
   border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
@@ -254,7 +256,7 @@ td b,th b{color:var(--text-strong)}
   border-radius:6px;padding:8px 0;background:var(--surface-3);
   border:1px solid var(--rule);color:var(--text-mute);
 }
-.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}
 .bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
 .prompt{
   font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
@@ -515,7 +517,9 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
   body{background:#fff;color:#000}
   section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
-  :root{--text:#000;--surface:#fff}
+  
+  :root{--text:#000;--text-strong:#000;--text-dim:#333;--text-mute:#4a4a4a;
+        --surface:#fff;--surface-2:#fff;--surface-3:#fff;--code-bg:#f4f4f4}
 }
 @media(max-width:640px){
   .kv{grid-template-columns:1fr;gap:3px 0}
@@ -523,6 +527,12 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   main{padding:18px 12px 90px}
   section{padding:18px 16px 22px;border-radius:11px}
   h2{font-size:19px}
+  
+  .topbar{position:static}
+  
+  html,body{overflow-x:clip}
+  
+  section:target{margin-left:0}
 }
 
 
@@ -696,7 +706,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
 .route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
 @media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
   .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
-</style><script>window.TUTOR_PROMPT="You are a patient IT tutor helping Kyle with Course 1, Module 1 of the Google IT Support certificate: Introduction to IT and Computing. He is also studying CompTIA A+ Core 1 and 2 on the same material. Answer in at most 150 words, concretely, using the course vocabulary. Never invent a number, a date or a fact: if you compute, verify it. If you are unsure, say so rather than guessing.";</script>
+</style>
 </head>
 <body>
 <header class="topbar">
@@ -744,7 +754,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
     for the same conversion, and for hexadecimal whenever a <span class="ac" data-full="Media Access Control" data-desc="a NIC&#x27;s 48-bit hardware address; only meaningful on the local link">MAC</span> address or an <span class="ac" data-full="Internet Protocol version 6" data-desc="128-bit addressing written as eight hexadecimal groups, with long runs of zeroes collapsed as a double colon.">IPv6</span> address appears. If the
     eight place values are not automatic, both courses get slower at exactly the point they get interesting.</p>
     <p class="src">Source: Course 1's own outline (Module 1: "What is IT?", "What does an IT Support Specialist
-    do?", "Computer Language", "Character Encoding", "<span class="ac" data-full="Binary" data-desc="counting in base 2, where each place is worth twice the one to its right and every digit is 0 or 1. A computer uses it because a transistor has two…">Binary</span>", "How to Count in Binary", "Abstraction",
+    do?", "Computer Language", "Character Encoding", "<span class="ac" data-full="Binary" data-desc="counting in base 2, where each place is worth twice the one to its right and every digit is 0 or 1.">Binary</span>", "How to Count in Binary", "Abstraction",
     "Computer Architecture Overview"). The prose here is ours.</p>
     <button class="aud" data-audio="audio/c1m1-what-it-is.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 40s</button></section><section id="history" class=""><h2>From counting boards to stored programs</h2><p class="lede">The course walks this history because each step solves one problem and creates the next.</p>
     <table>
@@ -780,7 +790,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
       <div class="k"><span class="ac" data-full="Byte" data-desc="eight bits taken as one unit. Eight bits give 2⁸ = 256 possible values, which is enough for one character in ASCII.">Byte</span></div><div>Eight bits taken as one unit. 2<sup>8</sup> = 256 patterns, so a byte holds a value from <b>0 to 255</b>.</div>
     </div>
     <h3>The eight place values</h3>
-    <p><span class="ac" data-full="Binary" data-desc="counting in base 2, where each place is worth twice the one to its right and every digit is 0 or 1. A computer uses it because a transistor has two…">Binary</span> is a <b>base 2 numeral system</b>: each place is worth twice the place to its right. In a byte,
+    <p><span class="ac" data-full="Binary" data-desc="counting in base 2, where each place is worth twice the one to its right and every digit is 0 or 1.">Binary</span> is a <b>base 2 numeral system</b>: each place is worth twice the place to its right. In a byte,
     read right to left:</p>
     <div class="bitrow">
       <span class="bitplace">128</span><span class="bitplace">64</span><span class="bitplace">32</span><span class="bitplace">16</span>
@@ -873,7 +883,7 @@ a.mtile:hover .mt{color:var(--accent-bright)}
     another, and part of an address in a third — the bits do not change, only the agreement about what they mean.</p>
     <div class="kv">
       <div class="k">Text</div><div><span class="mono">01000001</span> is "A" under ASCII.</div>
-      <div class="k">Colour</div><div><b><span class="ac" data-full="RGB" data-desc="the red-green-blue model that encodes a colour as three numbers, one per channel. A byte per channel gives 256 × 256 × 256 colours — the same…">RGB</span></b> stores one byte per channel. Red 255, green 0, blue 0 is pure red; all three at 255 is white; all three at 0 is black. 256 × 256 × 256 is about 16.7 million colours.</div>
+      <div class="k">Colour</div><div><b><span class="ac" data-full="RGB" data-desc="the red-green-blue model that encodes a colour as three numbers, one per channel.">RGB</span></b> stores one byte per channel. Red 255, green 0, blue 0 is pure red; all three at 255 is white; all three at 0 is black. 256 × 256 × 256 is about 16.7 million colours.</div>
       <div class="k">Picture</div><div>A <b>pixel</b> is one dot, and its colour is three of those bytes. A 1920×1080 image is about two million pixels — roughly six megabytes before any compression.</div>
     </div>
     <button class="aud" data-audio="audio/c1m1-encoding.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 40s</button></section><section id="encoding-game" class=""><h2>Drill: ASCII pairs</h2><p class="lede">Match the character to its code. These are the ones CompTIA A+ expects you to simply know.</p><div class="game" id="gAscii"><div class="gtitle"><b><span class="ac" data-full="American Standard Code for Information Interchange" data-desc="the original 7-bit character table: 128 codes, A is 65, a is 97">ASCII</span> match</b></div><p class="ghint">Click a character, then its decimal code. Six pairs per round.</p><div id="asciiHost"></div></div></section><section id="gates" class=""><h2>Logic gates: how two states become a decision</h2><p class="lede">Gates are the level where electricity turns into arithmetic. There are only a handful, and each one has a truth table you can read out loud.</p>
@@ -1017,7 +1027,7 @@ function quiz(hostId,items,opts){
         if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
         else{
           b.classList.add('wrong');markMiss(q.k||q.q);
-          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          btns.forEach(function(x){if(x.textContent===String(correct))x.classList.add('right')});
           if(navigator.vibrate)navigator.vibrate(35);
         }
         if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
@@ -1124,7 +1134,8 @@ function flashcards(hostId,cards){
     paint();
   });
   no.addEventListener('click',function(){
-    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    missed[order[idx].t]=1;
+    
     idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
     paint();
   });
@@ -1168,7 +1179,7 @@ function matchGame(hostId,pairs){
       selL.classList.remove('sel'); selR.classList.remove('sel');
       markHit(selL.dataset.key); done++;
       fb.className='fb ok'; fb.textContent='Right.';
-      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+      if(done===set.length){fb.textContent='All '+set.length+' matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
     }else{
       var a=selL,b=selR;
       fb.className='fb no'; fb.textContent='Not those two.';
@@ -1319,7 +1330,7 @@ function blitz(hostId,items,seconds,label){
 function octetTrainer(hostId){
   var host=$(hostId); if(!host)return;
   host.innerHTML='';
-  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var mode='dec', locked='', v=0, right=0, wrong=0, streak=0;
   var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
   host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
   var PLACES=[128,64,32,16,8,4,2,1];
@@ -1353,7 +1364,7 @@ function octetTrainer(hostId){
       if(got===want){
         inp.classList.add('ok'); right++; streak++;
         markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
-        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+        setTimeout(function(){if(!locked){mode=(mode==='dec')?'bin':'dec'}paint()},650);
       }else{
         inp.classList.add('no'); wrong++; streak=0;
         markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
@@ -1365,14 +1376,23 @@ function octetTrainer(hostId){
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
     inp.focus({preventScroll:true});
     upd();
+    
+    var act=(locked==='bin')?b1:(locked==='dec')?b2:b3;
+    [b1,b2,b3].forEach(function(b){b.classList.toggle('on',b===act)});
   }
   function upd(){
     bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
   }
+  
   var tog=el('div','rowbtns');
-  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
-  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
-  tog.appendChild(b1); tog.appendChild(b2);
+  var b1=el('button','secondary','Decimal → binary only');
+  var b2=el('button','secondary','Binary → decimal only');
+  var b3=el('button','secondary','Alternate both');
+  function setMode(m){ locked=m; if(m)mode=m; paint() }
+  b1.onclick=function(){setMode('bin')};
+  b2.onclick=function(){setMode('dec')};
+  b3.onclick=function(){setMode('')};
+  tog.appendChild(b1); tog.appendChild(b2); tog.appendChild(b3);
   host.insertBefore(tog,host.firstChild);
   paint();
 }
@@ -1553,11 +1573,16 @@ document.addEventListener('DOMContentLoaded',function(){
       var q=b.getAttribute('data-ask');
       if(b.dataset.mode==='copy')tutorCopy(q);
       else if(b.dataset.mode==='open')tutorOpenApp(q);
-      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+      else{tutorSetOpen(true);tutorAsk(q)}
     });
   });
   $$('[data-audio]').forEach(function(b){
     b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  
+  tutorSetOpen($('#tutorPanel').classList.contains('open'),true);
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.key==='Esc')&&$('#tutorPanel').classList.contains('open'))tutorToggle();
   });
   var rm=$('#reviewMissed');
   if(rm)rm.textContent='Review queue: '+missedCount();

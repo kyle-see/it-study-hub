@@ -1,0 +1,1884 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Operating Systems and You: Becoming a Power User — Navigating the System, Module 1 (study)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+.rowbtns button.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);font-size:11px}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  
+  :root{--text:#000;--text-strong:#000;--text-dim:#333;--text-mute:#4a4a4a;
+        --surface:#fff;--surface-2:#fff;--surface-3:#fff;--code-bg:#f4f4f4}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+  
+  .topbar{position:static}
+  
+  html,body{overflow-x:clip}
+  
+  section:target{margin-left:0}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+<style>
+/* ============================================================
+   Field Plates — the 2026-11-10 visual pass.
+   Tokens: none added. Every colour below is an Anchor token.
+   ============================================================ */
+
+/* ---- M6: grain ---- */
+.grain{
+  position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- the mark, at any size ---- */
+.g{flex:none;vertical-align:-3px}
+.gm{display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:9px;background:var(--tint-accent);
+  border:1px solid var(--rule-2);color:var(--accent-bright)}
+
+/* ---------- M1: masthead ---------- */
+.mast{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--rule);
+  background:
+    radial-gradient(700px 340px at 82% 30%,rgba(240,195,74,.10),transparent 70%),
+    linear-gradient(180deg,var(--surface-2) 0%,var(--bg) 100%);
+  margin:0 0 20px;min-height:392px;display:flex;align-items:center}
+.mast-art{position:absolute;inset:0 0 0 auto;width:66%;background-size:cover;
+  background-position:center right;opacity:.92;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 26%,#000 62%);
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 26%,#000 62%)}
+.mast-art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 45%,var(--bg) 100%);opacity:.85}
+.mast.empty .mast-art{display:none}
+.mast-in{position:relative;z-index:3;padding:44px 40px;max-width:min(660px,84%)}
+.mast .eyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.mast h1{font-family:var(--display);font-size:clamp(2.15rem,4.6vw,3.5rem);line-height:1.04;
+  letter-spacing:-.025em;font-weight:600;color:var(--text-strong);margin:0 0 18px}
+.mast h1 em{font-style:normal;color:var(--accent)}
+.mast .lede{font-size:14px;max-width:52ch;margin:0 0 22px;color:var(--text-dim)}
+.mast-rule{height:1px;background:linear-gradient(90deg,var(--accent),transparent);
+  margin:0 0 18px;max-width:260px}
+.mast-stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 16px}
+.mast-chips{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.mast-chips .mchip{background:transparent}
+.mast .cta{display:inline-flex;align-items:center;gap:8px;background:var(--fill);color:var(--on-fill);
+  border:0;border-radius:8px;padding:9px 17px;font-weight:700;font-size:13px;border-bottom:0}
+.mast .cta:hover{background:var(--accent-bright);color:var(--on-fill)}
+@media(max-width:760px){
+  .mast{min-height:0}
+  .mast-art{width:100%;opacity:.32;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
+  .mast-in{padding:30px 22px;max-width:100%}
+}
+
+/* ---------- the front door is a document, not a stack of boxes ---------- */
+.home > section{
+  background:transparent;border:0;border-top:1px solid var(--rule);border-radius:0;
+  box-shadow:none;padding:30px 2px 14px;margin:0 0 8px;
+}
+.home > section:first-of-type{border-top:0;padding-top:6px}
+.home > section > h2{font-size:27px}
+
+/* ---------- M2/M3: plate cards ---------- */
+.plates{display:grid;grid-template-columns:1fr;gap:18px;margin-top:20px}
+@media(min-width:1080px){.plates{grid-template-columns:1fr 1fr}}
+.cp{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--rule);
+  border-radius:14px;overflow:hidden;transition:border-color .18s,box-shadow .18s,transform .18s}
+.cp:hover{border-color:var(--rule-2);box-shadow:var(--shadow)}
+.cp-frame{position:relative;display:block;aspect-ratio:16/8;
+  background:linear-gradient(150deg,var(--surface-3),var(--stone-900) 60%,var(--surface));
+  border-bottom:1px solid var(--rule);overflow:hidden;border-bottom:0}
+.cp-frame img,.cp-frame .plate{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease,filter .3s}
+.cp:hover .cp-frame img{transform:scale(1.022)}
+.cp-frame::after{content:"";position:absolute;inset:auto 0 0 0;height:58%;
+  background:linear-gradient(180deg,transparent,var(--surface) 92%);pointer-events:none}
+.cp-frame .plate-empty{display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;color:var(--accent);opacity:.34;
+  background:radial-gradient(circle at 50% 46%,rgba(240,195,74,.10),transparent 62%)}
+.cp-soon{opacity:.9}
+.cp-body{padding:17px 20px 19px;display:flex;flex-direction:column;gap:0;flex:1 1 auto}
+.cp-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+.cp-num{font-family:var(--display);font-size:52px;line-height:.82;font-weight:600;
+  letter-spacing:-.04em;color:var(--accent);opacity:.20;flex:none;margin-left:auto;
+  font-variant-numeric:tabular-nums}
+.cp h3{margin:0;font-family:var(--display);font-size:19px;line-height:1.22;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;text-transform:none}
+.cp h3 a{color:inherit;border-bottom:0}
+.cp h3 a:hover{color:var(--accent-bright)}
+.cp .meta{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 11px}
+.cp .sub{font-size:12.5px;color:var(--text-mute);line-height:1.6;margin:0 0 14px}
+
+/* ---------- M4: module tiles ---------- */
+.mtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:7px;
+  margin:0 0 14px}
+.mtile{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
+  background:var(--surface-2);border:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  transition:border-color .15s,background .15s,color .15s;text-decoration:none}
+a.mtile:hover{border-color:var(--rule-2);background:var(--surface-3)}
+a.mtile:hover .mt{color:var(--accent-bright)}
+.mtile .mg{color:var(--accent);display:flex;flex:none;opacity:.95}
+.mtile .mn{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;
+  color:var(--accent);flex:none;min-width:19px}
+.mtile .mt{font-size:11.8px;line-height:1.3;color:var(--text-dim);overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mtile.soon{background:transparent;border-style:dashed;opacity:.66}
+.mtile.soon .mg,.mtile.soon .mn{color:var(--text-mute)}
+.mtile.soon .mt{color:var(--text-mute)}
+.cp .go{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);border-bottom:0;margin-top:auto}
+.cp .go:hover{color:var(--accent-bright)}
+
+/* ---------- module page header ---------- */
+.pagehead{display:flex;align-items:center;gap:15px;margin:0 0 18px;padding:0 2px}
+.pagehead .gm{width:46px;height:46px;border-radius:12px}
+.pagehead .pe{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 3px}
+.pagehead h1{margin:0;font-family:var(--display);font-size:26px;font-weight:600;
+  letter-spacing:-.02em;line-height:1.16;color:var(--text-strong)}
+.pagehead .prule{height:1px;flex:1 1 auto;margin-left:8px;
+  background:linear-gradient(90deg,var(--rule-2),transparent)}
+@media(max-width:640px){.pagehead h1{font-size:21px}.pagehead .gm{width:38px;height:38px}}
+
+/* ---------- M5: the route ---------- */
+.route{position:relative;padding-left:26px}
+.route::before{content:"";position:absolute;left:6px;top:10px;bottom:14px;width:2px;
+  background:linear-gradient(180deg,var(--rule-2),var(--rule) 40%,transparent);border-radius:2px}
+.route > .lcard{position:relative;margin-left:0}
+.route > .lcard::before{content:"";position:absolute;left:-26px;top:22px;width:9px;height:9px;
+  border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.route > .lcard.lcard-c{margin-top:26px}
+.route > .lcard.lcard-c::before{left:-30px;top:18px;width:15px;height:15px;border-width:2px;
+  background:var(--accent);box-shadow:0 0 0 4px var(--tint-accent)}
+.route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
+@media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
+  .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Course 3 — Operating Systems and You · Module 1 — Navigating the System</span>
+  <nav><a href="index.html">Course 3</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="../../glossary.html" title="Every term, with a definition">▤ glossary</a><a href="#essentials">Essentials</a><a href="m2-users-and-permissions.html">M2</a><a href="#quiz">Quiz</a><a href="#cards">Flashcards</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<div class="grain" aria-hidden="true"></div><div class="pagehead"><span class="gm"><svg class="g" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4.5" width="18" height="15" rx="2"/><path d="M7 10.2 9.6 13 7 15.8M12.4 15.8h4.4"/></svg></span><div style="min-width:0"><p class="pe">Course 3 &middot; Module 1</p><h1>Navigating the System</h1></div><span class="prule"></span></div><section id="essentials" class=""><h2>The essentials &mdash; hold these before the detail</h2><p class="lede">The module at entry-certification level: what you must be able to do, and the facts the quizzes and drills on this page are testing. Read this first, every time.</p>
+    <div class="learnbox">
+      <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
+        <ul class="lcan"><li>navigate a filesystem and manage files from PowerShell or Bash</li><li>use wildcards, pipes and redirection</li><li>find, read and filter text output</li><li>tell an absolute path from a relative path</li><li>do the same task on Windows and on Linux</li></ul></div>
+      <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 7 facts</span>
+        <div class="kv lfacts"><div class="k">Paths</div><div>absolute starts at the root (C:\ or /); relative starts where you are. `.` is here, `..` is the parent.</div><div class="k">Navigation</div><div>cd, pwd/Get-Location, ls/dir, mkdir, cp/copy, mv/move, rm/del. The verbs differ, the jobs do not.</div><div class="k">Everything is a file</div><div>on Linux, devices live in /dev and configuration in /etc. That is why one set of tools can read almost anything.</div><div class="k">Pipes</div><div>send one command&#x27;s output into the next: `ps aux | grep ssh`. Redirection writes it to a file: &gt; overwrite, &gt;&gt; append, 2&gt; errors.</div><div class="k">Permissions</div><div>`ls -l` shows rwx for owner, group and other. Windows uses ACLs with inherited rights instead.</div><div class="k">Environment variables</div><div>machine-wide settings, and PATH is how the shell finds a command at all.</div><div class="k">Self-help</div><div>man, --help and Get-Help are the reference you are expected to use rather than memorise.</div></div></div>
+      <div class="big60 r"><b>The trap:</b> Running rm without reading the path. There is no recycle bin and no undo on the command line.</div>
+      <p class="src">Everything below this box explains these lines, in this order, with a drill
+      after each part that tests it. If you can say every line above without looking, the drills are
+      revision. If you cannot, read the section that matches the line and come back &mdash; that is
+      the whole study method. The same objectives for every module, built and not yet built, are on
+      <a href="../../learn/index.html">the learning path</a>.</p>
+    </div></section><section id="start" class=""><h2>Two ways to drive an operating system</h2><p class="lede">A graphical interface and a command line do the same jobs. The command line is faster, repeatable, and the only option on a machine with no desktop.</p>
+    <p>Every operating system in this course gives you at least two faces. The <b><span class="ac" data-full="Graphical User Interface" data-desc="windows, icons and pointers rather than typed commands">GUI</span></b> — the
+    graphical user interface — is the one with windows and a pointer. The <b><span class="ac" data-full="Command-Line Interface" data-desc="a prompt where you type commands instead of clicking">CLI</span></b> — the
+    command-line interface — is a prompt where you type. On Linux the CLI is called a <b>shell</b>,
+    and the language this course uses to talk to that shell is <b>Bash</b>.</p>
+    <table>
+      <tr><th>System</th><th>Command-line interfaces</th></tr>
+      <tr><td><b>Windows</b></td><td><span class="mono">cmd.exe</span> (Command Prompt) and
+        <span class="mono">powershell.exe</span> (PowerShell). Two different shells, and they do not
+        accept identical syntax.</td></tr>
+      <tr><td><b>Linux</b></td><td>One shell for this course: Bash. The prompt shows who you are,
+        the machine, and where you are — <span class="mono">cindy@cindy-nyc:~/Documents$</span>.</td></tr>
+    </table>
+    <p>Two words carry the whole grammar of a command:</p>
+    <div class="kv">
+      <div class="k">Parameter</div><div>A value associated with a command — usually <i>what</i> it
+        acts on. In <span class="mono">cp mycoolfile.txt ~/Desktop</span>, the file and the
+        destination are parameters.</div>
+      <div class="k">Flag</div><div>An option that changes <i>how</i> the command behaves —
+        <span class="mono">-r</span>, <span class="mono">-l</span>,
+        <span class="mono">-Recurse</span>. Two flags can be written together:
+        <span class="mono">ls -la /</span> is the same as <span class="mono">ls -l -a /</span>.</div>
+    </div>
+    <div class="big60">
+      <b>Why the shell is worth the effort:</b> a typed command is repeatable and scriptable, and it
+      prints the actual error rather than a dialog box that says something went wrong. On a server
+      there is often no desktop at all, so the shell is not the faster option — it is the only one.
+    </div>
+    <p>The rest of this module is one page of commands after another. If you want the <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span> theory
+    underneath — kernel and user space, processes, memory, filesystems, the boot process — that is
+    already written and linked, not repeated here:
+    <a href="../c1-technical-support/m3-operating-systems.html">Course 1, Module 3 — Installing and Using Operating Systems</a>.</p>
+    <button class="aud" data-audio="audio/c3m1-cli.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 30s</button></section><section id="paths" class=""><h2>Paths: two roots, two separators, one idea</h2><p class="lede">A path is a location. The only question that matters before you run a command is whether the path starts at the root or at you.</p>
+    <p>A <b>path</b> is the location of a file or a directory. Windows and Linux disagree about
+    almost everything in how they write one, and agree completely about what it means.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th></th><th>Windows</th><th>Linux</th></tr>
+      <tr><td><b>Example</b></td><td><span class="mono">C:\Users\cindy\Desktop</span></td>
+          <td><span class="mono">/home/cindy/Desktop</span></td></tr>
+      <tr><td><b>Top of the tree</b></td><td>A drive letter, and each drive letter is its own
+          filesystem with its own root — <span class="mono">C:\</span>,
+          <span class="mono">D:\</span>, <span class="mono">X:\</span></td>
+          <td>One root for the whole machine, written <span class="mono">/</span></td></tr>
+      <tr><td><b>Separator</b></td><td>Backslash <span class="mono">\</span></td>
+          <td>Forward slash <span class="mono">/</span></td></tr>
+      <tr><td><b>The root is</b></td><td>The parent directory of everything on that drive</td>
+          <td>The directory everything else stems from; <span class="mono">ls /</span> lists what is
+          under it</td></tr>
+    </table>
+    </div>
+    <h3>Absolute and relative</h3>
+    <div class="kv">
+      <div class="k">Absolute path</div><div>Starts from the main directory, so it means the same
+        thing from anywhere: <span class="mono">cd /home/cindy/Documents</span>.</div>
+      <div class="k">Relative path</div><div>Starts from your current directory, so it means
+        something different depending on where you are:
+        <span class="mono">cd ../Documents</span>.</div>
+      <div class="k">. and ..</div><div><span class="mono">.</span> is here;
+        <span class="mono">..</span> is the parent directory. <span class="mono">cd ..</span> from
+        <span class="mono">C:\Users\cindy\Documents</span> lands you in
+        <span class="mono">C:\Users\cindy</span>.</div>
+      <div class="k">~</div><div>Your home directory, in both shells. It is a shortcut, not a
+        directory called tilde.</div>
+    </div>
+    <p>That is the whole skill, and it is worth being pedantic about: <b>the first character of a
+    path tells you which of the two kinds you are holding.</b> A drive letter or a leading slash
+    means absolute. A name, a dot or two dots means relative — and a relative path is only as
+    correct as the directory you happen to be in when you run it.</p>
+    <button class="aud" data-audio="audio/c3m1-paths.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="layout" class=""><h2>What lives where</h2><p class="lede">Two short lists that turn a filesystem from a maze into a map. You do not need to memorise every directory — only the ones you will actually open.</p>
+    <p>Listing the root shows the same handful of names every time. These are the ones the course
+    names, with what the notes say each one holds.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Windows, under <span class="mono">C:\</span></th><th>What it holds</th></tr>
+      <tr><td><span class="mono">Program Files</span> / <span class="mono">Program Files (x86)</span></td>
+          <td>Most of the applications and other programs installed on the machine — the two
+          folders are the locations Windows keeps them in.</td></tr>
+      <tr><td><span class="mono">Users</span></td><td>The user profile directories — the home
+          directories. This is where a person's documents actually live.</td></tr>
+      <tr><td><span class="mono">Windows</span></td><td>Where the operating system itself is
+          installed.</td></tr>
+      <tr><td><span class="mono">Recycle Bin</span></td><td>Where files go instead of being deleted
+          immediately. Hidden from a plain listing; <span class="mono">ls -Force</span> shows it.</td></tr>
+      <tr><td><span class="mono">ProgramData</span></td><td>Data programs keep for themselves.
+          Also hidden until <span class="mono">ls -Force</span>.</td></tr>
+    </table>
+    </div>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Linux, under <span class="mono">/</span></th><th>What it holds</th></tr>
+      <tr><td><span class="mono">/bin</span></td><td>The essential binaries — the programs the system
+          needs.</td></tr>
+      <tr><td><span class="mono">/etc</span></td><td>System configuration files. When you change how
+          a Linux machine behaves, the change usually lives here.</td></tr>
+      <tr><td><span class="mono">/home</span></td><td>Personal directories: pictures, documents, and
+          everything a person considers theirs.</td></tr>
+      <tr><td><span class="mono">/proc</span></td><td>Information about the processes running right
+          now.</td></tr>
+      <tr><td><span class="mono">/usr</span></td><td>Software installed by users, as opposed to the
+          essential binaries in <span class="mono">/bin</span>.</td></tr>
+      <tr><td><span class="mono">/var</span></td><td>Logs, and any file that constantly changes.</td></tr>
+    </table>
+    </div>
+    <div class="big60 r">
+      <b>Handout correction:</b> the notes print <span class="mono">/user</span>, with a description
+      about user-installed software. The directory is <span class="mono">/usr</span> — no "e". Do not
+      go looking for a <span class="mono">/user</span> on a real machine.
+    </div>
+    <h3>"Everything is a file"</h3>
+    <p>On Linux that sentence is close to literal, and it is why the map above is worth learning. Hardware
+    devices are represented as <b>device files</b> in <span class="mono">/dev</span>:</p>
+    <div class="kv">
+      <div class="k">Character device</div><div>Transmits data character by character — a keyboard, a
+        mouse. <span class="mono">/dev/null</span> is one too: it accepts anything you send it and
+        returns nothing.</div>
+      <div class="k">Block device</div><div>Transfers data in blocks, the unit of storage — hard drives,
+        <span class="ac" data-full="Universal Serial Bus" data-desc="the standard connector and protocol for peripherals - and the only one most machines still have loads of">USB</span> sticks. They appear as <span class="mono">/dev/sda</span>, <span class="mono">/dev/sdb</span>,
+        and so on, with the letter assigned in the order the machine detected them.</div>
+      <div class="k">Why it matters</div><div>Configuration is text in <span class="mono">/etc</span>,
+        logs are text in <span class="mono">/var</span>, devices look like files in
+        <span class="mono">/dev</span>. The same handful of commands — read, search, copy — works on
+        all of it.</div>
+    </div>
+    </section><section id="nav" class=""><h2>Finding your way: list, print, change</h2><p class="lede">Three commands you will type more than every other command combined, and the two shortcuts that stop you typing them so much.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Job</th><th>PowerShell</th><th>Bash</th></tr>
+      <tr><td>Where am I?</td><td><span class="mono">pwd</span> or
+          <span class="mono">Get-Location</span></td><td><span class="mono">pwd</span></td></tr>
+      <tr><td>What is here?</td><td><span class="mono">ls</span> / <span class="mono">dir</span></td>
+          <td><span class="mono">ls</span></td></tr>
+      <tr><td>Detailed listing</td><td><span class="mono">ls -l</span></td>
+          <td><span class="mono">ls -l</span></td></tr>
+      <tr><td>Include hidden items</td><td><span class="mono">ls -Force</span></td>
+          <td><span class="mono">ls -a</span></td></tr>
+      <tr><td>Go somewhere</td><td><span class="mono">cd C:\Users\cindy\Documents</span></td>
+          <td><span class="mono">cd /home/cindy/Documents</span></td></tr>
+      <tr><td>Go up one</td><td><span class="mono">cd ..</span></td>
+          <td><span class="mono">cd ..</span></td></tr>
+      <tr><td>Go home</td><td><span class="mono">cd ~</span></td>
+          <td><span class="mono">cd ~</span></td></tr>
+    </table>
+    </div>
+    <p>Two habits turn this from typing into navigating:</p>
+    <div class="kv">
+      <div class="k">Tab completion</div><div>Type the first letter of a name and press Tab. In
+        PowerShell it completes the first match, and pressing Tab again rotates through the other
+        options. In Bash it shows you all the options at once. Either way you stop typing long names,
+        and you stop mistyping them.</div>
+      <div class="k">History</div><div><span class="mono">history</span> lists what you have already
+        typed. Ctrl+R searches back through it — in older PowerShell versions, type
+        <span class="mono">#</span> and use Tab completion instead.</div>
+    </div>
+    <h3>Aliases: why the same command has two names</h3>
+    <p>In PowerShell, <span class="mono">ls</span> and <span class="mono">cat</span> are
+    <b>aliases</b> — short names that point at the real command. The alias exists so that muscle
+    memory from Linux and cmd keeps working, and it is why the same word can mean something slightly
+    different in two shells.</p>
+    <div class="kv">
+      <div class="k">Get-Alias</div><div><span class="mono">Get-Alias ls</span> answers
+        <span class="mono">Get-ChildItem</span>: that is the real cmdlet behind the alias. Run it on
+        any command you are unsure about rather than assuming the Linux meaning carries over.</div>
+    </div>
+    <div class="big60 y">
+      <b>The support lesson:</b> when a command "does not exist" in PowerShell, it is usually an alias
+      you have not got, a cmdlet you have not spelled, or a tool that is not installed. Get-Alias and
+      Get-Help answer the first two before you go looking for the third.
+    </div>
+    </section><section id="files" class=""><h2>Making, copying, moving and removing</h2><p class="lede">Create, copy, rename, delete — on both systems, including the wildcard that does it to a hundred files at once.</p>
+    <h3>Make a directory</h3>
+    <p><span class="mono">mkdir foldername</span> works in both shells. A name with spaces in it
+    needs help, because the shell splits arguments on spaces:</p>
+    <div class="kv">
+      <div class="k">Quotes</div><div><span class="mono">mkdir "my new file"</span> — works in both
+        shells, and is the version to prefer.</div>
+      <div class="k">PowerShell</div><div>Or escape the space with a backtick:
+        <span class="mono">mkdir my` new` file</span>. An <b>escape</b> tells the shell to treat the
+        next character literally instead of as a separator.</div>
+      <div class="k">Bash</div><div>Or escape the space with a backslash:
+        <span class="mono">mkdir my\ new\ file</span>.</div>
+    </div>
+    <div class="big60 r">
+      <b>Handout correction:</b> the notes describe Bash's escape character as
+      <span class="mono">(/)</span> — a forward slash. It is the <b>backslash</b>,
+      <span class="mono">\</span>. Quote the name and you never have to remember.
+    </div>
+    <h3>Copy</h3>
+    <p>Copy takes what you want to copy, then where you want it. A <b>wildcard</b> is a character
+    that selects files by a pattern — the asterisk means "all":</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>PowerShell</th><th>Bash</th><th>Result</th></tr>
+      <tr><td><span class="mono">cp mycoolfile.txt C:\Users\cindy\Desktop</span></td>
+          <td><span class="mono">cp my_file.txt ~/Desktop</span></td>
+          <td>One file, to a new location.</td></tr>
+      <tr><td><span class="mono">cp *.jpeg C:\Users\cindy\Desktop</span></td>
+          <td><span class="mono">cp *.png ~/Desktop</span></td>
+          <td>Every file of that type in the current directory.</td></tr>
+      <tr><td><span class="mono">cp "Bird Pictures" C:\Users\Cindy\Desktop -Recurse -Verbose</span></td>
+          <td><span class="mono">cp -r "Cat Pictures" ~/Desktop</span></td>
+          <td>A directory and everything inside it. <span class="mono">-Verbose</span> prints one
+          line per file copied, which is how you see what actually happened.</td></tr>
+    </table>
+    </div>
+    <h3>Move, and rename</h3>
+    <p><b>Move and rename are the same command.</b> Give it a new name in the same directory and it
+    renames; give it a different directory and it moves:</p>
+    <div class="kv">
+      <div class="k">Rename</div><div><span class="mono">mv blue_document.txt yellow_document.txt</span></div>
+      <div class="k">Move</div><div><span class="mono">mv yellow_document.txt ~/Documents</span></div>
+      <div class="k">Move many</div><div><span class="mono">mv *_document.txt ~/Documents</span> —
+        every file matching the pattern.</div>
+    </div>
+    <h3>Remove</h3>
+    <p>Remove is <span class="mono">rm</span> in both shells. It does not use the recycle bin: the
+    file is gone, and there is no undo.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Job</th><th>PowerShell</th><th>Bash</th></tr>
+      <tr><td>Remove a file</td><td><span class="mono">rm text1.txt</span></td>
+          <td><span class="mono">rm text1.txt</span></td></tr>
+      <tr><td>Remove a file the system is protective about</td>
+          <td><span class="mono">rm important_system_file -Force</span></td>
+          <td>—</td></tr>
+      <tr><td>Remove a directory and its contents</td>
+          <td><span class="mono">rm misc_folder -Recurse</span></td>
+          <td><span class="mono">rm -r misc_folder</span></td></tr>
+    </table>
+    </div>
+    <p>The handout's tables also list <span class="mono">rmdir</span> in both columns. Reach for
+    <span class="mono">rm -r</span> when there is anything inside the directory: that is the flag
+    that takes the contents with it.</p>
+    <div class="big60 r">
+      <b>Read the path before you press Enter.</b> Remove has no confirmation step and no recycle
+      bin, and a relative path is only correct if you are where you think you are — which is why
+      <span class="mono">pwd</span> first is not a beginner's habit. A delete that follows a wildcard
+      deletes every match, including the ones you did not picture.
+    </div>
+    <button class="aud" data-audio="audio/c3m1-rm.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 20s</button></section><section id="filesgame" class=""><h2>Drill: which shell is this?</h2><p class="lede">The same six jobs, two vocabularies. Sorting them is faster than reading the table twice.</p><div class="game" id="gShell3"><div class="gtitle"><b>Windows or Bash</b></div><p class="ghint">Click a command, then the column of the handout it belongs to.</p><div id="shellHost"></div></div></section><section id="text" class=""><h2>Reading a file without opening an editor</h2><p class="lede">Four commands cover almost every time you need to see what is inside a file — and one of them stops you drowning the terminal.</p>
+    <p><span class="mono">cat</span> dumps the file. That is fine for a short configuration file and
+    useless for a thousand-line log, because it keeps writing until the end and the useful part
+    scrolls off the top.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Job</th><th>PowerShell</th><th>Bash</th></tr>
+      <tr><td>Show the whole file</td><td><span class="mono">cat .\important_document.txt</span></td>
+          <td><span class="mono">cat important_document.txt</span></td></tr>
+      <tr><td>Page through it</td><td><span class="mono">more .\large_document.txt</span></td>
+          <td><span class="mono">less large_document.txt</span></td></tr>
+      <tr><td>First lines</td><td><span class="mono">cat fruits.txt -Head 10</span></td>
+          <td><span class="mono">head fruits.txt</span> (10 by default)</td></tr>
+      <tr><td>Last lines</td><td><span class="mono">cat fruits.txt -Tail 10</span></td>
+          <td><span class="mono">tail fruits.txt</span> (10 by default)</td></tr>
+    </table>
+    </div>
+    <h3>The pager: more and less</h3>
+    <p><span class="mono">more</span> and <span class="mono">less</span> hand the file to a separate
+    program that shows one screenful at a time — so the keys are not shell keys any more:</p>
+    <div class="kv">
+      <div class="k">more (Windows)</div><div>Enter advances one line, space advances one page,
+        <span class="mono">q</span> quits back to the shell.</div>
+      <div class="k">less (Linux)</div><div>Up and down arrows page, <span class="mono">g</span>
+        jumps to the beginning, <span class="mono">G</span> to the end,
+        <span class="mono">/word</span> searches, <span class="mono">q</span> quits.</div>
+    </div>
+    <p>Note the naming: <b>more</b> is the Windows pager, <b>less</b> is the Linux one. The joke is
+    older than either of us — less is more, in that it can also scroll backwards.</p>
+    <h3>When you do want an editor</h3>
+    <p><span class="mono">nano</span> on Linux and Notepad++ on Windows are the two this course
+    names. Both are text editors: they change the file, they do not run it. Editing configuration in
+    a terminal editor is the skill that makes a headless server usable, because there is no window
+    to open.</p>
+    </section><section id="search" class=""><h2>Searching for text inside files</h2><p class="lede">The command you reach for when you know something is in there and you do not know which file, or which line.</p>
+    <p>Searching is the one job where the two systems use genuinely different tools rather than two
+    names for the same one.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Job</th><th>PowerShell</th><th>Bash</th></tr>
+      <tr><td>Search one file</td><td><span class="mono">sls cow farm_animals.txt</span></td>
+          <td><span class="mono">grep cow farm_animals.txt</span></td></tr>
+      <tr><td>Search several files</td><td><span class="mono">Select-String cow *.txt</span></td>
+          <td><span class="mono">grep cow *_animals.txt</span></td></tr>
+      <tr><td>Search a directory tree by name</td>
+          <td><span class="mono">ls 'C:\Program Files\' -Recurse -Filter</span></td>
+          <td>—</td></tr>
+    </table>
+    </div>
+    <p><span class="mono">sls</span> is the alias for <span class="mono">Select-String</span>, and the
+    two are interchangeable in the shell. The string you search for can be a word, part of a word, a
+    phrase, or more — which is where <b>regular expressions</b> come in: a pattern language for
+    selecting text rather than typing it out exactly.</p>
+    <div class="big60 y">
+      <b>The handout's example is incomplete:</b> it stops at <span class="mono">-Filter</span>
+      without a pattern, and the pattern is the part you supply — the extension or name you are
+      looking for. <span class="mono">-Recurse</span> is what makes it descend into subdirectories;
+      without it you have searched one folder.
+    </div>
+    <p>Both tools print the matching <i>line</i>, not the matching file. That is the point: the answer
+    to "where is it configured" is a line number in a file, and the line usually contains enough
+    context to tell you whether you found the right one.</p>
+    </section><section id="searchgame" class=""><h2>Drill: command to job</h2><p class="lede">Ten commands from this module. Match each to the job it does — the vocabulary is the exam question.</p><div class="game" id="gCmd3"><div class="gtitle"><b>What does it do?</b></div><p class="ghint">Click a command, then its job. Six pairs per round.</p><div id="cmdHost3"></div></div></section><section id="streams" class=""><h2>Three streams, and why they are numbered</h2><p class="lede">Every process has an input, an output and a complaints department. Naming them is what makes redirection possible.</p>
+    <p>Every process on both systems takes input and produces output through <b>I/O streams</b> —
+    input/output streams. There are three, and they are numbered, which is the detail that makes the
+    syntax make sense:</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Stream</th><th>Number</th><th>What it carries</th><th>Default destination</th></tr>
+      <tr><td><b>Standard in</b> (<span class="mono">stdin</span>)</td><td>0</td>
+          <td>The input the process reads</td><td>Your keyboard</td></tr>
+      <tr><td><b>Standard out</b> (<span class="mono">stdout</span>)</td><td>1</td>
+          <td>The normal output — the answer</td><td>The screen</td></tr>
+      <tr><td><b>Standard error</b> (<span class="mono">stderr</span>)</td><td>2</td>
+          <td>Error messages</td><td>The screen</td></tr>
+    </table>
+    </div>
+    <p>The split between out and error is not fussiness. It means a program can produce its real
+    answer on one stream and its warnings on another, so you can keep the answer and throw the
+    warnings away — or send the warnings to a log while the answer goes to a file.</p>
+    <div class="big60">
+      <b>Everything in the next two sections is one idea:</b> a stream has a number, and you can tell
+      the shell where that numbered stream should go instead of the screen. <span class="mono">></span>
+      moves stream 1 to a file, <span class="mono">2></span> moves stream 2 to a file, and
+      <span class="mono">|</span> moves stream 1 into another command.
+    </div>
+    <button class="aud" data-audio="audio/c3m1-streams.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="redirect" class=""><h2>Redirecting output into a file</h2><p class="lede">Four operators: replace, append, errors, and input. The difference between the first two is the difference between a log and a lesson you only learn once.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Operator</th><th>What it does</th><th>Example</th></tr>
+      <tr><td><span class="mono">&gt;</span></td>
+          <td>Redirects <b>stdout</b> to a file. If the file exists it is <b>overwritten</b>; if it does
+          not, it is created.</td>
+          <td><span class="mono">echo woof &gt; dog.txt</span></td></tr>
+      <tr><td><span class="mono">&gt;&gt;</span></td>
+          <td><b>Appends</b> stdout to the file instead of overwriting it.</td>
+          <td><span class="mono">echo woof &gt;&gt; dog.txt</span></td></tr>
+      <tr><td><span class="mono">2&gt;</span></td>
+          <td>Redirects <b>stderr</b> — the error stream, stream number 2 — to a file.</td>
+          <td><span class="mono">rm secure_file 2&gt; errors.txt</span></td></tr>
+      <tr><td><span class="mono">&lt;</span></td>
+          <td>Takes <b>stdin</b> from a file instead of the keyboard (the Linux form this course
+          teaches).</td>
+          <td><span class="mono">cat &lt; file_input.txt</span></td></tr>
+    </table>
+    </div>
+    <h3>The black hole</h3>
+    <p>Both systems have a destination for output you do not want:</p>
+    <div class="kv">
+      <div class="k">Windows</div><div><span class="mono">$null</span> —
+        <span class="mono">rm secure_file 2&gt; $null</span> throws the errors away.</div>
+      <div class="k">Linux</div><div><span class="mono">/dev/null</span> —
+        <span class="mono">less /var/log/syslog 2&gt; /dev/null</span> does the same. It is a real
+        device file, and the reason it is a character device is that it swallows data character by
+        character like everything else in <span class="mono">/dev</span>.</div>
+    </div>
+    <div class="big60 r">
+      <b><span class="mono">&gt;</span> overwrites without asking.</b> Using a single arrow where you
+      meant a double is how yesterday's output disappears — including when "the output" is a config
+      file you were only meant to add a line to. Redirect into a new file when you are unsure, then
+      compare.
+    </div>
+    </section><section id="pipes" class=""><h2>Pipes: one command's output as the next one's input</h2><p class="lede">The pipe is what turns a list of small commands into a line that does something none of them could do alone.</p>
+    <p>The <b>pipe operator</b>, <span class="mono">|</span>, sends the output of the command on its
+    left into the input of the command on its right. Read it as "and then".</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>PowerShell</th><th>Bash</th><th>What the line does</th></tr>
+      <tr><td><span class="mono">cat words.txt | Select-String st</span></td>
+          <td><span class="mono">ls -la /etc | grep bluetooth</span></td>
+          <td>Take the first command's output, and show only the lines that contain the string.</td></tr>
+      <tr><td><span class="mono">cat words.txt | Select-String st &gt; st_words.txt</span></td>
+          <td><span class="mono">ls -la /etc | grep bluetooth &gt; bt.txt</span></td>
+          <td>A pipe followed by a redirect: filter, then save the result.</td></tr>
+    </table>
+    </div>
+    <p>Two operators on one line is normal, and the order is the whole program: <b>produce → filter →
+    save</b>. Each piece does one job, and each piece is tested by the next one being empty or not.</p>
+    <div class="big60">
+      <b>Why this is the most useful idea in the module:</b> you do not need a command that lists
+      "the bluetooth files in /etc". You need one command that lists everything and one that picks
+      lines, joined by a pipe. That is how a small set of tools covers an unbounded set of questions —
+      and why scripting is possible at all.
+    </div>
+    </section><section id="redirgame" class=""><h2>Drill: which operator</h2><p class="lede">Four symbols, ten statements. This is the part people get wrong under pressure, because the difference is one character.</p><div class="game" id="gRedir3"><div class="gtitle"><b>Sort the operator</b></div><p class="ghint">Click a statement, then the operator it describes.</p><div id="redirHost"></div></div></section><section id="env" class=""><h2>Environment variables, and why PATH matters</h2><p class="lede">The one setting that explains why a command works in one shell and not another.</p>
+    <p>An <b>environment variable</b> is a named value the operating system gives to every process —
+    a machine or session setting a program can read without being told it on the command line.</p>
+    <p>The one worth knowing by name is <b>PATH</b>: the list of directories the shell searches when
+    you type a command. When you type <span class="mono">ls</span>, the shell does not search the
+    whole disk — it walks the directories in PATH in order and runs the first match.</p>
+    <div class="kv">
+      <div class="k">The symptom</div><div>"Command not found" for a tool you know is installed.
+        You are not in the wrong directory; the tool's directory is not in the list the shell
+        searches.</div>
+      <div class="k">The fix</div><div>Add the tool's directory to PATH, or run it by its full path
+        so the shell does not need to search at all.</div>
+      <div class="k">The trap</div><div>Two tools with the same name in two directories on PATH. The
+        first one wins, silently, and the version you get depends on the order of the list.</div>
+    </div>
+    <p>This is the same class of confusion as an alias: the word you typed is being resolved to
+    something else before it runs. <span class="mono">Get-Alias</span> answers "what is this name
+    pointing at" inside PowerShell; PATH is the equivalent question one level down, across the whole
+    system.</p>
+    </section><section id="cheat" class=""><h2>One-page cheat sheet</h2><p class="lede">The whole module as a table. Print this, or leave it open in a second window while you work.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Job</th><th>Windows (PowerShell / cmd)</th><th>Linux (Bash)</th></tr>
+      <tr><td>Where am I</td><td><span class="mono">pwd</span> / <span class="mono">Get-Location</span></td>
+          <td><span class="mono">pwd</span></td></tr>
+      <tr><td>List</td><td><span class="mono">dir</span> / <span class="mono">ls</span> /
+          <span class="mono">ls -l</span></td><td><span class="mono">ls</span> /
+          <span class="mono">ls -l</span></td></tr>
+      <tr><td>List including hidden</td><td><span class="mono">ls -Force</span></td>
+          <td><span class="mono">ls -a</span></td></tr>
+      <tr><td>Change directory</td><td><span class="mono">cd foldername</span></td>
+          <td><span class="mono">cd foldername</span></td></tr>
+      <tr><td>Up one / home</td><td><span class="mono">cd ..</span> / <span class="mono">cd ~</span></td>
+          <td><span class="mono">cd ..</span> / <span class="mono">cd ~</span></td></tr>
+      <tr><td>Make a directory</td><td><span class="mono">mkdir foldername</span></td>
+          <td><span class="mono">mkdir foldername</span></td></tr>
+      <tr><td>Copy a file</td><td><span class="mono">copy file.txt backup.txt</span></td>
+          <td><span class="mono">cp file.txt backup.txt</span></td></tr>
+      <tr><td>Copy a directory</td><td><span class="mono">cp "Pictures" Desktop -Recurse</span></td>
+          <td><span class="mono">cp -r Pictures ~/Desktop</span></td></tr>
+      <tr><td>Move or rename</td><td><span class="mono">move file.txt new.txt</span></td>
+          <td><span class="mono">mv file.txt new.txt</span></td></tr>
+      <tr><td>Delete a file</td><td><span class="mono">del file.txt</span></td>
+          <td><span class="mono">rm file.txt</span></td></tr>
+      <tr><td>Delete a directory and its contents</td><td><span class="mono">rm folder -Recurse</span></td>
+          <td><span class="mono">rm -r folder</span></td></tr>
+      <tr><td>Show a file</td><td><span class="mono">type file.txt</span> / <span class="mono">cat</span></td>
+          <td><span class="mono">cat file.txt</span></td></tr>
+      <tr><td>Page through a file</td><td><span class="mono">more file.txt</span></td>
+          <td><span class="mono">less file.txt</span></td></tr>
+      <tr><td>First / last lines</td><td><span class="mono">cat file -Head 10</span> /
+          <span class="mono">-Tail 10</span></td>
+          <td><span class="mono">head file</span> / <span class="mono">tail file</span> (10 by default)</td></tr>
+      <tr><td>Search inside files</td><td><span class="mono">sls cow *.txt</span> /
+          <span class="mono">Select-String</span></td><td><span class="mono">grep cow *.txt</span></td></tr>
+      <tr><td>Overwrite / append</td><td><span class="mono">&gt;</span> / <span class="mono">&gt;&gt;</span></td>
+          <td><span class="mono">&gt;</span> / <span class="mono">&gt;&gt;</span></td></tr>
+      <tr><td>Send errors somewhere</td><td><span class="mono">2&gt; file</span> or
+          <span class="mono">2&gt; $null</span></td><td><span class="mono">2&gt; file</span> or
+          <span class="mono">2&gt; /dev/null</span></td></tr>
+      <tr><td>Pipe into the next command</td><td><span class="mono">|</span></td>
+          <td><span class="mono">|</span></td></tr>
+      <tr><td>Help</td><td><span class="mono">/?</span> / <span class="mono">Get-Help</span></td>
+          <td><span class="mono">man</span> / <span class="mono">--help</span></td></tr>
+      <tr><td>What is this alias</td><td><span class="mono">Get-Alias ls</span></td>
+          <td>—</td></tr>
+    </table>
+    </div>
+    <h3>What I changed from the handout</h3>
+    <div class="kv">
+      <div class="k">/user</div><div>The notes' Linux root listing prints <span class="mono">/user</span>.
+        The directory is <span class="mono">/usr</span>.</div>
+      <div class="k">Escape character</div><div>The notes print <span class="mono">(/)</span> for
+        Bash's escape. It is the backslash, <span class="mono">\</span>.</div>
+      <div class="k">-Filter</div><div>The notes' directory-search example stops before the pattern;
+        the pattern is what you supply.</div>
+    </div>
+    <p class="src">Sources: the Course 3 course notes (handout-Course3-notes-2026-11-24.pdf) and the
+    <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span> command cheat sheet (handout-OS-command-cheat-sheet-2026-11-24.pdf) for every command and
+    explanation; this module's specification in curriculum.py for the objectives. The environment
+    section is from the kit's own glossary (glossary-general.md), because the notes do not cover
+    environment variables.</p>
+    </section><section id="cards" class=""><h2>Flashcards</h2><p class="lede">The kit's glossary — 18 terms in this module, Coursera and CompTIA A+ together. <a href="../../glossary.html">Every term in the kit, defined</a>, is one page and works offline.</p><div class="game" id="gCards"><div class="gtitle"><b>Flashcards — 18 cards</b></div><p class="ghint">One question per card: <b>16</b> ask you to define a term, <b>2</b> ask what an acronym stands for. Every answer explains why, not just what.</p><div id="cardHost"></div></div></section><section id="quiz" class=""><h2>Quiz</h2><p class="lede">The thing to do last, and again in the morning.</p><div class="game" id="gQuiz"><div class="gtitle"><b>Module 1 quiz — 25 questions</b></div><p class="ghint">Every question shows why the answer is right. Misses go into the review queue.</p><div id="quizHost"></div></div></section>
+</main>
+
+<footer>
+      <p><b>Course 3, Module 1 — Navigating the System.</b> Part of the Google IT Support Professional Certificate study
+      kit. Every definition and explanation on this page is written for this site; the course supplies the
+      syllabus and the vocabulary, not the prose.</p>
+      <p>Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera or NPower; course titles and trademarks belong to their owners. Study aid only. Nothing here is submitted for grading.</p>
+    <p class="cred">Written by <b>pi-agent</b> driving <b>DeepSeek-V4.1-Flash-1017</b>
+  (Unsloth <code>UD-Q3_K_XL</code>) on the author's own machine, under his direction and review. No Claude,
+  OpenAI or other hosted model wrote any of it, and no page of it needed a network.</p>
+</footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.textContent===String(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1;
+    
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All '+set.length+' matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', locked='', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(!locked){mode=(mode==='dec')?'bin':'dec'}paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+    
+    var act=(locked==='bin')?b1:(locked==='dec')?b2:b3;
+    [b1,b2,b3].forEach(function(b){b.classList.toggle('on',b===act)});
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only');
+  var b2=el('button','secondary','Binary → decimal only');
+  var b3=el('button','secondary','Alternate both');
+  function setMode(m){ locked=m; if(m)mode=m; paint() }
+  b1.onclick=function(){setMode('bin')};
+  b2.onclick=function(){setMode('dec')};
+  b3.onclick=function(){setMode('')};
+  tog.appendChild(b1); tog.appendChild(b2); tog.appendChild(b3);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  
+  if(typeof window!=='undefined'&&window.TUTOR_PRESETS){
+    var wrap=document.querySelector('.tpresets');
+    if(wrap){
+      wrap.innerHTML='';
+      window.TUTOR_PRESETS.forEach(function(pr){
+        var b=el('button','tpreset',pr.label);
+        b.setAttribute('data-ask',pr.ask);
+        if(pr.mode)b.setAttribute('data-mode',pr.mode);
+        wrap.appendChild(b);
+      });
+    }
+  }
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorSetOpen(true);tutorAsk(q)}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  
+  tutorSetOpen($('#tutorPanel').classList.contains('open'),true);
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.key==='Esc')&&$('#tutorPanel').classList.contains('open'))tutorToggle();
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+
+/* ---- c3m1 ---- */
+
+/* ---- Windows or Bash: the two columns of the handout ---- */
+sortGame('#shellHost',
+  [{id:'w',name:'Windows (PowerShell / cmd)'},{id:'l',name:'Linux (Bash)'}],
+  [{t:'dir',b:'w'},
+   {t:'type file.txt',b:'w'},
+   {t:'copy file.txt backup.txt',b:'w'},
+   {t:'move file.txt new.txt',b:'w'},
+   {t:'del file.txt',b:'w'},
+   {t:'more large_document.txt',b:'w'},
+   {t:'ls -l',b:'l'},
+   {t:'cat file.txt',b:'l'},
+   {t:'cp file.txt backup.txt',b:'l'},
+   {t:'mv file.txt new.txt',b:'l'},
+   {t:'rm file.txt',b:'l'},
+   {t:'less large_document.txt',b:'l'}]);
+
+/* ---- command to job ---- */
+matchGame('#cmdHost3',[
+  {t:'pwd',m:'Print the working directory - where you are'},
+  {t:'ls -l',m:'List the contents in long form, with permissions'},
+  {t:'cd ..',m:'Move up to the parent directory'},
+  {t:'mkdir',m:'Create a directory'},
+  {t:'cp -r',m:'Copy a directory and everything inside it'},
+  {t:'mv',m:'Move a file, or rename it in place'},
+  {t:'cat',m:'Dump a whole file to the screen'},
+  {t:'grep',m:'Show only the lines that contain a string'},
+  {t:'head',m:'Show the first ten lines of a file'},
+  {t:'tail',m:'Show the last ten lines of a file'}]);
+
+/* ---- which operator ---- */
+sortGame('#redirHost',
+  [{id:'g',name:'> overwrite'},{id:'a',name:'>> append'},
+   {id:'e',name:'2> errors'},{id:'p',name:'| pipe'}],
+  [{t:'echo woof > dog.txt - the file is replaced',b:'g'},
+   {t:'The operator that loses yesterday output if you meant the other one',b:'g'},
+   {t:'echo woof >> dog.txt - the line is added to the end',b:'a'},
+   {t:'Keeps the existing contents and grows the file',b:'a'},
+   {t:'rm secure_file 2> errors.txt',b:'e'},
+   {t:'Sends only the failure messages to a file',b:'e'},
+   {t:'cat words.txt | Select-String st',b:'p'},
+   {t:'ls -la /etc | grep bluetooth',b:'p'},
+   {t:'Feeds one command output into the next command',b:'p'},
+   {t:'Reads as and then',b:'p'}]);
+
+flashcards('#cardHost', [{"t": "CLI", "cue": "expand", "q": "What does CLI stand for?", "a": "Command-Line Interface", "d": "a prompt where you type commands, as opposed to a graphical interface where you point. On Linux the CLI is called a shell.", "why": "Every module after this one assumes you can work in one."}, {"t": "GUI", "cue": "expand", "q": "What does GUI stand for?", "a": "Graphical User Interface", "d": "the face with windows, icons and a pointer. The other way to drive the same operating system.", "why": "Both interfaces reach the same kernel; the CLI is the one you can script."}, {"t": "Shell", "cue": "define", "q": "Shell", "d": "the program that reads what you typed and asks the kernel to do it. Bash on Linux; cmd.exe and PowerShell on Windows.", "why": "The shell is the interface; Bash and PowerShell are two different languages for it."}, {"t": "Bash", "cue": "define", "q": "Bash", "d": "the shell language this course uses on Linux. A Bash prompt shows who you are, the machine, and where you are.", "why": "The syntax in the Linux column of every table in this module is Bash."}, {"t": "Parameter", "cue": "define", "q": "Parameter", "d": "a value associated with a command: what the command acts on, such as the file and destination in a copy.", "why": "Command, then parameter, then flag. That is the grammar."}, {"t": "Flag", "cue": "define", "q": "Flag", "d": "an option that changes how a command behaves, like -r or -Recurse. Two can be written together as -la.", "why": "Almost every command in this module has one flag that changes its meaning completely."}, {"t": "Path", "cue": "define", "q": "Path", "d": "the location of a file or directory. Absolute starts at the root; relative starts at your current directory.", "why": "The first character tells you which kind you are holding."}, {"t": "Absolute path", "cue": "define", "q": "Absolute path", "d": "a path that starts from the main directory, so it means the same thing from anywhere: C:\\Users\\cindy or /home/cindy.", "why": "Scripts use absolute paths precisely because they do not depend on where you ran them."}, {"t": "Relative path", "cue": "define", "q": "Relative path", "d": "a path measured from your current directory, so it means something different depending on where you are.", "why": "A relative path in a script is a bug waiting for the wrong working directory."}, {"t": "Root directory", "cue": "define", "q": "Root directory", "d": "the parent directory of everything else on a filesystem. C:\\ on a Windows drive, / on Linux.", "why": "One root per drive on Windows, one root for the whole machine on Linux."}, {"t": "Wildcard", "cue": "define", "q": "Wildcard", "d": "a character that selects files by pattern. The asterisk stands for all: cp *.jpeg copies every .jpeg in the directory.", "why": "It is how one command acts on a hundred files - and how one typo deletes them."}, {"t": "Standard in (stdin)", "cue": "define", "q": "Standard in (stdin)", "d": "stream 0: the input a process reads, by default from the keyboard. Redirect it from a file with the less-than operator.", "why": "It is the stream a pipe fills, which is why pipes work at all."}, {"t": "Standard out (stdout)", "cue": "define", "q": "Standard out (stdout)", "d": "stream 1: the normal output of a process, by default the screen. Redirect it with a single greater-than sign.", "why": "The number 1 is silent in the syntax; you only write it when you need to be explicit."}, {"t": "Standard error (stderr)", "cue": "define", "q": "Standard error (stderr)", "d": "stream 2: error messages, by default the screen. Redirect it with 2> so it does not mix with the real output.", "why": "Keeping errors separate is how a log stays readable."}, {"t": "Pipe", "cue": "define", "q": "The pipe operator", "d": "the vertical bar: it sends one command's output into the next command's input. Read it as 'and then'.", "why": "Small commands joined by pipes cover questions no single command answers."}, {"t": "Alias", "cue": "define", "q": "Alias", "d": "a short name that points at a real command. In PowerShell ls is an alias for Get-ChildItem; Get-Alias tells you which.", "why": "It is why ls works on Windows and why it may not mean exactly what you expect."}, {"t": "PATH", "cue": "define", "q": "PATH", "d": "the environment variable holding the list of directories the shell searches for a command. First match wins.", "why": "A tool that is installed but 'not found' is a PATH problem, not an installation problem."}, {"t": "Regular expression", "cue": "define", "q": "Regular expression", "d": "a pattern language for selecting text by shape rather than by exact spelling; used by grep and Select-String.", "why": "It is the step after a plain string search stops being specific enough."}]);
+
+quiz('#quizHost', [{"k": "c3m1q1", "lo": "LO4", "q": "Which of these is an absolute path?", "o": ["Documents\\report.txt", "C:\\Users\\cindy\\Documents\\report.txt", "..\\report.txt", ".\\report.txt"], "a": 1, "why": "It starts at the root of a drive. The others are relative: they start where you are."}, {"k": "c3m1q2", "lo": "LO4", "q": "You are in C:\\Users\\cindy\\Documents and type cd ../Documents/notes. What is that path?", "o": ["absolute, because it names Documents", "relative, because it starts from where you are", "absolute, because it uses two dots", "neither"], "a": 1, "why": "Two dots means the parent directory, which only has meaning relative to your current position."}, {"k": "c3m1q3", "lo": "LO4", "q": "What does ~ mean in a path, in both shells?", "o": ["the root directory", "your home directory", "a hidden file", "any single character"], "a": 1, "why": "It is a shortcut for the home directory - /home/cindy on Linux, C:\\Users\\cindy on Windows."}, {"k": "c3m1q4", "lo": "LO4", "q": "On Windows, each drive letter is…", "o": ["a folder inside C:\\", "a filesystem with its own root directory", "just a label with no meaning", "a shortcut to the network"], "a": 1, "why": "Every drive letter is its own filesystem, and each has a root - C:\\, D:\\, X:\\ - which is the parent of everything on it."}, {"k": "c3m1q5", "lo": "LO1", "q": "Which command tells you where you currently are?", "o": ["ls", "pwd (or Get-Location)", "cd", "mkdir"], "a": 1, "why": "pwd prints the working directory. Before a relative path does anything, that is the fact you need."}, {"k": "c3m1q6", "lo": "LO1", "q": "cd .. does what?", "o": ["goes to the root", "moves up one directory, to the parent", "lists hidden files", "repeats the last command"], "a": 1, "why": "Two dots is the parent directory; one dot is the current one."}, {"k": "c3m1q7", "lo": "LO1", "q": "You need a folder called my new file, with spaces, in Bash. Which works?", "o": ["mkdir my new file", "mkdir \"my new file\"", "mkdir my-new-file", "mkdir -space my file"], "a": 1, "why": "Unquoted spaces split the name into three arguments. Quotes keep it one name; a backslash before each space does the same job."}, {"k": "c3m1q8", "lo": "LO1", "q": "cp *.jpeg C:\\Users\\cindy\\Desktop copies what?", "o": ["one file called *.jpeg", "every .jpeg file in the current directory", "every file in Desktop", "the Desktop folder itself"], "a": 1, "why": "The asterisk is the wildcard that stands for all. It selects files by pattern, which is how one command acts on many files."}, {"k": "c3m1q9", "lo": "LO1", "q": "You run mv notes.txt final.txt in the directory you are in. What happened?", "o": ["a copy was made", "the file was renamed in place", "the file was deleted", "the file moved to your home directory"], "a": 1, "why": "Move and rename are the same command: a new name in the same directory renames, a different directory moves."}, {"k": "c3m1q10", "lo": "LO1", "q": "Which command removes a directory and everything inside it on Linux?", "o": ["rmdir misc_folder", "rm -r misc_folder", "rm misc_folder -Force", "mv misc_folder /tmp"], "a": 1, "why": "The recursive flag is what takes the contents with it. rmdir does not - use it only when the directory is empty."}, {"k": "c3m1q11", "lo": "LO1", "q": "Which statement about rm is true?", "o": ["it moves the file to the recycle bin", "it deletes permanently, with no undo", "it asks for confirmation", "it only works on empty files"], "a": 1, "why": "There is no recycle bin behind rm and no undo. Read the path before you press Enter."}, {"k": "c3m1q12", "lo": "LO2", "q": "What does >> do?", "o": ["overwrites the file", "appends to the end of the file", "redirects errors", "pipes to another command"], "a": 1, "why": "Two arrows append, and create the file if it does not exist. One arrow replaces what was there."}, {"k": "c3m1q13", "lo": "LO2", "q": "What does 2> redirect?", "o": ["standard output", "standard error", "standard input", "both streams at once"], "a": 1, "why": "2 is the error stream. 1 is stdout, 0 is stdin - which is why the syntax is a number and an arrow."}, {"k": "c3m1q14", "lo": "LO2", "q": "You run ls /dir/fake_dir 2> error_output.txt. Where does the error message go?", "o": ["the screen", "into error_output.txt", "into /dir/fake_dir", "nowhere, errors are dropped"], "a": 1, "why": "2> sends the error stream to the file. The normal output would still have gone to the screen - that separation is the point."}, {"k": "c3m1q15", "lo": "LO2", "q": "Which symbol sends one command's output into another command?", "o": [">", "|", ">>", "<"], "a": 1, "why": "The pipe. Greater-than sends output to a file; less-than takes input from one."}, {"k": "c3m1q16", "lo": "LO2", "q": "What are $null on Windows and /dev/null on Linux?", "o": ["a hidden folder", "a destination that discards whatever you send it", "the root of the filesystem", "an error log"], "a": 1, "why": "The black hole. Redirecting errors there is how a script hides noise without losing the command."}, {"k": "c3m1q17", "lo": "LO2", "q": "cat words.txt | Select-String st > st_words.txt does what, in order?", "o": ["saves then filters", "filters the file, then saves the filtered result", "overwrites words.txt", "searches every file on the disk"], "a": 1, "why": "Read left to right: produce, filter, save. A pipe followed by a redirect is two operators doing two different jobs."}, {"k": "c3m1q18", "lo": "LO3", "q": "You run cat on a 5,000-line log file. What happens?", "o": ["it shows the first 10 lines", "it dumps the file until the end, and the start scrolls away", "it opens an editor", "it searches the file"], "a": 1, "why": "That is exactly why more and less exist: page the file instead of drowning the terminal."}, {"k": "c3m1q19", "lo": "LO3", "q": "In Linux, head fruits.txt with no number shows how many lines?", "o": ["1", "5", "10", "the whole file"], "a": 2, "why": "Ten by default on Linux. In PowerShell you name the count with -Head 10."}, {"k": "c3m1q20", "lo": "LO3", "q": "Which command pages through a large file in Linux, with keys to search and jump to the end?", "o": ["cat", "less", "head", "grep"], "a": 1, "why": "less is the Linux pager: arrows page, g goes to the start, G to the end, /word searches, q quits. more is the Windows one."}, {"k": "c3m1q21", "lo": "LO3", "q": "grep cow *_animals.txt does what?", "o": ["renames the files", "shows the matching lines from every file that fits the wildcard", "creates a file called cow", "lists the files only"], "a": 1, "why": "grep prints the line, not the file. The wildcard widens the search to several files at once."}, {"k": "c3m1q22", "lo": "LO5", "q": "Which Windows command does the same job as ls?", "o": ["dir", "type", "copy", "pwd"], "a": 0, "why": "dir and ls both list a directory. In PowerShell, ls is actually an alias for Get-ChildItem."}, {"k": "c3m1q23", "lo": "LO5", "q": "In PowerShell, what is ls?", "o": ["the real command", "an alias for Get-ChildItem, confirmable with Get-Alias ls", "a Linux-only command", "a directory"], "a": 1, "why": "Aliases let old muscle memory work. Get-Alias tells you what any of them really points at."}, {"k": "c3m1q24", "lo": "LO5", "q": "Which pair of commands copies a file?", "o": ["copy (Windows) / cp (Linux)", "cp (Windows) / copy (Linux)", "mv / copy", "del / rm"], "a": 0, "why": "copy and cp. mv and move are the pair for move or rename; del and rm are the pair for delete."}, {"k": "c3m1q25", "lo": "LO5", "q": "Where would you look for system configuration files on Linux?", "o": ["/home", "/bin", "/etc", "/var"], "a": 2, "why": "/etc holds configuration. /bin holds essential programs, /home holds people's files, /var holds logs and anything that constantly changes."}]);
+
+</script>
+</body>
+</html>

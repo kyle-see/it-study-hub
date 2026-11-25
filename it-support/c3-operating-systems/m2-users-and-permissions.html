@@ -1,0 +1,2070 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark light">
+<title>Operating Systems and You: Becoming a Power User — Users and Permissions, Module 2 (study)</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{
+  
+  --stone-50:#faf7f2;  --stone-100:#f3ede3; --stone-150:#ebe3d4;
+  --stone-200:#ddd1bd; --stone-300:#c5b69c; --stone-400:#a3917a;
+  --stone-500:#7a6a55; --stone-600:#594c3c; --stone-700:#423829;
+  --stone-800:#2c241a; --stone-900:#1a1410;
+  --amber-300:#f0c34a; --amber-400:#e5a82b; --amber-500:#c4881a; --amber-600:#9c690e;
+  --orange-400:#d96a3b; --orange-500:#b9501f; --orange-600:#8f3a13;
+  --rust:#a04020; --moss:#5a6b3c;
+  --paper:#faf7f2; --paper-2:#f3ede3; --paper-3:#ebe3d4;
+  --ink:#2c241a;
+
+  
+  --display:'Fraunces','Iowan Old Style',Georgia,'Times New Roman',serif;
+  --sans:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;
+  --mono:'JetBrains Mono','Cascadia Mono',Consolas,'SF Mono',Menlo,monospace;
+
+  
+  --bg:#0f0a07;
+  --bg-grad:linear-gradient(180deg,#1a1410 0%,#0f0a07 100%);
+  --surface:#1a1410;
+  --surface-2:#221a13;
+  --surface-3:#2c241a;
+  --text:#f3ede3;
+  --text-strong:#faf7f2;
+  --text-dim:#c5b69c;
+  --text-mute:#a3917a;
+  --rule:rgba(240,195,74,0.16);
+  --rule-2:rgba(240,195,74,0.30);
+  --accent:var(--amber-400);
+  --accent-bright:var(--amber-300);
+  --accent-on:#1a1410;
+  --fill:var(--amber-400);
+  --on-fill:#1a1410;
+  --accent-2:var(--orange-400);
+  --good:var(--moss);
+  --good-bright:#8fae63;
+  --bad:var(--rust);
+  --bad-bright:#c9553a;
+  --shadow:0 8px 32px rgba(0,0,0,0.45);
+  --shadow-sm:0 2px 10px rgba(0,0,0,0.35);
+  --tint-accent:rgba(240,195,74,0.09);
+  --tint-good:rgba(90,107,60,0.18);
+  --tint-bad:rgba(160,64,32,0.18);
+  --tint-2:rgba(217,106,59,0.12);
+  --code-bg:#221a13;
+}
+
+html[data-theme="light"]{
+  --bg:#faf7f2;
+  --bg-grad:linear-gradient(180deg,#f3ede3 0%,#faf7f2 100%);
+  --surface:#ffffff;
+  --surface-2:#f3ede3;
+  --surface-3:#ebe3d4;
+  --text:var(--ink);
+  --text-strong:#1a1410;
+  
+  --text-dim:#423829;
+  --text-mute:#594c3c;
+  --rule:rgba(67,53,35,0.14);
+  --rule-2:rgba(67,53,35,0.28);
+  
+  --accent:#7d4f06;
+  --accent-bright:#5f3b04;
+  --accent-on:#ffffff;
+  --fill:#7d4f06;
+  --on-fill:#ffffff;
+  --accent-2:var(--orange-500);
+  --good:var(--moss);
+  --good-bright:#4d6a2f;
+  --bad:var(--rust);
+  --bad-bright:#8b3212;
+  --shadow:0 8px 28px rgba(67,53,35,0.13);
+  --shadow-sm:0 1px 4px rgba(67,53,35,0.10);
+  --tint-accent:rgba(196,136,26,0.10);
+  --tint-good:rgba(90,107,60,0.12);
+  --tint-bad:rgba(160,64,32,0.10);
+  --tint-2:rgba(185,80,31,0.08);
+  --code-bg:#f3ede3;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:var(--sans);line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(1200px 600px at 50% -20%,rgba(240,195,74,0.055),transparent 70%);
+  background-repeat:no-repeat;
+}
+
+
+.topbar{
+  position:sticky;top:0;z-index:60;background:var(--bg-grad);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:14px;padding:11px 20px;flex-wrap:wrap;
+}
+.mark{display:flex;gap:4px;flex:none;align-items:center}
+.mark i{width:3px;height:15px;border-radius:2px;display:block;background:var(--amber-400)}
+.mark i:nth-child(2){background:var(--orange-400);height:11px}
+.mark i:nth-child(3){background:var(--rust);height:7px}
+.topbar .title{font-family:var(--display);font-weight:600;font-size:15.5px;color:var(--text-strong);letter-spacing:-.01em}
+.topbar nav{margin-left:auto;display:flex;gap:3px;flex-wrap:wrap;align-items:center}
+.topbar nav a{
+  font-size:12.5px;color:var(--text-dim);text-decoration:none;
+  padding:5px 10px;border-radius:6px;transition:all .15s;
+}
+.topbar nav a:hover{background:var(--surface-3);color:var(--accent-bright)}
+.topbar nav a.on{background:var(--tint-accent);color:var(--accent-bright);font-weight:600}
+#themeBtn{
+  background:var(--surface-3);color:var(--text-dim);border:1px solid var(--rule);
+  border-radius:6px;padding:5px 9px;font-size:12px;line-height:1;cursor:pointer;
+}
+#themeBtn:hover{color:var(--accent-bright);border-color:var(--rule-2)}
+
+main{max-width:1080px;margin:0 auto;padding:30px 20px 100px}
+
+
+section{
+  background:var(--surface);border:1px solid var(--rule);border-radius:14px;
+  padding:24px 26px 28px;margin-bottom:20px;box-shadow:var(--shadow-sm);
+  scroll-margin-top:80px;
+}
+h2{
+  margin:0 0 6px;font-family:var(--display);font-size:23px;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;line-height:1.25;
+}
+h3{
+  font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);margin:28px 0 9px;
+  padding-bottom:6px;border-bottom:1px solid var(--rule);
+}
+h4{font-size:13.5px;font-weight:600;margin:16px 0 6px;color:var(--text-strong)}
+p{margin:10px 0}
+.lede{color:var(--text-dim);font-size:13.5px;margin:0 0 20px;max-width:84ch;line-height:1.6}
+strong,b{color:var(--text-strong)}
+a{color:var(--accent);text-decoration:none;border-bottom:1px solid var(--rule-2)}
+a:hover{color:var(--accent-bright);border-bottom-color:var(--accent)}
+sup{font-size:.72em}
+hr{height:1px;background:var(--rule);margin:22px 0;border:0}
+
+
+.big60{
+  background:var(--tint-accent);border-left:3px solid var(--amber-400);
+  border-radius:0 10px 10px 0;padding:14px 18px;font-size:14px;margin:16px 0;
+  color:var(--text);
+}
+.big60.g{background:var(--tint-good);border-left-color:var(--moss)}
+.big60.r{background:var(--tint-bad);border-left-color:var(--rust)}
+.big60.y{background:var(--tint-accent);border-left-color:var(--amber-300)}
+.big60.p{background:var(--tint-2);border-left-color:var(--orange-400)}
+
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.chip{
+  font-family:var(--mono);font-size:10.5px;font-weight:500;padding:4px 10px;
+  border-radius:99px;background:var(--surface-3);border:1px solid var(--rule);
+  color:var(--text-dim);
+}
+.chip.b,.chip.y{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+.chip.g{background:var(--tint-good);color:var(--good-bright);border-color:var(--rule-2)}
+.chip.r{background:var(--tint-bad);color:var(--bad-bright);border-color:var(--rule-2)}
+.chip.p{background:var(--tint-2);color:var(--accent-2);border-color:var(--rule-2)}
+
+
+button{
+  font:inherit;cursor:pointer;border:none;border-radius:7px;
+  padding:8px 16px;font-weight:600;font-size:13px;transition:all .15s;
+}
+button:disabled{opacity:.4;cursor:default}
+.primary{background:var(--fill);color:var(--on-fill)}
+.primary:hover:not(:disabled){background:var(--amber-300)}
+.secondary{background:var(--surface-3);color:var(--text);border:1px solid var(--rule)}
+.secondary:hover:not(:disabled){border-color:var(--rule-2);color:var(--accent-bright)}
+.ghost{background:transparent;color:var(--text-mute);padding:6px 10px;font-size:12px}
+.ghost:hover{background:var(--surface-3);color:var(--text)}
+.rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
+
+.rowbtns button.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+
+code,.mono{
+  font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
+  border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
+}
+.mono{white-space:nowrap}
+
+
+.ac{position:relative;border-bottom:1px dotted var(--accent);cursor:help;color:var(--accent-bright)}
+
+.actip{
+  position:fixed;left:0;top:0;z-index:200;pointer-events:none;display:none;
+  max-width:min(320px,calc(100vw - 16px));
+  background:var(--stone-900);color:var(--stone-100);
+  font-family:var(--sans);font-size:11.5px;font-weight:400;line-height:1.45;
+  padding:8px 11px;border-radius:8px;text-align:left;
+  box-shadow:0 4px 16px rgba(0,0,0,.55);border:1px solid rgba(240,195,74,0.30);
+}
+.actip.on{display:block}
+.actip b{color:var(--amber-300);font-weight:600}
+
+
+.tbl-wrap{overflow-x:auto;margin:14px 0;border:1px solid var(--rule);border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px;margin:0}
+th{
+  font-family:var(--mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;text-align:left;padding:10px 13px;
+  border-bottom:1px solid var(--rule-2);background:var(--surface-2);white-space:nowrap;
+}
+td{padding:10px 13px;border-bottom:1px solid var(--rule);vertical-align:top;color:var(--text)}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td,table tr:hover td{background:var(--surface-2)}
+td b,th b{color:var(--text-strong)}
+
+
+.kv{display:grid;grid-template-columns:160px 1fr;gap:9px 18px;font-size:13px;margin:14px 0}
+.kv .k{
+  font-family:var(--mono);font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;
+  color:var(--accent);font-weight:600;padding-top:2px;
+}
+.src{font-size:11.5px;color:var(--text-mute);font-style:italic}
+.tag{
+  display:inline-block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  border-radius:99px;padding:2px 8px;vertical-align:middle;border:1px solid var(--rule);
+}
+.tag.b,.tag.y{background:var(--tint-accent);color:var(--accent-bright)}
+.tag.g{background:var(--tint-good);color:var(--good-bright)}
+.tag.r{background:var(--tint-bad);color:var(--bad-bright)}
+.tag.p{background:var(--tint-2);color:var(--accent-2)}
+
+
+.stack{display:flex;flex-direction:column;gap:6px;margin:16px 0}
+.band{
+  display:flex;align-items:center;gap:12px;border:1px solid var(--rule);
+  border-left:3px solid var(--amber-400);border-radius:8px;
+  padding:10px 15px;background:var(--surface-2);
+}
+.band .bn{font-weight:600;font-size:13.5px;flex:1 1 auto;color:var(--text-strong)}
+.band .bp{font-family:var(--mono);font-size:11px;color:var(--accent);white-space:nowrap}
+.a-amber{border-left-color:var(--amber-400)} .a-orange{border-left-color:var(--orange-400)}
+.a-rust{border-left-color:var(--rust)} .a-moss{border-left-color:var(--moss)}
+.a-paper{border-left-color:var(--stone-300)} .a-dim{border-left-color:var(--stone-500)}
+.a-accent{border-left-color:var(--amber-300)}
+
+
+.bitrow{display:flex;gap:4px;justify-content:center;margin:10px 0;flex-wrap:wrap}
+.bit{
+  width:40px;text-align:center;font-family:var(--mono);font-size:18px;font-weight:700;
+  border-radius:6px;padding:8px 0;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);
+}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}
+.bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
+.prompt{
+  font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
+  border:1px solid var(--rule-2);border-radius:8px;padding:11px 15px;
+  display:inline-block;margin:6px 0;color:var(--accent-bright);
+}
+.prompt .u{border-bottom:2px solid var(--amber-400);color:var(--accent)}
+
+
+.game{
+  border:1px solid var(--rule);border-radius:12px;padding:18px 20px 20px;
+  margin:18px 0;background:var(--surface-2);
+}
+.game > .gtitle{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;margin-bottom:4px}
+.game > .gtitle b{
+  font-family:var(--display);font-size:16px;font-weight:600;color:var(--text-strong);
+  letter-spacing:-.01em;
+}
+.game .ghint{font-size:12.5px;color:var(--text-mute);margin:0 0 14px;max-width:80ch;line-height:1.55}
+.gbar{
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-top:16px;
+  font-family:var(--mono);font-size:11.5px;color:var(--text-mute);
+  padding-top:12px;border-top:1px solid var(--rule);
+}
+.gbar .score{font-weight:700;color:var(--accent-bright)}
+.gbar .streak{font-weight:700;color:var(--good-bright)}
+.fb{font-size:13px;font-weight:600;min-height:22px;margin-top:12px}
+.fb.ok{color:var(--good-bright)} .fb.no{color:var(--bad-bright)}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.shake{animation:shake .4s}
+@keyframes pop{0%{transform:scale(.95)}60%{transform:scale(1.03)}100%{transform:scale(1)}}
+.pop{animation:pop .22s}
+
+
+.q{border:1px solid var(--rule);border-radius:10px;padding:16px 18px;margin-bottom:12px;background:var(--surface)}
+.q .qt{
+  font-size:14px;font-weight:600;margin-bottom:11px;display:flex;gap:9px;
+  align-items:baseline;flex-wrap:wrap;color:var(--text-strong);
+}
+.lo{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;color:var(--accent-bright);
+  background:var(--tint-accent);border:1px solid var(--rule-2);
+  border-radius:99px;padding:2px 8px;flex:none;
+}
+.q .opt{
+  display:block;width:100%;text-align:left;background:var(--surface-2);
+  border:1px solid var(--rule);border-radius:8px;padding:9px 13px;margin:6px 0;
+  font-weight:400;font-size:13px;color:var(--text);transition:all .13s;
+}
+.q .opt:hover:not(:disabled){background:var(--surface-3);border-color:var(--rule-2)}
+.q .opt.sel{border-color:var(--amber-400);background:var(--tint-accent)}
+.q .opt.right{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.q .opt.wrong{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.q .why{
+  display:none;font-size:12.5px;color:var(--text-dim);margin-top:10px;
+  background:var(--surface-3);border-left:2px solid var(--amber-500);
+  border-radius:0 8px 8px 0;padding:9px 12px;line-height:1.55;
+}
+.q .why.show{display:block}
+
+
+.fcard{perspective:1200px;height:236px;margin:16px auto 10px;max-width:640px;cursor:pointer}
+.fcard .inner{position:relative;width:100%;height:100%;transition:transform .5s;transform-style:preserve-3d}
+.fcard.flip .inner{transform:rotateY(180deg)}
+.fcard .face{
+  position:absolute;inset:0;backface-visibility:hidden;border:1px solid var(--rule-2);
+  border-radius:12px;background:var(--surface);display:flex;flex-direction:column;
+  align-items:center;justify-content:center;text-align:center;padding:26px 30px;
+  font-size:17px;font-weight:600;font-family:var(--display);color:var(--text-strong);letter-spacing:-.01em;
+}
+.fcard .front .cue{
+  font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:14px;
+}
+.fcard .front .fq{
+  font-family:var(--display);font-size:22px;line-height:1.3;font-weight:600;
+  letter-spacing:-.015em;color:var(--text-strong);
+}
+.fcard .front .fq.term{font-family:var(--sans);font-size:19px;letter-spacing:0}
+.fcard .front .ctx{
+  margin-top:15px;font-family:var(--mono);font-size:11px;font-weight:400;letter-spacing:0;
+  color:var(--text-mute);line-height:1.5;
+}
+.fcard .back{
+  transform:rotateY(180deg);background:var(--surface-2);border-color:var(--amber-500);
+  font-family:var(--sans);font-size:13px;font-weight:400;line-height:1.62;
+  display:block;overflow:auto;text-align:left;color:var(--text);
+}
+.fcard .back .ans{
+  display:block;font-family:var(--display);font-size:19px;font-weight:600;line-height:1.25;
+  color:var(--accent-bright);margin-bottom:12px;letter-spacing:-.01em;
+}
+.fcard .back .term{
+  display:block;font-family:var(--mono);font-size:10.5px;font-weight:600;
+  letter-spacing:.07em;text-transform:uppercase;color:var(--accent);margin-bottom:8px;
+}
+
+.frules{margin:0 0 12px;font-size:12px;color:var(--text-mute);line-height:1.6;max-width:640px}
+.frules b{color:var(--text-dim);font-weight:600}
+.fchips{display:flex;gap:7px;flex-wrap:wrap;justify-content:center;margin:0 auto 4px;max-width:640px}
+.fchip{
+  font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  border:1px solid var(--rule);background:var(--surface);color:var(--text-mute);
+  border-radius:99px;padding:4px 11px;cursor:pointer;transition:all .13s;
+}
+.fchip:hover{border-color:var(--rule-2);color:var(--text)}
+.fchip.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.fdone{text-align:center;padding:34px 20px;color:var(--text-mute);font-size:13px}
+.fdone b{display:block;font-family:var(--display);font-size:18px;color:var(--text-strong);margin-bottom:8px}
+
+
+.mgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:14px 0}
+@media(max-width:700px){.mgrid{grid-template-columns:1fr}}
+.mcol{display:flex;flex-direction:column;gap:7px}
+.mitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:10px 13px;font-size:12.5px;text-align:left;font-weight:400;
+  color:var(--text);transition:all .13s;
+}
+.mitem:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3)}
+.mitem.sel{border-color:var(--amber-400);background:var(--tint-accent);font-weight:600}
+.mitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.6;cursor:default}
+
+
+.sitems{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0;min-height:44px}
+.sitem{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);
+  font-family:var(--mono);transition:all .13s;
+}
+.sitem:hover{border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.sitem.sel{border-color:var(--amber-400);background:var(--tint-accent);color:var(--accent-bright)}
+.sitem.done{border-color:var(--moss);background:var(--tint-good);opacity:.55;cursor:default;color:var(--good-bright)}
+.sitem.bad{border-color:var(--rust);background:var(--tint-bad)}
+.buckets{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin:14px 0}
+.bucket{
+  border:1px dashed var(--rule-2);border-radius:10px;padding:11px 13px;min-height:96px;
+  background:var(--surface);transition:all .18s;cursor:pointer;
+}
+.bucket.hot{border-color:var(--amber-400);background:var(--tint-accent)}
+.bucket .bh{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.07em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:9px;
+}
+.bucket .bitems{display:flex;gap:6px;flex-wrap:wrap}
+.bucket .bitem{
+  font-family:var(--mono);font-size:10.5px;font-weight:600;background:var(--tint-good);
+  border:1px solid var(--moss);color:var(--good-bright);border-radius:6px;padding:3px 8px;
+}
+
+
+.olist{display:flex;flex-direction:column;gap:6px;margin:14px 0;min-height:40px}
+.oslot{
+  display:flex;align-items:center;gap:11px;border:1px dashed var(--rule-2);
+  border-radius:8px;padding:9px 13px;background:var(--surface);min-height:44px;
+  font-size:12.5px;color:var(--text-dim);
+}
+.oslot .pos{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--text-mute);width:22px;flex:none}
+.oslot.filled{border-style:solid;border-color:var(--amber-500);background:var(--tint-accent);font-weight:600;color:var(--text)}
+.oslot.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.oslot.bad{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+.otiles{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+.otile{
+  border:1px solid var(--rule);border-radius:8px;background:var(--surface);
+  padding:8px 14px;font-size:12.5px;font-weight:600;color:var(--text);transition:all .13s;
+  text-align:left;
+}
+.otile:hover:not(:disabled){border-color:var(--rule-2);background:var(--surface-3);color:var(--accent-bright)}
+.otile.used{display:none}
+
+
+.iobox{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:14px 0}
+.iobox input{
+  font-family:var(--mono);font-size:15px;padding:9px 13px;border:1px solid var(--rule-2);
+  border-radius:8px;width:210px;letter-spacing:.05em;background:var(--code-bg);
+  color:var(--accent-bright);
+}
+.iobox input::placeholder{color:var(--text-mute)}
+.iobox input:focus{outline:none;border-color:var(--amber-400);box-shadow:0 0 0 3px var(--tint-accent)}
+.iobox input.ok{border-color:var(--moss);background:var(--tint-good);color:var(--good-bright)}
+.iobox input.no{border-color:var(--rust);background:var(--tint-bad);color:var(--bad-bright)}
+
+
+.aud{
+  display:inline-flex;align-items:center;gap:8px;background:var(--surface-3);
+  border:1px solid var(--rule);border-radius:99px;padding:5px 13px 5px 6px;
+  font-family:var(--mono);font-size:10.5px;font-weight:600;color:var(--text-dim);
+  cursor:pointer;margin:8px 7px 0 0;transition:all .15s;
+}
+.aud:hover{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+.aud .ico{
+  width:20px;height:20px;border-radius:50%;background:var(--fill);color:var(--on-fill);
+  display:grid;place-items:center;font-size:9px;flex:none;
+}
+.aud.playing{background:var(--tint-good);border-color:var(--moss);color:var(--good-bright)}
+.aud.playing .ico{background:var(--moss);color:#fff}
+.aud.missing{opacity:.35;cursor:not-allowed}
+
+
+#tutorBtn{
+  position:fixed;right:24px;bottom:24px;z-index:120;background:var(--fill);
+  color:var(--accent-on);border-radius:99px;padding:12px 22px;font-weight:700;
+  font-size:12px;letter-spacing:.07em;text-transform:uppercase;
+  box-shadow:0 6px 22px rgba(229,168,43,.32);
+}
+#tutorBtn:hover{background:var(--amber-300);transform:translateY(-1px)}
+#tutorPanel{
+  position:fixed;right:0;top:0;bottom:0;width:440px;max-width:95vw;
+  background:var(--surface);border-left:1px solid var(--rule-2);
+  box-shadow:-8px 0 40px rgba(0,0,0,.55);z-index:130;display:flex;flex-direction:column;
+  transform:translateX(101%);transition:transform .3s cubic-bezier(.3,.8,.4,1);
+}
+#tutorPanel.open{transform:translateX(0)}
+#tutorPanel .tph{
+  display:flex;align-items:center;gap:10px;padding:16px 18px;
+  border-bottom:1px solid var(--rule);background:var(--bg-grad);
+}
+#tutorPanel .tph b{font-family:var(--display);font-size:15px;color:var(--text-strong)}
+#tutorPanel .tph .close{margin-left:auto;background:transparent;color:var(--text-mute);padding:2px 8px;font-size:20px;line-height:1}
+#tutorPanel .tph .close:hover{color:var(--accent)}
+#tutorBody{flex:1;overflow:auto;padding:16px 18px}
+#tutorBody .tq{
+  background:var(--tint-accent);border-left:2px solid var(--amber-400);
+  border-radius:0 8px 8px 0;padding:10px 13px;font-size:12.5px;margin-bottom:11px;
+  color:var(--accent-bright);
+}
+#tutorBody .ta{
+  background:var(--surface-2);border:1px solid var(--rule);border-radius:8px;
+  padding:12px 14px;font-size:12.5px;white-space:pre-wrap;line-height:1.65;
+  margin-bottom:11px;color:var(--text);
+}
+#tutorBody .tn{font-size:12px;color:var(--text-mute);line-height:1.65}
+#tutorFoot{border-top:1px solid var(--rule);padding:12px 18px;display:flex;flex-direction:column;gap:9px}
+#tutorAsk{display:flex;gap:8px}
+#tutorAsk input{
+  flex:1;font:inherit;font-size:12.5px;padding:9px 12px;border:1px solid var(--rule-2);
+  border-radius:8px;background:var(--code-bg);color:var(--text);
+}
+#tutorAsk input::placeholder{color:var(--text-mute)}
+#tutorAsk input:focus{outline:none;border-color:var(--amber-400)}
+.tpresets{display:flex;gap:6px;flex-wrap:wrap}
+.tpreset{
+  font-family:var(--mono);font-size:10px;font-weight:600;background:var(--surface-3);
+  border:1px solid var(--rule);color:var(--text-mute);border-radius:99px;padding:5px 11px;
+}
+.tpreset:hover{background:var(--tint-accent);color:var(--accent-bright);border-color:var(--rule-2)}
+#tutorStatus{font-family:var(--mono);font-size:10px;color:var(--text-mute)}
+
+footer{
+  color:var(--text-mute);font-size:11.5px;line-height:1.8;padding:0 6px;
+  font-family:var(--sans);
+}
+footer p{margin:6px 0}
+
+footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);font-size:11px}
+
+@media print{
+  .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
+  body{background:#fff;color:#000}
+  section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
+  
+  :root{--text:#000;--text-strong:#000;--text-dim:#333;--text-mute:#4a4a4a;
+        --surface:#fff;--surface-2:#fff;--surface-3:#fff;--code-bg:#f4f4f4}
+}
+@media(max-width:640px){
+  .kv{grid-template-columns:1fr;gap:3px 0}
+  .kv .k{margin-top:8px}
+  main{padding:18px 12px 90px}
+  section{padding:18px 16px 22px;border-radius:11px}
+  h2{font-size:19px}
+  
+  .topbar{position:static}
+  
+  html,body{overflow-x:clip}
+  
+  section:target{margin-left:0}
+}
+
+
+.lcan{margin:8px 0 0;padding-left:0;list-style:none;font-size:13.5px;line-height:1.65}
+.lcan li{position:relative;padding-left:22px;margin:7px 0;color:var(--text-dim)}
+.lcan li::before{content:"\2192";position:absolute;left:0;top:0;color:var(--accent);
+  font-family:var(--mono);font-size:12px}
+.lcan li b{color:var(--text)}
+.lblk{margin:16px 0 0}
+.lblk>.ltag{display:block;font-family:var(--mono);font-size:9.5px;font-weight:600;
+  letter-spacing:.09em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.lfacts{font-size:13px}
+.lfacts .k{width:auto;white-space:nowrap}
+.learnbox{border:1px solid var(--rule);border-radius:12px;padding:16px 18px 6px;background:var(--surface-2)}
+.learnbox .lede{margin-top:0}
+
+.exq{border-left:3px solid var(--accent);border-radius:0 10px 10px 0;background:var(--surface-2);
+  padding:13px 18px;margin:12px 0;font-size:15.5px;line-height:1.6;color:var(--text)}
+@media(max-width:640px){.lfacts .k{white-space:normal}}
+
+
+
+section:target{border-left:3px solid var(--accent);padding-left:14px;margin-left:-17px;
+  background:var(--tint-accent);border-radius:0 10px 10px 0}
+mark{background:var(--fill);color:var(--on-fill);border-radius:3px;padding:0 2px;font-weight:600}
+</style>
+
+<script>
+(function(){
+  try{
+    var t=localStorage.getItem('c2:theme');
+    if(!t)t='dark';
+    document.documentElement.setAttribute('data-theme',t);
+  }catch(e){document.documentElement.setAttribute('data-theme','dark')}
+})();
+</script>
+
+<style>
+/* ============================================================
+   Field Plates — the 2026-11-10 visual pass.
+   Tokens: none added. Every colour below is an Anchor token.
+   ============================================================ */
+
+/* ---- M6: grain ---- */
+.grain{
+  position:fixed;inset:0;z-index:90;pointer-events:none;opacity:.035;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+/* ---- the mark, at any size ---- */
+.g{flex:none;vertical-align:-3px}
+.gm{display:inline-flex;align-items:center;justify-content:center;
+  width:34px;height:34px;border-radius:9px;background:var(--tint-accent);
+  border:1px solid var(--rule-2);color:var(--accent-bright)}
+
+/* ---------- M1: masthead ---------- */
+.mast{position:relative;overflow:hidden;border-radius:16px;border:1px solid var(--rule);
+  background:
+    radial-gradient(700px 340px at 82% 30%,rgba(240,195,74,.10),transparent 70%),
+    linear-gradient(180deg,var(--surface-2) 0%,var(--bg) 100%);
+  margin:0 0 20px;min-height:392px;display:flex;align-items:center}
+.mast-art{position:absolute;inset:0 0 0 auto;width:66%;background-size:cover;
+  background-position:center right;opacity:.92;
+  -webkit-mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 26%,#000 62%);
+  mask-image:linear-gradient(90deg,transparent 0%,rgba(0,0,0,.35) 26%,#000 62%)}
+.mast-art::after{content:"";position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 45%,var(--bg) 100%);opacity:.85}
+.mast.empty .mast-art{display:none}
+.mast-in{position:relative;z-index:3;padding:44px 40px;max-width:min(660px,84%)}
+.mast .eyebrow{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 14px}
+.mast h1{font-family:var(--display);font-size:clamp(2.15rem,4.6vw,3.5rem);line-height:1.04;
+  letter-spacing:-.025em;font-weight:600;color:var(--text-strong);margin:0 0 18px}
+.mast h1 em{font-style:normal;color:var(--accent)}
+.mast .lede{font-size:14px;max-width:52ch;margin:0 0 22px;color:var(--text-dim)}
+.mast-rule{height:1px;background:linear-gradient(90deg,var(--accent),transparent);
+  margin:0 0 18px;max-width:260px}
+.mast-stats{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 16px}
+.mast-chips{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.mast-chips .mchip{background:transparent}
+.mast .cta{display:inline-flex;align-items:center;gap:8px;background:var(--fill);color:var(--on-fill);
+  border:0;border-radius:8px;padding:9px 17px;font-weight:700;font-size:13px;border-bottom:0}
+.mast .cta:hover{background:var(--accent-bright);color:var(--on-fill)}
+@media(max-width:760px){
+  .mast{min-height:0}
+  .mast-art{width:100%;opacity:.32;
+    -webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 55%);
+    mask-image:linear-gradient(180deg,transparent 0%,#000 55%)}
+  .mast-in{padding:30px 22px;max-width:100%}
+}
+
+/* ---------- the front door is a document, not a stack of boxes ---------- */
+.home > section{
+  background:transparent;border:0;border-top:1px solid var(--rule);border-radius:0;
+  box-shadow:none;padding:30px 2px 14px;margin:0 0 8px;
+}
+.home > section:first-of-type{border-top:0;padding-top:6px}
+.home > section > h2{font-size:27px}
+
+/* ---------- M2/M3: plate cards ---------- */
+.plates{display:grid;grid-template-columns:1fr;gap:18px;margin-top:20px}
+@media(min-width:1080px){.plates{grid-template-columns:1fr 1fr}}
+.cp{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--rule);
+  border-radius:14px;overflow:hidden;transition:border-color .18s,box-shadow .18s,transform .18s}
+.cp:hover{border-color:var(--rule-2);box-shadow:var(--shadow)}
+.cp-frame{position:relative;display:block;aspect-ratio:16/8;
+  background:linear-gradient(150deg,var(--surface-3),var(--stone-900) 60%,var(--surface));
+  border-bottom:1px solid var(--rule);overflow:hidden;border-bottom:0}
+.cp-frame img,.cp-frame .plate{width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s ease,filter .3s}
+.cp:hover .cp-frame img{transform:scale(1.022)}
+.cp-frame::after{content:"";position:absolute;inset:auto 0 0 0;height:58%;
+  background:linear-gradient(180deg,transparent,var(--surface) 92%);pointer-events:none}
+.cp-frame .plate-empty{display:flex;align-items:center;justify-content:center;
+  width:100%;height:100%;color:var(--accent);opacity:.34;
+  background:radial-gradient(circle at 50% 46%,rgba(240,195,74,.10),transparent 62%)}
+.cp-soon{opacity:.9}
+.cp-body{padding:17px 20px 19px;display:flex;flex-direction:column;gap:0;flex:1 1 auto}
+.cp-top{display:flex;align-items:flex-start;gap:12px;margin-bottom:8px}
+.cp-num{font-family:var(--display);font-size:52px;line-height:.82;font-weight:600;
+  letter-spacing:-.04em;color:var(--accent);opacity:.20;flex:none;margin-left:auto;
+  font-variant-numeric:tabular-nums}
+.cp h3{margin:0;font-family:var(--display);font-size:19px;line-height:1.22;font-weight:600;
+  color:var(--text-strong);letter-spacing:-.015em;text-transform:none}
+.cp h3 a{color:inherit;border-bottom:0}
+.cp h3 a:hover{color:var(--accent-bright)}
+.cp .meta{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 11px}
+.cp .sub{font-size:12.5px;color:var(--text-mute);line-height:1.6;margin:0 0 14px}
+
+/* ---------- M4: module tiles ---------- */
+.mtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:7px;
+  margin:0 0 14px}
+.mtile{display:flex;align-items:center;gap:9px;padding:7px 10px;border-radius:8px;
+  background:var(--surface-2);border:1px solid var(--rule);border-bottom:1px solid var(--rule);
+  transition:border-color .15s,background .15s,color .15s;text-decoration:none}
+a.mtile:hover{border-color:var(--rule-2);background:var(--surface-3)}
+a.mtile:hover .mt{color:var(--accent-bright)}
+.mtile .mg{color:var(--accent);display:flex;flex:none;opacity:.95}
+.mtile .mn{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.06em;
+  color:var(--accent);flex:none;min-width:19px}
+.mtile .mt{font-size:11.8px;line-height:1.3;color:var(--text-dim);overflow:hidden;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.mtile.soon{background:transparent;border-style:dashed;opacity:.66}
+.mtile.soon .mg,.mtile.soon .mn{color:var(--text-mute)}
+.mtile.soon .mt{color:var(--text-mute)}
+.cp .go{font-family:var(--mono);font-size:10px;font-weight:700;letter-spacing:.09em;
+  text-transform:uppercase;color:var(--accent);border-bottom:0;margin-top:auto}
+.cp .go:hover{color:var(--accent-bright)}
+
+/* ---------- module page header ---------- */
+.pagehead{display:flex;align-items:center;gap:15px;margin:0 0 18px;padding:0 2px}
+.pagehead .gm{width:46px;height:46px;border-radius:12px}
+.pagehead .pe{font-family:var(--mono);font-size:9.5px;font-weight:700;letter-spacing:.13em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 3px}
+.pagehead h1{margin:0;font-family:var(--display);font-size:26px;font-weight:600;
+  letter-spacing:-.02em;line-height:1.16;color:var(--text-strong)}
+.pagehead .prule{height:1px;flex:1 1 auto;margin-left:8px;
+  background:linear-gradient(90deg,var(--rule-2),transparent)}
+@media(max-width:640px){.pagehead h1{font-size:21px}.pagehead .gm{width:38px;height:38px}}
+
+/* ---------- M5: the route ---------- */
+.route{position:relative;padding-left:26px}
+.route::before{content:"";position:absolute;left:6px;top:10px;bottom:14px;width:2px;
+  background:linear-gradient(180deg,var(--rule-2),var(--rule) 40%,transparent);border-radius:2px}
+.route > .lcard{position:relative;margin-left:0}
+.route > .lcard::before{content:"";position:absolute;left:-26px;top:22px;width:9px;height:9px;
+  border-radius:50%;background:var(--bg);border:2px solid var(--accent)}
+.route > .lcard.lcard-c{margin-top:26px}
+.route > .lcard.lcard-c::before{left:-30px;top:18px;width:15px;height:15px;border-width:2px;
+  background:var(--accent);box-shadow:0 0 0 4px var(--tint-accent)}
+.route h3 .gm{width:26px;height:26px;border-radius:7px;margin-right:2px}
+@media(max-width:640px){.route{padding-left:18px}.route::before{left:2px}
+  .route > .lcard::before{left:-18px}.route > .lcard.lcard-c::before{left:-22px}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <span class="mark"><i></i><i></i><i></i></span>
+  <span class="title">Course 3 — Operating Systems and You · Module 2 — Users and Permissions</span>
+  <nav><a href="index.html">Course 3</a><a href="../../search.html" title="Search every page, section and definition">⌕ search</a><a href="../../glossary.html" title="Every term, with a definition">▤ glossary</a><a href="#essentials">Essentials</a><a href="m1-navigating-the-system.html">M1</a><a href="#quiz">Quiz</a><a href="#cards">Flashcards</a><button id="themeBtn" onclick="themeToggle()" title="Switch theme">◑ dark</button></nav>
+</header>
+<main>
+<div class="grain" aria-hidden="true"></div><div class="pagehead"><span class="gm"><svg class="g" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true" focusable="false" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="7.2" cy="12" r="3.4"/><path d="M10.6 12H21M17.4 12v3.2M20.2 12v2.2"/></svg></span><div style="min-width:0"><p class="pe">Course 3 &middot; Module 2</p><h1>Users and Permissions</h1></div><span class="prule"></span></div><section id="essentials" class=""><h2>The essentials &mdash; hold these before the detail</h2><p class="lede">The module at entry-certification level: what you must be able to do, and the facts the quizzes and drills on this page are testing. Read this first, every time.</p>
+    <div class="learnbox">
+      <div class="lblk"><span class="ltag">You can &mdash; by the end of this module</span>
+        <ul class="lcan"><li>create, modify and delete local users and groups on Windows and Linux</li><li>read a Linux permission string and change it with chmod and chown</li><li>explain least privilege and apply it to a real request</li><li>explain sudo and UAC, and why an admin should not live as root</li><li>set a password policy that is actually usable</li></ul></div>
+      <div class="lblk"><span class="ltag">Know this &mdash; the need-to-know core, 8 facts</span>
+        <div class="kv lfacts"><div class="k">Permission string</div><div>-rwxr-xr-- is type, then owner, group, other. r=4, w=2, x=1, so 755 means rwxr-xr-x.</div><div class="k">Changing them</div><div>chmod takes symbolic (u+x) or numeric (755); chown changes the owner; chgrp changes the group.</div><div class="k">Root and sudo</div><div>root (uid 0) can do anything. sudo runs one command with root rights and logs it, which is why it exists instead of logging in as root.</div><div class="k">Windows</div><div>local users and groups (lusrmgr.msc) or `net user`; UAC elevates a single action rather than granting a permanent admin session.</div><div class="k">Groups are the unit</div><div>grant rights to a group and put people in it. Per-person permissions become unauditable within a month.</div><div class="k">Least privilege</div><div>the minimum access needed for the job, for the shortest time. Every extra right is a future incident.</div><div class="k">Account lifecycle</div><div>create on day one, change rights when the role changes, disable the same day someone leaves, and settle the mailbox and files before deleting anything.</div><div class="k">Password policy</div><div>length beats complexity, plus lockout thresholds and <span class="ac" data-full="Multi-Factor Authentication" data-desc="two or more different kinds of evidence, so a stolen password is not enough">MFA</span>. Forced 90-day rotation is no longer recommended by anyone serious.</div></div></div>
+      <div class="big60 r"><b>The trap:</b> chmod 777 to make something work. It works by deleting the control you were supposed to keep.</div>
+      <p class="src">Everything below this box explains these lines, in this order, with a drill
+      after each part that tests it. If you can say every line above without looking, the drills are
+      revision. If you cannot, read the section that matches the line and come back &mdash; that is
+      the whole study method. The same objectives for every module, built and not yet built, are on
+      <a href="../../learn/index.html">the learning path</a>.</p>
+    </div></section><section id="start" class=""><h2>An account is a boundary</h2><p class="lede">Who can do what is the whole of account administration, and half of security. Everything in this module is one of those two ideas.</p>
+    <p>The course splits users into two kinds, and the split is the point:</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th></th><th>Standard user</th><th>Administrator</th></tr>
+      <tr><td><b>Access</b></td><td>Access to the machine, with restrictions</td>
+          <td>Complete control of the machine</td></tr>
+      <tr><td><b>Can</b></td><td>Use the machine for its job. Cannot install software or change
+          certain settings.</td>
+          <td>View anyone's account, change and remove anyone on the computer, and view every single
+          file</td></tr>
+      <tr><td><b>How many</b></td><td>As many as there are people</td>
+          <td>More than one is normal — and on a managed network, expected</td></tr>
+    </table>
+    </div>
+    <p>Users who are categorised together by levels of access and permissions are put in
+    <b>groups</b>. That sentence is the whole design: a group is a named bundle of rights, and people
+    are put into it rather than being granted rights one at a time.</p>
+    <h3>Least privilege</h3>
+    <p>The A+ objectives call it the <b>principle of least privilege</b>: grant the minimum access a
+    job needs, and no more. It is not a slogan — it is what decides every question in this module:</p>
+    <div class="kv">
+      <div class="k">A new starter</div><div>A standard account. If the role needs admin, it gets a
+        <i>separate named</i> administrator account — not membership of Administrators on their
+        everyday login.</div>
+      <div class="k">A shared folder</div><div>Group read and write, not Full Control. Full Control
+        lets the user change the permissions, which is a different job from using the folder.</div>
+      <div class="k">A request to "just make it work"</div><div>The permission that makes it work, at
+        the narrowest scope that makes it work. Anything wider is a decision someone has to own.</div>
+    </div>
+    <div class="big60">
+      <b>The exam sentence:</b> every right you grant is a future incident if it was not needed.
+      Least privilege is the reason a compromised standard account is an inconvenience and a
+      compromised administrator is an incident.
+    </div>
+    <button class="aud" data-audio="audio/c3m2-groups.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 25s</button></section><section id="winusers" class=""><h2>Windows: local users and groups</h2><p class="lede">One console holds the accounts, the groups, the logs, the devices and the schedule. Knowing where the user management lives is most of this section.</p>
+    <p>The tool is <b>Computer Management</b> — search for it in the Start menu. If the top of the
+    sidebar says <b>Computer Management (Local)</b>, you are managing this machine only. A
+    <b>Windows domain</b> is a network of computers, users and files added to a central database; an
+    administrator in that domain can view those accounts and computers from any machine in it.</p>
+    <h3>System Tools, corrected</h3>
+    <p>The notes list these with their descriptions shifted down by one row. These are the correct
+    pairings:</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Tool</th><th>What it is for</th></tr>
+      <tr><td><b>Task Scheduler</b></td><td>Schedule programs and tasks to run at certain times.</td></tr>
+      <tr><td><b>Event Viewer</b></td><td>Where the system stores its logs.</td></tr>
+      <tr><td><b>Shared Folders</b></td><td>The folders this machine shares with other users.</td></tr>
+      <tr><td><b>Local Users and Groups</b></td><td>Where user and group management happens — the tool
+          this module is about.</td></tr>
+      <tr><td><b>Performance</b></td><td>Monitoring for the machine's resources, <span class="ac" data-full="Central Processing Unit" data-desc="the chip that executes instructions: fetch, decode, execute, store, at billions of cycles a second">CPU</span> and <span class="ac" data-full="Random Access Memory" data-desc="fast volatile working memory: it holds whatever is running now and is wiped when power goes">RAM</span>.</td></tr>
+      <tr><td><b>Device Manager</b></td><td>Where devices are managed: network cards, monitors, and
+          the rest.</td></tr>
+    </table>
+    </div>
+    <div class="big60 r">
+      <b>Handout correction:</b> the notes' table pairs Task Scheduler with "where our system stores
+      system logs", Event Viewer with "shared folders", and so on down the list — every description
+      attached to the row above it. The table above is the correct pairing.
+    </div>
+    <h3>What you do in a user's properties</h3>
+    <div class="kv">
+      <div class="k">Reset a password</div><div>Right-click the user and change it, when they have
+        forgotten it. They change it to their own at the next login.</div>
+      <div class="k">Force a change</div><div>Tick <b>User must change password at next logon</b>.
+        This is the right setting when <i>you</i> set the password and know it — and the right
+        setting after a compromise.</div>
+      <div class="k">Delete</div><div>Right-click, delete. It is immediate, and it is not reversible
+        without recreating the account.</div>
+    </div>
+    <h3>UAC: the prompt between a standard session and an administrator</h3>
+    <p><b>User Account Control</b> is the Windows feature that prevents unauthorised changes to a
+    system. Its practical effect is that even an administrator's everyday session does not silently
+    have administrator rights: a change that needs elevation raises a prompt, and you approve that
+    change rather than running everything elevated.</p>
+    <p>That is the same idea as <span class="mono">sudo</span> on Linux, with a dialog box instead of
+    a command — and the same reason behind it: an account that is always elevated turns every mistake
+    and every piece of malware into a system-wide event.</p>
+    </section><section id="wincli" class=""><h2>Windows accounts from the shell</h2><p class="lede">Five commands answer almost every account question you will be asked, and one of them is a question about group membership rather than users.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Command</th><th>What it tells you</th></tr>
+      <tr><td><span class="mono">Get-LocalUser</span></td><td>The local users. You will see your own
+          account, the other real users, and a few default accounts that are part of Windows.</td></tr>
+      <tr><td><span class="mono">Get-LocalGroup</span></td><td>The local groups.</td></tr>
+      <tr><td><span class="mono">Get-LocalGroupMember Administrators</span></td><td>Who is actually in
+          a group. This is the command that answers "is he an admin?" with evidence.</td></tr>
+      <tr><td><span class="mono">net user</span></td><td>The classic view of local users, and the way
+          you add, delete and set a password (next sections).</td></tr>
+      <tr><td><span class="mono">net localgroup</span></td><td>The classic view of local groups.</td></tr>
+    </table>
+    </div>
+    <p><span class="mono">net</span> is not PowerShell-specific: it is the old command-line tool for
+    managing and configuring the operating system, and it still works. <b>Both</b> families are worth
+    knowing because you will meet both — the cmdlet in a modern script, and
+    <span class="mono">net</span> in a runbook written ten years ago.</p>
+    <div class="big60 y">
+      <b>The one habit to take from this section:</b> check group membership before you believe a
+      permission. "It says he is an administrator" is a claim; <span class="mono">Get-LocalGroupMember
+      Administrators</span> is the answer. The same question on Linux is
+      <span class="mono">cat /etc/group</span>.
+    </div>
+    <p>There is also a direct console for this, which is the same window Computer Management opens:
+    <span class="mono">lusrmgr.msc</span>. It is a shortcut, not a different tool.</p>
+    </section><section id="linuxusers" class=""><h2>Linux: root, sudo, and the file that guards them</h2><p class="lede">There is exactly one superuser account. The interesting part is how you borrow its power for one line without becoming it.</p>
+    <p><b>Root</b> is the first user created when a Linux system is installed, and it has all the
+    privileges on the operating system: it is the <b>superuser</b>. Technically there is only one
+    root account, but anyone who is granted access to use its powers can be called a superuser too —
+    which is the difference between the account and the capability.</p>
+    <h3>The proof: a file only root can read</h3>
+    <p><span class="mono">/etc/sudoers</span> is the file that says who may use
+    <span class="mono">sudo</span>, and it is protected: an ordinary user reading it is refused.</p>
+    <div class="kv">
+      <div class="k">Refused</div><div><span class="mono">cat /etc/sudoers</span> — permission denied,
+        because the file is readable by root only.</div>
+      <div class="k">Allowed</div><div><span class="mono">sudo cat /etc/sudoers</span> — the shell runs
+        that one line as a superuser.</div>
+    </div>
+    <h3>sudo, and su</h3>
+    <p><b>sudo</b> means "run this one command with superuser rights". It exists because being
+    constantly logged in as root is dangerous: everything you type is a root command, including the
+    typo.</p>
+    <p><b>su</b> means substitute user. With no name after it, it switches to root. The usual form is
+    <span class="mono">sudo su -</span>, and you can see it worked because the prompt changes from
+    <span class="mono">cindy@cindy-nyc:~$</span> to <span class="mono">root@cindy-nyc:~#</span>.</p>
+    <div class="big60 r">
+      <b>The <span class="mono">#</span> is a warning, not decoration.</b> In that session, remove
+      does not ask, permissions do not stop you, and the system directories are as writable as your
+      home directory. Get out of it when the job is done — the course says so, and every runbook you
+      will ever read says so.
+    </div>
+    <h3>What the user file holds</h3>
+    <p><span class="mono">/etc/passwd</span> holds user information. A line looks like
+    <span class="mono">root:x:0:0:root:/root:/bin/bash</span>, and the first three fields are the
+    ones to know:</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Field</th><th>Meaning</th><th>In the example</th></tr>
+      <tr><td>1</td><td>User name</td><td><span class="mono">root</span></td></tr>
+      <tr><td>2</td><td>Password — an <span class="mono">x</span> means the real one lives in
+          <span class="mono">/etc/shadow</span></td><td><span class="mono">x</span></td></tr>
+      <tr><td>3</td><td>User ID (UID). Zero <i>is</i> root.</td><td><span class="mono">0</span></td></tr>
+    </table>
+    </div>
+    <button class="aud" data-audio="audio/c3m2-root.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 40s</button></section><section id="groups" class=""><h2>Groups on Linux, field by field</h2><p class="lede">Four fields per line, and one of them explains a rule that sounds arbitrary until you see the file.</p>
+    <p>Membership lives in <span class="mono">/etc/group</span>. A line looks like
+    <span class="mono">sudo:x:27:cindy</span>:</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Field</th><th>Name</th><th>Meaning</th></tr>
+      <tr><td>1</td><td>Group name</td><td><span class="mono">sudo</span></td></tr>
+      <tr><td>2</td><td>Group password</td><td><span class="mono">x</span> — encrypted, and stored
+          elsewhere. When a password is not specified for a group it defaults to the root password,
+          which is why the field is normally an x and nobody touches it.</td></tr>
+      <tr><td>3</td><td>Group ID (GID)</td><td><span class="mono">27</span></td></tr>
+      <tr><td>4</td><td>List of users</td><td><span class="mono">cindy</span> — the people in the
+          group, comma separated when there is more than one.</td></tr>
+    </table>
+    </div>
+    <h3>Why this file is the answer to a permission question</h3>
+    <p>Permissions on a Linux file are granted to the owner, the group, and everyone else. So when a
+    file is readable by "the group", the only remaining question is <b>who is in that group</b> — and
+    that is this file.</p>
+    <div class="kv">
+      <div class="k">Add rights</div><div>Add the person to the group. Every file and directory that
+        grants that group access is now open to them, in one change.</div>
+      <div class="k">Remove rights</div><div>Take them out of the group. Every grant goes with them,
+        and nothing is left behind pointing at a person who has left.</div>
+      <div class="k">Audit</div><div>Read one file to answer "who can open this?" — instead of
+        reading fifty individual grants and hoping you found them all.</div>
+    </div>
+    <p>This is the least-privilege argument in its practical form: rights belong to roles, people
+    belong to roles, and the join between the two is short enough to check.</p>
+    </section><section id="acctgame" class=""><h2>Drill: which file, which command</h2><p class="lede">Every account question in this module has one place to look. Matching them is faster than remembering them under pressure.</p><div class="game" id="gAcct3"><div class="gtitle"><b>Where is that answer?</b></div><p class="ghint">Click a question, then where you would look. Six pairs per round.</p><div id="acctHost"></div></div></section><section id="passwin" class=""><h2>Windows passwords: set, reset, force a change</h2><p class="lede">Three different jobs people call 'change the password', and the difference matters when someone has been compromised.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Job</th><th>How</th></tr>
+      <tr><td><b>The user changes it</b></td><td>They know the old one and change it themselves.</td></tr>
+      <tr><td><b>You reset it</b></td><td>Computer Management → Local Users and Groups → the user →
+          properties → set a new password. Tell them what it is; they change it at next login.</td></tr>
+      <tr><td><b>You force a change</b></td><td>Tick <b>User must change password at next logon</b>.
+          They cannot get to the desktop until they choose a new one.</td></tr>
+    </table>
+    </div>
+    <p>The <span class="ac" data-full="Graphical User Interface" data-desc="windows, icons and pointers rather than typed commands">GUI</span> sequence, from the notes:</p>
+    <ol>
+      <li>Open Computer Management.</li>
+      <li>Go to the users list under Local Users and Groups.</li>
+      <li>Choose the user who needs the change and open their properties.</li>
+      <li>Tick <b>User must change password at next login</b>.</li>
+      <li>At their next login they are forced to choose a new password.</li>
+      <li>If they have forgotten it, right-click and set it manually — then they change it to their
+          own at the next login.</li>
+    </ol>
+    <h3>From PowerShell: net user</h3>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><span class="mono">net user cindy some_password</span></td><td>Sets the password. It is
+          now in your command history and possibly on someone's screen.</td></tr>
+      <tr><td><span class="mono">net user cindy *</span></td><td>The better form: the shell pauses and
+          asks for the password, so it never appears in the command line.</td></tr>
+      <tr><td><span class="mono">net user victor /logonpasswordchg:yes</span></td><td>Marks the account
+          so the person must change their password at the next logon.</td></tr>
+    </table>
+    </div>
+    <div class="big60 r">
+      <b>Reset versus change is a security distinction, not a convenience one.</b> If a password may
+      have been seen by someone else — you set it, or it was compromised — then the account needs
+      <i>forced change at next logon</i>, so the only person who knows the final password is its
+      owner. Otherwise you have simply moved the shared secret from one person to two.
+    </div>
+    </section><section id="passlinux" class=""><h2>Linux passwords: passwd, and the shadow file</h2><p class="lede">One command, two flags worth knowing, and the file the password is actually stored in.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Command</th><th>What it does</th></tr>
+      <tr><td><span class="mono">passwd cindy</span></td><td>Changes cindy's password.</td></tr>
+      <tr><td><span class="mono">sudo passwd -e victor</span></td><td>Expires victor's password, so the
+          next login must set a new one. The Linux equivalent of "must change at next logon".</td></tr>
+    </table>
+    </div>
+    <p>When you set a password it is scrambled and saved in <span class="mono">/etc/shadow</span>. That
+    is why <span class="mono">/etc/passwd</span> shows an <span class="mono">x</span> in the password
+    field: the readable file holds the account, the unreadable one holds the secret.</p>
+    <div class="kv">
+      <div class="k">Why split them</div><div><span class="mono">/etc/passwd</span> has to be readable
+        by ordinary programs — they need to map a UID to a name. A scrambled password in a
+        world-readable file is a file to take away and attack offline.</div>
+      <div class="k">What "scrambled" means</div><div>It is a <b>hash</b>: a one-way transformation.
+        Nothing recovers the password from it; a login is checked by hashing what you typed and
+        comparing.</div>
+      <div class="k">The support rule</div><div>Nobody can tell a user their password. A forgotten one
+        is <i>reset</i>, not recovered — the same rule on both systems.</div>
+    </div>
+    <p>Note the pattern across the two systems, because it is the one thing worth carrying out of this
+    section: Windows has a checkbox for "change at next logon" and a
+    <span class="mono">/logonpasswordchg:yes</span> flag; Linux has
+    <span class="mono">passwd -e</span>. Different words, same control.</p>
+    </section><section id="addremove" class=""><h2>Adding and removing users</h2><p class="lede">Four jobs on Windows, two on Linux, and one habit: never leave a new account with a password only you know.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Job</th><th>Windows</th><th>Linux</th></tr>
+      <tr><td>Add a user, prompted for the password</td>
+          <td><span class="mono">net user andrea * /add</span></td>
+          <td><span class="mono">sudo useradd juan</span></td></tr>
+      <tr><td>Force a change at first login</td>
+          <td><span class="mono">net user andrea /logonpasswordchg:yes</span></td>
+          <td><span class="mono">sudo passwd -e juan</span></td></tr>
+      <tr><td>Add with the password in one command</td>
+          <td><span class="mono">net user cesar pa5sw0rd /add /logonpasswordchg:yes</span></td>
+          <td>—</td></tr>
+      <tr><td>Delete a user</td>
+          <td><span class="mono">net user andrea /del</span> or
+          <span class="mono">Remove-LocalUser cesar</span></td>
+          <td><span class="mono">sudo userdel juan</span></td></tr>
+    </table>
+    </div>
+    <p>Two details that catch people out:</p>
+    <div class="kv">
+      <div class="k">The asterisk</div><div><span class="mono">net user andrea *</span> makes the shell
+        prompt for the password instead of taking it as an argument. Use it every time: a password in a
+        command line is a password in the history file.</div>
+      <div class="k">The password step</div><div><span class="mono">useradd</span> creates the account;
+        setting the temporary password is a separate <span class="mono">passwd</span> step, and
+        <span class="mono">-e</span> is what expires it.</div>
+      <div class="k">sudo</div><div>Both Linux commands need it. Creating or deleting an account is a
+        root action, and the shell will refuse without the prefix.</div>
+    </div>
+    <div class="big60">
+      <b>Remember to let the user change their password.</b> The notes say it twice, which is the
+      right number of times: an account created with a password the technician chose and never forced
+      to change is an account with a shared credential. Add the user, force the change, hand over.
+    </div>
+    <p>The handout's cheat sheet also lists <span class="mono">sudo deluser &lt;user&gt;</span> for
+    Linux. It is the same job as <span class="mono">userdel</span> and it is the Debian spelling; use
+    whichever the machine's documentation uses, and know that both exist.</p>
+    <h3>The account lifecycle</h3>
+    <p>Adding and deleting are the two ends of a longer process, and the middle is where most
+    permission problems live:</p>
+    <div class="kv">
+      <div class="k">Create</div><div>Least privilege from the first minute: a standard account, in
+        the groups the role needs, with a forced password change.</div>
+      <div class="k">Change of role</div><div>The rights change with the role, in both directions.
+        Rights granted for a project that ended are the ones nobody remembers to remove.</div>
+      <div class="k">Departure</div><div>Disable or expire the account before deleting it, so anything
+        still logging in as that person fails visibly rather than silently continuing.</div>
+    </div>
+    <p>The A+ objectives supply the same controls under "account management": restrict user
+    permissions, restrict log-in times, disable the guest account, use failed-attempt lockout, use a
+    timeout or screen lock, and apply account expiration dates. Each one is a lever against the same
+    risk — an account that keeps working after it should have stopped.</p>
+    </section><section id="policy" class=""><h2>Password policy that people can actually live with</h2><p class="lede">A policy that produces sticky notes on monitors has failed, whatever it says on paper.</p>
+    <p>The A+ objectives list five password considerations: <b>length</b>, <b>character types</b>,
+    <b>uniqueness</b>, <b>complexity</b> and <b>expiration</b>. They are not equal in value, and the
+    order above is close to how much each one buys you.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Lever</th><th>What it does</th><th>The trade</th></tr>
+      <tr><td><b>Length</b></td><td>Every extra character multiplies the guessing work. This is the
+          cheapest strength there is.</td><td>Long and simple beats short and cryptic — and people can
+          remember a passphrase.</td></tr>
+      <tr><td><b>Uniqueness</b></td><td>A different password per service, so one breach does not become
+          five.</td><td>Nobody does this without a password manager, which is why the A+ list also
+          includes using one.</td></tr>
+      <tr><td><b>Complexity and character types</b></td><td>Rules about uppercase, digits and symbols,
+          intended to defeat guessing.</td><td>Pushed too far they produce <span class="mono">P@ssw0rd1</span>,
+          which satisfies the rule and defeats nothing.</td></tr>
+      <tr><td><b>Expiration</b></td><td>Forces a change on a schedule.</td><td>A forced change on a
+          fixed short cycle produces predictable increments — and a note on the monitor.</td></tr>
+    </table>
+    </div>
+    <p>The controls that do the most work sit outside the password itself, and the A+ list has them
+    under account management:</p>
+    <div class="kv">
+      <div class="k">Failed-attempt lockout</div><div>The account locks after a set number of wrong
+        tries, which makes guessing through a login prompt impractical.</div>
+      <div class="k">Multifactor authentication (<span class="ac" data-full="Multi-Factor Authentication" data-desc="two or more different kinds of evidence, so a stolen password is not enough">MFA</span>)</div><div>A password plus something else — a
+        code, a token, an authenticator app, a hardware key. A stolen password alone stops being
+        enough.</div>
+      <div class="k">Screen lock and timeout</div><div>An unattended, unlocked session is a password
+        that has already been typed for you.</div>
+      <div class="k">Account expiration</div><div>A date after which the account stops working: the
+        control that covers a contractor, a term of study, or a forgotten service account.</div>
+    </div>
+    <div class="big60 y">
+      <b>This module's own line, stated plainly:</b> length beats complexity, and forced 90-day
+      rotation is no longer recommended by anyone serious. Build the policy from length, uniqueness,
+      a second factor and lockout — those are the four levers that change the outcome.
+    </div>
+    <p class="src">The five considerations and the account-management list are quoted from the
+    CompTIA A+ Core 2 objectives — "configure and apply basic Microsoft Windows <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span> security settings"
+    and "apply workstation security options and hardening techniques". The notes cover setting and
+    expiring a password but not policy, so the policy framing is the A+ overlay, not the handout.</p>
+    </section><section id="winperms" class=""><h2>Windows permissions are ACLs</h2><p class="lede">A list attached to each file, naming who may do what. The letters on the end of an icacls line are that list in shorthand.</p>
+    <p>Windows assigns file and folder permissions with <b>access control lists</b> (ACLs). The one
+    that decides who may do what is the <b>Discretionary <span class="ac" data-full="Access Control List" data-desc="an ordered permit/deny list on a resource or interface; order matters and the last rule is usually deny">ACL</span></b> (DACL). There is a second kind:
+    a <b>System ACL</b> (SACL) tells Windows to write an event-log entry every time someone accesses
+    that file or folder — auditing rather than permission.</p>
+    <h3>The six permissions</h3>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Permission</th><th>What it allows</th></tr>
+      <tr><td><b>Read</b></td><td>See that the file exists and read its contents. On a directory, read
+          the files and directories inside it.</td></tr>
+      <tr><td><b>Read &amp; Execute</b></td><td>Read, and run the file if it is executable. It
+          <i>includes</i> Read — tick this and Read is ticked with it.</td></tr>
+      <tr><td><b>List folder contents</b></td><td>An alias for Read &amp; Execute on a directory: tick
+          one and the other ticks. It means you can read and execute the files in that directory.</td></tr>
+      <tr><td><b>Write</b></td><td>Make changes to a file — and, surprisingly, you can have Write on a
+          file without Read. On a directory it means create subdirectories and write files into
+          it.</td></tr>
+      <tr><td><b>Modify</b></td><td>An umbrella: Read, Execute and Write together.</td></tr>
+      <tr><td><b>Full Control</b></td><td>Everything Modify allows, plus taking ownership of the file
+          and changing its ACL.</td></tr>
+    </table>
+    </div>
+    <div class="big60 r">
+      <b>Full Control is a different job from using the file.</b> It lets the user change who else
+      has access — which is why a home folder grant is <b>Modify</b>, not Full Control. Handing out
+      Full Control is how a permission problem becomes a permission problem you cannot see.
+    </div>
+    <h3>Reading and changing them: icacls</h3>
+    <p><b>icacls</b> (improved change ACLs) is the command-line view. Run it on a folder and it
+    prints one entry per account, in one compact form:</p>
+    <div class="kv">
+      <div class="k">The entry</div><div><span class="mono">CINDY-NYC\cindy:(OI)(CI)(F)</span></div>
+      <div class="k">CINDY-NYC\cindy</div><div>The machine (or domain), then the account.</div>
+      <div class="k">(OI)(CI)</div><div>Inheritance: the entry applies to files and folders created
+        inside this one, not only to the folder itself. Object inherit (OI) is the file half,
+        container inherit (CI) the folder half.</div>
+      <div class="k">(F)</div><div>Full control. The letters are the shorthand: <b>F</b> full control,
+        <b>M</b> modify, <b>RX</b> read and execute, <b>R</b> read.</div>
+    </div>
+    <p><span class="mono">icacls /?</span> prints the full legend, which is the same "read the help
+    rather than memorise it" rule as every other command in this course.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Command</th><th>Effect</th></tr>
+      <tr><td><span class="mono">icacls "C:\Vacation Pictures" /grant "Everyone:(OI)(CI)(R)"</span></td>
+          <td>Give everyone read access, inherited to the files and folders inside.</td></tr>
+      <tr><td><span class="mono">icacls "C:\Vacation Pictures" /grant "Authenticated Users:(OI)(CI)(R)"</span></td>
+          <td>The tighter version: only accounts that log in with a password, not the guest.</td></tr>
+      <tr><td><span class="mono">icacls "C:\Vacation Pictures" /remove Everyone</span></td>
+          <td>Take that entry away again.</td></tr>
+      <tr><td><span class="mono">icacls file.txt /reset</span></td>
+          <td>Drop the explicit entries and go back to what the parent folder grants.</td></tr>
+    </table>
+    </div>
+    <p>In PowerShell the parameters need quoting around the account and permission pair; in
+    <span class="mono">cmd.exe</span> they do not. That is a shell difference, not a permissions
+    one.</p>
+    <p><b>Guest</b> is worth one line: it is a special account that can use the computer without a
+    password, disabled by default, and enabling it re-opens exactly the door that "Authenticated
+    Users" was written to close.</p>
+    </section><section id="linuxperms" class=""><h2>Reading a Linux permission string</h2><p class="lede">Ten characters. The first one is not a permission at all, and the other nine are three groups of three.</p>
+    <p><span class="mono">ls -l ~/my_file</span> prints a line whose first field looks like
+    <span class="mono">-rwxrw-r--</span>. That is ten bits, and it decodes like this:</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Bit</th><th>Meaning</th><th>In <span class="mono">-rwxrw-r--</span></th></tr>
+      <tr><td>1</td><td><b>File type</b>, not a permission. <span class="mono">-</span> is a regular
+          file; <span class="mono">d</span> is a directory.</td><td><span class="mono">-</span></td></tr>
+      <tr><td>2, 3, 4</td><td>The <b>owner</b>'s permissions</td><td><span class="mono">rwx</span></td></tr>
+      <tr><td>5, 6, 7</td><td>The permissions of the <b>group</b> the file belongs to</td>
+          <td><span class="mono">rw-</span></td></tr>
+      <tr><td>8, 9, 10</td><td>The permissions of <b>everyone else</b></td><td><span class="mono">r--</span></td></tr>
+    </table>
+    </div>
+    <p>Inside each triple, the order never changes and the letters never change:</p>
+    <div class="kv">
+      <div class="k">r</div><div>Readable — read the contents of a file, or list a directory.</div>
+      <div class="k">w</div><div>Writable — write information to the file or folder.</div>
+      <div class="k">x</div><div>Executable — run the program. On a directory, this is what lets you
+        enter it and reach what is inside.</div>
+      <div class="k">-</div><div>Disabled: that permission is off.</div>
+    </div>
+    <p>So <span class="mono">-rwxrw-r--</span> reads as: a regular file; the owner can read, write and
+    execute it; the group can read and write; everyone else can only read.</p>
+    <div class="big60 y">
+      <b>The x bit on a directory is the one that trips people up.</b> A permission is only proven by
+      the account that needs it, and a "permission denied" is often not the file at all — it is a
+      missing execute bit on one of the directories leading to it. <span class="mono">namei -l</span>
+      is the tool for exactly that: it prints every directory on the path, so the missing bit shows up
+      where it actually is.
+    </div>
+    <button class="aud" data-audio="audio/c3m2-bits.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 35s</button></section><section id="octal" class=""><h2>The eight digits, all of them</h2><p class="lede">Four, two and one. Once you can turn a digit into three letters without thinking, chmod stops being a code.</p>
+    <p>Each permission triple is a three-digit binary number, and binary converts to one octal digit.
+    Read is 4, write is 2, execute is 1, and you add the ones that are switched on. That is the whole
+    system — the table below is those eight sums, which is the part the notes leave to one example.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Octal digit</th><th>Binary (r w x)</th><th>Math (4 + 2 + 1)</th><th>Symbolic</th><th>Meaning</th></tr>
+      <tr><td><b>0</b></td><td><span class="mono">0 0 0</span></td><td><span class="mono">0 + 0 + 0</span></td>
+          <td><span class="mono">---</span></td><td>No permissions</td></tr>
+      <tr><td><b>1</b></td><td><span class="mono">0 0 1</span></td><td><span class="mono">0 + 0 + 1</span></td>
+          <td><span class="mono">--x</span></td><td>Execute only</td></tr>
+      <tr><td><b>2</b></td><td><span class="mono">0 1 0</span></td><td><span class="mono">0 + 2 + 0</span></td>
+          <td><span class="mono">-w-</span></td><td>Write only</td></tr>
+      <tr><td><b>3</b></td><td><span class="mono">0 1 1</span></td><td><span class="mono">0 + 2 + 1</span></td>
+          <td><span class="mono">-wx</span></td><td>Write and execute</td></tr>
+      <tr><td><b>4</b></td><td><span class="mono">1 0 0</span></td><td><span class="mono">4 + 0 + 0</span></td>
+          <td><span class="mono">r--</span></td><td>Read only</td></tr>
+      <tr><td><b>5</b></td><td><span class="mono">1 0 1</span></td><td><span class="mono">4 + 0 + 1</span></td>
+          <td><span class="mono">r-x</span></td><td>Read and execute</td></tr>
+      <tr><td><b>6</b></td><td><span class="mono">1 1 0</span></td><td><span class="mono">4 + 2 + 0</span></td>
+          <td><span class="mono">rw-</span></td><td>Read and write</td></tr>
+      <tr><td><b>7</b></td><td><span class="mono">1 1 1</span></td><td><span class="mono">4 + 2 + 1</span></td>
+          <td><span class="mono">rwx</span></td><td>Read, write, and execute</td></tr>
+    </table>
+    </div>
+    <p class="src">Transcribed from reference-linux-permission-octal-table-2026-11-24.png. The notes
+    give 4/2/1 and one worked example (753); this table is the other seven digits.</p>
+    <h3>Turning a three-digit number into a permission string</h3>
+    <p>Read the digits in order — <b>owner, group, other</b> — and translate each one through the table
+    above:</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Number</th><th>Owner</th><th>Group</th><th>Other</th><th>Symbolic</th></tr>
+      <tr><td><span class="mono">755</span></td><td>7 = rwx</td><td>5 = r-x</td><td>5 = r-x</td>
+          <td><span class="mono">rwxr-xr-x</span></td></tr>
+      <tr><td><span class="mono">753</span></td><td>7 = rwx</td><td>5 = r-x</td><td>3 = -wx</td>
+          <td><span class="mono">rwxr-x-wx</span></td></tr>
+      <tr><td><span class="mono">640</span></td><td>6 = rw-</td><td>4 = r--</td><td>0 = ---</td>
+          <td><span class="mono">rw-r-----</span></td></tr>
+      <tr><td><span class="mono">432</span></td><td>4 = r--</td><td>3 = -wx</td><td>2 = -w-</td>
+          <td><span class="mono">r---wx-w-</span></td></tr>
+    </table>
+    </div>
+    <div class="big60">
+      <b>Work it in both directions until it is automatic.</b> Given <span class="mono">rwxr-x---</span>,
+      the digits are 750: read the triple, add the weights, write the digit. That is the quiz, and it is
+      the interview question.
+    </div>
+    </section><section id="chmod" class=""><h2>Changing permissions: chmod, chown, chgrp</h2><p class="lede">Two ways to write the same change — symbolic and numeric — and two other commands that change who the permissions apply to.</p>
+    <h3>Symbolic: who, what</h3>
+    <p><span class="mono">chmod</span> takes a <b>who</b>, an <b>operator</b>, and a
+    <b>permission</b>:</p>
+    <div class="kv">
+      <div class="k">Who</div><div><span class="mono">u</span> owner, <span class="mono">g</span> group,
+        <span class="mono">o</span> other, <span class="mono">a</span> all three.</div>
+      <div class="k">Operator</div><div><span class="mono">+</span> add, <span class="mono">-</span>
+        remove, <span class="mono">=</span> set exactly.</div>
+      <div class="k">Permission</div><div><span class="mono">r</span>, <span class="mono">w</span>,
+        <span class="mono">x</span> — and they can be combined after the operator.</div>
+    </div>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Command</th><th>Effect</th></tr>
+      <tr><td><span class="mono">chmod u+x my_cool_file</span></td><td>Give the owner execute. Nothing
+          else changes.</td></tr>
+      <tr><td><span class="mono">chmod u+rx my_cool_file</span></td><td>Give the owner read and
+          execute in one go.</td></tr>
+      <tr><td><span class="mono">chmod g-w my_cool_file</span></td><td>Take write away from the
+          group.</td></tr>
+      <tr><td><span class="mono">chmod 753 my_cool_file</span></td><td>The numeric form: exactly 753,
+          whatever it was before.</td></tr>
+    </table>
+    </div>
+    <p>The distinction worth holding: <span class="mono">+</span> and <span class="mono">-</span> are
+    <i>relative</i> — they change one thing and leave the rest — while a number is <i>absolute</i> —
+    it sets all nine bits at once.</p>
+    <h3>chown and chgrp: who the permissions belong to</h3>
+    <p>Changing the bits does nothing if the wrong person owns the file. Two commands fix that:</p>
+    <div class="kv">
+      <div class="k">chown</div><div><span class="mono">sudo chown devan my_cool_file</span> — the owner
+        becomes devan.</div>
+      <div class="k">chgrp</div><div><span class="mono">sudo chgrp best_group_ever my_cool_file</span> —
+        the group becomes best_group_ever.</div>
+    </div>
+    <p>Both need root, because handing ownership to someone else is exactly the power a standard user
+    must not have.</p>
+    <h3>Two worked fixes</h3>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Mode</th><th>Means</th><th>When it is the answer</th></tr>
+      <tr><td><span class="mono">600</span></td><td>Owner read and write, nobody else anything</td>
+          <td>Private data: a secrets file, a private key, a working document.</td></tr>
+      <tr><td><span class="mono">640</span></td><td>Owner read and write, group read, others nothing</td>
+          <td>A file the team must read and only the owner should change. With the right group this is
+          the least that works.</td></tr>
+    </table>
+    </div>
+    <div class="big60 r">
+      <b>The trap this module is named for:</b> <span class="mono">chmod 777</span> to make something
+      work. It does make it work — by deleting the control you were supposed to keep. If the file is
+      meant to be readable by the group, the answer is <span class="mono">640</span> with the right
+      group, not 777 with no group at all.
+    </div>
+    <p>And test as the account that needs it, not as root. A permission is only proven by the identity
+    that has to use it — which is why you read the mode back, then try the operation as a user who is
+    not the owner.</p>
+    </section><section id="chmodgame" class=""><h2>Drill: digits to letters</h2><p class="lede">Three minutes of octal, because this is the part that has to be instant.</p><div class="game" id="gOctal3"><div class="gtitle"><b>Octal blitz</b></div><p class="ghint">Read the digit or the string, pick the answer. Wrong answers cost you time, not points.</p><div id="octalHost"></div></div><div style="height:18px"></div><div class="game" id="gSortPerm"><div class="gtitle"><b>Sort the permission</b></div><p class="ghint">Click a permission string, then the octal digit it corresponds to.</p><div id="permHost"></div></div></section><section id="special" class=""><h2>SetUID, SetGID and the sticky bit</h2><p class="lede">Three bits that sit in front of the nine, and each one changes what running the file means.</p>
+    <p>All three are written as a fourth digit in front of the usual three, and each shows up as a
+    letter where a permission letter would be.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Bit</th><th>Octal</th><th>Shows as</th><th>What it does</th></tr>
+      <tr><td><b>SetUID</b></td><td><span class="mono">4</span></td><td><span class="mono">s</span> in
+          place of the owner's <span class="mono">x</span></td>
+          <td>The file runs with the permissions of the file's <b>owner</b>, not of the person who ran
+          it.</td></tr>
+      <tr><td><b>SetGID</b></td><td><span class="mono">2</span></td><td><span class="mono">s</span> in
+          place of the group's <span class="mono">x</span></td>
+          <td>The group version of the same idea: it runs as the file's group. On a directory, new
+          files inherit that group.</td></tr>
+      <tr><td><b>Sticky bit</b></td><td><span class="mono">1</span></td><td><span class="mono">t</span>
+          at the end</td>
+          <td>On a directory: people can write to it but cannot delete things that are not theirs.</td></tr>
+    </table>
+    </div>
+    <p>So the numbers the notes give are the ordinary number with the special bit in front:</p>
+    <div class="kv">
+      <div class="k">SetUID</div><div><span class="mono">753</span> becomes
+        <span class="mono">4753</span>.</div>
+      <div class="k">SetGID</div><div><span class="mono">753</span> becomes
+        <span class="mono">2753</span>.</div>
+      <div class="k">Sticky</div><div><span class="mono">753</span> becomes
+        <span class="mono">1753</span>.</div>
+    </div>
+    <h3>Why SetUID is the one that deserves respect</h3>
+    <p>If a root-owned program has SetUID set, then anyone who runs it is running code with root's
+    permissions. That is sometimes the point — some system tools have to act for an ordinary user —
+    and it is also why an unexpected SetUID file deserves an explanation: a flaw in that program is a
+    flaw that runs as root for anyone who can run it.</p>
+    <div class="big60 y">
+      <b>The habit:</b> when a file shows an <span class="mono">s</span> where you expected an
+      <span class="mono">x</span>, stop and ask whose permissions it runs with. Most files never need
+      it, so an unexpected one is worth explaining before it is worth trusting.
+    </div>
+    <h3>SetGID on a directory, concretely</h3>
+    <p>This is the one you will actually use. A project share on a Linux server takes two
+    commands:</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Command</th><th>What it sets</th></tr>
+      <tr><td><span class="mono">sudo chown alice:project /srv/shares/project/alice</span></td>
+          <td>Owner <span class="mono">alice</span>, group <span class="mono">project</span>.</td></tr>
+      <tr><td><span class="mono">sudo chmod 2770 /srv/shares/project/alice</span></td>
+          <td>SetGID, plus read/write/execute for the owner and the group, nothing for anyone else.</td></tr>
+    </table>
+    </div>
+    <p><span class="mono">2770</span> is SetGID plus group read and write, with nothing for anyone
+    else. The <b>2</b> is what makes new files inherit the <span class="mono">project</span> group
+    instead of the creator's own primary group — which is the difference between a share where
+    everybody can read everybody's files and one where the first person to save a document owns it
+    alone.</p>
+    <p>The <b>sticky bit</b> is the same idea for deletion. On a shared directory it lets everyone
+    write their own files while stopping them deleting anyone else's — the classic case being the
+    temporary directory every Linux system has, where the world can write and nobody can tidy up
+    someone else's work.</p>
+    <button class="aud" data-audio="audio/c3m2-special.mp3" title="Play the audio for this card"><span class="ico">&#9654;</span>listen · 40s</button></section><section id="cheat" class=""><h2>One-page cheat sheet</h2><p class="lede">The commands, the letters and the digits, in one place.</p>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Job</th><th>Windows</th><th>Linux</th></tr>
+      <tr><td>List users</td><td><span class="mono">Get-LocalUser</span> / <span class="mono">net user</span></td>
+          <td><span class="mono">cat /etc/passwd</span></td></tr>
+      <tr><td>List groups</td><td><span class="mono">Get-LocalGroup</span> / <span class="mono">net localgroup</span></td>
+          <td><span class="mono">cat /etc/group</span></td></tr>
+      <tr><td>Who is in a group</td><td><span class="mono">Get-LocalGroupMember Administrators</span></td>
+          <td>the fourth field in <span class="mono">/etc/group</span></td></tr>
+      <tr><td>Add a user</td><td><span class="mono">net user andrea * /add</span></td>
+          <td><span class="mono">sudo useradd juan</span></td></tr>
+      <tr><td>Delete a user</td><td><span class="mono">net user andrea /del</span> /
+          <span class="mono">Remove-LocalUser</span></td>
+          <td><span class="mono">sudo userdel juan</span> / <span class="mono">sudo deluser</span></td></tr>
+      <tr><td>Change a password</td><td><span class="mono">net user &lt;user&gt; *</span></td>
+          <td><span class="mono">passwd &lt;user&gt;</span></td></tr>
+      <tr><td>Force a change at next login</td>
+          <td><span class="mono">net user &lt;user&gt; /logonpasswordchg:yes</span></td>
+          <td><span class="mono">sudo passwd -e &lt;user&gt;</span></td></tr>
+      <tr><td>Become root</td><td>UAC prompt / Run as administrator</td>
+          <td><span class="mono">sudo su -</span></td></tr>
+      <tr><td>View file permissions</td><td><span class="mono">icacls file.txt</span> /
+          <span class="mono">Get-Acl</span></td><td><span class="mono">ls -l</span></td></tr>
+      <tr><td>Grant a permission</td><td><span class="mono">icacls file.txt /grant user:M</span></td>
+          <td><span class="mono">chmod 640 file.txt</span></td></tr>
+      <tr><td>Remove a permission</td><td><span class="mono">icacls file.txt /remove user</span></td>
+          <td><span class="mono">chmod g-w file.txt</span></td></tr>
+      <tr><td>Reset permissions</td><td><span class="mono">icacls file.txt /reset</span></td>
+          <td>set the mode you actually want</td></tr>
+      <tr><td>Change the owner</td><td>Advanced → Owner, in the security tab</td>
+          <td><span class="mono">sudo chown user file</span></td></tr>
+      <tr><td>Change the group</td><td>the security tab, per entry</td>
+          <td><span class="mono">sudo chgrp group file</span></td></tr>
+      <tr><td>Special bits</td><td>—</td>
+          <td><span class="mono">4753</span> SetUID · <span class="mono">2753</span> SetGID ·
+          <span class="mono">1753</span> sticky</td></tr>
+    </table>
+    </div>
+    <div class="tbl-wrap">
+    <table>
+      <tr><th>Shorthand</th><th>Windows</th><th>Linux digit</th><th>Symbolic</th></tr>
+      <tr><td>Read</td><td><span class="mono">R</span></td><td>4</td><td><span class="mono">r--</span></td></tr>
+      <tr><td>Read &amp; execute</td><td><span class="mono">RX</span></td><td>5</td><td><span class="mono">r-x</span></td></tr>
+      <tr><td>Modify (read, write, execute)</td><td><span class="mono">M</span></td><td>7</td>
+          <td><span class="mono">rwx</span></td></tr>
+      <tr><td>Full control</td><td><span class="mono">F</span></td><td>—</td>
+          <td>also allows taking ownership and changing the <span class="ac" data-full="Access Control List" data-desc="an ordered permit/deny list on a resource or interface; order matters and the last rule is usually deny">ACL</span></td></tr>
+    </table>
+    </div>
+    <p class="src">Sources: the Course 3 course notes for every command, flag and field layout; the
+    <span class="ac" data-full="Operating System" data-desc="the layer between the hardware and everything you run: it manages memory, files, processes and devices">OS</span> command cheat sheet for the Windows permission letters (F / M / RX / R) and the alternate
+    commands; CompTIA A+ Core 2 (2.0 Security, and 1.0 Operating Systems for the account and group
+    settings) for least privilege, <span class="ac" data-full="Multi-Factor Authentication" data-desc="two or more different kinds of evidence, so a stolen password is not enough">MFA</span>, password considerations and the account-management list;
+    a working lab setup for the 600, 640 and 2770 worked examples. The eight-digit octal table
+    is transcribed from reference-linux-permission-octal-table-2026-11-24.png.</p>
+    </section><section id="cards" class=""><h2>Flashcards</h2><p class="lede">The kit's glossary — 22 terms in this module, Coursera and CompTIA A+ together. <a href="../../glossary.html">Every term in the kit, defined</a>, is one page and works offline.</p><div class="game" id="gCards"><div class="gtitle"><b>Flashcards — 22 cards</b></div><p class="ghint">One question per card: <b>16</b> ask you to define a term, <b>6</b> ask what an acronym stands for. Every answer explains why, not just what.</p><div id="cardHost"></div></div></section><section id="quiz" class=""><h2>Quiz</h2><p class="lede">The thing to do last, and again in the morning.</p><div class="game" id="gQuiz"><div class="gtitle"><b>Module 2 quiz — 24 questions</b></div><p class="ghint">Every question shows why the answer is right. Misses go into the review queue.</p><div id="quizHost"></div></div></section>
+</main>
+
+<footer>
+      <p><b>Course 3, Module 2 — Users and Permissions.</b> Part of the Google IT Support Professional Certificate study
+      kit. Every definition and explanation on this page is written for this site; the course supplies the
+      syllabus and the vocabulary, not the prose.</p>
+      <p>Personal study notes. Not affiliated with, sponsored by or endorsed by Google, CompTIA, Coursera or NPower; course titles and trademarks belong to their owners. Study aid only. Nothing here is submitted for grading.</p>
+    <p class="cred">Written by <b>pi-agent</b> driving <b>DeepSeek-V4.1-Flash-1017</b>
+  (Unsloth <code>UD-Q3_K_XL</code>) on the author's own machine, under his direction and review. No Claude,
+  OpenAI or other hosted model wrote any of it, and no page of it needed a network.</p>
+</footer>
+<script>
+
+var STORE='c2:v1';
+function _load(){try{return JSON.parse(localStorage.getItem(STORE))||{}}catch(e){return{}}}
+function _save(s){try{localStorage.setItem(STORE,JSON.stringify(s))}catch(e){}}
+var S=_load(); S.missed=S.missed||{}; S.done=S.done||{}; S.best=S.best||{};
+function markMiss(k){S.missed[k]=(S.missed[k]||0)+1;_save(S)}
+function markHit(k){if(S.missed[k]){S.missed[k]--;if(S.missed[k]<=0)delete S.missed[k]}_save(S)}
+function missedCount(){return Object.keys(S.missed).length}
+
+
+function $(s,r){return (r||document).querySelector(s)}
+function $$(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))}
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
+function el(tag,cls,html){var e=document.createElement(tag);if(cls)e.className=cls;if(html!=null)e.innerHTML=html;return e}
+
+
+function quiz(hostId,items,opts){
+  opts=opts||{};
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var state={i:0,right:0,answered:0};
+  var score=el('div',null,''); score.style.cssText='font-size:13.5px;font-weight:700;margin-bottom:12px';
+  host.appendChild(score);
+  var wrap=el('div'); host.appendChild(wrap);
+  var start=opts.reviewOnly?items.filter(function(q){return S.missed[q.k||q.q]}):items;
+  if(!start.length){score.textContent='Nothing in the review queue. Nice.';return}
+  var list=shuffle(start);
+  function draw(){
+    wrap.innerHTML='';
+    if(state.i>=list.length){
+      var pct=Math.round(state.right/list.length*100);
+      var msg=pct>=90?'Solid. ':pct>=75?'Close. ':pct>=60?'Shaky. ':'Not yet. ';
+      score.innerHTML=msg+'<span style="color:'+(pct>=75?'#137333':'#b31914')+'">'+state.right+'/'+list.length+' ('+pct+'%)</span>';
+      var again=el('button','secondary','Again'); again.onclick=function(){state={i:0,right:0,answered:0};list=shuffle(list);draw()};
+      wrap.appendChild(again);
+      return;
+    }
+    var q=list[state.i];
+    score.textContent='Question '+(state.i+1)+' of '+list.length+'   ·   '+state.right+' right';
+    var box=el('div','q');
+    var qt=el('div','qt');
+    if(q.lo)qt.appendChild(el('span','lo',q.lo));
+    qt.appendChild(el('span',null,esc(q.q)));
+    box.appendChild(qt);
+    var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+    var order=q.o.map(function(t,i){return{i:i,t:t}});
+    if(!q.noShuffle)order=shuffle(order);
+    var btns=[];
+    order.forEach(function(o){
+      var b=el('button','opt',esc(o.t));
+      b.addEventListener('click',function(){
+        state.answered++;
+        btns.forEach(function(x){x.disabled=true});
+        var isRight=(o.t===correct);
+        if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
+        else{
+          b.classList.add('wrong');markMiss(q.k||q.q);
+          btns.forEach(function(x){if(x.textContent===String(correct))x.classList.add('right')});
+          if(navigator.vibrate)navigator.vibrate(35);
+        }
+        if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
+        var nx=el('button','primary','Next'); nx.style.marginTop='10px';
+        nx.onclick=function(){state.i++;draw()};
+        box.appendChild(nx);
+      });
+      btns.push(b); box.appendChild(b);
+    });
+    wrap.appendChild(box);
+  }
+  draw();
+}
+
+
+
+function flashcards(hostId,cards){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var known={}, missed={}, mode='all', idx=0, flipped=false;
+
+  var rules=el('p','frules','<b>How this works.</b> One card, one question. Say the answer out loud, '
+    +'then click the card to check it. <b>I know it</b> drops the card from the deck; '
+    +'<b>Show me again</b> keeps it and counts it as a miss. The filters below change which cards '
+    +'are in the deck, not the rules.');
+  var chips=el('div','fchips');
+  var card=el('div','fcard');
+  card.innerHTML='<div class="inner"><div class="face front"></div><div class="face back"></div></div>';
+  var front=$('.front',card), back=$('.back',card);
+  var know=el('button','primary','I know it'), no=el('button','secondary','Show me again');
+  var btns=el('div','rowbtns'); btns.appendChild(know); btns.appendChild(no);
+  var bar=el('div','gbar'); var cnt=el('span',null,'');
+
+  var nAcr=cards.filter(function(c){return c.cue==='expand'}).length;
+  var modes=[['all','all '+cards.length],['acronyms','acronyms '+nAcr],['missed','missed']];
+  modes.forEach(function(m){
+    var b=el('button','fchip',m[1]); b.dataset.mode=m[0];
+    b.addEventListener('click',function(){ setMode(m[0]); });
+    chips.appendChild(b);
+  });
+
+  function pool(){
+    var src=cards.filter(function(c){
+      if(known[c.t]) return false;
+      if(mode==='acronyms') return c.cue==='expand';
+      if(mode==='missed')   return !!missed[c.t];
+      return true;
+    });
+    return src;
+  }
+  function toReview(){ return Object.keys(missed).filter(function(k){return !known[k]}).length; }
+
+  function setMode(m){
+    mode=m; flipped=false;
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===m); });
+    drawPool(true);
+  }
+
+  function paint(){
+    var c=order[idx];
+    var cue = c.cue==='expand' ? 'expand this acronym' : 'define this term';
+    front.innerHTML='<span class="cue">'+cue+'</span>'
+      +'<span class="fq'+(c.cue==='define'?' term':'')+'">'+esc(c.q||c.t)+'</span>'
+      +(c.x?'<span class="ctx">'+esc(c.x)+'</span>':'');
+    back.innerHTML=(c.a?'<span class="ans">'+esc(c.a)+'</span>':'')
+      +'<span class="term">'+esc(c.t)+'</span>'+c.d
+      +(c.why?'<div style="margin-top:9px;font-size:12px;color:var(--text-mute)">'+c.why+'</div>':'');
+    card.classList.remove('flip'); flipped=false;
+    cnt.textContent=(idx+1)+' / '+order.length
+      +'   ·   '+toReview()+' to review'
+      +(Object.keys(known).length?'   ·   '+Object.keys(known).length+' known':'');
+  }
+
+  function done(){
+    host.innerHTML='';
+    host.appendChild(el('div','fdone','<b>Deck clear.</b>'
+      +'Every card in this filter is marked known or has been answered. '
+      +'Missed cards stay in the deck — switch to <b>missed</b> to work them. '
+      +'<br><br><button class="secondary" id="fReset">Start the deck again</button>'));
+    var r=$('#fReset',host);
+    if(r) r.addEventListener('click',function(){ known={}; missed={}; setMode('all'); });
+  }
+
+  var order=[];
+  function drawPool(shuffleIt){
+    order=pool();
+    if(shuffleIt) order=shuffle(order);
+    idx=0;
+    host.innerHTML='';
+    host.appendChild(rules); host.appendChild(chips);
+    host.appendChild(card); host.appendChild(btns); host.appendChild(bar);
+    bar.appendChild(cnt);
+    host.querySelectorAll('.fchip').forEach(function(c){ c.classList.toggle('on', c.dataset.mode===mode); });
+    if(!order.length){ done(); return; }
+    paint();
+  }
+
+  card.addEventListener('click',function(){card.classList.toggle('flip');flipped=!flipped});
+  know.addEventListener('click',function(){
+    known[order[idx].t]=1; delete missed[order[idx].t];
+    order.splice(idx,1);
+    if(idx>=order.length) idx=0;
+    if(!order.length){ done(); return; }
+    paint();
+  });
+  no.addEventListener('click',function(){
+    missed[order[idx].t]=1;
+    
+    idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
+    paint();
+  });
+
+  drawPool(true);
+}
+
+
+function matchGame(hostId,pairs){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var set=shuffle(pairs).slice(0,6);
+  var left=shuffle(set), right=shuffle(set);
+  var selL=null, selR=null, done=0, tries=0;
+  var grid=el('div','mgrid');
+  var cl=el('div','mcol'), cr=el('div','mcol');
+  grid.appendChild(cl); grid.appendChild(cr);
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(grid); host.appendChild(fb); host.appendChild(bar);
+  left.forEach(function(p){
+    var b=el('button','mitem',esc(p.t));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cl).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selL=b; check();};
+    cl.appendChild(b);
+  });
+  right.forEach(function(p){
+    var b=el('button','mitem',esc(p.m));
+    b.dataset.key=p.t;
+    b.onclick=function(){if(b.classList.contains('done'))return;
+      $$('.mitem.sel',cr).forEach(function(x){x.classList.remove('sel')});
+      b.classList.add('sel'); selR=b; check();};
+    cr.appendChild(b);
+  });
+  function check(){
+    if(!selL||!selR)return;
+    tries++;
+    if(selL.dataset.key===selR.dataset.key){
+      selL.classList.add('done'); selR.classList.add('done');
+      selL.classList.remove('sel'); selR.classList.remove('sel');
+      markHit(selL.dataset.key); done++;
+      fb.className='fb ok'; fb.textContent='Right.';
+      if(done===set.length){fb.textContent='All '+set.length+' matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+    }else{
+      var a=selL,b=selR;
+      fb.className='fb no'; fb.textContent='Not those two.';
+      a.classList.add('shake'); b.classList.add('shake');
+      markMiss(a.dataset.key);
+      setTimeout(function(){a.classList.remove('shake','sel');b.classList.remove('shake','sel')},420);
+    }
+    bar.innerHTML='<span class="score">'+done+' / '+set.length+'</span> &nbsp;·&nbsp; '+tries+' tries';
+    selL=null; selR=null;
+  }
+  bar.innerHTML='<span class="score">0 / '+set.length+'</span>';
+}
+
+
+function sortGame(hostId,buckets,items){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var pool=el('div','sitems');
+  var bk=el('div','buckets');
+  var fb=el('div','fb'); var bar=el('div','gbar');
+  host.appendChild(pool); host.appendChild(bk); host.appendChild(fb); host.appendChild(bar);
+  var sel=null, placed=0, wrong=0;
+  var order=shuffle(items);
+  order.forEach(function(it){
+    var t=el('button','sitem',esc(it.t));
+    t.dataset.b=it.b; t.dataset.key=it.t;
+    t.onclick=function(){
+      if(t.classList.contains('done'))return;
+      $$('.sitem.sel',pool).forEach(function(x){x.classList.remove('sel')});
+      t.classList.add('sel'); sel=t;
+    };
+    pool.appendChild(t);
+  });
+  buckets.forEach(function(b){
+    var box=el('div','bucket');
+    box.innerHTML='<div class="bh">'+esc(b.name)+'</div>';
+    var inner=el('div','bitems'); box.appendChild(inner);
+    box.onclick=function(){
+      if(!sel)return;
+      if(sel.dataset.b===b.id){
+        sel.classList.remove('sel'); sel.classList.add('done');
+        inner.appendChild(el('span','bitem',esc(sel.dataset.key)));
+        markHit(sel.dataset.key); placed++;
+        fb.className='fb ok'; fb.textContent='Yes.';
+        sel=null;
+        if(placed===order.length){fb.className='fb ok';fb.textContent='All '+order.length+' sorted.'}
+      }else{
+        wrong++; sel.classList.add('shake'); var s=sel;
+        setTimeout(function(){s.classList.remove('shake','sel')},420);
+        sel=null; fb.className='fb no'; fb.textContent='Not that one.';
+        markMiss(s.dataset.key);
+      }
+      bar.innerHTML='<span class="score">'+placed+' / '+order.length+'</span> &nbsp;·&nbsp; '+wrong+' wrong';
+    };
+    bk.appendChild(box);
+  });
+  bar.innerHTML='<span class="score">0 / '+order.length+'</span>';
+  fb.textContent='Tap an item, then tap its bucket.';
+}
+
+
+function orderGame(hostId,prompt,correct,unit){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var p=el('p',null,prompt); p.style.fontSize='13px';
+  var tiles=el('div','otiles'), list=el('div','olist');
+  var fb=el('div','fb'), bar=el('div','gbar');
+  host.appendChild(p); host.appendChild(tiles); host.appendChild(list); host.appendChild(fb); host.appendChild(bar);
+  var pick=[], key=unit||correct.join('|');
+  var pool=shuffle(correct);
+  pool.forEach(function(t){
+    var b=el('button','otile',esc(t));
+    b.onclick=function(){b.classList.add('used');pick.push(t);paint()};
+    tiles.appendChild(b);
+  });
+  function paint(){
+    list.innerHTML='';
+    correct.forEach(function(_,i){
+      var s=el('div','oslot'+(pick[i]?' filled':''));
+      s.innerHTML='<span class="pos">'+(i+1)+'</span><span>'+(pick[i]?esc(pick[i]):'')+'</span>';
+      list.appendChild(s);
+    });
+    var check=el('button','primary','Check');
+    check.onclick=function(){
+      var ok=0;
+      $$('.oslot',list).forEach(function(s,i){
+        if(pick[i]===correct[i]){s.classList.add('ok');ok++}else if(pick[i]){s.classList.add('bad')}
+      });
+      if(ok===correct.length){fb.className='fb ok';fb.textContent='Correct order.';markHit(key)}
+      else{fb.className='fb no';fb.textContent=ok+' of '+correct.length+' in the right slot. Try again.';markMiss(key)}
+    };
+    var reset=el('button','secondary','Reset');
+    reset.onclick=function(){pick=[];$$('.otile',tiles).forEach(function(x){x.classList.remove('used')});fb.textContent='';paint()};
+    bar.innerHTML=''; bar.appendChild(check); bar.appendChild(reset);
+  }
+  paint();
+}
+
+
+function blitz(hostId,items,seconds,label){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var secs=seconds||90;
+  var intro=el('div');
+  intro.innerHTML='<p style="font-size:13px">'+(label||'As many as you can in '+secs+' seconds. Wrong answers cost you nothing but time.')+'</p>';
+  var go=el('button','primary','Start');
+  intro.appendChild(go); host.appendChild(intro);
+  go.onclick=function(){
+    host.innerHTML='';
+    var left=secs, i=0, right=0, wrong=0, streak=0, best=0;
+    var bar=el('div','gbar'), qbox=el('div','q'), fb=el('div','fb');
+    var clock=el('span',null,''), sc=el('span','score',''), st=el('span','streak','');
+    bar.appendChild(clock); bar.appendChild(sc); bar.appendChild(st);
+    host.appendChild(bar); host.appendChild(qbox); host.appendChild(fb);
+    var order=shuffle(items), timer;
+    function paint(){
+      if(i>=order.length)order=order.concat(shuffle(items));
+      var q=order[i%order.length];
+      qbox.innerHTML='';
+      var qt=el('div','qt'); if(q.lo)qt.appendChild(el('span','lo',q.lo));
+      qt.appendChild(el('span',null,esc(q.q))); qbox.appendChild(qt);
+      var correct=typeof q.a==='number'?q.o[q.a]:q.a;
+      var opts=shuffle(q.o.map(function(t,x){return{i:x,t:t}}));
+      opts.forEach(function(o){
+        var b=el('button','opt',esc(o.t));
+        b.onclick=function(){
+          if(o.t===correct){right++;streak++;if(streak>best)best=streak;markHit(q.k||q.q);fb.className='fb ok';fb.textContent='+1'}
+          else{wrong++;streak=0;markMiss(q.k||q.q);fb.className='fb no';fb.textContent='No — '+correct}
+          i++; paint(); upd();
+        };
+        qbox.appendChild(b);
+      });
+    }
+    function upd(){
+      clock.textContent=left+'s';
+      sc.textContent=right+' right / '+wrong+' wrong';
+      st.textContent='streak '+streak+' (best '+best+')';
+    }
+    function tick(){
+      left--; upd();
+      if(left<=0){clearInterval(timer);qbox.innerHTML='<p style="font-size:14px;font-weight:700">Time. '+right+' right, '+wrong+' wrong, best streak '+best+'.</p>';fb.textContent='';}
+    }
+    upd(); paint(); timer=setInterval(tick,1000);
+  };
+}
+
+
+function octetTrainer(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var mode='dec', locked='', v=0, right=0, wrong=0, streak=0;
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var PLACES=[128,64,32,16,8,4,2,1];
+  function paint(){
+    qbox.innerHTML='';
+    var ask=(mode==='dec');
+    v=Math.floor(Math.random()*256);
+    var q=el('p',null,ask?'What is this binary number in decimal?':'What is <b>'+v+'</b> in binary? (8 bits)');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    if(ask){
+      var bits=v.toString(2).padStart(8,'0');
+      var row=el('div','bitrow');
+      bits.split('').forEach(function(b){ row.appendChild(el('span','bit'+(b==='1'?' on':''),b)) });
+      qbox.appendChild(row);
+      var pr=el('div','bitrow');
+      PLACES.forEach(function(p){ pr.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(pr);
+    }else{
+      var row2=el('div','bitrow');
+      PLACES.forEach(function(p){ row2.appendChild(el('span','bitplace',String(p))) });
+      qbox.appendChild(row2);
+    }
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=ask?'0-255':'e.g. 10101010'; inp.autocomplete='off';
+    var sub=el('button','primary','Check');
+    box.appendChild(inp); box.appendChild(sub); qbox.appendChild(box);
+    var key='octet:'+mode;
+    function check(){
+      var want=ask?String(v):v.toString(2).padStart(8,'0');
+      var got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
+        setTimeout(function(){if(!locked){mode=(mode==='dec')?'bin':'dec'}paint()},650);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0;
+        markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true});
+    upd();
+    
+    var act=(locked==='bin')?b1:(locked==='dec')?b2:b3;
+    [b1,b2,b3].forEach(function(b){b.classList.toggle('on',b===act)});
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
+  }
+  
+  var tog=el('div','rowbtns');
+  var b1=el('button','secondary','Decimal → binary only');
+  var b2=el('button','secondary','Binary → decimal only');
+  var b3=el('button','secondary','Alternate both');
+  function setMode(m){ locked=m; if(m)mode=m; paint() }
+  b1.onclick=function(){setMode('bin')};
+  b2.onclick=function(){setMode('dec')};
+  b3.onclick=function(){setMode('')};
+  tog.appendChild(b1); tog.appendChild(b2); tog.appendChild(b3);
+  host.insertBefore(tog,host.firstChild);
+  paint();
+}
+
+
+var PREFIXES=[24,25,26,27,28,29,30,16,20,22,23];
+function octetsFromPrefix(p){
+  var m=[0,0,0,0];
+  for(var i=0;i<4;i++){
+    var bits=Math.min(8,Math.max(0,p-i*8));
+    m[i]=bits===8?255:(bits===0?0:(256-Math.pow(2,8-bits)));
+  }
+  return m.join('.');
+}
+function ipToInt(ip){var p=ip.split('.');return ((+p[0]<<24)>>>0)+(+p[1]<<16)+(+p[2]<<8)+(+p[3])}
+function intToIp(n){n=n>>>0;return [(n>>>24)&255,(n>>>16)&255,(n>>>8)&255,n&255].join('.')}
+function subnetInfo(ip,prefix){
+  var block=Math.pow(2,32-prefix);
+  var base=Math.floor(ipToInt(ip)/block)*block;
+  return {block:block,net:intToIp(base),bcast:intToIp(base+block-1),
+          first:intToIp(base+1),last:intToIp(base+block-2),usable:block-2,mask:octetsFromPrefix(prefix)};
+}
+function randIp(){return [Math.floor(Math.random()*200)+20,Math.floor(Math.random()*255),Math.floor(Math.random()*255),Math.floor(Math.random()*254)+1].join('.')}
+
+function subnetDrill(hostId){
+  var host=$(hostId); if(!host)return;
+  host.innerHTML='';
+  var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
+  host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
+  var right=0,wrong=0,streak=0,level=1;
+  var TASKS=[
+    {k:'net',   ask:'the <b>network address</b>',        get:function(i){return i.net}},
+    {k:'bcast', ask:'the <b>broadcast address</b>',      get:function(i){return i.bcast}},
+    {k:'mask',  ask:'the <b>subnet mask</b> in dotted decimal', get:function(i){return i.mask}},
+    {k:'first', ask:'the <b>first usable host</b>',      get:function(i){return i.first}},
+    {k:'last',  ask:'the <b>last usable host</b>',       get:function(i){return i.last}},
+    {k:'usable',ask:'the number of <b>usable hosts</b>', get:function(i){return String(i.usable)}}
+  ];
+  var task=null, ip='', prefix=24, info=null;
+  function paint(){
+    qbox.innerHTML='';
+
+    var pool=level<3?[24,25,26,27]:level<6?[24,25,26,27,28,29]:PREFIXES;
+    prefix=pool[Math.floor(Math.random()*pool.length)];
+    ip=randIp();
+    info=subnetInfo(ip,prefix);
+    task=TASKS[Math.floor(Math.random()*TASKS.length)];
+    var q=el('p',null,'For <span class="mono">'+ip+'/'+prefix+'</span>, give '+task.ask+'.');
+    q.style.fontSize='14px'; qbox.appendChild(q);
+    var hint=el('p','src','block size = 2^(32 − '+prefix+') = '+info.block+' addresses');
+    hint.style.display='none'; hint.id='sHint';
+    qbox.appendChild(hint);
+    var box=el('div','iobox');
+    var inp=el('input'); inp.placeholder=task.k==='usable'?'number':'x.x.x.x';
+    if(task.k==='usable')inp.style.width='120px';
+    var sub=el('button','primary','Check');
+    var hb=el('button','ghost','Hint');
+    hb.onclick=function(){hint.style.display=hint.style.display==='none'?'block':'none'};
+    box.appendChild(inp); box.appendChild(sub); box.appendChild(hb); qbox.appendChild(box);
+    function check(){
+      var want=task.get(info), got=inp.value.trim().replace(/\s/g,'');
+      if(got===want){
+        inp.classList.add('ok'); right++; streak++;
+        if(streak>0&&streak%3===0)level++;
+        markHit('subnet:'+task.k);
+        fb.className='fb ok'; fb.textContent='Right — '+want;
+        setTimeout(paint,700);
+      }else{
+        inp.classList.add('no'); wrong++; streak=0; level=Math.max(1,level-1);
+        markMiss('subnet:'+task.k);
+        fb.className='fb no'; fb.textContent='No — '+want+'  (block of '+info.block+')';
+        if(navigator.vibrate)navigator.vibrate(40);
+      }
+      upd();
+    }
+    sub.onclick=check;
+    inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
+    inp.focus({preventScroll:true}); upd();
+  }
+  function upd(){
+    bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak+' &nbsp;·&nbsp; level '+level;
+  }
+  paint();
+}
+
+
+var _audioCur=null,_audioBtn=null;
+function audioPlay(src,btn){
+  if(!btn||btn.dataset.missing==='1')return;
+  var same=(_audioCur&&_audioBtn===btn);
+  if(_audioCur){_audioCur.pause();if(_audioBtn)_audioBtn.classList.remove('playing')}
+  if(same){_audioCur=null;_audioBtn=null;return}
+  var a=new Audio(src);
+  a.addEventListener('error',function(){btn.classList.add('missing');btn.dataset.missing='1';btn.title='audio not rendered yet';btn.classList.remove('playing')});
+  a.addEventListener('ended',function(){btn.classList.remove('playing');_audioCur=null;_audioBtn=null});
+  btn.classList.add('playing');
+  _audioCur=a; _audioBtn=btn;
+  a.play().catch(function(){btn.classList.add('missing');btn.dataset.missing='1';btn.classList.remove('playing')});
+}
+
+
+
+var _acTip=null, _acEl=null;
+function acTipEl(){
+  if(!_acTip){ _acTip=el('div','actip'); _acTip.id='acTip'; _acTip.setAttribute('role','tooltip');
+    document.body.appendChild(_acTip); }
+  return _acTip;
+}
+function acShow(a){
+  var t=acTipEl(), full=a.dataset.full||'', desc=a.dataset.desc||'';
+  t.innerHTML=(full?'<b>'+esc(full)+'</b>':'')+(full&&desc?' — ':'')+esc(desc);
+  t.classList.add('on');
+  _acEl=a;
+  var r=a.getBoundingClientRect(), w=t.offsetWidth, h=t.offsetHeight;
+  var vw=window.innerWidth||document.documentElement.clientWidth;
+  var vh=window.innerHeight||document.documentElement.clientHeight;
+  var pad=8;
+  var left=r.left+r.width/2-w/2;
+  if(left<pad) left=pad;
+  if(left+w>vw-pad) left=Math.max(pad, vw-w-pad);
+  var top=r.top-h-9;
+  if(top<pad) top=r.bottom+9;              
+  
+  top=Math.min(Math.max(top,pad), Math.max(pad, vh-h-pad));
+  t.style.left=Math.round(left)+'px';
+  t.style.top=Math.round(top)+'px';
+}
+function acHide(){ if(_acTip)_acTip.classList.remove('on'); _acEl=null; }
+document.addEventListener('mouseover',function(e){
+  var n=e.target; if(!n||n.nodeType!==1||!n.closest) return;
+  var a=n.closest('.ac');
+  if(a){ if(a!==_acEl) acShow(a); } else if(_acEl) acHide();
+});
+document.addEventListener('mouseout',function(e){
+  if(!_acEl) return;
+  var to=e.relatedTarget;
+  if(to&&to.nodeType===1&&(to===_acEl||to.closest&&to.closest('.ac')===_acEl)) return;
+  acHide();
+});
+document.addEventListener('scroll',acHide,true);
+window.addEventListener('resize',acHide);
+
+
+function themeToggle(){
+  var cur=document.documentElement.getAttribute('data-theme')==='light'?'dark':'light';
+  document.documentElement.setAttribute('data-theme',cur);
+  try{localStorage.setItem('c2:theme',cur)}catch(e){}
+  var b=document.getElementById('themeBtn');
+  if(b)b.textContent=cur==='dark'?'\u25d1 dark':'\u25d0 light';
+}
+
+document.addEventListener('DOMContentLoaded',function(){
+  
+  if(typeof window!=='undefined'&&window.TUTOR_PRESETS){
+    var wrap=document.querySelector('.tpresets');
+    if(wrap){
+      wrap.innerHTML='';
+      window.TUTOR_PRESETS.forEach(function(pr){
+        var b=el('button','tpreset',pr.label);
+        b.setAttribute('data-ask',pr.ask);
+        if(pr.mode)b.setAttribute('data-mode',pr.mode);
+        wrap.appendChild(b);
+      });
+    }
+  }
+  var ask=$('#tutorAsk');
+  if(ask){
+    ask.querySelector('button').addEventListener('click',function(){
+      var v=ask.querySelector('input').value.trim();
+      if(v){tutorAsk(v);ask.querySelector('input').value=''}
+    });
+    ask.querySelector('input').addEventListener('keydown',function(e){
+      if(e.key==='Enter'){var v=this.value.trim();if(v){tutorAsk(v);this.value=''}}
+    });
+  }
+  $$('[data-ask]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var q=b.getAttribute('data-ask');
+      if(b.dataset.mode==='copy')tutorCopy(q);
+      else if(b.dataset.mode==='open')tutorOpenApp(q);
+      else{tutorSetOpen(true);tutorAsk(q)}
+    });
+  });
+  $$('[data-audio]').forEach(function(b){
+    b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  
+  tutorSetOpen($('#tutorPanel').classList.contains('open'),true);
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.key==='Esc')&&$('#tutorPanel').classList.contains('open'))tutorToggle();
+  });
+  var rm=$('#reviewMissed');
+  if(rm)rm.textContent='Review queue: '+missedCount();
+});
+
+document.addEventListener('DOMContentLoaded',function(){
+  var tb=document.getElementById('themeBtn');
+  if(tb)tb.textContent=document.documentElement.getAttribute('data-theme')==='light'?'\u25d0 light':'\u25d1 dark';
+});
+
+/* ---- c3m2 ---- */
+
+/* ---- where is that answer ---- */
+matchGame('#acctHost',[
+  {t:'Who is in the Administrators group?',m:'Get-LocalGroupMember Administrators'},
+  {t:'What is this Linux user ID?',m:'field 3 of /etc/passwd'},
+  {t:'What is this Linux group ID, and who is in it?',m:'fields 3 and 4 of /etc/group'},
+  {t:'Where is a Linux password actually stored?',m:'/etc/shadow'},
+  {t:'Which file says who may use sudo?',m:'/etc/sudoers'},
+  {t:'Which Windows console holds users and groups?',m:'Computer Management - Local Users and Groups'},
+  {t:'What does this Windows ACL entry grant?',m:'icacls file.txt'},
+  {t:'Which bits does this Linux file have?',m:'ls -l'}]);
+
+/* ---- octal blitz ---- */
+blitz('#octalHost',[
+  {q:'Octal 7 is which permission?',o:['rwx','rw-','r-x','---'],a:'rwx'},
+  {q:'Octal 5 is which permission?',o:['r-x','rwx','r--','-wx'],a:'r-x'},
+  {q:'Octal 4 is which permission?',o:['r--','rw-','-w-','--x'],a:'r--'},
+  {q:'Octal 6 is which permission?',o:['rw-','r-x','rwx','-wx'],a:'rw-'},
+  {q:'Octal 3 is which permission?',o:['-wx','rw-','r--','--x'],a:'-wx'},
+  {q:'Octal 2 is which permission?',o:['-w-','-wx','r--','rw-'],a:'-w-'},
+  {q:'Octal 1 is which permission?',o:['--x','-w-','r--','---'],a:'--x'},
+  {q:'Octal 0 is which permission?',o:['---','--x','-w-','r--'],a:'---'},
+  {q:'Which number is rwx?',o:['7','5','6','4'],a:'7'},
+  {q:'Which number is r-x?',o:['5','7','4','3'],a:'5'},
+  {q:'Which number is rw-?',o:['6','5','4','3'],a:'6'},
+  {q:'Which number is r--?',o:['4','5','6','2'],a:'4'},
+  {q:'Which number is -wx?',o:['3','2','1','5'],a:'3'},
+  {q:'Which number is -w-?',o:['2','3','6','1'],a:'2'},
+  {q:'chmod 755 makes the owner…',o:['rwx','r-x','r--','rw-'],a:'rwx'},
+  {q:'chmod 755 makes the group…',o:['r-x','rwx','r--','-wx'],a:'r-x'},
+  {q:'chmod 640 makes the group…',o:['r--','rw-','---','r-x'],a:'r--'},
+  {q:'chmod 640 makes everyone else…',o:['---','r--','-w-','--x'],a:'---'},
+  {q:'chmod 432 makes the group…',o:['-wx','-w-','r--','rwx'],a:'-wx'},
+  {q:'chmod 432 makes everyone else…',o:['-w-','-wx','r--','---'],a:'-w-'}
+],90,'Twenty digits and strings. Ninety seconds, twice through, and the table is yours.');
+
+/* ---- sort the permission string ---- */
+sortGame('#permHost',
+  [{id:'0',name:'0 - ---'},{id:'1',name:'1 - --x'},{id:'2',name:'2 - -w-'},{id:'3',name:'3 - -wx'},
+   {id:'4',name:'4 - r--'},{id:'5',name:'5 - r-x'},{id:'6',name:'6 - rw-'},{id:'7',name:'7 - rwx'}],
+  [{t:'r-x - read and execute',b:'5'},
+   {t:'rwx - read, write and execute',b:'7'},
+   {t:'--- - no permissions',b:'0'},
+   {t:'r-- - read only',b:'4'},
+   {t:'-w- - write only',b:'2'},
+   {t:'-wx - write and execute',b:'3'},
+   {t:'rw- - read and write',b:'6'},
+   {t:'--x - execute only',b:'1'}]);
+
+flashcards('#cardHost', [{"t": "ACL", "cue": "expand", "q": "What does ACL stand for?", "a": "Access Control List", "d": "the list attached to a file or folder naming who may do what. On Windows it is how permissions are stored at all.", "why": "Linux stores nine bits; Windows stores a list, which is why Windows permissions can be far more specific."}, {"t": "DACL", "cue": "expand", "q": "What does DACL stand for?", "a": "Discretionary Access Control List", "d": "the part of a Windows ACL that decides who is allowed what. The one you edit when you change permissions.", "why": "Discretionary because the owner decides - as opposed to a SACL, which only records."}, {"t": "SACL", "cue": "expand", "q": "What does SACL stand for?", "a": "System Access Control List", "d": "the part of a Windows ACL that tells Windows to log every access to a file or folder. Auditing, not permission.", "why": "It is how you answer who opened this, after the fact."}, {"t": "UAC", "cue": "expand", "q": "What does UAC stand for?", "a": "User Account Control", "d": "the Windows feature that prevents unauthorised changes: a change needing administrator rights raises a prompt instead of happening silently.", "why": "The reason an administrator can work in a standard session all day."}, {"t": "UID", "cue": "expand", "q": "What does UID stand for?", "a": "User ID", "d": "the number that identifies a user account on Linux. Field three of /etc/passwd; root is 0.", "why": "Permissions are stored by number, not by name, which is why renaming a user changes nothing."}, {"t": "GID", "cue": "expand", "q": "What does GID stand for?", "a": "Group ID", "d": "the number that identifies a group on Linux. Field three of /etc/group.", "why": "The group a file belongs to is a number, and that number is what the middle three bits apply to."}, {"t": "Standard user", "cue": "define", "q": "Standard user", "d": "an account with access to the machine and restrictions on it: it cannot install software or change certain settings.", "why": "The default shape of an account, and the reason least privilege is achievable at all."}, {"t": "Administrator", "cue": "define", "q": "Administrator", "d": "an account with complete control of the machine: it can view anyone's account, change or remove anyone, and view every file.", "why": "A role you step into for a task, not an identity to live in."}, {"t": "Least privilege", "cue": "define", "q": "Principle of least privilege", "d": "grant the minimum access a job needs, for the shortest time, and no more.", "why": "Every extra right is a future incident; it is the one rule that decides every permission question."}, {"t": "Root", "cue": "define", "q": "Root", "d": "the superuser on Linux: the account created at install with all privileges, UID 0.", "why": "One root account, but anyone granted its powers is a superuser too - the difference between account and capability."}, {"t": "sudo", "cue": "define", "q": "sudo", "d": "run one command with superuser rights, then go back to being yourself.", "why": "It exists because staying logged in as root makes every typo a root command."}, {"t": "su", "cue": "define", "q": "su", "d": "substitute user: switch identity, to root by default. sudo su - gives you a root shell; the prompt changes to #.", "why": "The # is a warning: remove will not ask, and system directories are as writable as your home."}, {"t": "/etc/passwd", "cue": "define", "q": "/etc/passwd", "d": "the Linux user file: name, password field (x means shadowed), UID, then group, description, home and shell.", "why": "The first three fields answer name, secret location and identity."}, {"t": "/etc/group", "cue": "define", "q": "/etc/group", "d": "the Linux group file: group name, password (x), GID, and the list of members.", "why": "Read this field when the question is who can open a group-readable file."}, {"t": "etc/shadow", "cue": "define", "q": "/etc/shadow", "d": "the file holding hashed passwords, readable by root only, which is why /etc/passwd shows an x.", "why": "A hash is one-way, so a forgotten password is reset, never recovered."}, {"t": "chmod", "cue": "define", "q": "chmod", "d": "change the permission bits on a file. Symbolic (u+x, g-w) or numeric (753); numeric sets all nine bits at once.", "why": "Plus and minus are relative; a number is absolute."}, {"t": "chown / chgrp", "cue": "define", "q": "chown and chgrp", "d": "change the owner and the group of a file. Both need root, because handing over ownership is a privileged act.", "why": "Changing the bits does nothing if the wrong account owns the file."}, {"t": "Permission string", "cue": "define", "q": "Permission string", "d": "the ten characters ls -l prints: type, then owner, group and other, three bits each. -rwxr-xr-- is one.", "why": "The first character is not a permission - it is the file type."}, {"t": "Octal digit", "cue": "define", "q": "Octal digit", "d": "one permission triple as a number: r=4, w=2, x=1, added together. 7 is rwx, 5 is r-x, 0 is ---.", "why": "Once the eight digits are automatic, chmod stops being a code."}, {"t": "SetUID", "cue": "define", "q": "SetUID", "d": "a special bit (4 in front: 4753) making a program run with the permissions of the file's owner rather than the caller.", "why": "A SetUID root program runs as root for anyone who can run it, so it is worth explaining before trusting."}, {"t": "SetGID", "cue": "define", "q": "SetGID", "d": "the group version (2 in front: 2753). On a directory, new files inherit the group instead of the creator's primary group.", "why": "2770 on a share directory is how a team's files stay readable by the team."}, {"t": "Sticky bit", "cue": "define", "q": "Sticky bit", "d": "a special bit (1 in front: 1753, shown as t) that lets people write in a directory without deleting what is not theirs.", "why": "It is what makes a shared temporary directory usable."}]);
+
+quiz('#quizHost', [{"k": "c3m2q1", "lo": "LO1", "q": "What separates a standard user from an administrator?", "o": ["the password length", "access: a standard user is restricted and cannot install software or change certain settings", "which desktop they get", "whether the account has a home folder"], "a": 1, "why": "An administrator has complete control: any account, any file, any setting. A standard user has the machine, with restrictions."}, {"k": "c3m2q2", "lo": "LO1", "q": "Why grant permissions to a group rather than to each person?", "o": ["it is faster to type", "one place to change, and one file to read when someone asks who has access", "groups are more secure than users", "Windows requires it"], "a": 1, "why": "Per-person grants become an unauditable list. Rights belong to roles; people belong to roles."}, {"k": "c3m2q3", "lo": "LO1", "q": "Which command answers 'is this person actually an administrator' on Windows?", "o": ["Get-LocalUser", "Get-LocalGroupMember Administrators", "net user", "whoami"], "a": 1, "why": "It prints the members of the group. Listing the users tells you the account exists, not what it can do."}, {"k": "c3m2q4", "lo": "LO1", "q": "On Linux, where do you find who is in a group?", "o": ["/etc/passwd", "/etc/group, field 4", "/etc/shadow", "/etc/sudoers"], "a": 1, "why": "Group name, password, GID, then the member list. /etc/passwd holds users; /etc/shadow holds hashed passwords."}, {"k": "c3m2q5", "lo": "LO1", "q": "Which Linux command creates a new user, and with what prefix?", "o": ["useradd, with sudo", "usernew, with sudo", "adduser, without sudo", "passwd -e, with sudo"], "a": 0, "why": "sudo useradd juan. Creating an account is a root action, so the prefix is not optional."}, {"k": "c3m2q6", "lo": "LO1", "q": "You created an account with a password you chose. What must you do before handing it over?", "o": ["nothing, it works", "force a change at first login, so only the owner knows the final password", "add it to Administrators", "disable it"], "a": 1, "why": "Otherwise you have handed over a shared credential. Windows: /logonpasswordchg:yes. Linux: passwd -e."}, {"k": "c3m2q7", "lo": "LO2", "q": "In -rwxr-xr--, what is the first character?", "o": ["a permission for the owner", "the file type: a dash for a regular file, d for a directory", "the sticky bit", "nothing, it is padding"], "a": 1, "why": "The first of the ten bits is the type. The next nine are the permissions, in three triples."}, {"k": "c3m2q8", "lo": "LO2", "q": "What does chmod 640 give the group?", "o": ["rwx", "r--", "rw-", "---"], "a": 1, "why": "6 is rw- for the owner, 4 is r-- for the group, 0 is --- for everyone else. So rw-r-----."}, {"k": "c3m2q9", "lo": "LO2", "q": "chmod 432 produces which permission string?", "o": ["rwxr-x-wx", "r---wx-w-", "rw-r--r--", "r--r--r--"], "a": 1, "why": "4 = r--, 3 = -wx, 2 = -w-. Digits are always owner, group, other."}, {"k": "c3m2q10", "lo": "LO2", "q": "Which octal digit means read and execute, but not write?", "o": ["3", "5", "6", "7"], "a": 1, "why": "4 + 0 + 1 = 5. 3 is -wx, 6 is rw-, 7 is rwx."}, {"k": "c3m2q11", "lo": "LO2", "q": "What is the difference between chmod g+w and chmod 750?", "o": ["none", "g+w changes one permission and leaves the rest; 750 sets all nine bits at once", "g+w needs root", "750 only works on directories"], "a": 1, "why": "Symbolic is relative, numeric is absolute. Using a number when you meant one change silently drops everything else."}, {"k": "c3m2q12", "lo": "LO2", "q": "chown changes what?", "o": ["the permission bits", "who owns the file", "the group the file belongs to", "the file's contents"], "a": 1, "why": "Owner, with chgrp for the group. The bits only matter once the right account owns the file."}, {"k": "c3m2q13", "lo": "LO3", "q": "What is least privilege?", "o": ["the fewest passwords possible", "the minimum access needed for the job, for the shortest time", "the lowest permission number", "admin for everyone, controlled centrally"], "a": 1, "why": "Every extra right is a future incident. It decides the scope of everything you grant."}, {"k": "c3m2q14", "lo": "LO3", "q": "A team needs to read a file; only its owner should change it. What is the right answer on Linux?", "o": ["chmod 777", "chmod 640 with the right group", "chmod 600", "chmod 444"], "a": 1, "why": "Owner read and write, group read, nobody else. 777 makes it work by deleting the control you were keeping."}, {"k": "c3m2q15", "lo": "LO3", "q": "A new starter's role needs administrator rights occasionally. What do you do?", "o": ["add their everyday account to Administrators", "give them a separate named administrator account", "make them a standard user and ignore the request", "share the local administrator password"], "a": 1, "why": "Separate, named, and used for the task. The everyday account stays standard, so an ordinary mistake stays ordinary."}, {"k": "c3m2q16", "lo": "LO3", "q": "A home folder grant gives Modify rather than Full Control. Why?", "o": ["Modify is faster", "Full Control lets the user change permissions, which is a different job from using the folder", "Full Control breaks inheritance", "Modify includes take ownership"], "a": 1, "why": "Full Control adds taking ownership and editing the ACL. Least privilege stops at the access the role needs."}, {"k": "c3m2q17", "lo": "LO4", "q": "What does sudo do?", "o": ["logs you in as root until you log out", "runs one command with superuser rights, then returns you to yourself", "disables the root account", "grants permanent administrator membership"], "a": 1, "why": "One command. That is why the prompt goes back to a $ instead of staying on a root #."}, {"k": "c3m2q18", "lo": "LO4", "q": "You run sudo su - and the prompt becomes root@host:~#. What does the # tell you?", "o": ["the terminal is in a special mode", "you are root, and remove will not ask before it deletes", "the shell is Bash", "the command failed"], "a": 1, "why": "Everything you type now runs with root's permissions, including the typo. Get out when the job is done."}, {"k": "c3m2q19", "lo": "LO4", "q": "What is UAC for?", "o": ["encrypting the disk", "preventing unauthorised changes: an elevation prompt instead of silent administrator rights", "managing passwords only", "logging users out after inactivity"], "a": 1, "why": "It is Windows' version of the sudo idea. An administrator's session does not silently have administrator rights."}, {"k": "c3m2q20", "lo": "LO4", "q": "Why is a SetUID program owned by root a security concern?", "o": ["it uses more memory", "anyone who runs it is running code with root's permissions", "it cannot be deleted", "it disables the sticky bit"], "a": 1, "why": "That is also why it is legitimate when the job needs it. A flaw in such a program is a flaw that runs as root."}, {"k": "c3m2q21", "lo": "LO5", "q": "Why use net user cindy * instead of typing the password in the command?", "o": ["it is shorter", "the shell prompts for it, so the password never appears in the command line or its history", "the asterisk sets a random password", "it forces a change at next login"], "a": 1, "why": "A password typed as an argument is a password in the history file, and possibly on a screen someone photographed."}, {"k": "c3m2q22", "lo": "LO5", "q": "A user forgets their password. On Linux, what happens?", "o": ["you read it from /etc/shadow", "it is reset; a hash cannot be turned back into the password", "you restore it from backup", "you copy /etc/passwd"], "a": 1, "why": "Passwords are hashed, one-way. Reset with passwd, then expire it so they choose the final one."}, {"k": "c3m2q23", "lo": "LO5", "q": "Which is the strongest password lever?", "o": ["forcing a symbol and a digit", "length, because every extra character multiplies the guessing work", "changing it every 90 days", "using your name plus the year"], "a": 1, "why": "Length beats complexity. Forced short-cycle rotation encourages predictable increments."}, {"k": "c3m2q24", "lo": "LO5", "q": "What does failed-attempt lockout buy you?", "o": ["it encrypts the password", "it makes guessing through the login prompt impractical", "it removes the need for MFA", "it logs the attempts to Event Viewer only"], "a": 1, "why": "The account locks after a set number of wrong tries, so guessing through the prompt stops being practical. MFA then covers the case where the password leaked elsewhere."}]);
+
+</script>
+</body>
+</html>

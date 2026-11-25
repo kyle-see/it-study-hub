@@ -184,6 +184,8 @@ button:disabled{opacity:.4;cursor:default}
 .ghost:hover{background:var(--surface-3);color:var(--text)}
 .rowbtns{display:flex;gap:9px;flex-wrap:wrap;margin:14px 0;align-items:center}
 
+.rowbtns button.on{background:var(--tint-accent);border-color:var(--rule-2);color:var(--accent-bright)}
+
 code,.mono{
   font-family:var(--mono);font-size:12.5px;background:var(--code-bg);
   border:1px solid var(--rule);border-radius:5px;padding:1px 6px;color:var(--accent-bright);
@@ -254,7 +256,7 @@ td b,th b{color:var(--text-strong)}
   border-radius:6px;padding:8px 0;background:var(--surface-3);
   border:1px solid var(--rule);color:var(--text-mute);
 }
-.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}}
+.bit.on{background:var(--fill);color:var(--on-fill);border-color:var(--fill)}
 .bitplace{width:40px;text-align:center;font-size:10px;color:var(--text-mute);font-family:var(--mono)}
 .prompt{
   font-family:var(--mono);font-size:16px;font-weight:700;background:var(--code-bg);
@@ -515,7 +517,9 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   .topbar nav,#tutorBtn,#tutorPanel,.game,#themeBtn{display:none}
   body{background:#fff;color:#000}
   section{box-shadow:none;break-inside:avoid-page;border-color:#ccc;background:#fff}
-  :root{--text:#000;--surface:#fff}
+  
+  :root{--text:#000;--text-strong:#000;--text-dim:#333;--text-mute:#4a4a4a;
+        --surface:#fff;--surface-2:#fff;--surface-3:#fff;--code-bg:#f4f4f4}
 }
 @media(max-width:640px){
   .kv{grid-template-columns:1fr;gap:3px 0}
@@ -523,6 +527,12 @@ footer .cred{margin-top:12px;padding-top:10px;border-top:1px solid var(--rule);f
   main{padding:18px 12px 90px}
   section{padding:18px 16px 22px;border-radius:11px}
   h2{font-size:19px}
+  
+  .topbar{position:static}
+  
+  html,body{overflow-x:clip}
+  
+  section:target{margin-left:0}
 }
 
 
@@ -749,7 +759,7 @@ table.sgfacts td.what[data-tip]:focus{outline:1px solid var(--amber-400);outline
 <section id="walk" class=""><h2>The subnet calculator</h2><p class="lede">An address and a slash in, the whole method out &mdash; asked back to you one checkpoint at a time, with a table that fills in as you go.</p><div class="big60"><b>What this section gets you.</b> Two numbers &mdash; an address and a slash &mdash; are the whole input. Out of them the method produces: the <span class="term" data-tip="Subnet mask — the slash written as four octets: a run of 1s for the network, then 0s for the host" tabindex="0">subnet mask</span>, how many <span class="term" data-tip="Host bits — 32 minus the prefix. Everything the mask does not cover belongs to the host, and that count decides the size of the block" tabindex="0">host bits</span> are left, the <span class="term" data-tip="Block size — 256 minus the mask value in the interesting octet &mdash; the step between one network and the next in that octet" tabindex="0">block size</span> and the <span class="term" data-tip="Interesting octet — the first octet where the mask is not 255: the one the blocks step in" tabindex="0">interesting octet</span>, the <span class="term" data-tip="Network address — the address with every host bit at 0 &mdash; the name of the whole block, and the form a route, a DHCP scope or a firewall rule is written in" tabindex="0">network address</span>, the <span class="term" data-tip="Broadcast — the same block with every host bit at 1 &mdash; anything sent here reaches every device on the subnet" tabindex="0">broadcast</span>, the first and last <span class="term" data-tip="Usable host — an address a device can actually be given: not the network address and not the broadcast" tabindex="0">usable host</span>, how many devices fit, whether the address you typed can even be given to one, what kind of <span class="term" data-tip="Address space — public and routable, private (RFC 1918), loopback, link-local, multicast, carrier-grade NAT, or a documentation range" tabindex="0">address space</span> it sits in, and the <span class="term" data-tip="Subnet — one block of addresses that share a network address &mdash; what a mask cuts a larger range into" tabindex="0">subnet</span> either side of it. Two of those &mdash; the class and the scope &mdash; need no method at all: they are readable straight off the first octet. Nothing is looked up; every value is computed from what you type.</div><p>Pick an example or type your own, then work down the checkpoints. Each answer adds a row to the table underneath, so <b>you can stop as soon as the row you wanted is there</b>: the dimmed rows name the checkpoint that would earn them, and nothing later in the method changes a fact you already hold. If you would rather see the whole answer printed at once, switch to <b>Show the whole working</b> &mdash; the same arithmetic, none of the questions.</p>
             <h3>The address and the slash</h3>
             <div class="scform">
-              <div class="scfield"><label for="scIp"><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks. It promises best effort: no delivery guarantee, no ordering,…">IP</span> ADDRESS</label>
+              <div class="scfield"><label for="scIp"><span class="ac" data-full="Internet Protocol" data-desc="the connectionless layer 3 protocol that addresses and routes packets between networks.">IP</span> ADDRESS</label>
                 <input id="scIp" autocomplete="off" spellcheck="false" placeholder="112.15.167.104"></div>
               <div class="scfield"><label for="scPrefix">PREFIX (/n)</label>
                 <input id="scPrefix" autocomplete="off" inputmode="numeric" placeholder="22"></div>
@@ -970,7 +980,7 @@ function quiz(hostId,items,opts){
         if(isRight){b.classList.add('right');state.right++;markHit(q.k||q.q)}
         else{
           b.classList.add('wrong');markMiss(q.k||q.q);
-          btns.forEach(function(x){if(x.innerHTML===esc(correct))x.classList.add('right')});
+          btns.forEach(function(x){if(x.textContent===String(correct))x.classList.add('right')});
           if(navigator.vibrate)navigator.vibrate(35);
         }
         if(q.why){var w=el('div','why show',q.why);box.appendChild(w)}
@@ -1077,7 +1087,8 @@ function flashcards(hostId,cards){
     paint();
   });
   no.addEventListener('click',function(){
-    missed[order[idx].t]=1; card.classList.add('flip'); flipped=true;
+    missed[order[idx].t]=1;
+    
     idx=(idx+1)%order.length; if(idx===0 && order.length>1) order=shuffle(order);
     paint();
   });
@@ -1121,7 +1132,7 @@ function matchGame(hostId,pairs){
       selL.classList.remove('sel'); selR.classList.remove('sel');
       markHit(selL.dataset.key); done++;
       fb.className='fb ok'; fb.textContent='Right.';
-      if(done===set.length){fb.textContent='All six matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
+      if(done===set.length){fb.textContent='All '+set.length+' matched in '+tries+' tries.'; bar.innerHTML='<span class="score">Done</span>'}
     }else{
       var a=selL,b=selR;
       fb.className='fb no'; fb.textContent='Not those two.';
@@ -1272,7 +1283,7 @@ function blitz(hostId,items,seconds,label){
 function octetTrainer(hostId){
   var host=$(hostId); if(!host)return;
   host.innerHTML='';
-  var mode='dec', v=0, right=0, wrong=0, streak=0;
+  var mode='dec', locked='', v=0, right=0, wrong=0, streak=0;
   var qbox=el('div'), bar=el('div','gbar'), fb=el('div','fb');
   host.appendChild(qbox); host.appendChild(bar); host.appendChild(fb);
   var PLACES=[128,64,32,16,8,4,2,1];
@@ -1306,7 +1317,7 @@ function octetTrainer(hostId){
       if(got===want){
         inp.classList.add('ok'); right++; streak++;
         markHit(key); fb.className='fb ok'; fb.textContent='Right. '+want;
-        setTimeout(function(){if(mode==='dec')mode='bin';else mode='dec';paint()},650);
+        setTimeout(function(){if(!locked){mode=(mode==='dec')?'bin':'dec'}paint()},650);
       }else{
         inp.classList.add('no'); wrong++; streak=0;
         markMiss(key); fb.className='fb no'; fb.textContent='No — it is '+want;
@@ -1318,14 +1329,23 @@ function octetTrainer(hostId){
     inp.addEventListener('keydown',function(e){if(e.key==='Enter')check()});
     inp.focus({preventScroll:true});
     upd();
+    
+    var act=(locked==='bin')?b1:(locked==='dec')?b2:b3;
+    [b1,b2,b3].forEach(function(b){b.classList.toggle('on',b===act)});
   }
   function upd(){
     bar.innerHTML='<span class="score">'+right+' right</span> &nbsp;·&nbsp; '+wrong+' wrong &nbsp;·&nbsp; streak '+streak;
   }
+  
   var tog=el('div','rowbtns');
-  var b1=el('button','secondary','Decimal → binary only'); b1.onclick=function(){mode='bin';paint()};
-  var b2=el('button','secondary','Binary → decimal only'); b2.onclick=function(){mode='dec';paint()};
-  tog.appendChild(b1); tog.appendChild(b2);
+  var b1=el('button','secondary','Decimal → binary only');
+  var b2=el('button','secondary','Binary → decimal only');
+  var b3=el('button','secondary','Alternate both');
+  function setMode(m){ locked=m; if(m)mode=m; paint() }
+  b1.onclick=function(){setMode('bin')};
+  b2.onclick=function(){setMode('dec')};
+  b3.onclick=function(){setMode('')};
+  tog.appendChild(b1); tog.appendChild(b2); tog.appendChild(b3);
   host.insertBefore(tog,host.firstChild);
   paint();
 }
@@ -1506,11 +1526,16 @@ document.addEventListener('DOMContentLoaded',function(){
       var q=b.getAttribute('data-ask');
       if(b.dataset.mode==='copy')tutorCopy(q);
       else if(b.dataset.mode==='open')tutorOpenApp(q);
-      else{tutorAsk(q);$('#tutorPanel').classList.add('open')}
+      else{tutorSetOpen(true);tutorAsk(q)}
     });
   });
   $$('[data-audio]').forEach(function(b){
     b.addEventListener('click',function(){audioPlay(b.getAttribute('data-audio'),b)});
+  });
+  
+  tutorSetOpen($('#tutorPanel').classList.contains('open'),true);
+  document.addEventListener('keydown',function(e){
+    if((e.key==='Escape'||e.key==='Esc')&&$('#tutorPanel').classList.contains('open'))tutorToggle();
   });
   var rm=$('#reviewMissed');
   if(rm)rm.textContent='Review queue: '+missedCount();
